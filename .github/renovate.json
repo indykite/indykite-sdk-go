@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:weekly",
+    ":disableDependencyDashboard"
+  ],
+  "semanticCommits": "enabled",
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodNoMassage"
+  ],
+  "commitMessageAction": "update",
+  "groupName": "everything",
+  "ignoreDeps": [],
+  "ignorePaths": [],
+  "force": {
+    "constraints": {
+      "go": "1.18"
+    }
+  }
+}

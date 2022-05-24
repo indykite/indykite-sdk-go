@@ -1,0 +1,34 @@
+---
+name: Lint and Check
+on:
+    pull_request:
+        types: [opened, synchronize, reopened]
+        paths:
+            - '**/*.go'
+jobs:
+    golangci:
+        name: lint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout codebase
+              uses: actions/checkout@v3
+
+#            - name: Set up Go
+#              uses: actions/setup-go@v3
+#              with:
+#                  go-version: ^1.18
+
+            - name: Run GolangCI-Lint Scanner
+              uses: golangci/golangci-lint-action@v3
+              with:
+                  # Required: the version of golangci-lint is required and must be specified without patch version.
+                  version: v1.46
+
+                  # Optional: working directory, useful for monorepos
+                  # working-directory: ./...
+
+                  # Optional: golangci-lint command line arguments.
+                  args: --timeout 2m00s
+
+                  # Optional: show only new issues if it's a pull request. The default value is `false`.
+                  # only-new-issues: true

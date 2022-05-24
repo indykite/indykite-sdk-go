@@ -1,0 +1,52 @@
+---
+linters:
+    enable:
+        - deadcode
+        - errcheck
+        - goimports
+        - gosec
+        - gosimple
+        - govet
+        - ineffassign
+        - lll
+        - staticcheck
+        - structcheck
+        - typecheck
+        - stylecheck
+        - unused
+        - varcheck
+
+        - asciicheck
+       # - cyclop
+        - gocritic
+        - revive
+        - gosec
+        - gofmt
+        - ifshort
+        - prealloc
+        - unconvert
+        - whitespace
+
+linters-settings:
+    lll:
+        line-length: 120
+        tab-width: 4
+    goimports:
+        local-prefixes: github.com/indykite/identity-sdk-go
+    staticcheck:
+        go: '1.16'
+        checks: [all, -ST1000]
+    stylecheck:
+        go: '1.16'
+        checks: [all, -ST1000]
+    maligned:
+        suggest-new: true
+issues:
+    exclude-use-default: false # Some rules are excluded by GolangCI Linter by default, this one will prevent that
+    max-issues-per-linter: 0
+    max-same-issues: 0
+
+    exclude-rules:
+        - linters:
+              - revive
+          text: exported .* should have comment .*or be unexported

@@ -1,0 +1,24 @@
+---
+name: Changelog
+concurrency: jarvis-changelog
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    release-please:
+        name: Prepare Release notes
+        runs-on: ubuntu-latest
+        steps:
+            - id: release-please
+              uses: GoogleCloudPlatform/release-please-action@v3
+              with:
+                  changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
+                  release-type: go
+                  package-name: jarvis-sdk-go
+                  token: ${{ secrets.INDYKITE_PAT }}
+                  extra-files: |
+                      config/doc.go
+                      identity/doc.go
+                      ingest/doc.go
