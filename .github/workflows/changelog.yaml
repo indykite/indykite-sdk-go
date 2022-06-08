@@ -4,7 +4,7 @@ concurrency: jarvis-changelog
 on:
     push:
         branches:
-            - master
+            - rp
 
 jobs:
     release-please:
@@ -12,13 +12,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - id: release-please
-              uses: GoogleCloudPlatform/release-please-action@v3
+              uses: maprokes/release-please-action@main
               with:
-                  changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
-                  release-type: go
+                  default-branch: rp
                   package-name: jarvis-sdk-go
                   token: ${{ secrets.INDYKITE_PAT }}
-                  extra-files: |
-                      config/doc.go
-                      identity/doc.go
-                      ingest/doc.go
