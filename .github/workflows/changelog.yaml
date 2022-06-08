@@ -14,9 +14,7 @@ jobs:
             - id: release-please
               uses: maprokes/release-please-action@main
               with:
-                  command: manifest
                   default-branch: rp
-                  release-type: go
                   package-name: jarvis-sdk-go
                   token: ${{ secrets.INDYKITE_PAT }}
                   extra-files: |
