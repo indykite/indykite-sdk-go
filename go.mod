@@ -34,9 +34,9 @@ require (
 	go.opencensus.io v0.23.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.32.0
 	golang.org/x/exp/typeparams v0.0.0-20220516143420-24438e51023a // indirect
-	golang.org/x/oauth2 v0.0.0-20220524215830-622c5d57e401
-	google.golang.org/genproto v0.0.0-20220527130721-00d5c0f3be58
-	google.golang.org/grpc v1.46.2
+	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb
+	google.golang.org/genproto v0.0.0-20220608133413-ed9918b62aac
+	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	mvdan.cc/unparam v0.0.0-20220316160445-06cc5682983b // indirect
 )
