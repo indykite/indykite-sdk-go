@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - id: release-please
-              uses: GoogleCloudPlatform/release-please-action@v3
+              uses: maprokes/release-please-action@main
               with:
                   command: manifest
                   default-branch: rp
