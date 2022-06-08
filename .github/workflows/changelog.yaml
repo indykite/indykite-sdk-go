@@ -4,7 +4,7 @@ concurrency: jarvis-changelog
 on:
     push:
         branches:
-            - master
+            - rp
 
 jobs:
     release-please:
@@ -14,7 +14,8 @@ jobs:
             - id: release-please
               uses: GoogleCloudPlatform/release-please-action@v3
               with:
-                  changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
+                  command: manifest
+                  default-branch: rp
                   release-type: go
                   package-name: jarvis-sdk-go
                   token: ${{ secrets.INDYKITE_PAT }}
