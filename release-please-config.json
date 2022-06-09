@@ -57,7 +57,7 @@
   "release-type": "go",
   "packages": {
     ".": {
-      "extra-files":[
+      "extra-files": [
         "config/doc.go",
         "identity/doc.go",
         "ingest/doc.go"
