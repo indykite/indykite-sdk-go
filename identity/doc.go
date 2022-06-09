@@ -15,4 +15,4 @@
 // Package identity implements the IndyKite Identity Service API Client.
 package identity
 
-const versionClient = "v1.0.0" // x-release-please-version
+const versionClient = "v0.1.0" // x-release-please-version
