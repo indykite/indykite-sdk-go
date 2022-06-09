@@ -17,7 +17,3 @@ jobs:
                   default-branch: rp
                   package-name: jarvis-sdk-go
                   token: ${{ secrets.INDYKITE_PAT }}
-                  extra-files: |
-                      config/doc.go
-                      identity/doc.go
-                      ingest/doc.go
