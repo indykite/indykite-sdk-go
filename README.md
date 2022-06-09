@@ -8,8 +8,10 @@
 
 IndyKite is a cloud identity platform built to secure and manage
 human & non-person (IoT) identities and their data. This repository contains the
-JavaScript Library packages for [IndyKite Platform](https://indykite.com) Client SDK.
+Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK.
 
+[![Build](https://github.com/indykite/jarvis-sdk-go/actions/workflows/pr-test.yaml/badge.svg)](https://github.com/indykite/jarvis-sdk-go/actions/workflows/pr-test.yaml)
+[![codecov](https://codecov.io/gh/indykite/jarvis-sdk-go/branch/master/graph/badge.svg?token=TFCDLXbnsh)](https://codecov.io/gh/indykite/jarvis-sdk-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/indykite/jarvis-sdk-go)](https://goreportcard.com/report/github.com/indykite/jarvis-sdk-go)
 [![Go Reference](https://pkg.go.dev/badge/github.com/indykite/jarvis-sdk-go.svg)](https://pkg.go.dev/github.com/indykite/jarvis-sdk-go)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Findykite%2Fjarvis-sdk-go.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Findykite%2Fjarvis-sdk-go?ref=badge_shield)
