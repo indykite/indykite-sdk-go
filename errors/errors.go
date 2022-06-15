@@ -142,7 +142,7 @@ func FromError(err error) *StatusError {
 		return s
 	}
 	if s, ok := err.(*ClientError); ok {
-		return &StatusError{grpcStatus: status.New(s.code, s.msg)}
+		return &StatusError{grpcStatus: status.New(s.code, s.msg), origin: s.cause}
 	}
 	if se, ok := err.(interface {
 		GRPCStatus() *status.Status
@@ -172,6 +172,10 @@ func NewGRPCError(entryErr interface{}) *StatusError {
 }
 
 func (err *StatusError) Error() string {
+	if err.origin != nil {
+		return fmt.Sprintf(
+			"client error: code = %s desc = %s | caused by %s", err.Code(), err.Message(), err.origin.Error())
+	}
 	return fmt.Sprintf("client error: code = %s desc = %s", err.Code(), err.Message())
 }
 
@@ -198,4 +202,9 @@ func (err *StatusError) Status() *status.Status {
 // WithPrefix set prefix which will be printed in when Error is called
 func (err *StatusError) WithPrefix(prefix string) *StatusError {
 	return err
+}
+
+// Origin returns underlying error, if any
+func (err *StatusError) Origin() error {
+	return err.origin
 }
