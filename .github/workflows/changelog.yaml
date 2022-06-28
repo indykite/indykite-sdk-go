@@ -6,6 +6,9 @@ on:
         branches:
             - master
 
+env:
+    BIGQUERY_TABLE: jarvis-dev-268314.deployment_analytics.deployment_events
+
 jobs:
     release-please:
         name: Prepare Release notes
@@ -42,3 +45,16 @@ jobs:
                   CU_status: DEPLOYED
               run: |
                   CU_tags="$APP_TAG,$VERSION,public" cu-cli create -d "Release of $APP_NAME is available here: https://pkg.go.dev/github.com/indykite/jarvis-sdk-go" "$APP_NAME - release $VERSION"
+
+            - name: Authenticate to Google Cloud
+              uses: google-github-actions/auth@v0
+              if: ${{ always() }}
+              with:
+                credentials_json: ${{ secrets.GCP_SERVICE_KEY_BQ }}
+            - name: Publish Deployment Metadata
+              if: ${{ always() }}
+              uses: indykite/metadata-publisher@v0
+              with:
+                version: ${{ env.VERSION }}
+                status: ${{ job.status }}
+                bigquery_table: ${{ env.BIGQUERY_TABLE }}
