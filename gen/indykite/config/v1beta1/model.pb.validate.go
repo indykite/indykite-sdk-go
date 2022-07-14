@@ -3576,15 +3576,19 @@ func (m *OAuth2ClientConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetClientSecret()) < 8 {
-		err := OAuth2ClientConfigValidationError{
-			field:  "ClientSecret",
-			reason: "value length must be at least 8 runes",
+	if m.GetClientSecret() != "" {
+
+		if utf8.RuneCountInString(m.GetClientSecret()) < 8 {
+			err := OAuth2ClientConfigValidationError{
+				field:  "ClientSecret",
+				reason: "value length must be at least 8 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if len(m.GetRedirectUri()) > 0 {
@@ -4052,6 +4056,17 @@ func (m *OAuth2ClientConfig) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+	}
+
+	if _, ok := AuthStyle_name[int32(m.GetAuthStyle())]; !ok {
+		err := OAuth2ClientConfigValidationError{
+			field:  "AuthStyle",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -6782,15 +6797,19 @@ func (m *AuthenteqProviderConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if utf8.RuneCountInString(m.GetClientSecret()) < 12 {
-		err := AuthenteqProviderConfigValidationError{
-			field:  "ClientSecret",
-			reason: "value length must be at least 12 runes",
+	if m.GetClientSecret() != "" {
+
+		if utf8.RuneCountInString(m.GetClientSecret()) < 12 {
+			err := AuthenteqProviderConfigValidationError{
+				field:  "ClientSecret",
+				reason: "value length must be at least 12 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if err := m._validateHostname(m.GetHostAddress()); err != nil {
@@ -6948,15 +6967,19 @@ func (m *SAFRProviderConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if l := utf8.RuneCountInString(m.GetPassword()); l < 4 || l > 254 {
-		err := SAFRProviderConfigValidationError{
-			field:  "Password",
-			reason: "value length must be between 4 and 254 runes, inclusive",
+	if m.GetPassword() != "" {
+
+		if l := utf8.RuneCountInString(m.GetPassword()); l < 4 || l > 254 {
+			err := SAFRProviderConfigValidationError{
+				field:  "Password",
+				reason: "value length must be between 4 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if l := utf8.RuneCountInString(m.GetDirectory()); l < 2 || l > 254 {
@@ -7806,15 +7829,19 @@ func (m *SendGridProviderConfig) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
-		err := SendGridProviderConfigValidationError{
-			field:  "ApiKey",
-			reason: "value length must be between 25 and 254 runes, inclusive",
+	if m.GetApiKey() != "" {
+
+		if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
+			err := SendGridProviderConfigValidationError{
+				field:  "ApiKey",
+				reason: "value length must be between 25 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	// no validation rules for SandboxMode
@@ -7980,15 +8007,19 @@ func (m *MailJetProviderConfig) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
-		err := MailJetProviderConfigValidationError{
-			field:  "ApiKey",
-			reason: "value length must be between 25 and 254 runes, inclusive",
+	if m.GetApiKey() != "" {
+
+		if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
+			err := MailJetProviderConfigValidationError{
+				field:  "ApiKey",
+				reason: "value length must be between 25 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	// no validation rules for SandboxMode
@@ -8126,15 +8157,19 @@ func (m *MailgunProviderConfig) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
-		err := MailgunProviderConfigValidationError{
-			field:  "ApiKey",
-			reason: "value length must be between 25 and 254 runes, inclusive",
+	if m.GetApiKey() != "" {
+
+		if l := utf8.RuneCountInString(m.GetApiKey()); l < 25 || l > 254 {
+			err := MailgunProviderConfigValidationError{
+				field:  "ApiKey",
+				reason: "value length must be between 25 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if all {
@@ -8279,15 +8314,19 @@ func (m *AmazonSESProviderConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if l := utf8.RuneCountInString(m.GetSecretAccessKey()); l < 25 || l > 254 {
-		err := AmazonSESProviderConfigValidationError{
-			field:  "SecretAccessKey",
-			reason: "value length must be between 25 and 254 runes, inclusive",
+	if m.GetSecretAccessKey() != "" {
+
+		if l := utf8.RuneCountInString(m.GetSecretAccessKey()); l < 25 || l > 254 {
+			err := AmazonSESProviderConfigValidationError{
+				field:  "SecretAccessKey",
+				reason: "value length must be between 25 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	if l := utf8.RuneCountInString(m.GetRegion()); l < 2 || l > 20 {
@@ -10516,6 +10555,32 @@ func (m *IngestMappingConfig_Entity) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetTenantId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetTenantId()); l < 22 || l > 254 {
+			err := IngestMappingConfig_EntityValidationError{
+				field:  "TenantId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_IngestMappingConfig_Entity_TenantId_Pattern.MatchString(m.GetTenantId()) {
+			err := IngestMappingConfig_EntityValidationError{
+				field:  "TenantId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if l := len(m.GetLabels()); l < 1 || l > 5 {
 		err := IngestMappingConfig_EntityValidationError{
 			field:  "Labels",
@@ -10764,6 +10829,8 @@ var _ interface {
 	ErrorName() string
 } = IngestMappingConfig_EntityValidationError{}
 
+var _IngestMappingConfig_Entity_TenantId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
 var _IngestMappingConfig_Entity_Labels_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
 
 // Validate checks the field values on IngestMappingConfig_Property with the
@@ -10811,8 +10878,6 @@ func (m *IngestMappingConfig_Property) validate(all bool) error {
 	}
 
 	// no validation rules for IsRequired
-
-	// no validation rules for IsPii
 
 	if len(errors) > 0 {
 		return IngestMappingConfig_PropertyMultiError(errors)

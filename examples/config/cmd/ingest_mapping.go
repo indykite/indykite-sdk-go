@@ -21,9 +21,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	config "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
 
-	config2 "github.com/indykite/jarvis-sdk-go/config"
+	"github.com/indykite/jarvis-sdk-go/config"
 )
 
 var ingestMappingCmd = &cobra.Command{
@@ -33,169 +33,157 @@ var ingestMappingCmd = &cobra.Command{
 }
 
 var (
-	addressEntity = &config.IngestMappingConfig_Entity{
+	addressEntity = &configpb.IngestMappingConfig_Entity{
 		Labels: []string{"Address"},
-		ExternalId: &config.IngestMappingConfig_Property{
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "addressId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
-		Properties: []*config.IngestMappingConfig_Property{
+		Properties: []*configpb.IngestMappingConfig_Property{
 			{
 				SourceName: "address",
 				MappedName: "address",
 				IsRequired: true,
-				IsPii:      false,
 			},
 		},
 	}
 
-	parentEntity = &config.IngestMappingConfig_Entity{
-		Labels: []string{"DigitalTwin"},
-		ExternalId: &config.IngestMappingConfig_Property{
+	parentEntity = &configpb.IngestMappingConfig_Entity{
+		TenantId: "gid:AAAAA2luZHlraURlgAADDwAAAAE",
+		Labels:   []string{"DigitalTwin"},
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "parentId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
 		Properties: nil,
-		Relationships: []*config.IngestMappingConfig_Relationship{{
+		Relationships: []*configpb.IngestMappingConfig_Relationship{{
 			ExternalId: "address",
 			Type:       "HAS",
-			Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+			Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 			MatchLabel: "Address",
 		},
 			{
 				ExternalId: "club_contact",
 				Type:       "CONTACT_PERSON",
-				Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+				Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 				MatchLabel: "Club",
 			},
 		},
 	}
 
-	playerEntity = &config.IngestMappingConfig_Entity{
+	playerEntity = &configpb.IngestMappingConfig_Entity{
 		Labels: []string{"Player"},
-		ExternalId: &config.IngestMappingConfig_Property{
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "playerId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
-		Properties: []*config.IngestMappingConfig_Property{
+		Properties: []*configpb.IngestMappingConfig_Property{
 			{
 				SourceName: "firstname",
 				MappedName: "firstname",
 				IsRequired: true,
-				IsPii:      false,
 			},
 			{
 				SourceName: "gender",
 				MappedName: "gender",
 				IsRequired: true,
-				IsPii:      false,
 			},
 			{
 				SourceName: "yearOfBirth",
 				MappedName: "yearOfBirth",
 				IsRequired: false,
-				IsPii:      false,
 			},
 			{
 				SourceName: "sizeTop",
 				MappedName: "sizeTop",
 				IsRequired: false,
-				IsPii:      false,
 			},
 			{
 				SourceName: "sizeBottom",
 				MappedName: "sizeBottom",
 				IsRequired: false,
-				IsPii:      false,
 			},
 			{
 				SourceName: "sizeShoe",
 				MappedName: "sizeShoe",
 				IsRequired: false,
-				IsPii:      false,
 			},
 		},
-		Relationships: []*config.IngestMappingConfig_Relationship{{
+		Relationships: []*configpb.IngestMappingConfig_Relationship{{
 			ExternalId: "subscriptionId",
 			Type:       "HAS",
-			Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+			Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 			MatchLabel: "Subscription",
 		},
 			{
 				ExternalId: "parentId",
 				Type:       "CHILD",
-				Direction:  config.IngestMappingConfig_DIRECTION_INBOUND,
+				Direction:  configpb.IngestMappingConfig_DIRECTION_INBOUND,
 				MatchLabel: "DigitalTwin",
 			},
 		},
 	}
 
-	subscriptionEntity = &config.IngestMappingConfig_Entity{
+	subscriptionEntity = &configpb.IngestMappingConfig_Entity{
 		Labels: []string{"Subscription"},
-		ExternalId: &config.IngestMappingConfig_Property{
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "subscriptionId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
 		Properties: nil,
-		Relationships: []*config.IngestMappingConfig_Relationship{
+		Relationships: []*configpb.IngestMappingConfig_Relationship{
 			{
 				ExternalId: "clubId",
 				Type:       "TO",
-				Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+				Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 				MatchLabel: "Club",
 			},
 		},
 	}
 
-	clubEntity = &config.IngestMappingConfig_Entity{
+	clubEntity = &configpb.IngestMappingConfig_Entity{
 		Labels: []string{"Club"},
-		ExternalId: &config.IngestMappingConfig_Property{
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "clubId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
 		Properties:    nil,
 		Relationships: nil,
 	}
 
-	orderEntity = &config.IngestMappingConfig_Entity{
+	orderEntity = &configpb.IngestMappingConfig_Entity{
 		Labels: []string{"Order"},
-		ExternalId: &config.IngestMappingConfig_Property{
+		ExternalId: &configpb.IngestMappingConfig_Property{
 			SourceName: "orderId",
 			MappedName: "externalId",
 			IsRequired: true,
-			IsPii:      false,
 		},
 		Properties: nil,
-		Relationships: []*config.IngestMappingConfig_Relationship{{
+		Relationships: []*configpb.IngestMappingConfig_Relationship{{
 			ExternalId: "addressId",
 			Type:       "SHIP_TO",
-			Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+			Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 			MatchLabel: "Address",
 		},
 			{
 				ExternalId: "subscriptionId",
 				Type:       "IN",
-				Direction:  config.IngestMappingConfig_DIRECTION_OUTBOUND,
+				Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
 				MatchLabel: "Subscription",
 			},
 		},
 	}
 
-	entities = []*config.IngestMappingConfig_Entity{
+	entities = []*configpb.IngestMappingConfig_Entity{
 		addressEntity, parentEntity, playerEntity, subscriptionEntity, clubEntity, orderEntity,
 	}
 
-	mapping = config2.Mapping{Name: "goodsports", Description: "Good Sports mapping example", Entities: entities}
+	mapping = config.Mapping{Name: "sports", Description: "Sports club mapping example", Entities: entities}
 )
 
 var createIngestMappingConfig = &cobra.Command{

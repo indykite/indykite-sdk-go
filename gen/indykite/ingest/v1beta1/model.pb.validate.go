@@ -56,6 +56,17 @@ func (m *Record) validate(all bool) error {
 
 	var errors []error
 
+	if utf8.RuneCountInString(m.GetId()) > 256 {
+		err := RecordValidationError{
+			field:  "Id",
+			reason: "value length must be at most 256 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if l := utf8.RuneCountInString(m.GetExternalId()); l < 1 || l > 256 {
 		err := RecordValidationError{
 			field:  "ExternalId",
@@ -209,3 +220,248 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RecordValidationError{}
+
+// Validate checks the field values on PropertyError with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PropertyError) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PropertyError with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PropertyErrorMultiError, or
+// nil if none found.
+func (m *PropertyError) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PropertyError) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return PropertyErrorMultiError(errors)
+	}
+
+	return nil
+}
+
+// PropertyErrorMultiError is an error wrapping multiple validation errors
+// returned by PropertyError.ValidateAll() if the designated constraints
+// aren't met.
+type PropertyErrorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PropertyErrorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PropertyErrorMultiError) AllErrors() []error { return m }
+
+// PropertyErrorValidationError is the validation error returned by
+// PropertyError.Validate if the designated constraints aren't met.
+type PropertyErrorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PropertyErrorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PropertyErrorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PropertyErrorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PropertyErrorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PropertyErrorValidationError) ErrorName() string { return "PropertyErrorValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PropertyErrorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPropertyError.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PropertyErrorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PropertyErrorValidationError{}
+
+// Validate checks the field values on RecordError with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *RecordError) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RecordError with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in RecordErrorMultiError, or
+// nil if none found.
+func (m *RecordError) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RecordError) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	{
+		sorted_keys := make([]string, len(m.GetPropertyErrors()))
+		i := 0
+		for key := range m.GetPropertyErrors() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetPropertyErrors()[key]
+			_ = val
+
+			// no validation rules for PropertyErrors[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, RecordErrorValidationError{
+							field:  fmt.Sprintf("PropertyErrors[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, RecordErrorValidationError{
+							field:  fmt.Sprintf("PropertyErrors[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return RecordErrorValidationError{
+						field:  fmt.Sprintf("PropertyErrors[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return RecordErrorMultiError(errors)
+	}
+
+	return nil
+}
+
+// RecordErrorMultiError is an error wrapping multiple validation errors
+// returned by RecordError.ValidateAll() if the designated constraints aren't met.
+type RecordErrorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RecordErrorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RecordErrorMultiError) AllErrors() []error { return m }
+
+// RecordErrorValidationError is the validation error returned by
+// RecordError.Validate if the designated constraints aren't met.
+type RecordErrorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RecordErrorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RecordErrorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RecordErrorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RecordErrorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RecordErrorValidationError) ErrorName() string { return "RecordErrorValidationError" }
+
+// Error satisfies the builtin error interface
+func (e RecordErrorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRecordError.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RecordErrorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RecordErrorValidationError{}

@@ -223,7 +223,38 @@ func (m *StreamRecordsResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for NumRecords
+	// no validation rules for RecordId
+
+	// no validation rules for RecordIndex
+
+	if all {
+		switch v := interface{}(m.GetRecordError()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, StreamRecordsResponseValidationError{
+					field:  "RecordError",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, StreamRecordsResponseValidationError{
+					field:  "RecordError",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRecordError()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return StreamRecordsResponseValidationError{
+				field:  "RecordError",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return StreamRecordsResponseMultiError(errors)

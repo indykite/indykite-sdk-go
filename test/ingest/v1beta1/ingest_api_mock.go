@@ -96,21 +96,6 @@ func (m *MockIngestAPI_StreamRecordsClient) EXPECT() *MockIngestAPI_StreamRecord
 	return m.recorder
 }
 
-// CloseAndRecv mocks base method.
-func (m *MockIngestAPI_StreamRecordsClient) CloseAndRecv() (*ingestv1beta1.StreamRecordsResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CloseAndRecv")
-	ret0, _ := ret[0].(*ingestv1beta1.StreamRecordsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CloseAndRecv indicates an expected call of CloseAndRecv.
-func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) CloseAndRecv() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseAndRecv", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).CloseAndRecv))
-}
-
 // CloseSend mocks base method.
 func (m *MockIngestAPI_StreamRecordsClient) CloseSend() error {
 	m.ctrl.T.Helper()
@@ -152,6 +137,21 @@ func (m *MockIngestAPI_StreamRecordsClient) Header() (metadata.MD, error) {
 func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) Header() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Header", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).Header))
+}
+
+// Recv mocks base method.
+func (m *MockIngestAPI_StreamRecordsClient) Recv() (*ingestv1beta1.StreamRecordsResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Recv")
+	ret0, _ := ret[0].(*ingestv1beta1.StreamRecordsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Recv indicates an expected call of Recv.
+func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) Recv() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Recv", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).Recv))
 }
 
 // RecvMsg mocks base method.

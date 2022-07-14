@@ -66,12 +66,12 @@ func ExampleClient_CreateIngestMapping() {
 	var entities []*configpb.IngestMappingConfig_Entity
 	dtBuilder := config.NewDigitalTwinBuilder()
 	dtBuilder.ExternalID("nin").
+		TenantID("gid:AAAAA2luZHlraURlgAADDwAAAAE").
 		Properties([]*configpb.IngestMappingConfig_Property{
 			{
 				SourceName: "fn",
 				MappedName: "firstname",
 				IsRequired: false,
-				IsPii:      false,
 			},
 		}).Relationships([]*configpb.IngestMappingConfig_Relationship{
 		{

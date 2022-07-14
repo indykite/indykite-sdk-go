@@ -16,7 +16,11 @@
 
 package config
 
-import configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+import (
+	"errors"
+
+	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+)
 
 // Mapping Holds the values of an Ingest Mapping Config.
 type Mapping struct {
@@ -95,8 +99,13 @@ func (dt *DigitalTwinBuilder) ExternalID(externalID string) *DigitalTwinBuilder 
 		SourceName: externalID,
 		MappedName: "ExternalId",
 		IsRequired: true,
-		IsPii:      true,
 	}
+	return dt
+}
+
+// TenantID sets the tenantID in the DigitalTwin.
+func (dt *DigitalTwinBuilder) TenantID(tenantID string) *DigitalTwinBuilder {
+	dt.DigitalTwin.TenantId = tenantID
 	return dt
 }
 
@@ -129,7 +138,6 @@ func (eb *EntityBuilder) ExternalID(externalID string) *EntityBuilder {
 		SourceName: externalID,
 		MappedName: "ExternalId",
 		IsRequired: true,
-		IsPii:      true,
 	}
 	return eb
 }
@@ -152,4 +160,21 @@ func (eb *EntityBuilder) Labels(
 	labels []string) *EntityBuilder {
 	eb.Entity.Labels = append(eb.Entity.Labels, labels...)
 	return eb
+}
+
+func (m *Mapping) Validate() error {
+	for _, e := range m.Entities {
+		if len(e.Labels) == 0 {
+			return errors.New("entities need at least 1 label specified")
+		}
+		if e.ExternalId == nil {
+			return errors.New("entities need an external id")
+		}
+		if ContainsLabel(e.Labels, "DigitalTwin") {
+			if e.TenantId == "" {
+				return errors.New("digital twins need a tenant id specified")
+			}
+		}
+	}
+	return nil
 }
