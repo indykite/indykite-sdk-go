@@ -39,7 +39,6 @@ var _ = Describe("Mapping builder", func() {
 					SourceName: "kallenavn",
 					MappedName: "nickname",
 					IsRequired: false,
-					IsPii:      false,
 				},
 			}).Relationships([]*configpb.IngestMappingConfig_Relationship{
 			{
@@ -78,7 +77,6 @@ var _ = Describe("Mapping builder", func() {
 			"SourceName": Equal("fodselsnummer"),
 			"MappedName": Equal("ExternalId"),
 			"IsRequired": Equal(true),
-			"IsPii":      Equal(true),
 		})))
 		Expect(dtMapping.GetRelationships()[0]).To(PointTo(MatchFields(IgnoreExtras, Fields{
 			"ExternalId": Equal("familienummer"),
@@ -93,7 +91,6 @@ var _ = Describe("Mapping builder", func() {
 			"SourceName": Equal("familienummer"),
 			"MappedName": Equal("ExternalId"),
 			"IsRequired": Equal(true),
-			"IsPii":      Equal(true),
 		})))
 		Expect(familyEntity.GetRelationships()).To(BeEmpty())
 		Expect(familyEntity.GetProperties()).To(BeEmpty())

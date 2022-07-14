@@ -25,7 +25,8 @@ import (
 )
 
 func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (
-	*ingestpb.StreamRecordsResponse, error) {
+	[]*ingestpb.StreamRecordsResponse,
+	error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
@@ -34,7 +35,8 @@ func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (
 		return nil, errors.FromError(err)
 	}
 
-	for _, record := range records {
+	responses := make([]*ingestpb.StreamRecordsResponse, len(records))
+	for i, record := range records {
 		req := &ingestpb.StreamRecordsRequest{
 			MappingConfigId: mappingID,
 			Record:          record,
@@ -44,13 +46,20 @@ func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (
 		if err != nil {
 			return nil, errors.FromError(err)
 		}
+		resp, err := stream.Recv()
+		if err != nil {
+			return nil, errors.FromError(err)
+		}
+		responses[i] = resp
+		if resp.GetRecordError() == nil {
+			log.Printf("record %d ingested succesfully", resp.GetRecordIndex())
+		} else {
+			log.Printf("record %v had error:", resp.GetRecordError())
+		}
+		err = stream.CloseSend()
+		if err != nil {
+			return nil, errors.FromError(err)
+		}
 	}
-
-	res, err := stream.CloseAndRecv()
-	if err != nil {
-		return nil, errors.FromError(err)
-	}
-
-	log.Printf("%d records ingested succesfully", res.GetNumRecords())
-	return res, nil
+	return responses, nil
 }

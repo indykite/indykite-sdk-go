@@ -45,7 +45,7 @@ func (c *ingestAPIClient) StreamRecords(ctx context.Context, opts ...grpc.CallOp
 
 type IngestAPI_StreamRecordsClient interface {
 	Send(*StreamRecordsRequest) error
-	CloseAndRecv() (*StreamRecordsResponse, error)
+	Recv() (*StreamRecordsResponse, error)
 	grpc.ClientStream
 }
 
@@ -57,10 +57,7 @@ func (x *ingestAPIStreamRecordsClient) Send(m *StreamRecordsRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *ingestAPIStreamRecordsClient) CloseAndRecv() (*StreamRecordsResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
+func (x *ingestAPIStreamRecordsClient) Recv() (*StreamRecordsResponse, error) {
 	m := new(StreamRecordsResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -99,7 +96,7 @@ func _IngestAPI_StreamRecords_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type IngestAPI_StreamRecordsServer interface {
-	SendAndClose(*StreamRecordsResponse) error
+	Send(*StreamRecordsResponse) error
 	Recv() (*StreamRecordsRequest, error)
 	grpc.ServerStream
 }
@@ -108,7 +105,7 @@ type ingestAPIStreamRecordsServer struct {
 	grpc.ServerStream
 }
 
-func (x *ingestAPIStreamRecordsServer) SendAndClose(m *StreamRecordsResponse) error {
+func (x *ingestAPIStreamRecordsServer) Send(m *StreamRecordsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -131,6 +128,7 @@ var IngestAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "StreamRecords",
 			Handler:       _IngestAPI_StreamRecords_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},

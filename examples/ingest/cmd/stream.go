@@ -35,6 +35,7 @@ var streamCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		addressRecord := &ingestpb.Record{
+			Id:         "1",
 			ExternalId: "addressId",
 			Data: map[string]*objects.Value{
 				"addressId": objects.Int64(123),
@@ -42,6 +43,7 @@ var streamCmd = &cobra.Command{
 			},
 		}
 		parentRecord := &ingestpb.Record{
+			Id:         "2",
 			ExternalId: "parentId",
 			Data: map[string]*objects.Value{
 				"parentId": objects.Int64(123456789),
@@ -50,6 +52,7 @@ var streamCmd = &cobra.Command{
 		}
 
 		playerRecord1 := &ingestpb.Record{
+			Id:         "3",
 			ExternalId: "playerId",
 			Data: map[string]*objects.Value{
 				"playerId":       objects.Int64(987654321),
@@ -65,6 +68,7 @@ var streamCmd = &cobra.Command{
 		}
 
 		subscriptionRecord := &ingestpb.Record{
+			Id:         "4",
 			ExternalId: "subscriptionId",
 			Data: map[string]*objects.Value{
 				"subscriptionId": objects.Int64(10101010),
@@ -73,6 +77,7 @@ var streamCmd = &cobra.Command{
 		}
 
 		clubRecord := &ingestpb.Record{
+			Id:         "5",
 			ExternalId: "clubId",
 			Data: map[string]*objects.Value{
 				"clubId":         objects.Int64(1337),
@@ -81,6 +86,7 @@ var streamCmd = &cobra.Command{
 		}
 
 		orderRecord := &ingestpb.Record{
+			Id:         "6",
 			ExternalId: "orderId",
 			Data: map[string]*objects.Value{
 				"orderId":        objects.Int64(11),
@@ -90,6 +96,7 @@ var streamCmd = &cobra.Command{
 		}
 
 		playerRecord2 := &ingestpb.Record{
+			Id:         "7",
 			ExternalId: "playerId",
 			Data: map[string]*objects.Value{
 				"playerId":       objects.Int64(11223344),
@@ -113,12 +120,13 @@ var streamCmd = &cobra.Command{
 			orderRecord,
 			playerRecord2,
 		}
-		res, err := client.StreamRecords("", records)
+		responses, err := client.StreamRecords("", records)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}
-		fmt.Println(jsonp.Format(res))
-
+		for _, response := range responses {
+			fmt.Println(jsonp.Format(response))
+		}
 	},
 }
 

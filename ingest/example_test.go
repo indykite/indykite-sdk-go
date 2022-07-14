@@ -16,13 +16,14 @@ package ingest_test
 
 import (
 	"context"
+	"fmt"
 	"log"
+
+	"google.golang.org/protobuf/encoding/protojson"
 
 	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
 
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-
-	"google.golang.org/protobuf/encoding/protojson"
 
 	api "github.com/indykite/jarvis-sdk-go/grpc"
 
@@ -72,7 +73,7 @@ func ExampleClient_StreamRecords() {
 			Data:       record,
 		},
 	}
-	resp, err := client.StreamRecords("gid:AAAAFBtaAlxjDE8GuIWAPEFoSPs", records)
+	responses, err := client.StreamRecords("gid:AAAAFBtaAlxjDE8GuIWAPEFoSPs", records)
 	if err != nil {
 		// nolint:gocritic
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -80,5 +81,8 @@ func ExampleClient_StreamRecords() {
 	json := protojson.MarshalOptions{
 		Multiline: true,
 	}
-	println(json.Format(resp))
+
+	for _, response := range responses {
+		fmt.Println(json.Format(response))
+	}
 }
