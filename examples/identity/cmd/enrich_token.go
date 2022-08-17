@@ -31,9 +31,7 @@ import (
 var enrichTokenCmd = &cobra.Command{
 	Use:   "enrich_token",
 	Short: "Enrich token operation",
-	Long: `Enrich session and token with extra properties
-
-  This is a sample only.`,
+	Long:  "Enrich session and token with extra properties",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("Enter access_token: ")
 		var accessToken string

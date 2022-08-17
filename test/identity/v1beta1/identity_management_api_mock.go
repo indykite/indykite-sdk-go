@@ -313,6 +313,26 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetPasswordCredential(ctx
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPasswordCredential", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).GetPasswordCredential), varargs...)
 }
 
+// ImportDigitalTwins mocks base method.
+func (m *MockIdentityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in *identityv1beta1.ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*identityv1beta1.ImportDigitalTwinsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ImportDigitalTwins", varargs...)
+	ret0, _ := ret[0].(*identityv1beta1.ImportDigitalTwinsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ImportDigitalTwins indicates an expected call of ImportDigitalTwins.
+func (mr *MockIdentityManagementAPIClientMockRecorder) ImportDigitalTwins(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ImportDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ImportDigitalTwins), varargs...)
+}
+
 // IsAuthorized mocks base method.
 func (m *MockIdentityManagementAPIClient) IsAuthorized(ctx context.Context, in *identityv1beta1.IsAuthorizedRequest, opts ...grpc.CallOption) (*identityv1beta1.IsAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
@@ -1054,6 +1074,21 @@ func (m *MockIdentityManagementAPIServer) GetPasswordCredential(arg0 context.Con
 func (mr *MockIdentityManagementAPIServerMockRecorder) GetPasswordCredential(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPasswordCredential", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).GetPasswordCredential), arg0, arg1)
+}
+
+// ImportDigitalTwins mocks base method.
+func (m *MockIdentityManagementAPIServer) ImportDigitalTwins(arg0 context.Context, arg1 *identityv1beta1.ImportDigitalTwinsRequest) (*identityv1beta1.ImportDigitalTwinsResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ImportDigitalTwins", arg0, arg1)
+	ret0, _ := ret[0].(*identityv1beta1.ImportDigitalTwinsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ImportDigitalTwins indicates an expected call of ImportDigitalTwins.
+func (mr *MockIdentityManagementAPIServerMockRecorder) ImportDigitalTwins(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ImportDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).ImportDigitalTwins), arg0, arg1)
 }
 
 // IsAuthorized mocks base method.

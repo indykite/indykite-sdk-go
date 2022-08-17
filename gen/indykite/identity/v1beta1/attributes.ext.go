@@ -17,7 +17,6 @@ package identityv1beta1
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/pborman/uuid"
 
@@ -226,8 +225,4 @@ func (x PropertyBatchOperations) PreValidate(isTrusted bool) ([]string, []string
 		}
 	}
 	return replaced, removed, nil
-}
-
-func (x *BatchError) Error() string {
-	return strings.Join(x.Message, ",")
 }

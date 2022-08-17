@@ -35,45 +35,67 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on ImportUsersRequest with the rules
+// Validate checks the field values on ImportDigitalTwinsRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ImportUsersRequest) Validate() error {
+func (m *ImportDigitalTwinsRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ImportUsersRequest with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on ImportDigitalTwinsRequest with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ImportUsersRequestMultiError, or nil if none found.
-func (m *ImportUsersRequest) ValidateAll() error {
+// ImportDigitalTwinsRequestMultiError, or nil if none found.
+func (m *ImportDigitalTwinsRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ImportUsersRequest) validate(all bool) error {
+func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	for idx, item := range m.GetUsers() {
+	if l := len(m.GetEntities()); l < 1 || l > 1000 {
+		err := ImportDigitalTwinsRequestValidationError{
+			field:  "Entities",
+			reason: "value must contain between 1 and 1000 items, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetEntities() {
 		_, _ = idx, item
+
+		if item == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  fmt.Sprintf("Entities[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
+						field:  fmt.Sprintf("Entities[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
+						field:  fmt.Sprintf("Entities[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -81,8 +103,8 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
-					field:  fmt.Sprintf("Users[%v]", idx),
+				return ImportDigitalTwinsRequestValidationError{
+					field:  fmt.Sprintf("Entities[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -93,13 +115,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 
 	switch m.HashAlgorithm.(type) {
 
-	case *ImportUsersRequest_Bcrypt:
+	case *ImportDigitalTwinsRequest_Bcrypt:
 
 		if all {
 			switch v := interface{}(m.GetBcrypt()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Bcrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -107,7 +129,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Bcrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -116,7 +138,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetBcrypt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Bcrypt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -124,13 +146,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_StandardScrypt:
+	case *ImportDigitalTwinsRequest_StandardScrypt:
 
 		if all {
 			switch v := interface{}(m.GetStandardScrypt()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "StandardScrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -138,7 +160,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "StandardScrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -147,7 +169,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetStandardScrypt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "StandardScrypt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -155,13 +177,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Scrypt:
+	case *ImportDigitalTwinsRequest_Scrypt:
 
 		if all {
 			switch v := interface{}(m.GetScrypt()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Scrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -169,7 +191,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Scrypt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -178,7 +200,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetScrypt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Scrypt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -186,13 +208,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_HmacMd5:
+	case *ImportDigitalTwinsRequest_HmacMd5:
 
 		if all {
 			switch v := interface{}(m.GetHmacMd5()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacMd5",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -200,7 +222,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacMd5",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -209,7 +231,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetHmacMd5()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "HmacMd5",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -217,13 +239,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_HmacSha1:
+	case *ImportDigitalTwinsRequest_HmacSha1:
 
 		if all {
 			switch v := interface{}(m.GetHmacSha1()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -231,7 +253,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -240,7 +262,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetHmacSha1()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "HmacSha1",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -248,13 +270,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_HmacSha512:
+	case *ImportDigitalTwinsRequest_HmacSha512:
 
 		if all {
 			switch v := interface{}(m.GetHmacSha512()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha512",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -262,7 +284,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha512",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -271,7 +293,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetHmacSha512()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "HmacSha512",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -279,13 +301,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_HmacSha256:
+	case *ImportDigitalTwinsRequest_HmacSha256:
 
 		if all {
 			switch v := interface{}(m.GetHmacSha256()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -293,7 +315,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "HmacSha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -302,7 +324,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetHmacSha256()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "HmacSha256",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -310,13 +332,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Md5:
+	case *ImportDigitalTwinsRequest_Md5:
 
 		if all {
 			switch v := interface{}(m.GetMd5()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Md5",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -324,7 +346,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Md5",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -333,7 +355,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetMd5()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Md5",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -341,13 +363,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Pbkdf2Sha256:
+	case *ImportDigitalTwinsRequest_Pbkdf2Sha256:
 
 		if all {
 			switch v := interface{}(m.GetPbkdf2Sha256()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Pbkdf2Sha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -355,7 +377,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Pbkdf2Sha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -364,7 +386,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetPbkdf2Sha256()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Pbkdf2Sha256",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -372,13 +394,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_PbkdfSha1:
+	case *ImportDigitalTwinsRequest_PbkdfSha1:
 
 		if all {
 			switch v := interface{}(m.GetPbkdfSha1()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "PbkdfSha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -386,7 +408,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "PbkdfSha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -395,7 +417,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetPbkdfSha1()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "PbkdfSha1",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -403,13 +425,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Sha1:
+	case *ImportDigitalTwinsRequest_Sha1:
 
 		if all {
 			switch v := interface{}(m.GetSha1()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -417,7 +439,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha1",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -426,7 +448,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetSha1()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Sha1",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -434,13 +456,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Sha256:
+	case *ImportDigitalTwinsRequest_Sha256:
 
 		if all {
 			switch v := interface{}(m.GetSha256()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -448,7 +470,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha256",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -457,7 +479,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetSha256()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Sha256",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -465,13 +487,13 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		}
 
-	case *ImportUsersRequest_Sha512:
+	case *ImportDigitalTwinsRequest_Sha512:
 
 		if all {
 			switch v := interface{}(m.GetSha512()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha512",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -479,7 +501,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersRequestValidationError{
+					errors = append(errors, ImportDigitalTwinsRequestValidationError{
 						field:  "Sha512",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -488,7 +510,7 @@ func (m *ImportUsersRequest) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetSha512()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersRequestValidationError{
+				return ImportDigitalTwinsRequestValidationError{
 					field:  "Sha512",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -499,19 +521,19 @@ func (m *ImportUsersRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ImportUsersRequestMultiError(errors)
+		return ImportDigitalTwinsRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ImportUsersRequestMultiError is an error wrapping multiple validation errors
-// returned by ImportUsersRequest.ValidateAll() if the designated constraints
-// aren't met.
-type ImportUsersRequestMultiError []error
+// ImportDigitalTwinsRequestMultiError is an error wrapping multiple validation
+// errors returned by ImportDigitalTwinsRequest.ValidateAll() if the
+// designated constraints aren't met.
+type ImportDigitalTwinsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ImportUsersRequestMultiError) Error() string {
+func (m ImportDigitalTwinsRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -520,11 +542,11 @@ func (m ImportUsersRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ImportUsersRequestMultiError) AllErrors() []error { return m }
+func (m ImportDigitalTwinsRequestMultiError) AllErrors() []error { return m }
 
-// ImportUsersRequestValidationError is the validation error returned by
-// ImportUsersRequest.Validate if the designated constraints aren't met.
-type ImportUsersRequestValidationError struct {
+// ImportDigitalTwinsRequestValidationError is the validation error returned by
+// ImportDigitalTwinsRequest.Validate if the designated constraints aren't met.
+type ImportDigitalTwinsRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -532,24 +554,24 @@ type ImportUsersRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ImportUsersRequestValidationError) Field() string { return e.field }
+func (e ImportDigitalTwinsRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ImportUsersRequestValidationError) Reason() string { return e.reason }
+func (e ImportDigitalTwinsRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ImportUsersRequestValidationError) Cause() error { return e.cause }
+func (e ImportDigitalTwinsRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ImportUsersRequestValidationError) Key() bool { return e.key }
+func (e ImportDigitalTwinsRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ImportUsersRequestValidationError) ErrorName() string {
-	return "ImportUsersRequestValidationError"
+func (e ImportDigitalTwinsRequestValidationError) ErrorName() string {
+	return "ImportDigitalTwinsRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ImportUsersRequestValidationError) Error() string {
+func (e ImportDigitalTwinsRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -561,14 +583,14 @@ func (e ImportUsersRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sImportUsersRequest.%s: %s%s",
+		"invalid %sImportDigitalTwinsRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ImportUsersRequestValidationError{}
+var _ error = ImportDigitalTwinsRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -576,47 +598,76 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ImportUsersRequestValidationError{}
+} = ImportDigitalTwinsRequestValidationError{}
 
-// Validate checks the field values on ImportUsersResponse with the rules
+// Validate checks the field values on ImportDigitalTwinSuccess with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ImportUsersResponse) Validate() error {
+func (m *ImportDigitalTwinSuccess) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ImportUsersResponse with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on ImportDigitalTwinSuccess with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ImportUsersResponseMultiError, or nil if none found.
-func (m *ImportUsersResponse) ValidateAll() error {
+// ImportDigitalTwinSuccessMultiError, or nil if none found.
+func (m *ImportDigitalTwinSuccess) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ImportUsersResponse) validate(all bool) error {
+func (m *ImportDigitalTwinSuccess) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	for idx, item := range m.GetErrors() {
+	if all {
+		switch v := interface{}(m.GetDigitalTwin()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ImportDigitalTwinSuccessValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ImportDigitalTwinSuccessValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDigitalTwin()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ImportDigitalTwinSuccessValidationError{
+				field:  "DigitalTwin",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetResults() {
 		_, _ = idx, item
 
 		if all {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUsersResponseValidationError{
-						field:  fmt.Sprintf("Errors[%v]", idx),
+					errors = append(errors, ImportDigitalTwinSuccessValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUsersResponseValidationError{
-						field:  fmt.Sprintf("Errors[%v]", idx),
+					errors = append(errors, ImportDigitalTwinSuccessValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -624,8 +675,8 @@ func (m *ImportUsersResponse) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUsersResponseValidationError{
-					field:  fmt.Sprintf("Errors[%v]", idx),
+				return ImportDigitalTwinSuccessValidationError{
+					field:  fmt.Sprintf("Results[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -635,19 +686,19 @@ func (m *ImportUsersResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ImportUsersResponseMultiError(errors)
+		return ImportDigitalTwinSuccessMultiError(errors)
 	}
 
 	return nil
 }
 
-// ImportUsersResponseMultiError is an error wrapping multiple validation
-// errors returned by ImportUsersResponse.ValidateAll() if the designated
+// ImportDigitalTwinSuccessMultiError is an error wrapping multiple validation
+// errors returned by ImportDigitalTwinSuccess.ValidateAll() if the designated
 // constraints aren't met.
-type ImportUsersResponseMultiError []error
+type ImportDigitalTwinSuccessMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ImportUsersResponseMultiError) Error() string {
+func (m ImportDigitalTwinSuccessMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -656,11 +707,11 @@ func (m ImportUsersResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ImportUsersResponseMultiError) AllErrors() []error { return m }
+func (m ImportDigitalTwinSuccessMultiError) AllErrors() []error { return m }
 
-// ImportUsersResponseValidationError is the validation error returned by
-// ImportUsersResponse.Validate if the designated constraints aren't met.
-type ImportUsersResponseValidationError struct {
+// ImportDigitalTwinSuccessValidationError is the validation error returned by
+// ImportDigitalTwinSuccess.Validate if the designated constraints aren't met.
+type ImportDigitalTwinSuccessValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -668,24 +719,24 @@ type ImportUsersResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e ImportUsersResponseValidationError) Field() string { return e.field }
+func (e ImportDigitalTwinSuccessValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ImportUsersResponseValidationError) Reason() string { return e.reason }
+func (e ImportDigitalTwinSuccessValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ImportUsersResponseValidationError) Cause() error { return e.cause }
+func (e ImportDigitalTwinSuccessValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ImportUsersResponseValidationError) Key() bool { return e.key }
+func (e ImportDigitalTwinSuccessValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ImportUsersResponseValidationError) ErrorName() string {
-	return "ImportUsersResponseValidationError"
+func (e ImportDigitalTwinSuccessValidationError) ErrorName() string {
+	return "ImportDigitalTwinSuccessValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ImportUsersResponseValidationError) Error() string {
+func (e ImportDigitalTwinSuccessValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -697,14 +748,14 @@ func (e ImportUsersResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sImportUsersResponse.%s: %s%s",
+		"invalid %sImportDigitalTwinSuccess.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ImportUsersResponseValidationError{}
+var _ error = ImportDigitalTwinSuccessValidationError{}
 
 var _ interface {
 	Field() string
@@ -712,37 +763,523 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ImportUsersResponseValidationError{}
+} = ImportDigitalTwinSuccessValidationError{}
 
-// Validate checks the field values on ImportUser with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *ImportUser) Validate() error {
+// Validate checks the field values on ImportDigitalTwinError with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ImportDigitalTwinError) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ImportUser with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in ImportUserMultiError, or
-// nil if none found.
-func (m *ImportUser) ValidateAll() error {
+// ValidateAll checks the field values on ImportDigitalTwinError with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ImportDigitalTwinErrorMultiError, or nil if none found.
+func (m *ImportDigitalTwinError) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ImportUser) validate(all bool) error {
+func (m *ImportDigitalTwinError) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Uid
+	if len(errors) > 0 {
+		return ImportDigitalTwinErrorMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportDigitalTwinErrorMultiError is an error wrapping multiple validation
+// errors returned by ImportDigitalTwinError.ValidateAll() if the designated
+// constraints aren't met.
+type ImportDigitalTwinErrorMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportDigitalTwinErrorMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportDigitalTwinErrorMultiError) AllErrors() []error { return m }
+
+// ImportDigitalTwinErrorValidationError is the validation error returned by
+// ImportDigitalTwinError.Validate if the designated constraints aren't met.
+type ImportDigitalTwinErrorValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportDigitalTwinErrorValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportDigitalTwinErrorValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportDigitalTwinErrorValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportDigitalTwinErrorValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportDigitalTwinErrorValidationError) ErrorName() string {
+	return "ImportDigitalTwinErrorValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ImportDigitalTwinErrorValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportDigitalTwinError.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportDigitalTwinErrorValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportDigitalTwinErrorValidationError{}
+
+// Validate checks the field values on ImportDigitalTwinResult with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ImportDigitalTwinResult) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportDigitalTwinResult with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ImportDigitalTwinResultMultiError, or nil if none found.
+func (m *ImportDigitalTwinResult) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportDigitalTwinResult) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Index
+
+	switch m.Result.(type) {
+
+	case *ImportDigitalTwinResult_Success:
+
+		if all {
+			switch v := interface{}(m.GetSuccess()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ImportDigitalTwinResultValidationError{
+						field:  "Success",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ImportDigitalTwinResultValidationError{
+						field:  "Success",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetSuccess()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ImportDigitalTwinResultValidationError{
+					field:  "Success",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ImportDigitalTwinResult_Error:
+
+		if all {
+			switch v := interface{}(m.GetError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ImportDigitalTwinResultValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ImportDigitalTwinResultValidationError{
+						field:  "Error",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ImportDigitalTwinResultValidationError{
+					field:  "Error",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		err := ImportDigitalTwinResultValidationError{
+			field:  "Result",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
+	if len(errors) > 0 {
+		return ImportDigitalTwinResultMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportDigitalTwinResultMultiError is an error wrapping multiple validation
+// errors returned by ImportDigitalTwinResult.ValidateAll() if the designated
+// constraints aren't met.
+type ImportDigitalTwinResultMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportDigitalTwinResultMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportDigitalTwinResultMultiError) AllErrors() []error { return m }
+
+// ImportDigitalTwinResultValidationError is the validation error returned by
+// ImportDigitalTwinResult.Validate if the designated constraints aren't met.
+type ImportDigitalTwinResultValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportDigitalTwinResultValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportDigitalTwinResultValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportDigitalTwinResultValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportDigitalTwinResultValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportDigitalTwinResultValidationError) ErrorName() string {
+	return "ImportDigitalTwinResultValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ImportDigitalTwinResultValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportDigitalTwinResult.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportDigitalTwinResultValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportDigitalTwinResultValidationError{}
+
+// Validate checks the field values on ImportDigitalTwinsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ImportDigitalTwinsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportDigitalTwinsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ImportDigitalTwinsResponseMultiError, or nil if none found.
+func (m *ImportDigitalTwinsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportDigitalTwinsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetResults() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ImportDigitalTwinsResponseValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ImportDigitalTwinsResponseValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ImportDigitalTwinsResponseValidationError{
+					field:  fmt.Sprintf("Results[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ImportDigitalTwinsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportDigitalTwinsResponseMultiError is an error wrapping multiple
+// validation errors returned by ImportDigitalTwinsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type ImportDigitalTwinsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportDigitalTwinsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportDigitalTwinsResponseMultiError) AllErrors() []error { return m }
+
+// ImportDigitalTwinsResponseValidationError is the validation error returned
+// by ImportDigitalTwinsResponse.Validate if the designated constraints aren't met.
+type ImportDigitalTwinsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportDigitalTwinsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportDigitalTwinsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportDigitalTwinsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportDigitalTwinsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportDigitalTwinsResponseValidationError) ErrorName() string {
+	return "ImportDigitalTwinsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ImportDigitalTwinsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportDigitalTwinsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportDigitalTwinsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportDigitalTwinsResponseValidationError{}
+
+// Validate checks the field values on ImportDigitalTwin with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ImportDigitalTwin) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportDigitalTwin with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ImportDigitalTwinMultiError, or nil if none found.
+func (m *ImportDigitalTwin) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportDigitalTwin) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetId()) > 0 {
+
+		if len(m.GetId()) != 16 {
+			err := ImportDigitalTwinValidationError{
+				field:  "Id",
+				reason: "value length must be 16 bytes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(m.GetTenantId()) != 16 {
+		err := ImportDigitalTwinValidationError{
+			field:  "TenantId",
+			reason: "value length must be 16 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := _ImportDigitalTwin_Kind_InLookup[m.GetKind()]; !ok {
+		err := ImportDigitalTwinValidationError{
+			field:  "Kind",
+			reason: "value must be in list [1 3]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := DigitalTwinKind_name[int32(m.GetKind())]; !ok {
+		err := ImportDigitalTwinValidationError{
+			field:  "Kind",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := _ImportDigitalTwin_State_InLookup[m.GetState()]; !ok {
+		err := ImportDigitalTwinValidationError{
+			field:  "State",
+			reason: "value must be in list [1 2]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := DigitalTwinState_name[int32(m.GetState())]; !ok {
+		err := ImportDigitalTwinValidationError{
+			field:  "State",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if all {
 		switch v := interface{}(m.GetPassword()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ImportUserValidationError{
+				errors = append(errors, ImportDigitalTwinValidationError{
 					field:  "Password",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -750,7 +1287,7 @@ func (m *ImportUser) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ImportUserValidationError{
+				errors = append(errors, ImportDigitalTwinValidationError{
 					field:  "Password",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -759,7 +1296,7 @@ func (m *ImportUser) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetPassword()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ImportUserValidationError{
+			return ImportDigitalTwinValidationError{
 				field:  "Password",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -767,14 +1304,36 @@ func (m *ImportUser) validate(all bool) error {
 		}
 	}
 
+	if len(m.GetProviderUserInfo()) > 10 {
+		err := ImportDigitalTwinValidationError{
+			field:  "ProviderUserInfo",
+			reason: "value must contain no more than 10 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	for idx, item := range m.GetProviderUserInfo() {
 		_, _ = idx, item
+
+		if item == nil {
+			err := ImportDigitalTwinValidationError{
+				field:  fmt.Sprintf("ProviderUserInfo[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ImportUserValidationError{
+					errors = append(errors, ImportDigitalTwinValidationError{
 						field:  fmt.Sprintf("ProviderUserInfo[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -782,7 +1341,7 @@ func (m *ImportUser) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ImportUserValidationError{
+					errors = append(errors, ImportDigitalTwinValidationError{
 						field:  fmt.Sprintf("ProviderUserInfo[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -791,7 +1350,7 @@ func (m *ImportUser) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ImportUserValidationError{
+				return ImportDigitalTwinValidationError{
 					field:  fmt.Sprintf("ProviderUserInfo[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -801,21 +1360,78 @@ func (m *ImportUser) validate(all bool) error {
 
 	}
 
-	// no validation rules for Disabled
+	if all {
+		switch v := interface{}(m.GetProperties()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ImportDigitalTwinValidationError{
+					field:  "Properties",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ImportDigitalTwinValidationError{
+					field:  "Properties",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetProperties()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ImportDigitalTwinValidationError{
+				field:  "Properties",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetMetadata()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ImportDigitalTwinValidationError{
+					field:  "Metadata",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ImportDigitalTwinValidationError{
+					field:  "Metadata",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMetadata()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ImportDigitalTwinValidationError{
+				field:  "Metadata",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
-		return ImportUserMultiError(errors)
+		return ImportDigitalTwinMultiError(errors)
 	}
 
 	return nil
 }
 
-// ImportUserMultiError is an error wrapping multiple validation errors
-// returned by ImportUser.ValidateAll() if the designated constraints aren't met.
-type ImportUserMultiError []error
+// ImportDigitalTwinMultiError is an error wrapping multiple validation errors
+// returned by ImportDigitalTwin.ValidateAll() if the designated constraints
+// aren't met.
+type ImportDigitalTwinMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ImportUserMultiError) Error() string {
+func (m ImportDigitalTwinMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -824,11 +1440,11 @@ func (m ImportUserMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ImportUserMultiError) AllErrors() []error { return m }
+func (m ImportDigitalTwinMultiError) AllErrors() []error { return m }
 
-// ImportUserValidationError is the validation error returned by
-// ImportUser.Validate if the designated constraints aren't met.
-type ImportUserValidationError struct {
+// ImportDigitalTwinValidationError is the validation error returned by
+// ImportDigitalTwin.Validate if the designated constraints aren't met.
+type ImportDigitalTwinValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -836,22 +1452,24 @@ type ImportUserValidationError struct {
 }
 
 // Field function returns field value.
-func (e ImportUserValidationError) Field() string { return e.field }
+func (e ImportDigitalTwinValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ImportUserValidationError) Reason() string { return e.reason }
+func (e ImportDigitalTwinValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ImportUserValidationError) Cause() error { return e.cause }
+func (e ImportDigitalTwinValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ImportUserValidationError) Key() bool { return e.key }
+func (e ImportDigitalTwinValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ImportUserValidationError) ErrorName() string { return "ImportUserValidationError" }
+func (e ImportDigitalTwinValidationError) ErrorName() string {
+	return "ImportDigitalTwinValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e ImportUserValidationError) Error() string {
+func (e ImportDigitalTwinValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -863,14 +1481,14 @@ func (e ImportUserValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sImportUser.%s: %s%s",
+		"invalid %sImportDigitalTwin.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ImportUserValidationError{}
+var _ error = ImportDigitalTwinValidationError{}
 
 var _ interface {
 	Field() string
@@ -878,7 +1496,175 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ImportUserValidationError{}
+} = ImportDigitalTwinValidationError{}
+
+var _ImportDigitalTwin_Kind_InLookup = map[DigitalTwinKind]struct{}{
+	1: {},
+	3: {},
+}
+
+var _ImportDigitalTwin_State_InLookup = map[DigitalTwinState]struct{}{
+	1: {},
+	2: {},
+}
+
+// Validate checks the field values on ImportProperties with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ImportProperties) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ImportProperties with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ImportPropertiesMultiError, or nil if none found.
+func (m *ImportProperties) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ImportProperties) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetOperations()) < 1 {
+		err := ImportPropertiesValidationError{
+			field:  "Operations",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetOperations() {
+		_, _ = idx, item
+
+		if item == nil {
+			err := ImportPropertiesValidationError{
+				field:  fmt.Sprintf("Operations[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ImportPropertiesValidationError{
+						field:  fmt.Sprintf("Operations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ImportPropertiesValidationError{
+						field:  fmt.Sprintf("Operations[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ImportPropertiesValidationError{
+					field:  fmt.Sprintf("Operations[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for ForceDelete
+
+	if len(errors) > 0 {
+		return ImportPropertiesMultiError(errors)
+	}
+
+	return nil
+}
+
+// ImportPropertiesMultiError is an error wrapping multiple validation errors
+// returned by ImportProperties.ValidateAll() if the designated constraints
+// aren't met.
+type ImportPropertiesMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ImportPropertiesMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ImportPropertiesMultiError) AllErrors() []error { return m }
+
+// ImportPropertiesValidationError is the validation error returned by
+// ImportProperties.Validate if the designated constraints aren't met.
+type ImportPropertiesValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ImportPropertiesValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ImportPropertiesValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ImportPropertiesValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ImportPropertiesValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ImportPropertiesValidationError) ErrorName() string { return "ImportPropertiesValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ImportPropertiesValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sImportProperties.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ImportPropertiesValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ImportPropertiesValidationError{}
 
 // Validate checks the field values on UserMetadata with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -984,6 +1770,115 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserMetadataValidationError{}
+
+// Validate checks the field values on UserProvider with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *UserProvider) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UserProvider with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in UserProviderMultiError, or
+// nil if none found.
+func (m *UserProvider) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UserProvider) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Uid
+
+	// no validation rules for ProviderId
+
+	// no validation rules for Email
+
+	// no validation rules for DisplayName
+
+	// no validation rules for PhotoUrl
+
+	if len(errors) > 0 {
+		return UserProviderMultiError(errors)
+	}
+
+	return nil
+}
+
+// UserProviderMultiError is an error wrapping multiple validation errors
+// returned by UserProvider.ValidateAll() if the designated constraints aren't met.
+type UserProviderMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UserProviderMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UserProviderMultiError) AllErrors() []error { return m }
+
+// UserProviderValidationError is the validation error returned by
+// UserProvider.Validate if the designated constraints aren't met.
+type UserProviderValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserProviderValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserProviderValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserProviderValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserProviderValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserProviderValidationError) ErrorName() string { return "UserProviderValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserProviderValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserProvider.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserProviderValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserProviderValidationError{}
 
 // Validate checks the field values on Email with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1108,7 +2003,20 @@ func (m *Mobile) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Mobile
+	if m.GetMobile() != "" {
+
+		if !_Mobile_Mobile_Pattern.MatchString(m.GetMobile()) {
+			err := MobileValidationError{
+				field:  "Mobile",
+				reason: "value does not match regex pattern \"^+.*[0-9A-Za-z]{7,16}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	// no validation rules for Verified
 
@@ -1188,6 +2096,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = MobileValidationError{}
+
+var _Mobile_Mobile_Pattern = regexp.MustCompile("^+.*[0-9A-Za-z]{7,16}$")
 
 // Validate checks the field values on PasswordCredential with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1275,8 +2185,8 @@ func (m *PasswordCredential) validate(all bool) error {
 			}
 		}
 
-	case *PasswordCredential_UserName:
-		// no validation rules for UserName
+	case *PasswordCredential_Username:
+		// no validation rules for Username
 
 	}
 
@@ -1500,115 +2410,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PasswordHashValidationError{}
-
-// Validate checks the field values on UserProvider with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *UserProvider) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UserProvider with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in UserProviderMultiError, or
-// nil if none found.
-func (m *UserProvider) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UserProvider) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Uid
-
-	// no validation rules for ProviderId
-
-	// no validation rules for Email
-
-	// no validation rules for DisplayName
-
-	// no validation rules for PhotoUrl
-
-	if len(errors) > 0 {
-		return UserProviderMultiError(errors)
-	}
-
-	return nil
-}
-
-// UserProviderMultiError is an error wrapping multiple validation errors
-// returned by UserProvider.ValidateAll() if the designated constraints aren't met.
-type UserProviderMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UserProviderMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UserProviderMultiError) AllErrors() []error { return m }
-
-// UserProviderValidationError is the validation error returned by
-// UserProvider.Validate if the designated constraints aren't met.
-type UserProviderValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UserProviderValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UserProviderValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UserProviderValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UserProviderValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UserProviderValidationError) ErrorName() string { return "UserProviderValidationError" }
-
-// Error satisfies the builtin error interface
-func (e UserProviderValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUserProvider.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UserProviderValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UserProviderValidationError{}
 
 // Validate checks the field values on Bcrypt with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -2926,246 +3727,3 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SHA512ValidationError{}
-
-// Validate checks the field values on ImportUsersResponse_ImportUsersError
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, the first error encountered is returned, or nil if
-// there are no violations.
-func (m *ImportUsersResponse_ImportUsersError) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ImportUsersResponse_ImportUsersError
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, the result is a list of violation errors wrapped in
-// ImportUsersResponse_ImportUsersErrorMultiError, or nil if none found.
-func (m *ImportUsersResponse_ImportUsersError) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ImportUsersResponse_ImportUsersError) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Message
-
-	if len(errors) > 0 {
-		return ImportUsersResponse_ImportUsersErrorMultiError(errors)
-	}
-
-	return nil
-}
-
-// ImportUsersResponse_ImportUsersErrorMultiError is an error wrapping multiple
-// validation errors returned by
-// ImportUsersResponse_ImportUsersError.ValidateAll() if the designated
-// constraints aren't met.
-type ImportUsersResponse_ImportUsersErrorMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ImportUsersResponse_ImportUsersErrorMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ImportUsersResponse_ImportUsersErrorMultiError) AllErrors() []error { return m }
-
-// ImportUsersResponse_ImportUsersErrorValidationError is the validation error
-// returned by ImportUsersResponse_ImportUsersError.Validate if the designated
-// constraints aren't met.
-type ImportUsersResponse_ImportUsersErrorValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ImportUsersResponse_ImportUsersErrorValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ImportUsersResponse_ImportUsersErrorValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ImportUsersResponse_ImportUsersErrorValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ImportUsersResponse_ImportUsersErrorValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ImportUsersResponse_ImportUsersErrorValidationError) ErrorName() string {
-	return "ImportUsersResponse_ImportUsersErrorValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ImportUsersResponse_ImportUsersErrorValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sImportUsersResponse_ImportUsersError.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ImportUsersResponse_ImportUsersErrorValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ImportUsersResponse_ImportUsersErrorValidationError{}
-
-// Validate checks the field values on ImportUsersResponse_ImportUserResult
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, the first error encountered is returned, or nil if
-// there are no violations.
-func (m *ImportUsersResponse_ImportUserResult) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ImportUsersResponse_ImportUserResult
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, the result is a list of violation errors wrapped in
-// ImportUsersResponse_ImportUserResultMultiError, or nil if none found.
-func (m *ImportUsersResponse_ImportUserResult) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ImportUsersResponse_ImportUserResult) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	if all {
-		switch v := interface{}(m.GetError()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ImportUsersResponse_ImportUserResultValidationError{
-					field:  "Error",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, ImportUsersResponse_ImportUserResultValidationError{
-					field:  "Error",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetError()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return ImportUsersResponse_ImportUserResultValidationError{
-				field:  "Error",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return ImportUsersResponse_ImportUserResultMultiError(errors)
-	}
-
-	return nil
-}
-
-// ImportUsersResponse_ImportUserResultMultiError is an error wrapping multiple
-// validation errors returned by
-// ImportUsersResponse_ImportUserResult.ValidateAll() if the designated
-// constraints aren't met.
-type ImportUsersResponse_ImportUserResultMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ImportUsersResponse_ImportUserResultMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ImportUsersResponse_ImportUserResultMultiError) AllErrors() []error { return m }
-
-// ImportUsersResponse_ImportUserResultValidationError is the validation error
-// returned by ImportUsersResponse_ImportUserResult.Validate if the designated
-// constraints aren't met.
-type ImportUsersResponse_ImportUserResultValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ImportUsersResponse_ImportUserResultValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ImportUsersResponse_ImportUserResultValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ImportUsersResponse_ImportUserResultValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ImportUsersResponse_ImportUserResultValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ImportUsersResponse_ImportUserResultValidationError) ErrorName() string {
-	return "ImportUsersResponse_ImportUserResultValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ImportUsersResponse_ImportUserResultValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sImportUsersResponse_ImportUserResult.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ImportUsersResponse_ImportUserResultValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ImportUsersResponse_ImportUserResultValidationError{}
