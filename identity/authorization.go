@@ -32,15 +32,16 @@ const (
 func (c *Client) IsAuthorized(
 	ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
-	actions, resourceReferences []string,
+	actions []string,
+	resources []*identitypb.IsAuthorizedRequest_Resource,
 	opts ...grpc.CallOption,
 ) (*identitypb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &identitypb.IsAuthorizedRequest{
 		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{
 			DigitalTwin: digitalTwin,
 		}},
-		Actions:            actions,
-		ResourceReferences: resourceReferences,
+		Actions:   actions,
+		Resources: resources,
 	}, opts...)
 }
 
@@ -49,15 +50,16 @@ func (c *Client) IsAuthorized(
 func (c *Client) IsAuthorizedByToken(
 	ctx context.Context,
 	token string,
-	actions, resourceReferences []string,
+	actions []string,
+	resources []*identitypb.IsAuthorizedRequest_Resource,
 	opts ...grpc.CallOption,
 ) (*identitypb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &identitypb.IsAuthorizedRequest{
 		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_AccessToken{
 			AccessToken: token,
 		}},
-		Actions:            actions,
-		ResourceReferences: resourceReferences,
+		Actions:   actions,
+		Resources: resources,
 	}, opts...)
 }
 
@@ -66,7 +68,8 @@ func (c *Client) IsAuthorizedByToken(
 func (c *Client) IsAuthorizedByStringExternalID(
 	ctx context.Context,
 	externalID string,
-	actions, resourceReferences []string,
+	actions []string,
+	resources []*identitypb.IsAuthorizedRequest_Resource,
 	opts ...grpc.CallOption,
 ) (*identitypb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &identitypb.IsAuthorizedRequest{
@@ -76,8 +79,8 @@ func (c *Client) IsAuthorizedByStringExternalID(
 				Value:      &identitypb.Property_ObjectValue{ObjectValue: objects.String(externalID)},
 			},
 		}},
-		Actions:            actions,
-		ResourceReferences: resourceReferences,
+		Actions:   actions,
+		Resources: resources,
 	}, opts...)
 }
 
@@ -86,7 +89,8 @@ func (c *Client) IsAuthorizedByStringExternalID(
 func (c *Client) IsAuthorizedByNumericExternalID(
 	ctx context.Context,
 	externalID int64,
-	actions, resourceReferences []string,
+	actions []string,
+	resources []*identitypb.IsAuthorizedRequest_Resource,
 	opts ...grpc.CallOption,
 ) (*identitypb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &identitypb.IsAuthorizedRequest{
@@ -96,8 +100,8 @@ func (c *Client) IsAuthorizedByNumericExternalID(
 				Value:      &identitypb.Property_ObjectValue{ObjectValue: objects.Int64(externalID)},
 			},
 		}},
-		Actions:            actions,
-		ResourceReferences: resourceReferences,
+		Actions:   actions,
+		Resources: resources,
 	}, opts...)
 }
 

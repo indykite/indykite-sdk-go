@@ -3422,6 +3422,68 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 
+	case *ConfigNode_AuthorizationPolicyConfig:
+
+		if all {
+			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAuthorizationPolicyConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "AuthorizationPolicyConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ConfigNode_KnowledgeGraphSchemaConfig:
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeGraphSchemaConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "KnowledgeGraphSchemaConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		err := ConfigNodeValidationError{
 			field:  "Config",
@@ -7369,6 +7431,35 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetOneTimePasswordMessage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, EmailServiceConfigValidationError{
+					field:  "OneTimePasswordMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, EmailServiceConfigValidationError{
+					field:  "OneTimePasswordMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetOneTimePasswordMessage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return EmailServiceConfigValidationError{
+				field:  "OneTimePasswordMessage",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	switch m.Provider.(type) {
 
 	case *EmailServiceConfig_Sendgrid:
@@ -10384,6 +10475,261 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = IngestMappingConfigValidationError{}
+
+// Validate checks the field values on AuthorizationPolicyConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AuthorizationPolicyConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AuthorizationPolicyConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AuthorizationPolicyConfigMultiError, or nil if none found.
+func (m *AuthorizationPolicyConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AuthorizationPolicyConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPolicy() == nil {
+		err := AuthorizationPolicyConfigValidationError{
+			field:  "Policy",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetPolicy()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AuthorizationPolicyConfigValidationError{
+					field:  "Policy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AuthorizationPolicyConfigValidationError{
+					field:  "Policy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPolicy()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AuthorizationPolicyConfigValidationError{
+				field:  "Policy",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return AuthorizationPolicyConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// AuthorizationPolicyConfigMultiError is an error wrapping multiple validation
+// errors returned by AuthorizationPolicyConfig.ValidateAll() if the
+// designated constraints aren't met.
+type AuthorizationPolicyConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AuthorizationPolicyConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AuthorizationPolicyConfigMultiError) AllErrors() []error { return m }
+
+// AuthorizationPolicyConfigValidationError is the validation error returned by
+// AuthorizationPolicyConfig.Validate if the designated constraints aren't met.
+type AuthorizationPolicyConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AuthorizationPolicyConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AuthorizationPolicyConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AuthorizationPolicyConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AuthorizationPolicyConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AuthorizationPolicyConfigValidationError) ErrorName() string {
+	return "AuthorizationPolicyConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AuthorizationPolicyConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAuthorizationPolicyConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AuthorizationPolicyConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AuthorizationPolicyConfigValidationError{}
+
+// Validate checks the field values on KnowledgeGraphSchemaConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *KnowledgeGraphSchemaConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KnowledgeGraphSchemaConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// KnowledgeGraphSchemaConfigMultiError, or nil if none found.
+func (m *KnowledgeGraphSchemaConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KnowledgeGraphSchemaConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetSource()) > 1048576 {
+		err := KnowledgeGraphSchemaConfigValidationError{
+			field:  "Source",
+			reason: "value length must be at most 1048576 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return KnowledgeGraphSchemaConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// KnowledgeGraphSchemaConfigMultiError is an error wrapping multiple
+// validation errors returned by KnowledgeGraphSchemaConfig.ValidateAll() if
+// the designated constraints aren't met.
+type KnowledgeGraphSchemaConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KnowledgeGraphSchemaConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KnowledgeGraphSchemaConfigMultiError) AllErrors() []error { return m }
+
+// KnowledgeGraphSchemaConfigValidationError is the validation error returned
+// by KnowledgeGraphSchemaConfig.Validate if the designated constraints aren't met.
+type KnowledgeGraphSchemaConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KnowledgeGraphSchemaConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KnowledgeGraphSchemaConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KnowledgeGraphSchemaConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KnowledgeGraphSchemaConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KnowledgeGraphSchemaConfigValidationError) ErrorName() string {
+	return "KnowledgeGraphSchemaConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e KnowledgeGraphSchemaConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKnowledgeGraphSchemaConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KnowledgeGraphSchemaConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KnowledgeGraphSchemaConfigValidationError{}
 
 // Validate checks the field values on IngestMappingConfig_UpsertData with the
 // rules defined in the proto definition for this message. If any rules are

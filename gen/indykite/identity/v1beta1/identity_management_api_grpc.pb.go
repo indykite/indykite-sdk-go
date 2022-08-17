@@ -56,6 +56,10 @@ type IdentityManagementAPIClient interface {
 	// This is a protected operation and it can be accessed by both credentials,
 	// with valid agent or DigitalTwin credential.
 	SelfServiceTerminateSession(ctx context.Context, in *SelfServiceTerminateSessionRequest, opts ...grpc.CallOption) (*SelfServiceTerminateSessionResponse, error)
+	// ImportDigitalTwins imports multiple DigitalTwin into the IndyKite database.
+	//
+	// No more than 1000 users can be imported in a single call.
+	ImportDigitalTwins(ctx context.Context, in *ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*ImportDigitalTwinsResponse, error)
 	// GetDigitalTwin gets a DigitalTwin and requested properties.
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
@@ -175,6 +179,15 @@ func (c *identityManagementAPIClient) VerifyDigitalTwinEmail(ctx context.Context
 func (c *identityManagementAPIClient) SelfServiceTerminateSession(ctx context.Context, in *SelfServiceTerminateSessionRequest, opts ...grpc.CallOption) (*SelfServiceTerminateSessionResponse, error) {
 	out := new(SelfServiceTerminateSessionResponse)
 	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/SelfServiceTerminateSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in *ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*ImportDigitalTwinsResponse, error) {
+	out := new(ImportDigitalTwinsResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ImportDigitalTwins", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -453,6 +466,10 @@ type IdentityManagementAPIServer interface {
 	// This is a protected operation and it can be accessed by both credentials,
 	// with valid agent or DigitalTwin credential.
 	SelfServiceTerminateSession(context.Context, *SelfServiceTerminateSessionRequest) (*SelfServiceTerminateSessionResponse, error)
+	// ImportDigitalTwins imports multiple DigitalTwin into the IndyKite database.
+	//
+	// No more than 1000 users can be imported in a single call.
+	ImportDigitalTwins(context.Context, *ImportDigitalTwinsRequest) (*ImportDigitalTwinsResponse, error)
 	// GetDigitalTwin gets a DigitalTwin and requested properties.
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
@@ -537,6 +554,9 @@ func (UnimplementedIdentityManagementAPIServer) VerifyDigitalTwinEmail(context.C
 }
 func (UnimplementedIdentityManagementAPIServer) SelfServiceTerminateSession(context.Context, *SelfServiceTerminateSessionRequest) (*SelfServiceTerminateSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SelfServiceTerminateSession not implemented")
+}
+func (UnimplementedIdentityManagementAPIServer) ImportDigitalTwins(context.Context, *ImportDigitalTwinsRequest) (*ImportDigitalTwinsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImportDigitalTwins not implemented")
 }
 func (UnimplementedIdentityManagementAPIServer) GetDigitalTwin(context.Context, *GetDigitalTwinRequest) (*GetDigitalTwinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDigitalTwin not implemented")
@@ -717,6 +737,24 @@ func _IdentityManagementAPI_SelfServiceTerminateSession_Handler(srv interface{},
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).SelfServiceTerminateSession(ctx, req.(*SelfServiceTerminateSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityManagementAPI_ImportDigitalTwins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImportDigitalTwinsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityManagementAPIServer).ImportDigitalTwins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ImportDigitalTwins",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityManagementAPIServer).ImportDigitalTwins(ctx, req.(*ImportDigitalTwinsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1135,6 +1173,10 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SelfServiceTerminateSession",
 			Handler:    _IdentityManagementAPI_SelfServiceTerminateSession_Handler,
+		},
+		{
+			MethodName: "ImportDigitalTwins",
+			Handler:    _IdentityManagementAPI_ImportDigitalTwins_Handler,
 		},
 		{
 			MethodName: "GetDigitalTwin",

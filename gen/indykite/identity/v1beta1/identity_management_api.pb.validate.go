@@ -8414,9 +8414,9 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 		}
 	}
 
-	if l := len(m.GetActions()); l < 1 || l > 32 {
+	if l := len(m.GetResources()); l < 1 || l > 32 {
 		err := IsAuthorizedRequestValidationError{
-			field:  "Actions",
+			field:  "Resources",
 			reason: "value must contain between 1 and 32 items, inclusive",
 		}
 		if !all {
@@ -8425,70 +8425,69 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	_IsAuthorizedRequest_Actions_Unique := make(map[string]struct{}, len(m.GetActions()))
+	for idx, item := range m.GetResources() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IsAuthorizedRequestValidationError{
+						field:  fmt.Sprintf("Resources[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IsAuthorizedRequestValidationError{
+						field:  fmt.Sprintf("Resources[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("Resources[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(m.GetActions()) != 1 {
+		err := IsAuthorizedRequestValidationError{
+			field:  "Actions",
+			reason: "value must contain exactly 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	for idx, item := range m.GetActions() {
 		_, _ = idx, item
 
-		if _, exists := _IsAuthorizedRequest_Actions_Unique[item]; exists {
+		if l := utf8.RuneCountInString(item); l < 2 || l > 50 {
 			err := IsAuthorizedRequestValidationError{
 				field:  fmt.Sprintf("Actions[%v]", idx),
-				reason: "repeated value must contain unique items",
+				reason: "value length must be between 2 and 50 runes, inclusive",
 			}
 			if !all {
 				return err
 			}
 			errors = append(errors, err)
-		} else {
-			_IsAuthorizedRequest_Actions_Unique[item] = struct{}{}
 		}
 
-		if l := utf8.RuneCountInString(item); l < 2 || l > 100 {
+		if !_IsAuthorizedRequest_Actions_Pattern.MatchString(item) {
 			err := IsAuthorizedRequestValidationError{
 				field:  fmt.Sprintf("Actions[%v]", idx),
-				reason: "value length must be between 2 and 100 runes, inclusive",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
-	if l := len(m.GetResourceReferences()); l < 1 || l > 32 {
-		err := IsAuthorizedRequestValidationError{
-			field:  "ResourceReferences",
-			reason: "value must contain between 1 and 32 items, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	_IsAuthorizedRequest_ResourceReferences_Unique := make(map[string]struct{}, len(m.GetResourceReferences()))
-
-	for idx, item := range m.GetResourceReferences() {
-		_, _ = idx, item
-
-		if _, exists := _IsAuthorizedRequest_ResourceReferences_Unique[item]; exists {
-			err := IsAuthorizedRequestValidationError{
-				field:  fmt.Sprintf("ResourceReferences[%v]", idx),
-				reason: "repeated value must contain unique items",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		} else {
-			_IsAuthorizedRequest_ResourceReferences_Unique[item] = struct{}{}
-		}
-
-		if l := utf8.RuneCountInString(item); l < 2 || l > 100 {
-			err := IsAuthorizedRequestValidationError{
-				field:  fmt.Sprintf("ResourceReferences[%v]", idx),
-				reason: "value length must be between 2 and 100 runes, inclusive",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9.:_\\\\-\\\\/]{2,}$\"",
 			}
 			if !all {
 				return err
@@ -8578,6 +8577,8 @@ var _ interface {
 	ErrorName() string
 } = IsAuthorizedRequestValidationError{}
 
+var _IsAuthorizedRequest_Actions_Pattern = regexp.MustCompile("^[a-zA-Z0-9.:_\\-\\/]{2,}$")
+
 // Validate checks the field values on IsAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -8623,35 +8624,6 @@ func (m *IsAuthorizedResponse) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return IsAuthorizedResponseValidationError{
 				field:  "DecisionTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetTtl()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IsAuthorizedResponseValidationError{
-					field:  "Ttl",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, IsAuthorizedResponseValidationError{
-					field:  "Ttl",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetTtl()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return IsAuthorizedResponseValidationError{
-				field:  "Ttl",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -8805,6 +8777,8 @@ func (m *AuthorizationDecision) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for AllowAction
 
 	if len(errors) > 0 {
 		return AuthorizationDecisionMultiError(errors)
@@ -9149,3 +9123,141 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = EnrichTokenResponseValidationError{}
+
+// Validate checks the field values on IsAuthorizedRequest_Resource with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *IsAuthorizedRequest_Resource) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on IsAuthorizedRequest_Resource with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// IsAuthorizedRequest_ResourceMultiError, or nil if none found.
+func (m *IsAuthorizedRequest_Resource) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IsAuthorizedRequest_Resource) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetId()); l < 2 || l > 50 {
+		err := IsAuthorizedRequest_ResourceValidationError{
+			field:  "Id",
+			reason: "value length must be between 2 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetLabel()); l < 2 || l > 50 {
+		err := IsAuthorizedRequest_ResourceValidationError{
+			field:  "Label",
+			reason: "value length must be between 2 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_IsAuthorizedRequest_Resource_Label_Pattern.MatchString(m.GetLabel()) {
+		err := IsAuthorizedRequest_ResourceValidationError{
+			field:  "Label",
+			reason: "value does not match regex pattern \"^(?:[A-Z][a-z]+)+$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return IsAuthorizedRequest_ResourceMultiError(errors)
+	}
+
+	return nil
+}
+
+// IsAuthorizedRequest_ResourceMultiError is an error wrapping multiple
+// validation errors returned by IsAuthorizedRequest_Resource.ValidateAll() if
+// the designated constraints aren't met.
+type IsAuthorizedRequest_ResourceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IsAuthorizedRequest_ResourceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IsAuthorizedRequest_ResourceMultiError) AllErrors() []error { return m }
+
+// IsAuthorizedRequest_ResourceValidationError is the validation error returned
+// by IsAuthorizedRequest_Resource.Validate if the designated constraints
+// aren't met.
+type IsAuthorizedRequest_ResourceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IsAuthorizedRequest_ResourceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IsAuthorizedRequest_ResourceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IsAuthorizedRequest_ResourceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IsAuthorizedRequest_ResourceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IsAuthorizedRequest_ResourceValidationError) ErrorName() string {
+	return "IsAuthorizedRequest_ResourceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IsAuthorizedRequest_ResourceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIsAuthorizedRequest_Resource.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IsAuthorizedRequest_ResourceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IsAuthorizedRequest_ResourceValidationError{}
+
+var _IsAuthorizedRequest_Resource_Label_Pattern = regexp.MustCompile("^(?:[A-Z][a-z]+)+$")

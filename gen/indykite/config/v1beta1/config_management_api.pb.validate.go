@@ -5200,32 +5200,33 @@ func (m *RegisterApplicationAgentCredentialRequest) validate(all bool) error {
 
 	}
 
-	if all {
-		switch v := interface{}(m.GetExpireTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, RegisterApplicationAgentCredentialRequestValidationError{
-					field:  "ExpireTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, RegisterApplicationAgentCredentialRequestValidationError{
-					field:  "ExpireTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetExpireTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return RegisterApplicationAgentCredentialRequestValidationError{
+	if t := m.GetExpireTime(); t != nil {
+		ts, err := t.AsTime(), t.CheckValid()
+		if err != nil {
+			err = RegisterApplicationAgentCredentialRequestValidationError{
 				field:  "ExpireTime",
-				reason: "embedded message failed validation",
+				reason: "value is not a valid timestamp",
 				cause:  err,
 			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			now := time.Now()
+
+			if ts.Sub(now) <= 0 {
+				err := RegisterApplicationAgentCredentialRequestValidationError{
+					field:  "ExpireTime",
+					reason: "value must be greater than now",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
 		}
 	}
 
@@ -7501,32 +7502,33 @@ func (m *RegisterServiceAccountCredentialRequest) validate(all bool) error {
 
 	}
 
-	if all {
-		switch v := interface{}(m.GetExpireTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, RegisterServiceAccountCredentialRequestValidationError{
-					field:  "ExpireTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, RegisterServiceAccountCredentialRequestValidationError{
-					field:  "ExpireTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetExpireTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return RegisterServiceAccountCredentialRequestValidationError{
+	if t := m.GetExpireTime(); t != nil {
+		ts, err := t.AsTime(), t.CheckValid()
+		if err != nil {
+			err = RegisterServiceAccountCredentialRequestValidationError{
 				field:  "ExpireTime",
-				reason: "embedded message failed validation",
+				reason: "value is not a valid timestamp",
 				cause:  err,
 			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			now := time.Now()
+
+			if ts.Sub(now) <= 0 {
+				err := RegisterServiceAccountCredentialRequestValidationError{
+					field:  "ExpireTime",
+					reason: "value must be greater than now",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
 		}
 	}
 
@@ -10382,6 +10384,68 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *CreateConfigNodeRequest_AuthorizationPolicyConfig:
+
+		if all {
+			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAuthorizationPolicyConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "AuthorizationPolicyConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *CreateConfigNodeRequest_KnowledgeGraphSchemaConfig:
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeGraphSchemaConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "KnowledgeGraphSchemaConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		err := CreateConfigNodeRequestValidationError{
 			field:  "Config",
@@ -11307,6 +11371,68 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
 					field:  "IngestMappingConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *UpdateConfigNodeRequest_AuthorizationPolicyConfig:
+
+		if all {
+			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "AuthorizationPolicyConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAuthorizationPolicyConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "AuthorizationPolicyConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *UpdateConfigNodeRequest_KnowledgeGraphSchemaConfig:
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "KnowledgeGraphSchemaConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeGraphSchemaConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "KnowledgeGraphSchemaConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
