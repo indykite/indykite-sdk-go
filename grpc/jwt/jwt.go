@@ -89,6 +89,14 @@ func JWTokenSource(secretKey []byte, pem bool, clientID uuid.UUID) (oauth2.Token
 		return nil, errors.New("jwt: invalid clientID UUID")
 	}
 
+	// Remove user defined kid and generate new one same way as we do on BE
+	// This is micro-optimization on client-side.
+	_ = key.Remove(jwk.KeyIDKey)
+	err = jwk.AssignKeyID(key)
+	if err != nil {
+		return nil, errors.New("failed to assign kid for public key")
+	}
+
 	t := jwt.New()
 	_ = t.Set(jwt.IssuerKey, clientID.String())
 	_ = t.Set(jwt.SubjectKey, clientID.String())
