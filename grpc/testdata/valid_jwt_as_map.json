@@ -1,6 +1,5 @@
 {
   "endpoint": "hera:8084",
-  "appSpaceId": "fa50a80e-4840-4fc0-8958-982b84827f92",
   "appAgentId": "fa50a80e-4840-4fc0-8958-982b84827f83",
   "privateKeyJWK": {
     "kty": "EC",
