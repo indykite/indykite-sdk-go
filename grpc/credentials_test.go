@@ -70,7 +70,6 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 			Expect(err).To(Succeed())
 			Expect(dialOption).To(HaveLen(7))
 			Expect(cfg).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"AppSpaceID": Equal(jsonData["appSpaceId"]),
 				"AppAgentID": Equal(jsonData["appAgentId"]),
 				"Endpoint":   Equal(jsonData["endpoint"]),
 			})))
@@ -101,7 +100,6 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		Expect(dialSettings.Endpoint).To(Equal("dns:///" + jsonData["endpoint"].(string)))
 		Expect(dialOption).NotTo(BeNil())
 		Expect(cfg).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"AppSpaceID": Equal(jsonData["appSpaceId"]),
 			"AppAgentID": Equal(jsonData["appAgentId"]),
 			"Endpoint":   Equal(jsonData["endpoint"]),
 		})))
@@ -131,7 +129,6 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		Expect(dialSettings.Endpoint).To(Equal("dns:///" + endpoint))
 		Expect(dialOption).NotTo(BeNil())
 		Expect(cfg).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"AppSpaceID": Equal(jsonData["appSpaceId"]),
 			"AppAgentID": Equal(jsonData["appAgentId"]),
 		})))
 		Expect(err).To(Succeed())
@@ -141,10 +138,6 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		// Prepare test data
 		data, err := ioutil.ReadFile("testdata/valid_jwt_as_map.json")
 		Ω(err).To(Succeed())
-		// Quickly parse JSON to avoid hardcoded values
-		var jsonData map[string]interface{}
-		err = json.Unmarshal(data, &jsonData)
-		Expect(err).To(Succeed())
 
 		endpoint := "grpc_endpoint.example.com"
 		dialSettings := &internal.DialSettings{}
@@ -156,7 +149,24 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 			v.Apply(dialSettings)
 		}
 		_, _, err = dialSettings.Build(context.Background())
-		Ω(err).To(MatchError("invalid serviceAccountId invalid UUID length: 0"))
+		Ω(err).To(MatchError("empty serviceAccountId"))
+	})
+
+	It("JSON file is not AppAgent Account", func() {
+		// Prepare test data
+		data, err := ioutil.ReadFile("testdata/valid_jwt_service.json")
+		Ω(err).To(Succeed())
+
+		endpoint := "grpc_endpoint.example.com"
+		dialSettings := &internal.DialSettings{}
+		for _, v := range []grpc.ClientOption{
+			grpc.WithEndpoint(endpoint),
+			grpc.WithCredentialsLoader(config.StaticCredentialsJSON(data)),
+		} {
+			v.Apply(dialSettings)
+		}
+		_, _, err = dialSettings.Build(context.Background())
+		Ω(err).To(MatchError("empty appAgentId"))
 	})
 
 	It("Service Account JSON", func() {

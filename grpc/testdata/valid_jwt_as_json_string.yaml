@@ -1,5 +1,4 @@
 ---
-appSpaceId: fa50a80e-4840-4fc0-8958-982b84827f92
 appAgentId: fa50a80e-4840-4fc0-8958-982b84827f83
 endpoint: hera:8084
 privateKeyJWK: '{"kty":"EC","d":"2to-_wtohfn2PAgHr3RHQbhDf8g9zy6ndr05ZS-hS8s","use":"sig","crv":"P-256","kid":"vDUXHBZcRw1KyFPyB0EI2XLBzyP9iGyfvaSX3MNtUlk","x":"Cn2tSCxcQYVKuexBTzqRShvrJG8eQeZUq0ISIp9wXSA","y":"DVSlYTLzns37LmjdscBA8q5ko1N8CZ-ETwviAJ78vW4","alg":"ES256"}'

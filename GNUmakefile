@@ -20,7 +20,7 @@ install-tools: download
 .PHONY: test
 test:
 	go test -v -cpu 4 -covermode=count -coverpkg github.com/indykite/jarvis-sdk-go/... -coverprofile=coverage.out.tmp ./...
-	cat coverage.out.tmp | grep -v "mock\|pb.go\|pb.validate.go\|pb.gw.go\|generated.go\|federation.go\|schema/\|pkg/test\|main.go" > coverage.out
+	cat coverage.out.tmp | grep -v "pb.go\|pb.validate.go\|generated.go\|jarvis-sdk-go/test/\|main.go\|jarvis-sdk-go/examples/" > coverage.out
 	rm coverage.out.tmp
 
 cover: test

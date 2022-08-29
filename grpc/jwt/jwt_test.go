@@ -28,14 +28,6 @@ var (
 )
 
 var _ = Describe("CreateTokenSourceFrom", func() {
-	It("invalid app agent id", func() {
-		invalidAppAgentID := "invalid_app_agent_id"
-		resp, err := CreateTokenSourceFrom(nil, invalidAppAgentID)
-
-		Expect(resp).To(BeNil())
-		Expect(uuid.IsInvalidLengthError(err)).To(BeTrue())
-	})
-
 	It("invalid string key", func() {
 		appAgentID := IntTestAppAgentID
 

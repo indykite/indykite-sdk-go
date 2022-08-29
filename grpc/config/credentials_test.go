@@ -56,7 +56,6 @@ var _ = Describe("UnmarshalCredentialConfig", func() {
 
 			Expect(err).To(Succeed())
 			Expect(config).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"AppSpaceID": Equal(jsonData["appSpaceId"]),
 				"AppAgentID": Equal(jsonData["appAgentId"]),
 				"Endpoint":   Equal(jsonData["endpoint"]),
 			})))

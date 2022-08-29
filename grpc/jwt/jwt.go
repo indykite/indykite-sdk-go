@@ -36,17 +36,12 @@ type (
 )
 
 func CreateTokenSourceFrom(privateKeyJWK interface{}, clientID string) (oauth2.TokenSource, error) {
-	id, err := uuid.Parse(clientID)
-	if err != nil {
-		return nil, err
-	}
-
 	privateKeyJWKBytes, err := interfaceToBytes(privateKeyJWK)
 	if err != nil {
 		return nil, err
 	}
 
-	return JWTokenSource(privateKeyJWKBytes, false, id)
+	return JWTokenSource(privateKeyJWKBytes, false, clientID)
 }
 
 func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
@@ -62,7 +57,7 @@ func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
 	return privateKeyJWKBytes, nil
 }
 
-func JWTokenSource(secretKey []byte, pem bool, clientID uuid.UUID) (oauth2.TokenSource, error) {
+func JWTokenSource(secretKey []byte, pem bool, clientID string) (oauth2.TokenSource, error) {
 	var (
 		key jwk.Key
 		err error
@@ -85,10 +80,6 @@ func JWTokenSource(secretKey []byte, pem bool, clientID uuid.UUID) (oauth2.Token
 		return nil, err
 	}
 
-	if clientID.Variant() != uuid.RFC4122 {
-		return nil, errors.New("jwt: invalid clientID UUID")
-	}
-
 	// Remove user defined kid and generate new one same way as we do on BE
 	// This is micro-optimization on client-side.
 	_ = key.Remove(jwk.KeyIDKey)
@@ -98,8 +89,8 @@ func JWTokenSource(secretKey []byte, pem bool, clientID uuid.UUID) (oauth2.Token
 	}
 
 	t := jwt.New()
-	_ = t.Set(jwt.IssuerKey, clientID.String())
-	_ = t.Set(jwt.SubjectKey, clientID.String())
+	_ = t.Set(jwt.IssuerKey, clientID)
+	_ = t.Set(jwt.SubjectKey, clientID)
 
 	ts := &jwtAccessTokenSource{
 		template: t,

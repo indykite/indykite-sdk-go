@@ -26,10 +26,8 @@ import (
 
 	grpc_jwt "github.com/indykite/jarvis-sdk-go/grpc/jwt"
 
-	guuid "github.com/google/uuid"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	"github.com/pborman/uuid"
 	"go.opencensus.io/plugin/ocgrpc"
 	grpcotel "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"golang.org/x/oauth2"
@@ -82,45 +80,35 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 	}
 	if ds.credentials != nil {
 		var (
-			appSpaceID, appAgentID guuid.UUID
-			err                    error
+			clientID string
+			err      error
 		)
 
 		if ds.ServiceAccount {
-			appAgentID, err = guuid.Parse(ds.credentials.ServiceAccountID)
-			if err != nil {
-				return nil, nil, fmt.Errorf("invalid serviceAccountId %w", err)
-			}
-			if appAgentID.Variant() != uuid.RFC4122 {
-				return nil, nil, errors.New("invalid serviceAccountId UUIDv4 variant")
+			clientID = ds.credentials.ServiceAccountID
+			if clientID == "" {
+				return nil, nil, errors.New("empty serviceAccountId")
 			}
 		} else {
-			appSpaceID, err = guuid.Parse(ds.credentials.AppSpaceID)
-			if err != nil {
-				return nil, nil, fmt.Errorf("invalid appSpaceID %v", err)
-			}
-			appAgentID, err = guuid.Parse(ds.credentials.AppAgentID)
-			if err != nil {
-				return nil, nil, fmt.Errorf("invalid AppAgentId %v", err)
-			}
-
-			if appAgentID.Variant() != uuid.RFC4122 || appSpaceID.Variant() != uuid.RFC4122 {
-				return nil, nil, errors.New("invalid appAgentId and/or appSpaceId UUIDv4 variant")
+			clientID = ds.credentials.AppAgentID
+			if clientID == "" {
+				return nil, nil, errors.New("empty appAgentId")
 			}
 		}
+
 		if ds.TokenSource == nil {
 			switch {
 			case ds.credentials.PrivateKeyJWK != nil:
-				ds.TokenSource, err = grpc_jwt.JWTokenSource(ds.credentials.PrivateKeyJWK, false, appAgentID)
+				ds.TokenSource, err = grpc_jwt.JWTokenSource(ds.credentials.PrivateKeyJWK, false, clientID)
 			case ds.credentials.PrivateKeyPKCS8Base64 != "":
 				var raw []byte
 				raw, err = base64.StdEncoding.DecodeString(ds.credentials.PrivateKeyPKCS8Base64)
 				if err != nil {
 					return nil, nil, err
 				}
-				ds.TokenSource, err = grpc_jwt.JWTokenSource(raw, true, appAgentID)
+				ds.TokenSource, err = grpc_jwt.JWTokenSource(raw, true, clientID)
 			case ds.credentials.PrivateKeyPKCS8 != "":
-				ds.TokenSource, err = grpc_jwt.JWTokenSource([]byte(ds.credentials.PrivateKeyPKCS8), true, appAgentID)
+				ds.TokenSource, err = grpc_jwt.JWTokenSource([]byte(ds.credentials.PrivateKeyPKCS8), true, clientID)
 			default:
 				return nil, nil, errors.New("unable to find secret credential")
 			}
