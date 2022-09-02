@@ -10,8 +10,8 @@ env:
     BIGQUERY_TABLE: jarvis-dev-268314.deployment_analytics.deployment_events
 
 permissions:
-    contents: "read"
-    id-token: "write"
+    contents: read
+    id-token: write
 
 jobs:
     release-please:
@@ -55,8 +55,8 @@ jobs:
               uses: google-github-actions/auth@v0
               if: ${{ always() }}
               with:
-                workload_identity_provider: "projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider"
-                service_account: "jarvis-sdk-go@jarvis-dev-268314.iam.gserviceaccount.com"
+                  workload_identity_provider: projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider
+                  service_account: jarvis-sdk-go@jarvis-dev-268314.iam.gserviceaccount.com
 
             - name: Publish Deployment Metadata
               if: ${{ always() }}

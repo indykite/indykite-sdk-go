@@ -30,3 +30,4 @@ cover: test
 generate-proto:
 	@buf generate buf.build/indykite/indykiteapis
 	@go generate
+	@make goimports
