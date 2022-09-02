@@ -10,7 +10,8 @@ env:
     BIGQUERY_TABLE: jarvis-dev-268314.deployment_analytics.deployment_events
 
 permissions:
-    contents: read
+    contents: write
+    pull-requests: write
     id-token: write
 
 jobs:
