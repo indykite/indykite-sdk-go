@@ -4131,6 +4131,73 @@ func (m *OAuth2ClientConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if len(m.GetPrivateKeyPem()) > 0 {
+
+		if l := len(m.GetPrivateKeyPem()); l < 85 || l > 8192 {
+			err := OAuth2ClientConfigValidationError{
+				field:  "PrivateKeyPem",
+				reason: "value length must be between 85 and 8192 bytes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !bytes.HasPrefix(m.GetPrivateKeyPem(), []uint8{0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x42, 0x45, 0x47, 0x49, 0x4E, 0x20, 0x50, 0x52, 0x49, 0x56, 0x41, 0x54, 0x45, 0x20, 0x4B, 0x45, 0x59, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D}) {
+			err := OAuth2ClientConfigValidationError{
+				field:  "PrivateKeyPem",
+				reason: "value does not have prefix \"\\x2D\\x2D\\x2D\\x2D\\x2D\\x42\\x45\\x47\\x49\\x4E\\x20\\x50\\x52\\x49\\x56\\x41\\x54\\x45\\x20\\x4B\\x45\\x59\\x2D\\x2D\\x2D\\x2D\\x2D\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !bytes.HasSuffix(m.GetPrivateKeyPem(), []uint8{0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x45, 0x4E, 0x44, 0x20, 0x50, 0x52, 0x49, 0x56, 0x41, 0x54, 0x45, 0x20, 0x4B, 0x45, 0x59, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D}) {
+			err := OAuth2ClientConfigValidationError{
+				field:  "PrivateKeyPem",
+				reason: "value does not have suffix \"\\x2D\\x2D\\x2D\\x2D\\x2D\\x45\\x4E\\x44\\x20\\x50\\x52\\x49\\x56\\x41\\x54\\x45\\x20\\x4B\\x45\\x59\\x2D\\x2D\\x2D\\x2D\\x2D\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetPrivateKeyId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetPrivateKeyId()); l < 2 || l > 254 {
+			err := OAuth2ClientConfigValidationError{
+				field:  "PrivateKeyId",
+				reason: "value length must be between 2 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetTeamId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetTeamId()); l < 2 || l > 254 {
+			err := OAuth2ClientConfigValidationError{
+				field:  "TeamId",
+				reason: "value length must be between 2 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return OAuth2ClientConfigMultiError(errors)
 	}
@@ -10640,15 +10707,44 @@ func (m *KnowledgeGraphSchemaConfig) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetSource()) > 1048576 {
+	if m.GetSchema() == nil {
 		err := KnowledgeGraphSchemaConfigValidationError{
-			field:  "Source",
-			reason: "value length must be at most 1048576 bytes",
+			field:  "Schema",
+			reason: "value is required",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetSchema()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, KnowledgeGraphSchemaConfigValidationError{
+					field:  "Schema",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, KnowledgeGraphSchemaConfigValidationError{
+					field:  "Schema",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSchema()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return KnowledgeGraphSchemaConfigValidationError{
+				field:  "Schema",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {
