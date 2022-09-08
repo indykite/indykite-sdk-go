@@ -50,21 +50,6 @@ func (x *NodeRequest) String() string {
 	}
 }
 
-func (x *NodeRequest) ConfigType() string {
-	switch {
-	case x.create != nil:
-		return "Unknown"
-	case x.read != nil:
-		return "Unknown"
-	case x.update != nil:
-		return "Unknown"
-	case x.delete != nil:
-		return "Unknown"
-	default:
-		return "Invalid"
-	}
-}
-
 func NewCreate(name string) (*NodeRequest, error) {
 	if err := IsValidName(name); err != nil {
 		return nil, err
@@ -121,10 +106,9 @@ func (x *NodeRequest) ForLocation(id string) *NodeRequest {
 }
 
 // WithPreCondition sets the expected etag to check before modify.
-func (x *NodeRequest) WithPreCondition(etag int64) *NodeRequest {
-	switch {
-	case x.create != nil:
-	case x.update != nil:
+func (x *NodeRequest) WithPreCondition(etag string) *NodeRequest {
+	if x.update != nil {
+		x.update.Etag = x.optionalString(etag)
 	}
 	return x
 }
@@ -194,7 +178,7 @@ func (x *NodeRequest) WithEmailNotificationConfig(v *configpb.EmailServiceConfig
 	return x
 }
 
-func (x *NodeRequest) WithAuthFlowNodeConfig(v *configpb.AuthFlowConfig) *NodeRequest {
+func (x *NodeRequest) WithAuthFlowConfig(v *configpb.AuthFlowConfig) *NodeRequest {
 	switch {
 	case x.create != nil:
 		x.create.Config = nil
@@ -210,32 +194,54 @@ func (x *NodeRequest) WithAuthFlowNodeConfig(v *configpb.AuthFlowConfig) *NodeRe
 	return x
 }
 
-func (x *NodeRequest) OAuth2ClientConfig() *NodeRequest {
+func (x *NodeRequest) WithIngestMappingConfig(v *configpb.IngestMappingConfig) *NodeRequest {
 	switch {
-	case x.read != nil:
-		// x.read.ConfigType = configpb.ConfigType_CONFIG_TYPE_OAUTH2_CLIENT
-	case x.delete != nil:
-		// x.delete.ConfigType = configpb.ConfigType_CONFIG_TYPE_OAUTH2_CLIENT
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_IngestMappingConfig{IngestMappingConfig: v}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_IngestMappingConfig{IngestMappingConfig: v}
+		}
 	}
 	return x
 }
 
-func (x *NodeRequest) EmailNotificationConfig() *NodeRequest {
+func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPolicyConfig) *NodeRequest {
 	switch {
-	case x.read != nil:
-		// x.read.ConfigType = configpb.ConfigType_CONFIG_TYPE_EMAIL_NOTIFICATION
-	case x.delete != nil:
-		// x.delete.ConfigType = configpb.ConfigType_CONFIG_TYPE_EMAIL_NOTIFICATION
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_AuthorizationPolicyConfig{AuthorizationPolicyConfig: v}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_AuthorizationPolicyConfig{AuthorizationPolicyConfig: v}
+		}
 	}
 	return x
 }
 
-func (x *NodeRequest) AuthFlowNodeConfig() *NodeRequest {
+func (x *NodeRequest) WithKnowledgeGraphSchemaConfig(v *configpb.KnowledgeGraphSchemaConfig) *NodeRequest {
 	switch {
-	case x.read != nil:
-		//  x.read.ConfigType = configpb.ConfigType_CONFIG_TYPE_AUTH_FLOW
-	case x.delete != nil:
-		// x.delete.ConfigType = configpb.ConfigType_CONFIG_TYPE_AUTH_FLOW
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_KnowledgeGraphSchemaConfig{
+				KnowledgeGraphSchemaConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_KnowledgeGraphSchemaConfig{
+				KnowledgeGraphSchemaConfig: v,
+			}
+		}
 	}
 	return x
 }
