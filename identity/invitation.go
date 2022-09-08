@@ -22,11 +22,9 @@ import (
 	"github.com/pborman/uuid"
 	"google.golang.org/grpc"
 
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/errors"
-
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 // CheckInvitationState checks the status of invitation.

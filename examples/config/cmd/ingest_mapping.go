@@ -21,9 +21,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/config"
+	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
 )
 
 var ingestMappingCmd = &cobra.Command{

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package internal contains Dial settings and helpers
 package internal
 
 import (
@@ -23,8 +24,6 @@ import (
 	"net"
 	"strings"
 	"time"
-
-	grpc_jwt "github.com/indykite/jarvis-sdk-go/grpc/jwt"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
@@ -38,6 +37,7 @@ import (
 	"google.golang.org/grpc/credentials/oauth"
 
 	"github.com/indykite/jarvis-sdk-go/grpc/config"
+	grpc_jwt "github.com/indykite/jarvis-sdk-go/grpc/jwt"
 )
 
 const (

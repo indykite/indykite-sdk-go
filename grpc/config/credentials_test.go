@@ -16,12 +16,10 @@ package config_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
-
-	. "github.com/onsi/ginkgo/v2"
+	"os"
 
 	. "github.com/indykite/jarvis-sdk-go/grpc/config"
-
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gstruct"
 )
@@ -45,7 +43,7 @@ var _ = Describe("UnmarshalCredentialConfig", func() {
 		func(filePath string) {
 			// Prepare test data
 			// #nosec: G304: Potential file inclusion via variable
-			data, err := ioutil.ReadFile(filePath)
+			data, err := os.ReadFile(filePath)
 			Expect(err).To(Succeed())
 			// Quickly parse JSON to avoid hardcoded values
 			jsonData := make(map[string]interface{})

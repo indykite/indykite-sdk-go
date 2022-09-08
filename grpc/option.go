@@ -20,7 +20,6 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/indykite/jarvis-sdk-go/grpc/config"
-
 	"github.com/indykite/jarvis-sdk-go/grpc/internal"
 )
 

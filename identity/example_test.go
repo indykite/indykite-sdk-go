@@ -23,7 +23,6 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 
 	api "github.com/indykite/jarvis-sdk-go/grpc"
-
 	"github.com/indykite/jarvis-sdk-go/identity"
 )
 

@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-Package config implement the Configuration Management Client.
-*/
+// Package config implement the Configuration Management Client.
 package config
 
 const versionClient = "v1.0.0" // x-release-please-version

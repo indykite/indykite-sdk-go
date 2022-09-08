@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	"github.com/pborman/uuid"
-
 	"google.golang.org/protobuf/proto"
 
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"

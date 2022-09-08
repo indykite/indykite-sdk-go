@@ -19,14 +19,15 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 	"github.com/indykite/jarvis-sdk-go/identity"
 	midentity "github.com/indykite/jarvis-sdk-go/test/identity/v1beta1"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Invitation", func() {

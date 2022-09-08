@@ -19,12 +19,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/indykite/jarvis-sdk-go/identity"
-
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	"github.com/indykite/jarvis-sdk-go/identity"
 )
 
 var isAuthorizedCmd = &cobra.Command{

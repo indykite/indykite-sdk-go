@@ -19,10 +19,9 @@ import (
 	"fmt"
 	"log"
 
-	"google.golang.org/protobuf/types/known/structpb"
-
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/types/known/structpb"
 
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 )

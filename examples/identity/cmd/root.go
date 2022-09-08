@@ -27,10 +27,8 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-
 	"github.com/indykite/jarvis-sdk-go/grpc"
-
+	"github.com/indykite/jarvis-sdk-go/grpc/config"
 	"github.com/indykite/jarvis-sdk-go/identity"
 )
 

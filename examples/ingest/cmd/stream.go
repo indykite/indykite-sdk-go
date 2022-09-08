@@ -18,11 +18,10 @@ import (
 	"fmt"
 	"log"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
-
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-
 	"github.com/spf13/cobra"
+
+	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
+	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 // streamCmd represents the upload command

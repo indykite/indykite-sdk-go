@@ -22,10 +22,9 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
+	"github.com/indykite/jarvis-sdk-go/config"
 	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
 	api "github.com/indykite/jarvis-sdk-go/grpc"
-
-	"github.com/indykite/jarvis-sdk-go/config"
 )
 
 // This example demonstrates how to create a new Config Client.

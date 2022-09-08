@@ -17,13 +17,12 @@
 package config_test
 
 import (
+	"github.com/indykite/jarvis-sdk-go/config"
+	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gstruct"
-
-	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
-
-	"github.com/indykite/jarvis-sdk-go/config"
 )
 
 var _ = Describe("Mapping builder", func() {

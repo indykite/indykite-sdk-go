@@ -23,7 +23,6 @@ import (
 	"github.com/spf13/cobra"
 
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/identity"
 )
 
