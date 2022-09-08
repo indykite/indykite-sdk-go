@@ -3,7 +3,7 @@ linters:
     enable:
         - deadcode
         - errcheck
-        - goimports
+        - gci
         - gosec
         - gosimple
         - govet
@@ -31,8 +31,14 @@ linters-settings:
     lll:
         line-length: 120
         tab-width: 4
-    goimports:
-        local-prefixes: github.com/indykite/identity-sdk-go
+    gci:
+        # Keep in sync with GNUMakefile
+        sections:
+            - standard
+            - default
+            - prefix(github.com/indykite/jarvis-sdk-go)
+            - blank
+            - dot
     staticcheck:
         go: '1.16'
         checks: [all, -ST1000]

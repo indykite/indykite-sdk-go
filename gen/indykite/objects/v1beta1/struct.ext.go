@@ -4,9 +4,8 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"time"
-
 	"reflect"
+	"time"
 
 	structpb "github.com/golang/protobuf/ptypes/struct"
 	"google.golang.org/protobuf/proto"

@@ -19,9 +19,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/errors"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 )
 
 func (c *Client) EnrichToken(

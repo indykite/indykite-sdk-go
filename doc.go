@@ -20,11 +20,9 @@
 /*
 Package indykite is the root of the packages used to access IndyKite Platform.
 
-
 Debugging
 To see gRPC logs, set the environment variable GRPC_GO_LOG_SEVERITY_LEVEL. See
 https://pkg.go.dev/google.golang.org/grpc/grpclog for more information.
 For HTTP logging, set the GODEBUG environment variable to "http2debug=1" or "http2debug=2".
-
 */
 package indykite

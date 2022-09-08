@@ -38,7 +38,6 @@ func NewIdentifier() *Identifier {
 // * *Identifier
 //
 // Returns nil if failed to parse.
-//
 func FromUUID(from interface{}) *Identifier {
 	var id uuid.UUID
 	switch v := from.(type) {

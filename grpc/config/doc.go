@@ -12,15 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build tools
-// +build tools
-
-package indykite
-
-import (
-	_ "github.com/daixiang0/gci"
-	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
-	// _ "github.com/bufbuild/buf/cmd/buf"
-	// _ "github.com/bufbuild/buf/cmd/protoc-gen-buf-breaking"
-	// _ "github.com/bufbuild/buf/cmd/protoc-gen-buf-lint"
-)
+// Package config implements the standard client configuration file parser.
+package config

@@ -1,9 +1,16 @@
-GO111MODULE=on
+.PHONY: test
+
 default:
 
-goimports:
-	@echo "==> Fixing imports code with goimports in Jarvis..."
-	@goimports -local "github.com/indykite/jarvis-sdk-go" -w .
+fmt:
+	@echo "==> Fixing source code with gofmt..."
+	gofmt -s -w .
+
+goimports: gci
+
+gci:
+	@echo "==> Fixing imports code with gci..."
+	gci write -s standard -s default -s "prefix(github.com/indykite/jarvis-sdk-go)" -s blank -s dot .
 
 lint:
 	@echo "==> Checking source code against linters..."
@@ -15,9 +22,8 @@ download:
 
 install-tools: download
 	@echo Installing tools from tools.go
-	@go list -f '{{range .Imports}}{{.}} {{end}}' tools.go | xargs go install
+	@go install $$(go list -f '{{range .Imports}}{{.}} {{end}}' tools.go)
 
-.PHONY: test
 test:
 	go test -v -cpu 4 -covermode=count -coverpkg github.com/indykite/jarvis-sdk-go/... -coverprofile=coverage.out.tmp ./...
 	cat coverage.out.tmp | grep -v "pb.go\|pb.validate.go\|generated.go\|jarvis-sdk-go/test/\|main.go\|jarvis-sdk-go/examples/" > coverage.out
@@ -30,4 +36,4 @@ cover: test
 generate-proto:
 	@buf generate buf.build/indykite/indykiteapis
 	@go generate
-	@make goimports
+	@make fmt gci

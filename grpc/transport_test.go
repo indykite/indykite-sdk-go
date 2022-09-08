@@ -18,13 +18,13 @@ import (
 	"context"
 	"net"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	google_grpc "google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	google_grpc "google.golang.org/grpc"
-
 	"github.com/indykite/jarvis-sdk-go/grpc"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Test creating gRPC connection from setting", func() {

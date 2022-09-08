@@ -30,7 +30,6 @@ import (
 
 	"github.com/indykite/jarvis-sdk-go/grpc"
 	apicfg "github.com/indykite/jarvis-sdk-go/grpc/config"
-
 	"github.com/indykite/jarvis-sdk-go/ingest"
 )
 

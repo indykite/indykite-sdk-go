@@ -24,7 +24,6 @@ import (
 
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/identity"
 )
 

@@ -73,9 +73,9 @@ repos:
             language: system
             pass_filenames: false
 
-          - id: go_imports
+          - id: fmt_gci
             name: Fix imports and Format go code
-            entry: make goimports
+            entry: make fmt gci
             language: system
             pass_filenames: false
 

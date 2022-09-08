@@ -28,10 +28,9 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/encoding/protojson"
 
+	"github.com/indykite/jarvis-sdk-go/config"
 	"github.com/indykite/jarvis-sdk-go/grpc"
 	apicfg "github.com/indykite/jarvis-sdk-go/grpc/config"
-
-	"github.com/indykite/jarvis-sdk-go/config"
 )
 
 var (

@@ -25,11 +25,10 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	. "github.com/onsi/ginkgo/v2"
-
-	. "github.com/onsi/gomega"
-
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Objects", func() {

@@ -17,19 +17,17 @@ package grpc_test
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"os"
 
 	"github.com/ghodss/yaml"
-	. "github.com/onsi/ginkgo/v2"
-
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-
-	"github.com/indykite/jarvis-sdk-go/grpc/internal"
-
-	. "github.com/onsi/gomega"
-	. "github.com/onsi/gomega/gstruct"
 
 	"github.com/indykite/jarvis-sdk-go/grpc"
+	"github.com/indykite/jarvis-sdk-go/grpc/config"
+	"github.com/indykite/jarvis-sdk-go/grpc/internal"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	. "github.com/onsi/gomega/gstruct"
 )
 
 var _ = Describe("Test JSON and YAML to JSON credentials", func() {
@@ -52,7 +50,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		func(filePath string) {
 			// Prepare test data
 			// #nosec: G304: Potential file inclusion via variable
-			data, err := ioutil.ReadFile(filePath)
+			data, err := os.ReadFile(filePath)
 			Expect(err).To(Succeed())
 			// Quickly parse JSON to avoid hardcoded values
 			jsonData := make(map[string]interface{})
@@ -80,7 +78,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 
 	It("Valid YAML converted to JSON with JWT as a string", func() {
 		// Prepare test data
-		data, err := ioutil.ReadFile("testdata/valid_jwt_as_json_string.yaml")
+		data, err := os.ReadFile("testdata/valid_jwt_as_json_string.yaml")
 		Expect(err).To(Succeed())
 		data, err = yaml.YAMLToJSON(data)
 		Expect(err).To(Succeed())
@@ -108,7 +106,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 
 	It("JSON file does not overwrite Dial Settings", func() {
 		// Prepare test data
-		data, err := ioutil.ReadFile("testdata/valid_jwt_as_map.json")
+		data, err := os.ReadFile("testdata/valid_jwt_as_map.json")
 		Expect(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
 		jsonData := make(map[string]interface{})
@@ -136,7 +134,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 
 	It("JSON file is not Service Account", func() {
 		// Prepare test data
-		data, err := ioutil.ReadFile("testdata/valid_jwt_as_map.json")
+		data, err := os.ReadFile("testdata/valid_jwt_as_map.json")
 		Ω(err).To(Succeed())
 
 		endpoint := "grpc_endpoint.example.com"
@@ -154,7 +152,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 
 	It("JSON file is not AppAgent Account", func() {
 		// Prepare test data
-		data, err := ioutil.ReadFile("testdata/valid_jwt_service.json")
+		data, err := os.ReadFile("testdata/valid_jwt_service.json")
 		Ω(err).To(Succeed())
 
 		endpoint := "grpc_endpoint.example.com"
@@ -171,7 +169,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 
 	It("Service Account JSON", func() {
 		// Prepare test data
-		data, err := ioutil.ReadFile("testdata/valid_jwt_service.json")
+		data, err := os.ReadFile("testdata/valid_jwt_service.json")
 		Ω(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
 		var jsonData map[string]interface{}

@@ -19,9 +19,8 @@ import (
 	"log"
 	"time"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
-
 	"github.com/indykite/jarvis-sdk-go/errors"
+	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
 )
 
 func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (

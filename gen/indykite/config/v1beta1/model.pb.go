@@ -24,7 +24,6 @@ import (
 	reflect "reflect"
 	sync "sync"
 
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
@@ -34,6 +33,8 @@ import (
 
 	v1beta11 "github.com/indykite/jarvis-sdk-go/gen/indykite/knowledge_graph/v1beta1"
 	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 )
 
 const (
