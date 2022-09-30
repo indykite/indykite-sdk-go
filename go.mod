@@ -24,10 +24,10 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	go.opencensus.io v0.23.0
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.32.0
+	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.36.1
 	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2
 	google.golang.org/genproto v0.0.0-20220623142657-077d458a5694
-	google.golang.org/grpc v1.47.0
+	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.0
 )
 
