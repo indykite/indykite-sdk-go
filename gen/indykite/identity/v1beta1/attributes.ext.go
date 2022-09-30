@@ -138,7 +138,7 @@ func (PropertyBatchOperations) validateMeta(meta *PropertyMetadata, isTrusted bo
 				return errors.New("issuer must be RFC4122 variant UUID")
 			}
 		case len(meta.Issuer) >= 7 && meta.Issuer[:3] == string(PropertyRawPrefix):
-			break
+			// This is valid
 		default:
 			return errors.New("issuer must starts with 'app:' or 'asp:' followed by trimmed base64URL UUID," +
 				" or starts with 'raw:' followed by name with minimum length of 3 characters")

@@ -24,9 +24,9 @@ import (
 
 // ClientError represents any error regarding the used of SDK or validating the operation call.
 type ClientError struct {
-	code  codes.Code
 	cause error
 	msg   string
+	code  codes.Code
 }
 
 func (err *ClientError) Error() string {
@@ -110,6 +110,7 @@ func IsServiceError(err error) bool {
 	if se, ok := err.(interface {
 		Code() codes.Code
 	}); ok {
+		// nolint:exhaustive
 		switch se.Code() {
 		case codes.Unknown,
 			codes.DeadlineExceeded,

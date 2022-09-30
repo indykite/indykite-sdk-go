@@ -32,9 +32,9 @@ type (
 		AppAgentID            string          `json:"appAgentId,omitempty" yaml:"app_agent_id,omitempty"`
 		ServiceAccountID      string          `json:"serviceAccountId,omitempty" yaml:"service_account_id,omitempty"`
 		Endpoint              string          `json:"endpoint,omitempty" yaml:"endpoint,omitempty"`
-		PrivateKeyJWK         json.RawMessage `json:"privateKeyJWK,omitempty" yaml:"private_key_jwk,omitempty"`
 		PrivateKeyPKCS8Base64 string          `json:"privateKeyPKCS8Base64,omitempty" yaml:"private_key_pkcs8_base64,omitempty"` // nolint:lll
 		PrivateKeyPKCS8       string          `json:"privateKeyPKCS8,omitempty" yaml:"private_key_pkcs8,omitempty"`
+		PrivateKeyJWK         json.RawMessage `json:"privateKeyJWK,omitempty" yaml:"private_key_jwk,omitempty"`
 	}
 
 	CredentialsLoader func(ctx context.Context) (*CredentialsConfig, error)

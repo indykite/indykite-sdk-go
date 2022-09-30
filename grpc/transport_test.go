@@ -28,7 +28,6 @@ import (
 )
 
 var _ = Describe("Test creating gRPC connection from setting", func() {
-
 	var (
 		server   *google_grpc.Server
 		listener net.Listener
@@ -83,6 +82,5 @@ var _ = Describe("Test creating gRPC connection from setting", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(conn.Num()).To(Equal(poolSize))
-
 	})
 })

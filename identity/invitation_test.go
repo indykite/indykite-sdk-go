@@ -31,7 +31,6 @@ import (
 )
 
 var _ = Describe("Invitation", func() {
-
 	It("Create", func() {
 		mockCtrl := gomock.NewController(GinkgoT())
 		mockClient := midentity.NewMockIdentityManagementAPIClient(mockCtrl)
@@ -65,5 +64,4 @@ var _ = Describe("Invitation", func() {
 			})
 		Ω(err).To(Succeed())
 	})
-
 })

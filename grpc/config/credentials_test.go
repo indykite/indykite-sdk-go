@@ -26,7 +26,6 @@ import (
 
 var _ = Describe("UnmarshalCredentialConfig", func() {
 	It("Empty input returns nils without errors", func() {
-
 		config, err := UnmarshalCredentialConfig([]byte(""))
 		Expect(config).To(BeNil())
 		Expect(err).To(Succeed())

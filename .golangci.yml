@@ -1,30 +1,40 @@
 ---
 linters:
     enable:
-        - deadcode
+        # By Default
         - errcheck
-        - gci
-        - gosec
         - gosimple
         - govet
         - ineffassign
-        - lll
         - staticcheck
-        - structcheck
-        - typecheck
         - stylecheck
+        - typecheck
         - unused
-        - varcheck
 
+        # Extra
         - asciicheck
-       # - cyclop
+        - bidichk
+        - contextcheck
+        - durationcheck
+        # - dupword # Available since 1.50
+        - exhaustive
+        - gci
         - gocritic
-        - revive
-        - gosec
+        # - godot # Nice to have for better documentation
+        # - goerr113 # As this is public SDK, would be nice to follow new error patterns
         - gofmt
-        - ifshort
+        - goheader
+        - gosec
+        - lll
+        # - loggercheck # Available since 1.50
+        - nakedret
         - prealloc
+        - prealloc
+        - revive
+        - testpackage
         - unconvert
+        - unconvert
+        - unparam
         - whitespace
 
 linters-settings:
@@ -39,14 +49,87 @@ linters-settings:
             - prefix(github.com/indykite/jarvis-sdk-go)
             - blank
             - dot
+    # TODO: enable to optimize code
+    govet:
+        # This enable is on top of the defaults, it does not override everything
+        enable:
+            - fieldalignment
     staticcheck:
         go: '1.16'
         checks: [all, -ST1000]
     stylecheck:
         go: '1.16'
         checks: [all, -ST1000]
-    maligned:
-        suggest-new: true
+
+    goheader:
+        values:
+            regexp:
+                # As long we decide which format of YEAR in copyright we want, add this hack
+                our_year: 202[0-2]
+        template: |-
+            Copyright (c) {{OUR_YEAR}} IndyKite
+
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file except in compliance with the License.
+            You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
+
+    nakedret:
+        max-func-lines: 8 # Counting also declaration, not just body
+
+    exhaustive:
+        check:
+            - switch
+            - map
+        default-signifies-exhaustive: true
+        ignore-enum-members: .*INVALID$   # TODO remove before publishing and fix
+
+    revive:
+        # When listed some additional rules, it overrides defaults as well.
+        # Put manually all default ones from https://github.com/mgechev/revive/blob/master/defaults.toml
+        rules:
+            # Default ones sorted as are in defaults.toml
+            - name: blank-imports
+            - name: context-as-argument
+            - name: context-keys-type
+            - name: dot-imports
+            - name: error-return
+            - name: error-strings
+            - name: error-naming
+            - name: exported
+            # - name: if-return # TODO decide later if keep or ignore this linter rule
+            - name: increment-decrement
+            - name: var-naming
+            - name: var-declaration
+            - name: package-comments
+            - name: range
+            - name: receiver-naming
+            - name: time-naming
+            - name: unexported-return
+            - name: indent-error-flow
+            - name: errorf
+
+            # Extra ones
+            - name: confusing-naming
+            - name: confusing-results
+            - name: early-return
+            - name: empty-block
+            - name: empty-lines
+            - name: get-return
+            - name: modifies-value-receiver
+            - name: nested-structs
+            - name: redefines-builtin-id
+            - name: string-of-int
+            - name: superfluous-else
+            - name: unnecessary-stmt
+
 issues:
     exclude-use-default: false # Some rules are excluded by GolangCI Linter by default, this one will prevent that
     max-issues-per-linter: 0
@@ -55,4 +138,10 @@ issues:
     exclude-rules:
         - linters:
               - revive
-          text: exported .* should have comment .*or be unexported
+          text: exported .* should have comment .*or be unexported # TODO fix this for proper documentation
+        - linters:
+              - revive
+          text: 'empty-lines:' # Ignore one-liners - false positive, fix from revive is coming
+        - linters:
+              - contextcheck
+          text: '`verifyTokenFormat->parseBytes`' # False positive, context is internal in JWT, not in our control

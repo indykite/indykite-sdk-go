@@ -45,6 +45,7 @@ const (
 )
 
 // DialSettings holds information needed to establish a connection with a service.
+// nolint:govet
 type DialSettings struct {
 	GRPCConnPoolSize   int
 	GRPCConn           *grpc.ClientConn
