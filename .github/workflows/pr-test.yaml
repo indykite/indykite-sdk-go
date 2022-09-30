@@ -38,3 +38,6 @@ jobs:
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
                   files: ./coverage.out
+                  # Notify us when failed, so devs are not waiting for Codecov report when it will never come.
+                  # Because Codecov report is required to be able to merge, we have to run again the whole test anyway.
+                  fail_ci_if_error: true
