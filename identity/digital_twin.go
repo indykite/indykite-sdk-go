@@ -255,7 +255,7 @@ func (c *Client) PatchDigitalTwinByToken(ctx context.Context,
 	}, operations, forceDelete, opts...)
 }
 
-func (c *Client) deleteDigitalTwin(ctx context.Context,
+func (c *Client) deleteDigitalTwinByIdentifier(ctx context.Context,
 	identifier *identitypb.DigitalTwinIdentifier,
 	opts ...grpc.CallOption,
 ) (*identitypb.DigitalTwin, error) {
@@ -282,7 +282,7 @@ func (c *Client) DeleteDigitalTwin(ctx context.Context,
 		return nil, errors.NewInvalidArgumentError(err.Error())
 	}
 
-	return c.deleteDigitalTwin(ctx, &identitypb.DigitalTwinIdentifier{
+	return c.deleteDigitalTwinByIdentifier(ctx, &identitypb.DigitalTwinIdentifier{
 		Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
 	}, opts...)
 }
@@ -296,7 +296,7 @@ func (c *Client) DeleteDigitalTwinByToken(ctx context.Context,
 		return nil, err
 	}
 
-	return c.deleteDigitalTwin(ctx, &identitypb.DigitalTwinIdentifier{
+	return c.deleteDigitalTwinByIdentifier(ctx, &identitypb.DigitalTwinIdentifier{
 		Filter: &identitypb.DigitalTwinIdentifier_AccessToken{AccessToken: token},
 	}, opts...)
 }

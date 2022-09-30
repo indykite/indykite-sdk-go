@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// nolint:testpackage
 package grpc
 
 import (
@@ -28,7 +29,6 @@ import (
 )
 
 var _ = Describe("Test Connection pools", func() {
-
 	It("Get connections in rounds", func() {
 		conn1 := &grpc.ClientConn{}
 		conn2 := &grpc.ClientConn{}
@@ -65,7 +65,6 @@ var _ = Describe("Test Connection pools", func() {
 			Expect(conn.GetState()).To(Equal(connectivity.Shutdown))
 		}
 	})
-
 })
 
 func mockServer() (*grpc.Server, net.Listener) {
