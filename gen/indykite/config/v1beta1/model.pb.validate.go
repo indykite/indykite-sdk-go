@@ -6375,9 +6375,9 @@ func (m *WebAuthnProviderConfig) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetRelayingParties()) < 1 {
+	if len(m.GetRelyingParties()) < 1 {
 		err := WebAuthnProviderConfigValidationError{
-			field:  "RelayingParties",
+			field:  "RelyingParties",
 			reason: "value must contain at least 1 pair(s)",
 		}
 		if !all {
@@ -6387,20 +6387,20 @@ func (m *WebAuthnProviderConfig) validate(all bool) error {
 	}
 
 	{
-		sorted_keys := make([]string, len(m.GetRelayingParties()))
+		sorted_keys := make([]string, len(m.GetRelyingParties()))
 		i := 0
-		for key := range m.GetRelayingParties() {
+		for key := range m.GetRelyingParties() {
 			sorted_keys[i] = key
 			i++
 		}
 		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
 		for _, key := range sorted_keys {
-			val := m.GetRelayingParties()[key]
+			val := m.GetRelyingParties()[key]
 			_ = val
 
 			if uri, err := url.Parse(key); err != nil {
 				err = WebAuthnProviderConfigValidationError{
-					field:  fmt.Sprintf("RelayingParties[%v]", key),
+					field:  fmt.Sprintf("RelyingParties[%v]", key),
 					reason: "value must be a valid URI",
 					cause:  err,
 				}
@@ -6410,7 +6410,7 @@ func (m *WebAuthnProviderConfig) validate(all bool) error {
 				errors = append(errors, err)
 			} else if !uri.IsAbs() {
 				err := WebAuthnProviderConfigValidationError{
-					field:  fmt.Sprintf("RelayingParties[%v]", key),
+					field:  fmt.Sprintf("RelyingParties[%v]", key),
 					reason: "value must be absolute",
 				}
 				if !all {
@@ -6421,7 +6421,7 @@ func (m *WebAuthnProviderConfig) validate(all bool) error {
 
 			if l := utf8.RuneCountInString(val); l < 1 || l > 256 {
 				err := WebAuthnProviderConfigValidationError{
-					field:  fmt.Sprintf("RelayingParties[%v]", key),
+					field:  fmt.Sprintf("RelyingParties[%v]", key),
 					reason: "value length must be between 1 and 256 runes, inclusive",
 				}
 				if !all {
@@ -6793,21 +6793,6 @@ func (m *AuthFlowConfig) validate(all bool) error {
 		}
 	}
 
-	if a := m.GetProto(); a != nil {
-
-		if _, ok := _AuthFlowConfig_Proto_InLookup[a.GetTypeUrl()]; !ok {
-			err := AuthFlowConfigValidationError{
-				field:  "Proto",
-				reason: "type URL must be in list [type.googleapis.com/id.indykite.jarvis.flow.FlowDescription type.googleapis.com/indykite.flow.v1beta1.FlowDescription]",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
 	if len(errors) > 0 {
 		return AuthFlowConfigMultiError(errors)
 	}
@@ -6885,11 +6870,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AuthFlowConfigValidationError{}
-
-var _AuthFlowConfig_Proto_InLookup = map[string]struct{}{
-	"type.googleapis.com/id.indykite.jarvis.flow.FlowDescription": {},
-	"type.googleapis.com/indykite.flow.v1beta1.FlowDescription":   {},
-}
 
 // Validate checks the field values on AuthenteqProviderConfig with the rules
 // defined in the proto definition for this message. If any rules are

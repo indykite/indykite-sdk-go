@@ -57,6 +57,33 @@ func (m *ReadCustomerRequest) validate(all bool) error {
 
 	var errors []error
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadCustomerRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadCustomerRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadCustomerRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	switch m.Identifier.(type) {
 
 	case *ReadCustomerRequest_Id:
@@ -202,6 +229,8 @@ var _ interface {
 var _ReadCustomerRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _ReadCustomerRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _ReadCustomerRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadCustomerResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -430,6 +459,33 @@ func (m *CreateApplicationSpaceRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateApplicationSpaceRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateApplicationSpaceRequestMultiError(errors)
 	}
@@ -514,6 +570,8 @@ var _ interface {
 var _CreateApplicationSpaceRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateApplicationSpaceRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateApplicationSpaceRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateApplicationSpaceResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -619,6 +677,8 @@ func (m *CreateApplicationSpaceResponse) validate(all bool) error {
 
 	// no validation rules for Etag
 
+	// no validation rules for Bookmark
+
 	if len(errors) > 0 {
 		return CreateApplicationSpaceResponseMultiError(errors)
 	}
@@ -723,6 +783,33 @@ func (m *ReadApplicationSpaceRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadApplicationSpaceRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	switch m.Identifier.(type) {
 
@@ -875,6 +962,8 @@ var _ interface {
 } = ReadApplicationSpaceRequestValidationError{}
 
 var _ReadApplicationSpaceRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadApplicationSpaceRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadApplicationSpaceResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -1105,6 +1194,33 @@ func (m *ListApplicationSpacesRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ListApplicationSpacesRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListApplicationSpacesRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ListApplicationSpacesRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ListApplicationSpacesRequestMultiError(errors)
 	}
@@ -1189,6 +1305,8 @@ var _ interface {
 var _ListApplicationSpacesRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _ListApplicationSpacesRequest_Match_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,252}[a-z0-9])$")
+
+var _ListApplicationSpacesRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ListApplicationSpacesResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -1434,6 +1552,33 @@ func (m *UpdateApplicationSpaceRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateApplicationSpaceRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateApplicationSpaceRequestMultiError(errors)
 	}
@@ -1519,6 +1664,8 @@ var _UpdateApplicationSpaceRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-
 
 var _UpdateApplicationSpaceRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _UpdateApplicationSpaceRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateApplicationSpaceResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1593,6 +1740,8 @@ func (m *UpdateApplicationSpaceResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateApplicationSpaceResponseMultiError(errors)
@@ -1751,6 +1900,33 @@ func (m *DeleteApplicationSpaceRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteApplicationSpaceRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteApplicationSpaceRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteApplicationSpaceRequestMultiError(errors)
 	}
@@ -1836,6 +2012,8 @@ var _DeleteApplicationSpaceRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-
 
 var _DeleteApplicationSpaceRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _DeleteApplicationSpaceRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteApplicationSpaceResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1857,6 +2035,8 @@ func (m *DeleteApplicationSpaceResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteApplicationSpaceResponseMultiError(errors)
@@ -2035,6 +2215,33 @@ func (m *CreateApplicationRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateApplicationRequestMultiError(errors)
 	}
@@ -2118,6 +2325,8 @@ var _ interface {
 var _CreateApplicationRequest_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateApplicationRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateApplicationResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2223,6 +2432,8 @@ func (m *CreateApplicationResponse) validate(all bool) error {
 
 	// no validation rules for Etag
 
+	// no validation rules for Bookmark
+
 	if len(errors) > 0 {
 		return CreateApplicationResponseMultiError(errors)
 	}
@@ -2326,6 +2537,33 @@ func (m *ReadApplicationRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	switch m.Identifier.(type) {
 
@@ -2477,6 +2715,8 @@ var _ interface {
 } = ReadApplicationRequestValidationError{}
 
 var _ReadApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadApplicationResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2706,6 +2946,33 @@ func (m *ListApplicationsRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ListApplicationsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListApplicationsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ListApplicationsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ListApplicationsRequestMultiError(errors)
 	}
@@ -2789,6 +3056,8 @@ var _ interface {
 var _ListApplicationsRequest_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _ListApplicationsRequest_Match_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,252}[a-z0-9])$")
+
+var _ListApplicationsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ListApplicationsResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -3033,6 +3302,33 @@ func (m *UpdateApplicationRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateApplicationRequestMultiError(errors)
 	}
@@ -3117,6 +3413,8 @@ var _UpdateApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{2
 
 var _UpdateApplicationRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _UpdateApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateApplicationResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3191,6 +3489,8 @@ func (m *UpdateApplicationResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateApplicationResponseMultiError(errors)
@@ -3348,6 +3648,33 @@ func (m *DeleteApplicationRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteApplicationRequestMultiError(errors)
 	}
@@ -3432,6 +3759,8 @@ var _DeleteApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{2
 
 var _DeleteApplicationRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _DeleteApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteApplicationResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -3453,6 +3782,8 @@ func (m *DeleteApplicationResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteApplicationResponseMultiError(errors)
@@ -3630,6 +3961,33 @@ func (m *CreateApplicationAgentRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateApplicationAgentRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateApplicationAgentRequestMultiError(errors)
 	}
@@ -3714,6 +4072,8 @@ var _ interface {
 var _CreateApplicationAgentRequest_ApplicationId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateApplicationAgentRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateApplicationAgentRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateApplicationAgentResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -3819,6 +4179,8 @@ func (m *CreateApplicationAgentResponse) validate(all bool) error {
 
 	// no validation rules for Etag
 
+	// no validation rules for Bookmark
+
 	if len(errors) > 0 {
 		return CreateApplicationAgentResponseMultiError(errors)
 	}
@@ -3923,6 +4285,33 @@ func (m *ReadApplicationAgentRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadApplicationAgentRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	switch m.Identifier.(type) {
 
@@ -4075,6 +4464,8 @@ var _ interface {
 } = ReadApplicationAgentRequestValidationError{}
 
 var _ReadApplicationAgentRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadApplicationAgentRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadApplicationAgentResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -4305,6 +4696,33 @@ func (m *ListApplicationAgentsRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ListApplicationAgentsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListApplicationAgentsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ListApplicationAgentsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ListApplicationAgentsRequestMultiError(errors)
 	}
@@ -4389,6 +4807,8 @@ var _ interface {
 var _ListApplicationAgentsRequest_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _ListApplicationAgentsRequest_Match_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,252}[a-z0-9])$")
+
+var _ListApplicationAgentsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ListApplicationAgentsResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -4634,6 +5054,33 @@ func (m *UpdateApplicationAgentRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateApplicationAgentRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateApplicationAgentRequestMultiError(errors)
 	}
@@ -4719,6 +5166,8 @@ var _UpdateApplicationAgentRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-
 
 var _UpdateApplicationAgentRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _UpdateApplicationAgentRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateApplicationAgentResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -4793,6 +5242,8 @@ func (m *UpdateApplicationAgentResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateApplicationAgentResponseMultiError(errors)
@@ -4951,6 +5402,33 @@ func (m *DeleteApplicationAgentRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteApplicationAgentRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteApplicationAgentRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteApplicationAgentRequestMultiError(errors)
 	}
@@ -5036,6 +5514,8 @@ var _DeleteApplicationAgentRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-
 
 var _DeleteApplicationAgentRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _DeleteApplicationAgentRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteApplicationAgentResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -5057,6 +5537,8 @@ func (m *DeleteApplicationAgentResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteApplicationAgentResponseMultiError(errors)
@@ -5256,6 +5738,33 @@ func (m *RegisterApplicationAgentCredentialRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := RegisterApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_RegisterApplicationAgentCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := RegisterApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	switch m.PublicKey.(type) {
 
 	case *RegisterApplicationAgentCredentialRequest_Jwk:
@@ -5416,6 +5925,8 @@ var _RegisterApplicationAgentCredentialRequest_ApplicationAgentId_Pattern = rege
 
 var _RegisterApplicationAgentCredentialRequest_DefaultTenantId_Pattern = regexp.MustCompile("^gid:[A-Za-z0-9-_:]{22,254}$")
 
+var _RegisterApplicationAgentCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on
 // RegisterApplicationAgentCredentialResponse with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -5545,6 +6056,8 @@ func (m *RegisterApplicationAgentCredentialResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return RegisterApplicationAgentCredentialResponseMultiError(errors)
@@ -5677,6 +6190,33 @@ func (m *ReadApplicationAgentCredentialRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadApplicationAgentCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadApplicationAgentCredentialRequestMultiError(errors)
 	}
@@ -5760,6 +6300,8 @@ var _ interface {
 } = ReadApplicationAgentCredentialRequestValidationError{}
 
 var _ReadApplicationAgentCredentialRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadApplicationAgentCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadApplicationAgentCredentialResponse
 // with the rules defined in the proto definition for this message. If any
@@ -5942,6 +6484,33 @@ func (m *DeleteApplicationAgentCredentialRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteApplicationAgentCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteApplicationAgentCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteApplicationAgentCredentialRequestMultiError(errors)
 	}
@@ -6026,6 +6595,8 @@ var _ interface {
 
 var _DeleteApplicationAgentCredentialRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _DeleteApplicationAgentCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteApplicationAgentCredentialResponse
 // with the rules defined in the proto definition for this message. If any
 // rules are violated, the first error encountered is returned, or nil if
@@ -6049,6 +6620,8 @@ func (m *DeleteApplicationAgentCredentialResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteApplicationAgentCredentialResponseMultiError(errors)
@@ -6239,6 +6812,33 @@ func (m *CreateServiceAccountRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateServiceAccountRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateServiceAccountRequestMultiError(errors)
 	}
@@ -6332,6 +6932,8 @@ var _CreateServiceAccountRequest_Role_InLookup = map[string]struct{}{
 	"authn_viewer": {},
 	"authn_editor": {},
 }
+
+var _CreateServiceAccountRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateServiceAccountResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -6437,6 +7039,8 @@ func (m *CreateServiceAccountResponse) validate(all bool) error {
 
 	// no validation rules for Etag
 
+	// no validation rules for Bookmark
+
 	if len(errors) > 0 {
 		return CreateServiceAccountResponseMultiError(errors)
 	}
@@ -6541,6 +7145,33 @@ func (m *ReadServiceAccountRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadServiceAccountRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	switch m.Identifier.(type) {
 
@@ -6692,6 +7323,8 @@ var _ interface {
 } = ReadServiceAccountRequestValidationError{}
 
 var _ReadServiceAccountRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadServiceAccountRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadServiceAccountResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -6936,6 +7569,33 @@ func (m *UpdateServiceAccountRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateServiceAccountRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateServiceAccountRequestMultiError(errors)
 	}
@@ -7021,6 +7681,8 @@ var _UpdateServiceAccountRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:
 
 var _UpdateServiceAccountRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _UpdateServiceAccountRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateServiceAccountResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -7095,6 +7757,8 @@ func (m *UpdateServiceAccountResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateServiceAccountResponseMultiError(errors)
@@ -7253,6 +7917,33 @@ func (m *DeleteServiceAccountRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteServiceAccountRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteServiceAccountRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteServiceAccountRequestMultiError(errors)
 	}
@@ -7338,6 +8029,8 @@ var _DeleteServiceAccountRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:
 
 var _DeleteServiceAccountRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _DeleteServiceAccountRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteServiceAccountResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -7359,6 +8052,8 @@ func (m *DeleteServiceAccountResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteServiceAccountResponseMultiError(errors)
@@ -7532,6 +8227,33 @@ func (m *RegisterServiceAccountCredentialRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := RegisterServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_RegisterServiceAccountCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := RegisterServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	switch m.PublicKey.(type) {
 
 	case *RegisterServiceAccountCredentialRequest_Jwk:
@@ -7690,6 +8412,8 @@ var _ interface {
 
 var _RegisterServiceAccountCredentialRequest_ServiceAccountId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _RegisterServiceAccountCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on RegisterServiceAccountCredentialResponse
 // with the rules defined in the proto definition for this message. If any
 // rules are violated, the first error encountered is returned, or nil if
@@ -7819,6 +8543,8 @@ func (m *RegisterServiceAccountCredentialResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return RegisterServiceAccountCredentialResponseMultiError(errors)
@@ -7951,6 +8677,33 @@ func (m *ReadServiceAccountCredentialRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadServiceAccountCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadServiceAccountCredentialRequestMultiError(errors)
 	}
@@ -8034,6 +8787,8 @@ var _ interface {
 } = ReadServiceAccountCredentialRequestValidationError{}
 
 var _ReadServiceAccountCredentialRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadServiceAccountCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadServiceAccountCredentialResponse
 // with the rules defined in the proto definition for this message. If any
@@ -8214,6 +8969,33 @@ func (m *DeleteServiceAccountCredentialRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteServiceAccountCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteServiceAccountCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteServiceAccountCredentialRequestMultiError(errors)
 	}
@@ -8298,6 +9080,8 @@ var _ interface {
 
 var _DeleteServiceAccountCredentialRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _DeleteServiceAccountCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteServiceAccountCredentialResponse
 // with the rules defined in the proto definition for this message. If any
 // rules are violated, the first error encountered is returned, or nil if
@@ -8321,6 +9105,8 @@ func (m *DeleteServiceAccountCredentialResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteServiceAccountCredentialResponseMultiError(errors)
@@ -8500,6 +9286,33 @@ func (m *CreateTenantRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateTenantRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateTenantRequestMultiError(errors)
 	}
@@ -8583,6 +9396,8 @@ var _ interface {
 var _CreateTenantRequest_IssuerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateTenantRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateTenantRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateTenantResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -8688,6 +9503,8 @@ func (m *CreateTenantResponse) validate(all bool) error {
 
 	// no validation rules for Etag
 
+	// no validation rules for Bookmark
+
 	if len(errors) > 0 {
 		return CreateTenantResponseMultiError(errors)
 	}
@@ -8791,6 +9608,33 @@ func (m *ReadTenantRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadTenantRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
 
 	switch m.Identifier.(type) {
 
@@ -8942,6 +9786,8 @@ var _ interface {
 } = ReadTenantRequestValidationError{}
 
 var _ReadTenantRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadTenantRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadTenantResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -9171,6 +10017,33 @@ func (m *ListTenantsRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ListTenantsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListTenantsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ListTenantsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ListTenantsRequestMultiError(errors)
 	}
@@ -9254,6 +10127,8 @@ var _ interface {
 var _ListTenantsRequest_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _ListTenantsRequest_Match_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,252}[a-z0-9])$")
+
+var _ListTenantsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ListTenantsResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -9498,6 +10373,33 @@ func (m *UpdateTenantRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateTenantRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateTenantRequestMultiError(errors)
 	}
@@ -9582,6 +10484,8 @@ var _UpdateTenantRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254
 
 var _UpdateTenantRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _UpdateTenantRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateTenantResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -9656,6 +10560,8 @@ func (m *UpdateTenantResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateTenantResponseMultiError(errors)
@@ -9813,6 +10719,33 @@ func (m *DeleteTenantRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteTenantRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteTenantRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteTenantRequestMultiError(errors)
 	}
@@ -9897,6 +10830,8 @@ var _DeleteTenantRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254
 
 var _DeleteTenantRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
+var _DeleteTenantRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteTenantResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -9918,6 +10853,8 @@ func (m *DeleteTenantResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteTenantResponseMultiError(errors)
@@ -10099,6 +11036,33 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 				errors = append(errors, err)
 			}
 
+		}
+
+	}
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateConfigNodeRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
 
 	}
@@ -10542,6 +11506,8 @@ var _CreateConfigNodeRequest_Location_Pattern = regexp.MustCompile("^[A-Za-z0-9-
 
 var _CreateConfigNodeRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
+var _CreateConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on CreateConfigNodeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -10645,6 +11611,8 @@ func (m *CreateConfigNodeResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return CreateConfigNodeResponseMultiError(errors)
@@ -10772,6 +11740,33 @@ func (m *ReadConfigNodeRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadConfigNodeRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadConfigNodeRequestMultiError(errors)
 	}
@@ -10853,6 +11848,8 @@ var _ interface {
 } = ReadConfigNodeRequestValidationError{}
 
 var _ReadConfigNodeRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadConfigNodeResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -11092,6 +12089,33 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 				errors = append(errors, err)
 			}
 
+		}
+
+	}
+
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateConfigNodeRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
 
 	}
@@ -11523,6 +12547,8 @@ var _ interface {
 
 var _UpdateConfigNodeRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _UpdateConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateConfigNodeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -11597,6 +12623,8 @@ func (m *UpdateConfigNodeResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateConfigNodeResponseMultiError(errors)
@@ -11753,6 +12781,33 @@ func (m *DeleteConfigNodeRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteConfigNodeRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteConfigNodeRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteConfigNodeRequestMultiError(errors)
 	}
@@ -11835,6 +12890,8 @@ var _ interface {
 
 var _DeleteConfigNodeRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _DeleteConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteConfigNodeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -11856,6 +12913,8 @@ func (m *DeleteConfigNodeResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteConfigNodeResponseMultiError(errors)
@@ -12081,6 +13140,33 @@ func (m *CreateOAuth2ProviderRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateOAuth2ProviderRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateOAuth2ProviderRequestMultiError(errors)
 	}
@@ -12165,6 +13251,8 @@ var _ interface {
 var _CreateOAuth2ProviderRequest_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateOAuth2ProviderRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateOAuth2ProviderRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateOAuth2ProviderResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -12269,6 +13357,8 @@ func (m *CreateOAuth2ProviderResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return CreateOAuth2ProviderResponseMultiError(errors)
@@ -12397,6 +13487,33 @@ func (m *ReadOAuth2ProviderRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadOAuth2ProviderRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadOAuth2ProviderRequestMultiError(errors)
 	}
@@ -12478,6 +13595,8 @@ var _ interface {
 } = ReadOAuth2ProviderRequestValidationError{}
 
 var _ReadOAuth2ProviderRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadOAuth2ProviderRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadOAuth2ProviderResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -12750,6 +13869,33 @@ func (m *UpdateOAuth2ProviderRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateOAuth2ProviderRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateOAuth2ProviderRequestMultiError(errors)
 	}
@@ -12833,6 +13979,8 @@ var _ interface {
 
 var _UpdateOAuth2ProviderRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _UpdateOAuth2ProviderRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateOAuth2ProviderResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -12907,6 +14055,8 @@ func (m *UpdateOAuth2ProviderResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateOAuth2ProviderResponseMultiError(errors)
@@ -13064,6 +14214,33 @@ func (m *DeleteOAuth2ProviderRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteOAuth2ProviderRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteOAuth2ProviderRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteOAuth2ProviderRequestMultiError(errors)
 	}
@@ -13147,6 +14324,8 @@ var _ interface {
 
 var _DeleteOAuth2ProviderRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _DeleteOAuth2ProviderRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteOAuth2ProviderResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -13168,6 +14347,8 @@ func (m *DeleteOAuth2ProviderResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteOAuth2ProviderResponseMultiError(errors)
@@ -13394,6 +14575,33 @@ func (m *CreateOAuth2ApplicationRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := CreateOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CreateOAuth2ApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := CreateOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateOAuth2ApplicationRequestMultiError(errors)
 	}
@@ -13478,6 +14686,8 @@ var _ interface {
 var _CreateOAuth2ApplicationRequest_Oauth2ProviderId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _CreateOAuth2ApplicationRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+var _CreateOAuth2ApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on CreateOAuth2ApplicationResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -13586,6 +14796,8 @@ func (m *CreateOAuth2ApplicationResponse) validate(all bool) error {
 	// no validation rules for ClientId
 
 	// no validation rules for ClientSecret
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return CreateOAuth2ApplicationResponseMultiError(errors)
@@ -13714,6 +14926,33 @@ func (m *ReadOAuth2ApplicationRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ReadOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ReadOAuth2ApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ReadOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadOAuth2ApplicationRequestMultiError(errors)
 	}
@@ -13796,6 +15035,8 @@ var _ interface {
 } = ReadOAuth2ApplicationRequestValidationError{}
 
 var _ReadOAuth2ApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ReadOAuth2ApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ReadOAuth2ApplicationResponse with the
 // rules defined in the proto definition for this message. If any rules are
@@ -14069,6 +15310,33 @@ func (m *UpdateOAuth2ApplicationRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := UpdateOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_UpdateOAuth2ApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := UpdateOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateOAuth2ApplicationRequestMultiError(errors)
 	}
@@ -14152,6 +15420,8 @@ var _ interface {
 
 var _UpdateOAuth2ApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _UpdateOAuth2ApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on UpdateOAuth2ApplicationResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -14226,6 +15496,8 @@ func (m *UpdateOAuth2ApplicationResponse) validate(all bool) error {
 	}
 
 	// no validation rules for Etag
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return UpdateOAuth2ApplicationResponseMultiError(errors)
@@ -14383,6 +15655,33 @@ func (m *DeleteOAuth2ApplicationRequest) validate(all bool) error {
 		}
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := DeleteOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteOAuth2ApplicationRequest_Bookmarks_Pattern.MatchString(item) {
+			err := DeleteOAuth2ApplicationRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteOAuth2ApplicationRequestMultiError(errors)
 	}
@@ -14466,6 +15765,8 @@ var _ interface {
 
 var _DeleteOAuth2ApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _DeleteOAuth2ApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on DeleteOAuth2ApplicationResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -14487,6 +15788,8 @@ func (m *DeleteOAuth2ApplicationResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return DeleteOAuth2ApplicationResponseMultiError(errors)
@@ -14668,6 +15971,33 @@ func (m *AssignPermissionsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := AssignPermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_AssignPermissionsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := AssignPermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return AssignPermissionsRequestMultiError(errors)
 	}
@@ -14763,6 +16093,8 @@ var _AssignPermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0
 
 var _AssignPermissionsRequest_ObjectId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _AssignPermissionsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on AssignPermissionsResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -14786,6 +16118,8 @@ func (m *AssignPermissionsResponse) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Success
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return AssignPermissionsResponseMultiError(errors)
@@ -14966,6 +16300,33 @@ func (m *RevokePermissionsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := RevokePermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_RevokePermissionsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := RevokePermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return RevokePermissionsRequestMultiError(errors)
 	}
@@ -15061,6 +16422,8 @@ var _RevokePermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0
 
 var _RevokePermissionsRequest_ObjectId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+var _RevokePermissionsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
 // Validate checks the field values on RevokePermissionsResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -15084,6 +16447,8 @@ func (m *RevokePermissionsResponse) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Success
+
+	// no validation rules for Bookmark
 
 	if len(errors) > 0 {
 		return RevokePermissionsResponseMultiError(errors)
@@ -15209,6 +16574,33 @@ func (m *ListPermissionsRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := ListPermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ListPermissionsRequest_Bookmarks_Pattern.MatchString(item) {
+			err := ListPermissionsRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ListPermissionsRequestMultiError(errors)
 	}
@@ -15290,6 +16682,8 @@ var _ interface {
 } = ListPermissionsRequestValidationError{}
 
 var _ListPermissionsRequest_Location_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ListPermissionsRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on ListPermissionsResponse with the rules
 // defined in the proto definition for this message. If any rules are
