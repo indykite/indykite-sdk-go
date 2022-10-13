@@ -26,7 +26,7 @@ or request one from your point of contact at IndyKite.
 
 ## Requirements
 
-Go 1.16
+Go 1.19
 
 ## Used terminology
 

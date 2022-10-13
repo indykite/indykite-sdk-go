@@ -11,20 +11,5 @@
   ],
   "commitMessageAction": "update",
   "commitMessagePrefix": "chore(deps): ",
-  "groupName": "everything",
-  "packageRules": [
-    {
-      "matchDatasources": [
-        "golang-version"
-      ],
-      "matchPackageNames": [
-        "go",
-        "golang"
-      ],
-      "allowedVersions": "<=1.16"
-    }
-  ],
-  "constraints": {
-    "go": "1.16"
-  }
+  "groupName": "everything"
 }

@@ -33,6 +33,13 @@ cover: test
 	@echo "==> generate test coverage..."
 	go tool cover -html=coverage.out
 
+upgrade:
+	@echo "==> Upgrading Go"
+	@GO111MODULE=on go get -u all && go mod tidy
+	@echo "==> Upgrading pre-commit"
+	@pre-commit autoupdate
+	@echo "Please, upgrade workflows manually"
+
 generate-proto:
 	@buf generate buf.build/indykite/indykiteapis
 	@go generate
