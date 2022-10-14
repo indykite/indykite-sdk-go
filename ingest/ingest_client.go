@@ -38,8 +38,6 @@ type Client struct {
 }
 
 // NewClient creates a new Ingest API gRPC Client.
-//
-// IndyKite Ingest API
 func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	clientOpts := defaultClientOptions()
 	connPool, _, err := api.DialPool(ctx, append(clientOpts, opts...)...)

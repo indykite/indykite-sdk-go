@@ -88,7 +88,7 @@ func (x *Property) GetMapValue() (val map[string]interface{}, err error) {
 			return nil, nil
 		}
 	}
-	return nil, errors.New("invalid map value value")
+	return nil, errors.New("invalid map value")
 }
 
 // validateValue checks if an operation value is properly set.

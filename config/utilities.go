@@ -48,7 +48,7 @@ func IsValidName(name string) error {
 	return nil
 }
 
-// ContainsLabel check if string array contains given node label
+// ContainsLabel check if string array contains given node label.
 func ContainsLabel(arr []string, searchFor string) bool {
 	for _, v := range arr {
 		if searchFor == v {

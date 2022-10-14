@@ -18,7 +18,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -90,10 +89,10 @@ func readFileWithLimit(filePath string, limitSizeInKb int) ([]byte, error) {
 	}
 	var data []byte
 	data, err = readWithLimit(filePath, limitSizeInKb, file)
-	if err := file.Close(); err != nil {
-		log.Println(err)
+	if err != nil {
+		return nil, err
 	}
-	return data, err
+	return data, file.Close()
 }
 
 func readWithLimit(filePath string, limitSizeInKb int, file *os.File) ([]byte, error) {

@@ -122,7 +122,7 @@ func (c *Client) ChangeMyPassword(ctx context.Context,
 	return nil
 }
 
-// ChangePasswordOfDigitalTwin change password of passed DigitalTwin
+// ChangePasswordOfDigitalTwin change password of passed DigitalTwin.
 func (c *Client) ChangePasswordOfDigitalTwin(ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
 	newPassword string,

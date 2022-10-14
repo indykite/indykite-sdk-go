@@ -23,7 +23,6 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/indykite/jarvis-sdk-go/config"
@@ -107,12 +106,7 @@ func initConfig() {
 
 	client, err = config.NewClient(context.Background(),
 		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
-		grpc.WithTokenSource(oauth2.StaticTokenSource(
-			&oauth2.Token{
-				AccessToken: "",
-				TokenType:   "Bearer",
-			}),
-		),
+		grpc.WithServiceAccount(),
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Config Client %v", err))
