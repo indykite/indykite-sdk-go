@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigManagementAPIClient interface {
-	// ReadCustomer by ID or name and returns all attributes.
+	// ReadCustomer by ID or name, or gets it from a service account and returns all attributes.
 	ReadCustomer(ctx context.Context, in *ReadCustomerRequest, opts ...grpc.CallOption) (*ReadCustomerResponse, error)
 	// CreateApplicationSpace for a customer.
 	// For now, we do not support creating custom Issuers, so implicit Issuer is created automatically with this call.
@@ -646,7 +646,7 @@ func (c *configManagementAPIClient) ListPermissions(ctx context.Context, in *Lis
 // All implementations should embed UnimplementedConfigManagementAPIServer
 // for forward compatibility
 type ConfigManagementAPIServer interface {
-	// ReadCustomer by ID or name and returns all attributes.
+	// ReadCustomer by ID or name, or gets it from a service account and returns all attributes.
 	ReadCustomer(context.Context, *ReadCustomerRequest) (*ReadCustomerResponse, error)
 	// CreateApplicationSpace for a customer.
 	// For now, we do not support creating custom Issuers, so implicit Issuer is created automatically with this call.

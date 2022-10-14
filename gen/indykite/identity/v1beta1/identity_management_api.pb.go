@@ -4017,7 +4017,7 @@ type EnrichTokenRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	//Access token to identify session to enrich.
+	// Access token to identify session to enrich.
 	AccessToken string `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
 	//Claims to be enriched in the session, will also be populated in the access token after a refresh.
 	TokenClaims *structpb.Struct `protobuf:"bytes,2,opt,name=token_claims,json=tokenClaims,proto3" json:"token_claims,omitempty"`
