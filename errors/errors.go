@@ -38,7 +38,7 @@ func (err *ClientError) Error() string {
 
 // Code returns codes.Code.
 //
-// Unknown is returned also if original error is not from GRPC
+// Unknown is returned also if original error is not from GRPC.
 func (err *ClientError) Code() codes.Code {
 	return err.code
 }
@@ -115,7 +115,7 @@ func IsServiceError(err error) bool {
 		case codes.Unknown,
 			codes.DeadlineExceeded,
 			codes.ResourceExhausted,
-			codes.FailedPrecondition,
+			codes.Aborted,
 			codes.Unimplemented,
 			codes.Internal,
 			codes.Unavailable,
@@ -133,8 +133,8 @@ type StatusError struct {
 	grpcStatus *status.Status
 }
 
-// FromError converts given error into StatusError if possible, otherwise false is returned
-// Returns (nil, false) also if given error is nil
+// FromError converts given error into StatusError if possible, otherwise false is returned.
+// Returns (nil, false) also if given error is nil.
 func FromError(err error) *StatusError {
 	if err == nil {
 		return nil
@@ -153,7 +153,7 @@ func FromError(err error) *StatusError {
 	return &StatusError{grpcStatus: status.New(codes.Unknown, err.Error())}
 }
 
-// NewGRPCError unwrap original GRPC status and wraps into GRPCErrorWrapper for easier access
+// NewGRPCError unwrap original GRPC status and wraps into GRPCErrorWrapper for easier access.
 func NewGRPCError(entryErr interface{}) *StatusError {
 	if entryErr == nil {
 		return nil
@@ -187,7 +187,7 @@ func (err *StatusError) Message() string {
 
 // Code returns GRPC Status code.
 //
-// Unknown is returned also if original error is not from GRPC
+// Unknown is returned also if original error is not from GRPC.
 func (err *StatusError) Code() codes.Code {
 	if err.grpcStatus == nil {
 		return codes.Unknown
@@ -200,12 +200,12 @@ func (err *StatusError) Status() *status.Status {
 	return err.grpcStatus
 }
 
-// WithPrefix set prefix which will be printed in when Error is called
+// WithPrefix set prefix which will be printed in when Error is called.
 func (err *StatusError) WithPrefix(prefix string) *StatusError {
 	return err
 }
 
-// Origin returns underlying error, if any
+// Origin returns underlying error, if any.
 func (err *StatusError) Origin() error {
 	return err.origin
 }

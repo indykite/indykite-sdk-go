@@ -16,17 +16,17 @@ linters:
         - bidichk
         - contextcheck
         - durationcheck
-        # - dupword # Available since 1.50
+        - dupword
         - exhaustive
         - gci
         - gocritic
-        # - godot # Nice to have for better documentation
+        - godot
         # - goerr113 # As this is public SDK, would be nice to follow new error patterns
         - gofmt
         - goheader
         - gosec
         - lll
-        # - loggercheck # Available since 1.50
+        - loggercheck
         - nakedret
         - prealloc
         - prealloc
@@ -49,8 +49,8 @@ linters-settings:
             - prefix(github.com/indykite/jarvis-sdk-go)
             - blank
             - dot
-    # TODO: enable to optimize code
     govet:
+        check-shadowing: true
         # This enable is on top of the defaults, it does not override everything
         enable:
             - fieldalignment

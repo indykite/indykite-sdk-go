@@ -38,8 +38,6 @@ type Client struct {
 }
 
 // NewClient creates a new Config Management gRPC Client.
-//
-// IndyKite Configuration API
 func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	clientOpts := defaultClientOptions()
 	connPool, _, err := api.DialPool(ctx, append(clientOpts, opts...)...)
@@ -55,8 +53,6 @@ func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 }
 
 // NewTestClient creates a new Config Management gRPC Client for Testing.
-//
-// IndyKite Configuration API
 func NewTestClient(_ context.Context, client configpb.ConfigManagementAPIClient) (*Client, error) {
 	c := &Client{
 		xMetadata:    metadata.Pairs("x-jarvis-client", fmt.Sprintf("client/%s grpc/%s", versionClient, grpc.Version)),

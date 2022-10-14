@@ -100,7 +100,7 @@ func DefaultServerTLSConfig(serverKeyPair *tls.Certificate) (serverConfig *tls.C
 	return
 }
 
-// ClientTLSConfig returns TLS Config for client
+// ClientTLSConfig returns TLS Config for client.
 func ClientTLSConfig() (clientTLSConf *tls.Config, err error) {
 	clientTLSConf = getBaseTLSConfig()
 	return

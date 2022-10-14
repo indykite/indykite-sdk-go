@@ -40,8 +40,8 @@ func (w withEndpoint) Apply(o *internal.DialSettings) {
 }
 
 // WithTokenSource returns a ClientOption that specifies an OAuth2 token source.
-// This value is ignored if used WithInsecure
-// Be sure NOT to have set INDYKITE env variables or use WithIgnoredEnvVariables
+// This value is ignored if used WithInsecure.
+// Be sure NOT to have set INDYKITE env variables or use WithIgnoredEnvVariables.
 func WithTokenSource(s oauth2.TokenSource) ClientOption {
 	return withTokenSource{s}
 }
@@ -54,14 +54,14 @@ func (w withTokenSource) Apply(o *internal.DialSettings) {
 
 // WithCredentialsJSON returns a ClientOption that authenticates
 // API calls with the given service account or refresh token JSON
-// credentials. This value is ignored if used WithInsecure
-// Be sure NOT to have set INDYKITE env variables or use WithIgnoredEnvVariables
+// credentials. This value is ignored if used WithInsecure.
+// Be sure NOT to have set INDYKITE env variables or use WithIgnoredEnvVariables.
 func WithCredentialsJSON(p []byte) ClientOption {
 	return WithCredentialsLoader(config.StaticCredentialsJSON(p))
 }
 
 // WithGRPCConn returns a ClientOption that specifies the gRPC client to use as
-// as basis of communications. This option may only be used with services that support gRPC.
+// basis of communications. This option may only be used with services that support gRPC.
 func WithGRPCConn(conn *grpc.ClientConn) ClientOption {
 	return withGRPCConn{conn}
 }
@@ -105,7 +105,7 @@ type withUserAgent string
 
 func (w withUserAgent) Apply(o *internal.DialSettings) { o.UserAgent = string(w) }
 
-// WithConnectionPoolSize Returns a ClientOption that sets up Connection Pool Size
+// WithConnectionPoolSize Returns a ClientOption that sets up Connection Pool Size.
 func WithConnectionPoolSize(poolSize int) ClientOption {
 	return withConnectionPoolSize(poolSize)
 }

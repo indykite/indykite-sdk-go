@@ -24,7 +24,7 @@ import (
 )
 
 // Dial returns a gRPC connection configured with the given ClientOptions.
-// In this call WithConnectionPoolSize() is ignored! Use DialPool instead
+// In this call WithConnectionPoolSize() is ignored! Use DialPool instead.
 func Dial(ctx context.Context, opts ...ClientOption) (*grpc.ClientConn, *config.CredentialsConfig, error) {
 	o := new(internal.DialSettings)
 	for _, opt := range opts {
@@ -48,8 +48,8 @@ func Dial(ctx context.Context, opts ...ClientOption) (*grpc.ClientConn, *config.
 	return c, cfg, nil
 }
 
-// DialPool returns a connection pool configured with ClientOptions
-// If grpcConn is specified in ClientOptions, pool size is reset to 1
+// DialPool returns a connection pool configured with ClientOptions.
+// If grpcConn is specified in ClientOptions, pool size is reset to 1.
 func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.CredentialsConfig, error) {
 	o := new(internal.DialSettings)
 	for _, opt := range opts {

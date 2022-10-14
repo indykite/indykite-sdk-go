@@ -37,8 +37,6 @@ type Client struct {
 }
 
 // NewClient creates a new Identity Management gRPC Client.
-//
-// IndyKite Identity API
 func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	clientOpts := defaultClientOptions()
 	connPool, _, err := api.Dial(ctx, append(clientOpts, opts...)...)
