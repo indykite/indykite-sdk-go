@@ -37,7 +37,7 @@ var createAppSpaceCmd = &cobra.Command{
 	Short: "Create Application Space",
 	Run: func(cmd *cobra.Command, args []string) {
 		var name, displayName, customerID string
-		fmt.Print("Enter CustomerID in format 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx': ")
+		fmt.Print("Enter CustomerID in gid format: ")
 		fmt.Scanln(&customerID)
 
 		fmt.Print("Enter name (slug): ")
@@ -66,14 +66,14 @@ var updateAppSpaceCmd = &cobra.Command{
 	Short: "Update given Application Space",
 	Run: func(cmd *cobra.Command, args []string) {
 		var appSpaceID, customerID string
-		fmt.Print("Enter CustomerID in format 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx': ")
+		fmt.Print("Enter CustomerID in gid format: ")
 		fmt.Scanln(&customerID)
 		customerUUID := uuid.Parse(customerID)
 		if customerUUID == nil {
 			er("failed to parse digitalTwinID, not a valid UUID")
 		}
 
-		fmt.Print("Enter AppSpace ID in format 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx': ")
+		fmt.Print("Enter AppSpace ID in gid format: ")
 		fmt.Scanln(&appSpaceID)
 
 		fmt.Print("Enter Display name: ")
@@ -97,7 +97,7 @@ var readAppSpaceCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var appSpaceID string
 
-		fmt.Print("Enter AppSpace ID in format 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx': ")
+		fmt.Print("Enter AppSpace ID in gid format: ")
 		fmt.Scanln(&appSpaceID)
 
 		resp, err := client.ReadApplicationSpace(context.Background(), &config.ReadApplicationSpaceRequest{

@@ -110,7 +110,7 @@ type Identifier_IdString struct {
 }
 
 type Identifier_IdBytes struct {
-	//Byte[16] array representation of an RFC4122 compliant UUID.
+	// Byte[16] array representation of an RFC4122 compliant UUID.
 	IdBytes []byte `protobuf:"bytes,8,opt,name=id_bytes,json=idBytes,proto3,oneof"`
 }
 

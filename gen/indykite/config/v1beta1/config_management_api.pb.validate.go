@@ -134,16 +134,6 @@ func (m *ReadCustomerRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-	default:
-		err := ReadCustomerRequestValidationError{
-			field:  "Identifier",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
