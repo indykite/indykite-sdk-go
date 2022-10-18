@@ -23,9 +23,9 @@ require (
 	github.com/spf13/viper v1.13.0
 	go.opencensus.io v0.23.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.36.3
-	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1
-	google.golang.org/genproto v0.0.0-20221010155953-15ba04fc1c0e
-	google.golang.org/grpc v1.50.0
+	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
+	google.golang.org/genproto v0.0.0-20221018143404-92eef740a0dc
+	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
 
