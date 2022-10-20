@@ -33,23 +33,12 @@ jobs:
         steps:
             - name: Checkout Repo
               uses: actions/checkout@master
-              with:
-                  token: ${{ secrets.CONSOLE_GITHUB_PAT }}
             - name: Install CU tool
               run: npm install -g clickup-simple-cli
             - name: Get Version
               run: |
                   export VERSION="v$(cat .release-please-manifest.json | jq -r '."."')"
                   echo "VERSION=$VERSION" >> $GITHUB_ENV
-            - name: Create CU task
-              env:
-                  CU_list: '186335199'
-                  CU_token: ${{ secrets.CLICKUPPAT }}
-                  APP_NAME: Go SDK
-                  APP_TAG: jarvis-sdk-go
-                  CU_status: DEPLOYED
-              run: |
-                  CU_tags="$APP_TAG,$VERSION,public" cu-cli create -d "Release of $APP_NAME is available here: https://pkg.go.dev/github.com/indykite/jarvis-sdk-go" "$APP_NAME - release $VERSION"
 
             - name: Authenticate to Google Cloud
               id: auth
