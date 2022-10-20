@@ -89,7 +89,6 @@ linters-settings:
             - switch
             - map
         default-signifies-exhaustive: true
-        ignore-enum-members: .*INVALID$   # TODO remove before publishing and fix
 
     revive:
         # When listed some additional rules, it overrides defaults as well.
@@ -104,7 +103,7 @@ linters-settings:
             - name: error-strings
             - name: error-naming
             - name: exported
-            # - name: if-return # TODO decide later if keep or ignore this linter rule
+            - name: if-return
             - name: increment-decrement
             - name: var-naming
             - name: var-declaration

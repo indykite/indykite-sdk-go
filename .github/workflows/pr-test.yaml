@@ -7,9 +7,6 @@ on:
             - master
         tags:
             - '!*' # Do not execute on tags
-        paths-ignore:
-            - version.txt
-            - CHANGELOG.md
     push:
         branches:
             - master
