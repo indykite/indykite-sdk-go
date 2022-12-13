@@ -30,7 +30,7 @@ var invitationCmd = &cobra.Command{
 
 		ref := "my-random-reference-3"
 		err := client.CreateEmailInvitation(context.Background(),
-			"pavel.kutac@indykite.com",
+			"example@indykite.com",
 			"696e6479-6b69-4465-8000-030f00000001",
 			ref,
 			time.Now().Add(time.Hour*24),
