@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.1.0...v0.2.0) (2022-12-13)
+
+
+### Features
+
+* add is authorized client ([ae6d275](https://github.com/indykite/jarvis-sdk-go/commit/ae6d2753c78d4f987cf382f45608589aa13661f1))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([8f594e1](https://github.com/indykite/jarvis-sdk-go/commit/8f594e1ac8682858c4176cdfe86105b579d00126))
+* **deps:** update everything ([84d30ad](https://github.com/indykite/jarvis-sdk-go/commit/84d30ad43025d7829dc8cf59c586f2f0dc7b781c))
+* **deps:** update google-github-actions/auth action to v1 ([4348c2d](https://github.com/indykite/jarvis-sdk-go/commit/4348c2d80a8d70494a22d673fcab6d2fd6e48908))
+
 ## [0.1.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.0.1...v0.1.0) (2022-10-20)
 
 
