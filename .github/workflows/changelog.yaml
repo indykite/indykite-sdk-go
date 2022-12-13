@@ -25,6 +25,7 @@ jobs:
               uses: maprokes/release-please-action@main
               with:
                   package-name: jarvis-sdk-go
+                  token: ${{ secrets.INDYKITE_PAT }}
     analytics:
         if: ${{ needs.release-please.outputs.released }}
         name: Submit analytics data
