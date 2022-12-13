@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.2.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.0...v0.2.1) (2022-12-13)
+
+
+### Bug Fixes
+
+* return invitations error properly ([a25f9d9](https://github.com/indykite/jarvis-sdk-go/commit/a25f9d9aa113116782ae2ebaaf1827cdca896c15))
+
+
+### Miscellaneous Chores
+
+* upgrade dependencies ([5cd3783](https://github.com/indykite/jarvis-sdk-go/commit/5cd37833d380ed4806bdaa6abc9d6889673cee96))
+
 ## [0.2.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.1.0...v0.2.0) (2022-12-13)
 
 
