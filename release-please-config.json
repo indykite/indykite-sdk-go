@@ -60,7 +60,8 @@
       "extra-files": [
         "config/doc.go",
         "identity/doc.go",
-        "ingest/doc.go"
+        "ingest/doc.go",
+        "authorization/doc.go"
       ]
     }
   }
