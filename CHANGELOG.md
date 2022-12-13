@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.1...v0.2.2) (2022-12-13)
+
+
+### Bug Fixes
+
+* add authorization client mock ([f4f3f6c](https://github.com/indykite/jarvis-sdk-go/commit/f4f3f6c2c595b5aa1d2e64ebe510cfcb28a7d2b2))
+
 ### [0.2.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.0...v0.2.1) (2022-12-13)
 
 
