@@ -73,7 +73,10 @@ func (c *Client) ResendInvitation(ctx context.Context, referenceID string, opts 
 	ctx = insertMetadata(ctx, c.xMetadata)
 	_, err := c.client.ResendInvitation(ctx, req, opts...)
 
-	return errors.FromError(err)
+	if err != nil {
+		return errors.FromError(err)
+	}
+	return nil
 }
 
 // CancelInvitation revokes a pending invitation identified by referenceID.
@@ -86,7 +89,10 @@ func (c *Client) CancelInvitation(ctx context.Context, referenceID string, opts 
 	ctx = insertMetadata(ctx, c.xMetadata)
 	_, err := c.client.CancelInvitation(ctx, req, opts...)
 
-	return errors.FromError(err)
+	if err != nil {
+		return errors.FromError(err)
+	}
+	return nil
 }
 
 // CreateEmailInvitation receive all properties for digital twin.
