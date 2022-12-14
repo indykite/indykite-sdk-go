@@ -37,7 +37,7 @@ type Client struct {
 	xMetadata metadata.MD
 }
 
-// NewClient creates a new Ingest API gRPC Client.
+// NewClient creates a new Authorization API gRPC client.
 func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	clientOpts := defaultClientOptions()
 	connPool, _, err := api.DialPool(ctx, append(clientOpts, opts...)...)
@@ -48,6 +48,17 @@ func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 		xMetadata:    metadata.Pairs("x-jarvis-client", fmt.Sprintf("client/%s grpc/%s", versionClient, grpc.Version)),
 		client:       authorizationpb.NewAuthorizationAPIClient(connPool),
 		closeHandler: connPool.Close,
+	}
+	return c, nil
+}
+
+// NewClientFromGRPCClient creates a new Authorization API gRPC client from an existing gRPC client.
+func NewClientFromGRPCClient(client authorizationpb.AuthorizationAPIClient) (*Client, error) {
+	c := &Client{
+		xMetadata: metadata.Pairs("x-jarvis-client",
+			fmt.Sprintf("client/%s grpc/%s", versionClient, grpc.Version)),
+		client:       client,
+		closeHandler: func() error { return nil },
 	}
 	return c, nil
 }
