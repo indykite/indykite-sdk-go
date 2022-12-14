@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.2...v0.2.3) (2022-12-14)
+
+
+### Bug Fixes
+
+* add new init method for authorization client ([8f3b8b0](https://github.com/indykite/jarvis-sdk-go/commit/8f3b8b00aa6d94707cdd39f74744d52d46239096))
+
 ### [0.2.2](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.1...v0.2.2) (2022-12-13)
 
 
