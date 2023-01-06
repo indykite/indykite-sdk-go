@@ -24,10 +24,9 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	identityv1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 	grpc "google.golang.org/grpc"
 	metadata "google.golang.org/grpc/metadata"
-
-	identityv1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
 )
 
 // MockIdentityManagementAPIClient is a mock of IdentityManagementAPIClient interface.
@@ -431,6 +430,26 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) PatchDigitalTwin(ctx, in 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDigitalTwin", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).PatchDigitalTwin), varargs...)
+}
+
+// RegisterDigitalTwinWithoutCredential mocks base method.
+func (m *MockIdentityManagementAPIClient) RegisterDigitalTwinWithoutCredential(ctx context.Context, in *identityv1beta1.RegisterDigitalTwinWithoutCredentialRequest, opts ...grpc.CallOption) (*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RegisterDigitalTwinWithoutCredential", varargs...)
+	ret0, _ := ret[0].(*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RegisterDigitalTwinWithoutCredential indicates an expected call of RegisterDigitalTwinWithoutCredential.
+func (mr *MockIdentityManagementAPIClientMockRecorder) RegisterDigitalTwinWithoutCredential(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterDigitalTwinWithoutCredential", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).RegisterDigitalTwinWithoutCredential), varargs...)
 }
 
 // ResendInvitation mocks base method.
@@ -1164,6 +1183,21 @@ func (m *MockIdentityManagementAPIServer) PatchDigitalTwin(arg0 context.Context,
 func (mr *MockIdentityManagementAPIServerMockRecorder) PatchDigitalTwin(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDigitalTwin", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).PatchDigitalTwin), arg0, arg1)
+}
+
+// RegisterDigitalTwinWithoutCredential mocks base method.
+func (m *MockIdentityManagementAPIServer) RegisterDigitalTwinWithoutCredential(arg0 context.Context, arg1 *identityv1beta1.RegisterDigitalTwinWithoutCredentialRequest) (*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RegisterDigitalTwinWithoutCredential", arg0, arg1)
+	ret0, _ := ret[0].(*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RegisterDigitalTwinWithoutCredential indicates an expected call of RegisterDigitalTwinWithoutCredential.
+func (mr *MockIdentityManagementAPIServerMockRecorder) RegisterDigitalTwinWithoutCredential(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterDigitalTwinWithoutCredential", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).RegisterDigitalTwinWithoutCredential), arg0, arg1)
 }
 
 // ResendInvitation mocks base method.

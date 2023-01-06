@@ -17,6 +17,7 @@ import (
 	"unicode/utf8"
 
 	"google.golang.org/protobuf/types/known/anypb"
+
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
@@ -163,37 +164,6 @@ func (m *Value) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return ValueValidationError{
 					field:  "DurationValue",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *Value_IdentifierValue:
-
-		if all {
-			switch v := interface{}(m.GetIdentifierValue()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ValueValidationError{
-						field:  "IdentifierValue",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ValueValidationError{
-						field:  "IdentifierValue",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetIdentifierValue()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ValueValidationError{
-					field:  "IdentifierValue",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

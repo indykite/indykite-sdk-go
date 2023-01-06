@@ -18,7 +18,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/anypb"
 
-	identityv1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identityv1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // ensure the imports are used
@@ -36,7 +36,7 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = identityv1beta1.AssuranceLevel(0)
+	_ = identityv1beta2.AssuranceLevel(0)
 )
 
 // Validate checks the field values on Policy with the rules defined in the
@@ -904,7 +904,7 @@ func (m *Path_Entity_IdentityProperty) validate(all bool) error {
 
 	// no validation rules for Value
 
-	if _, ok := identityv1beta1.AssuranceLevel_name[int32(m.GetMinimumAssuranceLevel())]; !ok {
+	if _, ok := identityv1beta2.AssuranceLevel_name[int32(m.GetMinimumAssuranceLevel())]; !ok {
 		err := Path_Entity_IdentityPropertyValidationError{
 			field:  "MinimumAssuranceLevel",
 			reason: "value must be one of the defined enum values",

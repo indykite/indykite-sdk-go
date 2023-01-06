@@ -16,9 +16,9 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        (unknown)
-// source: indykite/identity/v1beta1/attributes.proto
+// source: indykite/identity/v1beta2/attributes.proto
 
-package identityv1beta1
+package identityv1beta2
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
@@ -83,11 +83,11 @@ func (x AssuranceLevel) String() string {
 }
 
 func (AssuranceLevel) Descriptor() protoreflect.EnumDescriptor {
-	return file_indykite_identity_v1beta1_attributes_proto_enumTypes[0].Descriptor()
+	return file_indykite_identity_v1beta2_attributes_proto_enumTypes[0].Descriptor()
 }
 
 func (AssuranceLevel) Type() protoreflect.EnumType {
-	return &file_indykite_identity_v1beta1_attributes_proto_enumTypes[0]
+	return &file_indykite_identity_v1beta2_attributes_proto_enumTypes[0]
 }
 
 func (x AssuranceLevel) Number() protoreflect.EnumNumber {
@@ -96,7 +96,7 @@ func (x AssuranceLevel) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AssuranceLevel.Descriptor instead.
 func (AssuranceLevel) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{0}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{0}
 }
 
 type Schema struct {
@@ -113,7 +113,7 @@ type Schema struct {
 func (x *Schema) Reset() {
 	*x = Schema{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[0]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -126,7 +126,7 @@ func (x *Schema) String() string {
 func (*Schema) ProtoMessage() {}
 
 func (x *Schema) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[0]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -139,7 +139,7 @@ func (x *Schema) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Schema.ProtoReflect.Descriptor instead.
 func (*Schema) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{0}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Schema) GetContext() map[string]string {
@@ -220,7 +220,7 @@ type PropertyDefinition struct {
 func (x *PropertyDefinition) Reset() {
 	*x = PropertyDefinition{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[1]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -233,7 +233,7 @@ func (x *PropertyDefinition) String() string {
 func (*PropertyDefinition) ProtoMessage() {}
 
 func (x *PropertyDefinition) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[1]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,7 +246,7 @@ func (x *PropertyDefinition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropertyDefinition.ProtoReflect.Descriptor instead.
 func (*PropertyDefinition) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{1}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *PropertyDefinition) GetContext() string {
@@ -287,7 +287,7 @@ type PropertyConstraint struct {
 func (x *PropertyConstraint) Reset() {
 	*x = PropertyConstraint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[2]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -300,7 +300,7 @@ func (x *PropertyConstraint) String() string {
 func (*PropertyConstraint) ProtoMessage() {}
 
 func (x *PropertyConstraint) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[2]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -313,7 +313,7 @@ func (x *PropertyConstraint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropertyConstraint.ProtoReflect.Descriptor instead.
 func (*PropertyConstraint) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{2}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PropertyConstraint) GetIssuers() []string {
@@ -350,7 +350,7 @@ type PropertyMask struct {
 func (x *PropertyMask) Reset() {
 	*x = PropertyMask{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[3]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -363,7 +363,7 @@ func (x *PropertyMask) String() string {
 func (*PropertyMask) ProtoMessage() {}
 
 func (x *PropertyMask) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[3]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -376,7 +376,7 @@ func (x *PropertyMask) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropertyMask.ProtoReflect.Descriptor instead.
 func (*PropertyMask) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{3}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PropertyMask) GetDefinition() *PropertyDefinition {
@@ -401,7 +401,7 @@ type PropertyMetadata struct {
 	// Primary is true if this instance of a multi-value property is the default to pick from array at first.
 	Primary bool `protobuf:"varint,1,opt,name=primary,proto3" json:"primary,omitempty"`
 	// AssuranceLevel shows the level of assurance of the property value.
-	AssuranceLevel AssuranceLevel `protobuf:"varint,2,opt,name=assurance_level,json=assuranceLevel,proto3,enum=indykite.identity.v1beta1.AssuranceLevel" json:"assurance_level,omitempty"`
+	AssuranceLevel AssuranceLevel `protobuf:"varint,2,opt,name=assurance_level,json=assuranceLevel,proto3,enum=indykite.identity.v1beta2.AssuranceLevel" json:"assurance_level,omitempty"`
 	// Issuer is the identifier of the source of property value.
 	// Must starts with 'app:' or 'asp:' followed by trimmed base64URL UUID
 	// or starts with 'raw:' followed by name with minimum length of 3 characters
@@ -419,7 +419,7 @@ type PropertyMetadata struct {
 func (x *PropertyMetadata) Reset() {
 	*x = PropertyMetadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[4]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -432,7 +432,7 @@ func (x *PropertyMetadata) String() string {
 func (*PropertyMetadata) ProtoMessage() {}
 
 func (x *PropertyMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[4]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -445,7 +445,7 @@ func (x *PropertyMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropertyMetadata.ProtoReflect.Descriptor instead.
 func (*PropertyMetadata) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{4}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PropertyMetadata) GetPrimary() bool {
@@ -508,7 +508,7 @@ type Property struct {
 func (x *Property) Reset() {
 	*x = Property{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[5]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -521,7 +521,7 @@ func (x *Property) String() string {
 func (*Property) ProtoMessage() {}
 
 func (x *Property) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[5]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -534,7 +534,7 @@ func (x *Property) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Property.ProtoReflect.Descriptor instead.
 func (*Property) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{5}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Property) GetId() string {
@@ -617,7 +617,7 @@ type PropertyBatchOperation struct {
 func (x *PropertyBatchOperation) Reset() {
 	*x = PropertyBatchOperation{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[6]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -630,7 +630,7 @@ func (x *PropertyBatchOperation) String() string {
 func (*PropertyBatchOperation) ProtoMessage() {}
 
 func (x *PropertyBatchOperation) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[6]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -643,7 +643,7 @@ func (x *PropertyBatchOperation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PropertyBatchOperation.ProtoReflect.Descriptor instead.
 func (*PropertyBatchOperation) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{6}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{6}
 }
 
 func (m *PropertyBatchOperation) GetOperation() isPropertyBatchOperation_Operation {
@@ -712,7 +712,7 @@ type BatchOperationResult struct {
 func (x *BatchOperationResult) Reset() {
 	*x = BatchOperationResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[7]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -725,7 +725,7 @@ func (x *BatchOperationResult) String() string {
 func (*BatchOperationResult) ProtoMessage() {}
 
 func (x *BatchOperationResult) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[7]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -738,7 +738,7 @@ func (x *BatchOperationResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchOperationResult.ProtoReflect.Descriptor instead.
 func (*BatchOperationResult) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{7}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *BatchOperationResult) GetIndex() uint64 {
@@ -797,7 +797,7 @@ type BatchOperationResultSuccess struct {
 func (x *BatchOperationResultSuccess) Reset() {
 	*x = BatchOperationResultSuccess{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[8]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -810,7 +810,7 @@ func (x *BatchOperationResultSuccess) String() string {
 func (*BatchOperationResultSuccess) ProtoMessage() {}
 
 func (x *BatchOperationResultSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[8]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -823,7 +823,7 @@ func (x *BatchOperationResultSuccess) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchOperationResultSuccess.ProtoReflect.Descriptor instead.
 func (*BatchOperationResultSuccess) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{8}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *BatchOperationResultSuccess) GetPropertyId() string {
@@ -845,7 +845,7 @@ type BatchOperationResultError struct {
 func (x *BatchOperationResultError) Reset() {
 	*x = BatchOperationResultError{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[9]
+		mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -858,7 +858,7 @@ func (x *BatchOperationResultError) String() string {
 func (*BatchOperationResultError) ProtoMessage() {}
 
 func (x *BatchOperationResultError) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_attributes_proto_msgTypes[9]
+	mi := &file_indykite_identity_v1beta2_attributes_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -871,7 +871,7 @@ func (x *BatchOperationResultError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchOperationResultError.ProtoReflect.Descriptor instead.
 func (*BatchOperationResultError) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP(), []int{9}
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *BatchOperationResultError) GetMessage() []string {
@@ -881,14 +881,14 @@ func (x *BatchOperationResultError) GetMessage() []string {
 	return nil
 }
 
-var File_indykite_identity_v1beta1_attributes_proto protoreflect.FileDescriptor
+var File_indykite_identity_v1beta2_attributes_proto protoreflect.FileDescriptor
 
-var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
+var file_indykite_identity_v1beta2_attributes_proto_rawDesc = []byte{
 	0x0a, 0x2a, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x61, 0x74, 0x74, 0x72,
+	0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x61, 0x74, 0x74, 0x72,
 	0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x19, 0x69, 0x6e,
 	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
 	0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x25, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
 	0x74, 0x65, 0x2f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74,
@@ -897,7 +897,7 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xf4, 0x01, 0x0a, 0x06, 0x53, 0x63, 0x68,
 	0x65, 0x6d, 0x61, 0x12, 0x48, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x18, 0x04,
 	0x20, 0x03, 0x28, 0x0b, 0x32, 0x2e, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e,
-	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
 	0x2e, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x2e, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x45,
 	0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x12, 0x16, 0x0a,
 	0x06, 0x73, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73,
@@ -932,12 +932,12 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x72, 0x74, 0x79, 0x4d, 0x61, 0x73, 0x6b, 0x12, 0x57, 0x0a, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e,
 	0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x69, 0x6e,
 	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79,
 	0x44, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a,
 	0x01, 0x02, 0x10, 0x01, 0x52, 0x0a, 0x64, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e,
 	0x12, 0x4d, 0x0a, 0x0a, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61, 0x69, 0x6e, 0x74, 0x18, 0x02,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e,
-	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
 	0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x43, 0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61,
 	0x69, 0x6e, 0x74, 0x52, 0x0a, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x72, 0x61, 0x69, 0x6e, 0x74, 0x22,
 	0xfd, 0x01, 0x0a, 0x10, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x4d, 0x65, 0x74, 0x61,
@@ -946,7 +946,7 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x0a, 0x0f, 0x61, 0x73, 0x73, 0x75, 0x72, 0x61, 0x6e, 0x63, 0x65, 0x5f, 0x6c, 0x65, 0x76, 0x65,
 	0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x29, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
 	0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x75, 0x72, 0x61, 0x6e, 0x63, 0x65, 0x4c, 0x65, 0x76,
+	0x74, 0x61, 0x32, 0x2e, 0x41, 0x73, 0x73, 0x75, 0x72, 0x61, 0x6e, 0x63, 0x65, 0x4c, 0x65, 0x76,
 	0x65, 0x6c, 0x52, 0x0e, 0x61, 0x73, 0x73, 0x75, 0x72, 0x61, 0x6e, 0x63, 0x65, 0x4c, 0x65, 0x76,
 	0x65, 0x6c, 0x12, 0x16, 0x0a, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x12, 0x47, 0x0a, 0x11, 0x76, 0x65,
@@ -962,12 +962,12 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x24, 0xd0, 0x01, 0x01, 0x52, 0x02, 0x69, 0x64, 0x12, 0x4d, 0x0a, 0x0a, 0x64, 0x65, 0x66, 0x69,
 	0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x69,
 	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
-	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74,
 	0x79, 0x44, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0a, 0x64, 0x65, 0x66,
 	0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3f, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18,
 	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65,
 	0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
+	0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
 	0x74, 0x61, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x12, 0x44, 0x0a, 0x0c, 0x6f, 0x62, 0x6a, 0x65,
 	0x63, 0x74, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f,
 	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74,
@@ -980,16 +980,16 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x61, 0x74, 0x63, 0x68, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x41, 0x0a,
 	0x03, 0x61, 0x64, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x69, 0x6e, 0x64,
 	0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x42,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x42,
 	0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x48, 0x00, 0x52, 0x03, 0x61, 0x64, 0x64,
 	0x12, 0x49, 0x0a, 0x07, 0x72, 0x65, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x23, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65,
-	0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72,
 	0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01,
 	0x48, 0x00, 0x52, 0x07, 0x72, 0x65, 0x70, 0x6c, 0x61, 0x63, 0x65, 0x12, 0x47, 0x0a, 0x06, 0x72,
 	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x69, 0x6e,
 	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79,
 	0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x48, 0x00, 0x52, 0x06, 0x72, 0x65,
 	0x6d, 0x6f, 0x76, 0x65, 0x42, 0x10, 0x0a, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x12, 0x03, 0xf8, 0x42, 0x01, 0x22, 0xdd, 0x01, 0x0a, 0x14, 0x42, 0x61, 0x74, 0x63, 0x68,
@@ -998,12 +998,12 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x52, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73,
 	0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x36, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
 	0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
+	0x61, 0x32, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x53, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x48, 0x00,
 	0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x12, 0x4c, 0x0a, 0x05, 0x65, 0x72, 0x72,
 	0x6f, 0x72, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b,
 	0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74,
+	0x65, 0x74, 0x61, 0x32, 0x2e, 0x42, 0x61, 0x74, 0x63, 0x68, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74,
 	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x48, 0x00,
 	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x42, 0x0d, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c,
 	0x74, 0x12, 0x03, 0xf8, 0x42, 0x01, 0x22, 0x57, 0x0a, 0x1b, 0x42, 0x61, 0x74, 0x63, 0x68, 0x4f,
@@ -1025,68 +1025,68 @@ var file_indykite_identity_v1beta1_attributes_proto_rawDesc = []byte{
 	0x12, 0x18, 0x0a, 0x14, 0x41, 0x53, 0x53, 0x55, 0x52, 0x41, 0x4e, 0x43, 0x45, 0x5f, 0x4c, 0x45,
 	0x56, 0x45, 0x4c, 0x5f, 0x48, 0x49, 0x47, 0x48, 0x10, 0x03, 0x42, 0x87, 0x02, 0x0a, 0x1d, 0x63,
 	0x6f, 0x6d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e,
-	0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0f, 0x41, 0x74,
+	0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0f, 0x41, 0x74,
 	0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a,
 	0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x6e, 0x64, 0x79,
 	0x6b, 0x69, 0x74, 0x65, 0x2f, 0x6a, 0x61, 0x72, 0x76, 0x69, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2d,
 	0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f,
-	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
-	0x3b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0x3b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
 	0xa2, 0x02, 0x03, 0x49, 0x49, 0x58, 0xaa, 0x02, 0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
 	0x65, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0xca, 0x02, 0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x64,
-	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02,
+	0x61, 0x32, 0xca, 0x02, 0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x64,
+	0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02,
 	0x25, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
+	0x74, 0x79, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
 	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x1b, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
 	0x65, 0x3a, 0x3a, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x3a, 0x3a, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_indykite_identity_v1beta1_attributes_proto_rawDescOnce sync.Once
-	file_indykite_identity_v1beta1_attributes_proto_rawDescData = file_indykite_identity_v1beta1_attributes_proto_rawDesc
+	file_indykite_identity_v1beta2_attributes_proto_rawDescOnce sync.Once
+	file_indykite_identity_v1beta2_attributes_proto_rawDescData = file_indykite_identity_v1beta2_attributes_proto_rawDesc
 )
 
-func file_indykite_identity_v1beta1_attributes_proto_rawDescGZIP() []byte {
-	file_indykite_identity_v1beta1_attributes_proto_rawDescOnce.Do(func() {
-		file_indykite_identity_v1beta1_attributes_proto_rawDescData = protoimpl.X.CompressGZIP(file_indykite_identity_v1beta1_attributes_proto_rawDescData)
+func file_indykite_identity_v1beta2_attributes_proto_rawDescGZIP() []byte {
+	file_indykite_identity_v1beta2_attributes_proto_rawDescOnce.Do(func() {
+		file_indykite_identity_v1beta2_attributes_proto_rawDescData = protoimpl.X.CompressGZIP(file_indykite_identity_v1beta2_attributes_proto_rawDescData)
 	})
-	return file_indykite_identity_v1beta1_attributes_proto_rawDescData
+	return file_indykite_identity_v1beta2_attributes_proto_rawDescData
 }
 
-var file_indykite_identity_v1beta1_attributes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_indykite_identity_v1beta1_attributes_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
-var file_indykite_identity_v1beta1_attributes_proto_goTypes = []interface{}{
-	(AssuranceLevel)(0),                 // 0: indykite.identity.v1beta1.AssuranceLevel
-	(*Schema)(nil),                      // 1: indykite.identity.v1beta1.Schema
-	(*PropertyDefinition)(nil),          // 2: indykite.identity.v1beta1.PropertyDefinition
-	(*PropertyConstraint)(nil),          // 3: indykite.identity.v1beta1.PropertyConstraint
-	(*PropertyMask)(nil),                // 4: indykite.identity.v1beta1.PropertyMask
-	(*PropertyMetadata)(nil),            // 5: indykite.identity.v1beta1.PropertyMetadata
-	(*Property)(nil),                    // 6: indykite.identity.v1beta1.Property
-	(*PropertyBatchOperation)(nil),      // 7: indykite.identity.v1beta1.PropertyBatchOperation
-	(*BatchOperationResult)(nil),        // 8: indykite.identity.v1beta1.BatchOperationResult
-	(*BatchOperationResultSuccess)(nil), // 9: indykite.identity.v1beta1.BatchOperationResultSuccess
-	(*BatchOperationResultError)(nil),   // 10: indykite.identity.v1beta1.BatchOperationResultError
-	nil,                                 // 11: indykite.identity.v1beta1.Schema.ContextEntry
+var file_indykite_identity_v1beta2_attributes_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_indykite_identity_v1beta2_attributes_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_indykite_identity_v1beta2_attributes_proto_goTypes = []interface{}{
+	(AssuranceLevel)(0),                 // 0: indykite.identity.v1beta2.AssuranceLevel
+	(*Schema)(nil),                      // 1: indykite.identity.v1beta2.Schema
+	(*PropertyDefinition)(nil),          // 2: indykite.identity.v1beta2.PropertyDefinition
+	(*PropertyConstraint)(nil),          // 3: indykite.identity.v1beta2.PropertyConstraint
+	(*PropertyMask)(nil),                // 4: indykite.identity.v1beta2.PropertyMask
+	(*PropertyMetadata)(nil),            // 5: indykite.identity.v1beta2.PropertyMetadata
+	(*Property)(nil),                    // 6: indykite.identity.v1beta2.Property
+	(*PropertyBatchOperation)(nil),      // 7: indykite.identity.v1beta2.PropertyBatchOperation
+	(*BatchOperationResult)(nil),        // 8: indykite.identity.v1beta2.BatchOperationResult
+	(*BatchOperationResultSuccess)(nil), // 9: indykite.identity.v1beta2.BatchOperationResultSuccess
+	(*BatchOperationResultError)(nil),   // 10: indykite.identity.v1beta2.BatchOperationResultError
+	nil,                                 // 11: indykite.identity.v1beta2.Schema.ContextEntry
 	(*timestamppb.Timestamp)(nil),       // 12: google.protobuf.Timestamp
 	(*v1beta1.Value)(nil),               // 13: indykite.objects.v1beta1.Value
 }
-var file_indykite_identity_v1beta1_attributes_proto_depIdxs = []int32{
-	11, // 0: indykite.identity.v1beta1.Schema.context:type_name -> indykite.identity.v1beta1.Schema.ContextEntry
-	2,  // 1: indykite.identity.v1beta1.PropertyMask.definition:type_name -> indykite.identity.v1beta1.PropertyDefinition
-	3,  // 2: indykite.identity.v1beta1.PropertyMask.constraint:type_name -> indykite.identity.v1beta1.PropertyConstraint
-	0,  // 3: indykite.identity.v1beta1.PropertyMetadata.assurance_level:type_name -> indykite.identity.v1beta1.AssuranceLevel
-	12, // 4: indykite.identity.v1beta1.PropertyMetadata.verification_time:type_name -> google.protobuf.Timestamp
-	2,  // 5: indykite.identity.v1beta1.Property.definition:type_name -> indykite.identity.v1beta1.PropertyDefinition
-	5,  // 6: indykite.identity.v1beta1.Property.meta:type_name -> indykite.identity.v1beta1.PropertyMetadata
-	13, // 7: indykite.identity.v1beta1.Property.object_value:type_name -> indykite.objects.v1beta1.Value
-	6,  // 8: indykite.identity.v1beta1.PropertyBatchOperation.add:type_name -> indykite.identity.v1beta1.Property
-	6,  // 9: indykite.identity.v1beta1.PropertyBatchOperation.replace:type_name -> indykite.identity.v1beta1.Property
-	6,  // 10: indykite.identity.v1beta1.PropertyBatchOperation.remove:type_name -> indykite.identity.v1beta1.Property
-	9,  // 11: indykite.identity.v1beta1.BatchOperationResult.success:type_name -> indykite.identity.v1beta1.BatchOperationResultSuccess
-	10, // 12: indykite.identity.v1beta1.BatchOperationResult.error:type_name -> indykite.identity.v1beta1.BatchOperationResultError
+var file_indykite_identity_v1beta2_attributes_proto_depIdxs = []int32{
+	11, // 0: indykite.identity.v1beta2.Schema.context:type_name -> indykite.identity.v1beta2.Schema.ContextEntry
+	2,  // 1: indykite.identity.v1beta2.PropertyMask.definition:type_name -> indykite.identity.v1beta2.PropertyDefinition
+	3,  // 2: indykite.identity.v1beta2.PropertyMask.constraint:type_name -> indykite.identity.v1beta2.PropertyConstraint
+	0,  // 3: indykite.identity.v1beta2.PropertyMetadata.assurance_level:type_name -> indykite.identity.v1beta2.AssuranceLevel
+	12, // 4: indykite.identity.v1beta2.PropertyMetadata.verification_time:type_name -> google.protobuf.Timestamp
+	2,  // 5: indykite.identity.v1beta2.Property.definition:type_name -> indykite.identity.v1beta2.PropertyDefinition
+	5,  // 6: indykite.identity.v1beta2.Property.meta:type_name -> indykite.identity.v1beta2.PropertyMetadata
+	13, // 7: indykite.identity.v1beta2.Property.object_value:type_name -> indykite.objects.v1beta1.Value
+	6,  // 8: indykite.identity.v1beta2.PropertyBatchOperation.add:type_name -> indykite.identity.v1beta2.Property
+	6,  // 9: indykite.identity.v1beta2.PropertyBatchOperation.replace:type_name -> indykite.identity.v1beta2.Property
+	6,  // 10: indykite.identity.v1beta2.PropertyBatchOperation.remove:type_name -> indykite.identity.v1beta2.Property
+	9,  // 11: indykite.identity.v1beta2.BatchOperationResult.success:type_name -> indykite.identity.v1beta2.BatchOperationResultSuccess
+	10, // 12: indykite.identity.v1beta2.BatchOperationResult.error:type_name -> indykite.identity.v1beta2.BatchOperationResultError
 	13, // [13:13] is the sub-list for method output_type
 	13, // [13:13] is the sub-list for method input_type
 	13, // [13:13] is the sub-list for extension type_name
@@ -1094,13 +1094,13 @@ var file_indykite_identity_v1beta1_attributes_proto_depIdxs = []int32{
 	0,  // [0:13] is the sub-list for field type_name
 }
 
-func init() { file_indykite_identity_v1beta1_attributes_proto_init() }
-func file_indykite_identity_v1beta1_attributes_proto_init() {
-	if File_indykite_identity_v1beta1_attributes_proto != nil {
+func init() { file_indykite_identity_v1beta2_attributes_proto_init() }
+func file_indykite_identity_v1beta2_attributes_proto_init() {
+	if File_indykite_identity_v1beta2_attributes_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Schema); i {
 			case 0:
 				return &v.state
@@ -1112,7 +1112,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropertyDefinition); i {
 			case 0:
 				return &v.state
@@ -1124,7 +1124,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropertyConstraint); i {
 			case 0:
 				return &v.state
@@ -1136,7 +1136,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropertyMask); i {
 			case 0:
 				return &v.state
@@ -1148,7 +1148,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropertyMetadata); i {
 			case 0:
 				return &v.state
@@ -1160,7 +1160,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Property); i {
 			case 0:
 				return &v.state
@@ -1172,7 +1172,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PropertyBatchOperation); i {
 			case 0:
 				return &v.state
@@ -1184,7 +1184,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BatchOperationResult); i {
 			case 0:
 				return &v.state
@@ -1196,7 +1196,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BatchOperationResultSuccess); i {
 			case 0:
 				return &v.state
@@ -1208,7 +1208,7 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_attributes_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_attributes_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BatchOperationResultError); i {
 			case 0:
 				return &v.state
@@ -1221,16 +1221,16 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 			}
 		}
 	}
-	file_indykite_identity_v1beta1_attributes_proto_msgTypes[5].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_attributes_proto_msgTypes[5].OneofWrappers = []interface{}{
 		(*Property_ObjectValue)(nil),
 		(*Property_ReferenceValue)(nil),
 	}
-	file_indykite_identity_v1beta1_attributes_proto_msgTypes[6].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_attributes_proto_msgTypes[6].OneofWrappers = []interface{}{
 		(*PropertyBatchOperation_Add)(nil),
 		(*PropertyBatchOperation_Replace)(nil),
 		(*PropertyBatchOperation_Remove)(nil),
 	}
-	file_indykite_identity_v1beta1_attributes_proto_msgTypes[7].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_attributes_proto_msgTypes[7].OneofWrappers = []interface{}{
 		(*BatchOperationResult_Success)(nil),
 		(*BatchOperationResult_Error)(nil),
 	}
@@ -1238,19 +1238,19 @@ func file_indykite_identity_v1beta1_attributes_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_indykite_identity_v1beta1_attributes_proto_rawDesc,
+			RawDescriptor: file_indykite_identity_v1beta2_attributes_proto_rawDesc,
 			NumEnums:      1,
 			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_indykite_identity_v1beta1_attributes_proto_goTypes,
-		DependencyIndexes: file_indykite_identity_v1beta1_attributes_proto_depIdxs,
-		EnumInfos:         file_indykite_identity_v1beta1_attributes_proto_enumTypes,
-		MessageInfos:      file_indykite_identity_v1beta1_attributes_proto_msgTypes,
+		GoTypes:           file_indykite_identity_v1beta2_attributes_proto_goTypes,
+		DependencyIndexes: file_indykite_identity_v1beta2_attributes_proto_depIdxs,
+		EnumInfos:         file_indykite_identity_v1beta2_attributes_proto_enumTypes,
+		MessageInfos:      file_indykite_identity_v1beta2_attributes_proto_msgTypes,
 	}.Build()
-	File_indykite_identity_v1beta1_attributes_proto = out.File
-	file_indykite_identity_v1beta1_attributes_proto_rawDesc = nil
-	file_indykite_identity_v1beta1_attributes_proto_goTypes = nil
-	file_indykite_identity_v1beta1_attributes_proto_depIdxs = nil
+	File_indykite_identity_v1beta2_attributes_proto = out.File
+	file_indykite_identity_v1beta2_attributes_proto_rawDesc = nil
+	file_indykite_identity_v1beta2_attributes_proto_goTypes = nil
+	file_indykite_identity_v1beta2_attributes_proto_depIdxs = nil
 }

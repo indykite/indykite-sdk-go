@@ -115,10 +115,6 @@ func (c *Client) IsAuthorizedWithRawRequest(
 	}
 
 	switch sub := req.Subject.Filter.(type) {
-	case *identitypb.DigitalTwinIdentifier_DigitalTwin:
-		if _, _, err := sub.DigitalTwin.Verify(); err != nil {
-			return nil, errors.NewInvalidArgumentError(err.Error())
-		}
 	case *identitypb.DigitalTwinIdentifier_AccessToken:
 		if err := verifyTokenFormat(sub.AccessToken); err != nil {
 			return nil, err

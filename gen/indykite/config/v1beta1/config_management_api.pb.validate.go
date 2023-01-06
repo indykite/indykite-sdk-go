@@ -11400,6 +11400,37 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *CreateConfigNodeRequest_ReadidProviderConfig:
+
+		if all {
+			switch v := interface{}(m.GetReadidProviderConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReadidProviderConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "ReadidProviderConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		err := CreateConfigNodeRequestValidationError{
 			field:  "Config",
@@ -12447,6 +12478,37 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
 					field:  "KnowledgeGraphSchemaConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *UpdateConfigNodeRequest_ReadidProviderConfig:
+
+		if all {
+			switch v := interface{}(m.GetReadidProviderConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReadidProviderConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "ReadidProviderConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

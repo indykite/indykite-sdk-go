@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             (unknown)
-// source: indykite/identity/v1beta1/identity_management_api.proto
+// source: indykite/identity/v1beta2/identity_management_api.proto
 
-package identityv1beta1
+package identityv1beta2
 
 import (
 	context "context"
@@ -101,10 +101,10 @@ type IdentityManagementAPIClient interface {
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
 	RunQuery(ctx context.Context, in *RunQueryRequest, opts ...grpc.CallOption) (IdentityManagementAPI_RunQueryClient, error)
-	// CheckConsentChallenge read the Consent Challenge from DB.
-	CheckConsentChallenge(ctx context.Context, in *CheckConsentChallengeRequest, opts ...grpc.CallOption) (*CheckConsentChallengeResponse, error)
-	// CreateConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
-	CreateConsentVerifier(ctx context.Context, in *CreateConsentVerifierRequest, opts ...grpc.CallOption) (*CreateConsentVerifierResponse, error)
+	// CheckOAuth2ConsentChallenge read the Consent Challenge from DB.
+	CheckOAuth2ConsentChallenge(ctx context.Context, in *CheckOAuth2ConsentChallengeRequest, opts ...grpc.CallOption) (*CheckOAuth2ConsentChallengeResponse, error)
+	// CreateOAuth2ConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
+	CreateOAuth2ConsentVerifier(ctx context.Context, in *CreateOAuth2ConsentVerifierRequest, opts ...grpc.CallOption) (*CreateOAuth2ConsentVerifierResponse, error)
 	// CreateInvitation will start invitation workflow
 	CreateInvitation(ctx context.Context, in *CreateInvitationRequest, opts ...grpc.CallOption) (*CreateInvitationResponse, error)
 	// CheckInvitationState returns state of invitation and its data
@@ -114,6 +114,11 @@ type IdentityManagementAPIClient interface {
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(ctx context.Context, in *CancelInvitationRequest, opts ...grpc.CallOption) (*CancelInvitationResponse, error)
 	IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error)
+	// EnrichToken allows a session and an access token to be enriched with additional data
+	EnrichToken(ctx context.Context, in *EnrichTokenRequest, opts ...grpc.CallOption) (*EnrichTokenResponse, error)
+	CreateConsent(ctx context.Context, in *CreateConsentRequest, opts ...grpc.CallOption) (*CreateConsentResponse, error)
+	ListConsents(ctx context.Context, in *ListConsentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_ListConsentsClient, error)
+	RevokeConsent(ctx context.Context, in *RevokeConsentRequest, opts ...grpc.CallOption) (*RevokeConsentResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
 	GetPasswordCredential(ctx context.Context, in *GetPasswordCredentialRequest, opts ...grpc.CallOption) (*GetPasswordCredentialResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
@@ -122,8 +127,6 @@ type IdentityManagementAPIClient interface {
 	GetAccessToken(ctx context.Context, in *GetAccessTokenRequest, opts ...grpc.CallOption) (*GetAccessTokenResponse, error)
 	// SessionIntrospect is Experimental and not implemented yet
 	SessionIntrospect(ctx context.Context, in *SessionIntrospectRequest, opts ...grpc.CallOption) (*SessionIntrospectResponse, error)
-	// EnrichToken allows a session and an access token to be enriched with additional data
-	EnrichToken(ctx context.Context, in *EnrichTokenRequest, opts ...grpc.CallOption) (*EnrichTokenResponse, error)
 }
 
 type identityManagementAPIClient struct {
@@ -136,7 +139,7 @@ func NewIdentityManagementAPIClient(cc grpc.ClientConnInterface) IdentityManagem
 
 func (c *identityManagementAPIClient) TokenIntrospect(ctx context.Context, in *TokenIntrospectRequest, opts ...grpc.CallOption) (*TokenIntrospectResponse, error) {
 	out := new(TokenIntrospectResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/TokenIntrospect", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/TokenIntrospect", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +148,7 @@ func (c *identityManagementAPIClient) TokenIntrospect(ctx context.Context, in *T
 
 func (c *identityManagementAPIClient) StartForgottenPasswordFlow(ctx context.Context, in *StartForgottenPasswordFlowRequest, opts ...grpc.CallOption) (*StartForgottenPasswordFlowResponse, error) {
 	out := new(StartForgottenPasswordFlowResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/StartForgottenPasswordFlow", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/StartForgottenPasswordFlow", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +157,7 @@ func (c *identityManagementAPIClient) StartForgottenPasswordFlow(ctx context.Con
 
 func (c *identityManagementAPIClient) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error) {
 	out := new(ChangePasswordResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ChangePassword", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ChangePassword", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +166,7 @@ func (c *identityManagementAPIClient) ChangePassword(ctx context.Context, in *Ch
 
 func (c *identityManagementAPIClient) StartDigitalTwinEmailVerification(ctx context.Context, in *StartDigitalTwinEmailVerificationRequest, opts ...grpc.CallOption) (*StartDigitalTwinEmailVerificationResponse, error) {
 	out := new(StartDigitalTwinEmailVerificationResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/StartDigitalTwinEmailVerification", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/StartDigitalTwinEmailVerification", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -172,7 +175,7 @@ func (c *identityManagementAPIClient) StartDigitalTwinEmailVerification(ctx cont
 
 func (c *identityManagementAPIClient) VerifyDigitalTwinEmail(ctx context.Context, in *VerifyDigitalTwinEmailRequest, opts ...grpc.CallOption) (*VerifyDigitalTwinEmailResponse, error) {
 	out := new(VerifyDigitalTwinEmailResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/VerifyDigitalTwinEmail", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/VerifyDigitalTwinEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +184,7 @@ func (c *identityManagementAPIClient) VerifyDigitalTwinEmail(ctx context.Context
 
 func (c *identityManagementAPIClient) SelfServiceTerminateSession(ctx context.Context, in *SelfServiceTerminateSessionRequest, opts ...grpc.CallOption) (*SelfServiceTerminateSessionResponse, error) {
 	out := new(SelfServiceTerminateSessionResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/SelfServiceTerminateSession", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/SelfServiceTerminateSession", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +193,7 @@ func (c *identityManagementAPIClient) SelfServiceTerminateSession(ctx context.Co
 
 func (c *identityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in *ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*ImportDigitalTwinsResponse, error) {
 	out := new(ImportDigitalTwinsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ImportDigitalTwins", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ImportDigitalTwins", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +202,7 @@ func (c *identityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in
 
 func (c *identityManagementAPIClient) GetDigitalTwin(ctx context.Context, in *GetDigitalTwinRequest, opts ...grpc.CallOption) (*GetDigitalTwinResponse, error) {
 	out := new(GetDigitalTwinResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/GetDigitalTwin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/GetDigitalTwin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +211,7 @@ func (c *identityManagementAPIClient) GetDigitalTwin(ctx context.Context, in *Ge
 
 func (c *identityManagementAPIClient) ListDigitalTwins(ctx context.Context, in *ListDigitalTwinsRequest, opts ...grpc.CallOption) (*ListDigitalTwinsResponse, error) {
 	out := new(ListDigitalTwinsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ListDigitalTwins", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ListDigitalTwins", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -217,7 +220,7 @@ func (c *identityManagementAPIClient) ListDigitalTwins(ctx context.Context, in *
 
 func (c *identityManagementAPIClient) RegisterDigitalTwinWithoutCredential(ctx context.Context, in *RegisterDigitalTwinWithoutCredentialRequest, opts ...grpc.CallOption) (*RegisterDigitalTwinWithoutCredentialResponse, error) {
 	out := new(RegisterDigitalTwinWithoutCredentialResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/RegisterDigitalTwinWithoutCredential", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/RegisterDigitalTwinWithoutCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +229,7 @@ func (c *identityManagementAPIClient) RegisterDigitalTwinWithoutCredential(ctx c
 
 func (c *identityManagementAPIClient) PatchDigitalTwin(ctx context.Context, in *PatchDigitalTwinRequest, opts ...grpc.CallOption) (*PatchDigitalTwinResponse, error) {
 	out := new(PatchDigitalTwinResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/PatchDigitalTwin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/PatchDigitalTwin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -235,7 +238,7 @@ func (c *identityManagementAPIClient) PatchDigitalTwin(ctx context.Context, in *
 
 func (c *identityManagementAPIClient) DeleteDigitalTwin(ctx context.Context, in *DeleteDigitalTwinRequest, opts ...grpc.CallOption) (*DeleteDigitalTwinResponse, error) {
 	out := new(DeleteDigitalTwinResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/DeleteDigitalTwin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/DeleteDigitalTwin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -244,7 +247,7 @@ func (c *identityManagementAPIClient) DeleteDigitalTwin(ctx context.Context, in 
 
 func (c *identityManagementAPIClient) GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
 	out := new(GetDocumentResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/GetDocument", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/GetDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +255,7 @@ func (c *identityManagementAPIClient) GetDocument(ctx context.Context, in *GetDo
 }
 
 func (c *identityManagementAPIClient) BatchGetDocuments(ctx context.Context, in *BatchGetDocumentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_BatchGetDocumentsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[0], "/indykite.identity.v1beta1.IdentityManagementAPI/BatchGetDocuments", opts...)
+	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[0], "/indykite.identity.v1beta2.IdentityManagementAPI/BatchGetDocuments", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +288,7 @@ func (x *identityManagementAPIBatchGetDocumentsClient) Recv() (*BatchGetDocument
 
 func (c *identityManagementAPIClient) ListDocuments(ctx context.Context, in *ListDocumentsRequest, opts ...grpc.CallOption) (*ListDocumentsResponse, error) {
 	out := new(ListDocumentsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ListDocuments", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ListDocuments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -294,7 +297,7 @@ func (c *identityManagementAPIClient) ListDocuments(ctx context.Context, in *Lis
 
 func (c *identityManagementAPIClient) MutateDocuments(ctx context.Context, in *MutateDocumentsRequest, opts ...grpc.CallOption) (*MutateDocumentsResponse, error) {
 	out := new(MutateDocumentsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/MutateDocuments", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/MutateDocuments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +305,7 @@ func (c *identityManagementAPIClient) MutateDocuments(ctx context.Context, in *M
 }
 
 func (c *identityManagementAPIClient) RunQuery(ctx context.Context, in *RunQueryRequest, opts ...grpc.CallOption) (IdentityManagementAPI_RunQueryClient, error) {
-	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[1], "/indykite.identity.v1beta1.IdentityManagementAPI/RunQuery", opts...)
+	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[1], "/indykite.identity.v1beta2.IdentityManagementAPI/RunQuery", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -333,18 +336,18 @@ func (x *identityManagementAPIRunQueryClient) Recv() (*RunQueryResponse, error) 
 	return m, nil
 }
 
-func (c *identityManagementAPIClient) CheckConsentChallenge(ctx context.Context, in *CheckConsentChallengeRequest, opts ...grpc.CallOption) (*CheckConsentChallengeResponse, error) {
-	out := new(CheckConsentChallengeResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/CheckConsentChallenge", in, out, opts...)
+func (c *identityManagementAPIClient) CheckOAuth2ConsentChallenge(ctx context.Context, in *CheckOAuth2ConsentChallengeRequest, opts ...grpc.CallOption) (*CheckOAuth2ConsentChallengeResponse, error) {
+	out := new(CheckOAuth2ConsentChallengeResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CheckOAuth2ConsentChallenge", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *identityManagementAPIClient) CreateConsentVerifier(ctx context.Context, in *CreateConsentVerifierRequest, opts ...grpc.CallOption) (*CreateConsentVerifierResponse, error) {
-	out := new(CreateConsentVerifierResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/CreateConsentVerifier", in, out, opts...)
+func (c *identityManagementAPIClient) CreateOAuth2ConsentVerifier(ctx context.Context, in *CreateOAuth2ConsentVerifierRequest, opts ...grpc.CallOption) (*CreateOAuth2ConsentVerifierResponse, error) {
+	out := new(CreateOAuth2ConsentVerifierResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CreateOAuth2ConsentVerifier", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -353,7 +356,7 @@ func (c *identityManagementAPIClient) CreateConsentVerifier(ctx context.Context,
 
 func (c *identityManagementAPIClient) CreateInvitation(ctx context.Context, in *CreateInvitationRequest, opts ...grpc.CallOption) (*CreateInvitationResponse, error) {
 	out := new(CreateInvitationResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/CreateInvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CreateInvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +365,7 @@ func (c *identityManagementAPIClient) CreateInvitation(ctx context.Context, in *
 
 func (c *identityManagementAPIClient) CheckInvitationState(ctx context.Context, in *CheckInvitationStateRequest, opts ...grpc.CallOption) (*CheckInvitationStateResponse, error) {
 	out := new(CheckInvitationStateResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/CheckInvitationState", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CheckInvitationState", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -371,7 +374,7 @@ func (c *identityManagementAPIClient) CheckInvitationState(ctx context.Context, 
 
 func (c *identityManagementAPIClient) ResendInvitation(ctx context.Context, in *ResendInvitationRequest, opts ...grpc.CallOption) (*ResendInvitationResponse, error) {
 	out := new(ResendInvitationResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/ResendInvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ResendInvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +383,7 @@ func (c *identityManagementAPIClient) ResendInvitation(ctx context.Context, in *
 
 func (c *identityManagementAPIClient) CancelInvitation(ctx context.Context, in *CancelInvitationRequest, opts ...grpc.CallOption) (*CancelInvitationResponse, error) {
 	out := new(CancelInvitationResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/CancelInvitation", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CancelInvitation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -389,43 +392,7 @@ func (c *identityManagementAPIClient) CancelInvitation(ctx context.Context, in *
 
 func (c *identityManagementAPIClient) IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error) {
 	out := new(IsAuthorizedResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/IsAuthorized", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *GetPasswordCredentialRequest, opts ...grpc.CallOption) (*GetPasswordCredentialResponse, error) {
-	out := new(GetPasswordCredentialResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/GetPasswordCredential", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) UpdatePasswordCredential(ctx context.Context, in *UpdatePasswordCredentialRequest, opts ...grpc.CallOption) (*UpdatePasswordCredentialResponse, error) {
-	out := new(UpdatePasswordCredentialResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/UpdatePasswordCredential", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) GetAccessToken(ctx context.Context, in *GetAccessTokenRequest, opts ...grpc.CallOption) (*GetAccessTokenResponse, error) {
-	out := new(GetAccessTokenResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/GetAccessToken", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) SessionIntrospect(ctx context.Context, in *SessionIntrospectRequest, opts ...grpc.CallOption) (*SessionIntrospectResponse, error) {
-	out := new(SessionIntrospectResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/SessionIntrospect", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/IsAuthorized", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -434,7 +401,93 @@ func (c *identityManagementAPIClient) SessionIntrospect(ctx context.Context, in 
 
 func (c *identityManagementAPIClient) EnrichToken(ctx context.Context, in *EnrichTokenRequest, opts ...grpc.CallOption) (*EnrichTokenResponse, error) {
 	out := new(EnrichTokenResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/EnrichToken", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/EnrichToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) CreateConsent(ctx context.Context, in *CreateConsentRequest, opts ...grpc.CallOption) (*CreateConsentResponse, error) {
+	out := new(CreateConsentResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CreateConsent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) ListConsents(ctx context.Context, in *ListConsentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_ListConsentsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[2], "/indykite.identity.v1beta2.IdentityManagementAPI/ListConsents", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &identityManagementAPIListConsentsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type IdentityManagementAPI_ListConsentsClient interface {
+	Recv() (*ListConsentsResponse, error)
+	grpc.ClientStream
+}
+
+type identityManagementAPIListConsentsClient struct {
+	grpc.ClientStream
+}
+
+func (x *identityManagementAPIListConsentsClient) Recv() (*ListConsentsResponse, error) {
+	m := new(ListConsentsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *identityManagementAPIClient) RevokeConsent(ctx context.Context, in *RevokeConsentRequest, opts ...grpc.CallOption) (*RevokeConsentResponse, error) {
+	out := new(RevokeConsentResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/RevokeConsent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *GetPasswordCredentialRequest, opts ...grpc.CallOption) (*GetPasswordCredentialResponse, error) {
+	out := new(GetPasswordCredentialResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/GetPasswordCredential", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) UpdatePasswordCredential(ctx context.Context, in *UpdatePasswordCredentialRequest, opts ...grpc.CallOption) (*UpdatePasswordCredentialResponse, error) {
+	out := new(UpdatePasswordCredentialResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/UpdatePasswordCredential", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) GetAccessToken(ctx context.Context, in *GetAccessTokenRequest, opts ...grpc.CallOption) (*GetAccessTokenResponse, error) {
+	out := new(GetAccessTokenResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/GetAccessToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityManagementAPIClient) SessionIntrospect(ctx context.Context, in *SessionIntrospectRequest, opts ...grpc.CallOption) (*SessionIntrospectResponse, error) {
+	out := new(SessionIntrospectResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/SessionIntrospect", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -524,10 +577,10 @@ type IdentityManagementAPIServer interface {
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
 	RunQuery(*RunQueryRequest, IdentityManagementAPI_RunQueryServer) error
-	// CheckConsentChallenge read the Consent Challenge from DB.
-	CheckConsentChallenge(context.Context, *CheckConsentChallengeRequest) (*CheckConsentChallengeResponse, error)
-	// CreateConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
-	CreateConsentVerifier(context.Context, *CreateConsentVerifierRequest) (*CreateConsentVerifierResponse, error)
+	// CheckOAuth2ConsentChallenge read the Consent Challenge from DB.
+	CheckOAuth2ConsentChallenge(context.Context, *CheckOAuth2ConsentChallengeRequest) (*CheckOAuth2ConsentChallengeResponse, error)
+	// CreateOAuth2ConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
+	CreateOAuth2ConsentVerifier(context.Context, *CreateOAuth2ConsentVerifierRequest) (*CreateOAuth2ConsentVerifierResponse, error)
 	// CreateInvitation will start invitation workflow
 	CreateInvitation(context.Context, *CreateInvitationRequest) (*CreateInvitationResponse, error)
 	// CheckInvitationState returns state of invitation and its data
@@ -537,6 +590,11 @@ type IdentityManagementAPIServer interface {
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(context.Context, *CancelInvitationRequest) (*CancelInvitationResponse, error)
 	IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error)
+	// EnrichToken allows a session and an access token to be enriched with additional data
+	EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error)
+	CreateConsent(context.Context, *CreateConsentRequest) (*CreateConsentResponse, error)
+	ListConsents(*ListConsentsRequest, IdentityManagementAPI_ListConsentsServer) error
+	RevokeConsent(context.Context, *RevokeConsentRequest) (*RevokeConsentResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
 	GetPasswordCredential(context.Context, *GetPasswordCredentialRequest) (*GetPasswordCredentialResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
@@ -545,8 +603,6 @@ type IdentityManagementAPIServer interface {
 	GetAccessToken(context.Context, *GetAccessTokenRequest) (*GetAccessTokenResponse, error)
 	// SessionIntrospect is Experimental and not implemented yet
 	SessionIntrospect(context.Context, *SessionIntrospectRequest) (*SessionIntrospectResponse, error)
-	// EnrichToken allows a session and an access token to be enriched with additional data
-	EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error)
 }
 
 // UnimplementedIdentityManagementAPIServer should be embedded to have forward compatible implementations.
@@ -604,11 +660,11 @@ func (UnimplementedIdentityManagementAPIServer) MutateDocuments(context.Context,
 func (UnimplementedIdentityManagementAPIServer) RunQuery(*RunQueryRequest, IdentityManagementAPI_RunQueryServer) error {
 	return status.Errorf(codes.Unimplemented, "method RunQuery not implemented")
 }
-func (UnimplementedIdentityManagementAPIServer) CheckConsentChallenge(context.Context, *CheckConsentChallengeRequest) (*CheckConsentChallengeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CheckConsentChallenge not implemented")
+func (UnimplementedIdentityManagementAPIServer) CheckOAuth2ConsentChallenge(context.Context, *CheckOAuth2ConsentChallengeRequest) (*CheckOAuth2ConsentChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckOAuth2ConsentChallenge not implemented")
 }
-func (UnimplementedIdentityManagementAPIServer) CreateConsentVerifier(context.Context, *CreateConsentVerifierRequest) (*CreateConsentVerifierResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateConsentVerifier not implemented")
+func (UnimplementedIdentityManagementAPIServer) CreateOAuth2ConsentVerifier(context.Context, *CreateOAuth2ConsentVerifierRequest) (*CreateOAuth2ConsentVerifierResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOAuth2ConsentVerifier not implemented")
 }
 func (UnimplementedIdentityManagementAPIServer) CreateInvitation(context.Context, *CreateInvitationRequest) (*CreateInvitationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateInvitation not implemented")
@@ -625,6 +681,18 @@ func (UnimplementedIdentityManagementAPIServer) CancelInvitation(context.Context
 func (UnimplementedIdentityManagementAPIServer) IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsAuthorized not implemented")
 }
+func (UnimplementedIdentityManagementAPIServer) EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrichToken not implemented")
+}
+func (UnimplementedIdentityManagementAPIServer) CreateConsent(context.Context, *CreateConsentRequest) (*CreateConsentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateConsent not implemented")
+}
+func (UnimplementedIdentityManagementAPIServer) ListConsents(*ListConsentsRequest, IdentityManagementAPI_ListConsentsServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListConsents not implemented")
+}
+func (UnimplementedIdentityManagementAPIServer) RevokeConsent(context.Context, *RevokeConsentRequest) (*RevokeConsentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RevokeConsent not implemented")
+}
 func (UnimplementedIdentityManagementAPIServer) GetPasswordCredential(context.Context, *GetPasswordCredentialRequest) (*GetPasswordCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPasswordCredential not implemented")
 }
@@ -636,9 +704,6 @@ func (UnimplementedIdentityManagementAPIServer) GetAccessToken(context.Context, 
 }
 func (UnimplementedIdentityManagementAPIServer) SessionIntrospect(context.Context, *SessionIntrospectRequest) (*SessionIntrospectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SessionIntrospect not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EnrichToken not implemented")
 }
 
 // UnsafeIdentityManagementAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -662,7 +727,7 @@ func _IdentityManagementAPI_TokenIntrospect_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/TokenIntrospect",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/TokenIntrospect",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).TokenIntrospect(ctx, req.(*TokenIntrospectRequest))
@@ -680,7 +745,7 @@ func _IdentityManagementAPI_StartForgottenPasswordFlow_Handler(srv interface{}, 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/StartForgottenPasswordFlow",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/StartForgottenPasswordFlow",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).StartForgottenPasswordFlow(ctx, req.(*StartForgottenPasswordFlowRequest))
@@ -698,7 +763,7 @@ func _IdentityManagementAPI_ChangePassword_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ChangePassword",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ChangePassword",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).ChangePassword(ctx, req.(*ChangePasswordRequest))
@@ -716,7 +781,7 @@ func _IdentityManagementAPI_StartDigitalTwinEmailVerification_Handler(srv interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/StartDigitalTwinEmailVerification",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/StartDigitalTwinEmailVerification",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).StartDigitalTwinEmailVerification(ctx, req.(*StartDigitalTwinEmailVerificationRequest))
@@ -734,7 +799,7 @@ func _IdentityManagementAPI_VerifyDigitalTwinEmail_Handler(srv interface{}, ctx 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/VerifyDigitalTwinEmail",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/VerifyDigitalTwinEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).VerifyDigitalTwinEmail(ctx, req.(*VerifyDigitalTwinEmailRequest))
@@ -752,7 +817,7 @@ func _IdentityManagementAPI_SelfServiceTerminateSession_Handler(srv interface{},
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/SelfServiceTerminateSession",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/SelfServiceTerminateSession",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).SelfServiceTerminateSession(ctx, req.(*SelfServiceTerminateSessionRequest))
@@ -770,7 +835,7 @@ func _IdentityManagementAPI_ImportDigitalTwins_Handler(srv interface{}, ctx cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ImportDigitalTwins",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ImportDigitalTwins",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).ImportDigitalTwins(ctx, req.(*ImportDigitalTwinsRequest))
@@ -788,7 +853,7 @@ func _IdentityManagementAPI_GetDigitalTwin_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/GetDigitalTwin",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/GetDigitalTwin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).GetDigitalTwin(ctx, req.(*GetDigitalTwinRequest))
@@ -806,7 +871,7 @@ func _IdentityManagementAPI_ListDigitalTwins_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ListDigitalTwins",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ListDigitalTwins",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).ListDigitalTwins(ctx, req.(*ListDigitalTwinsRequest))
@@ -824,7 +889,7 @@ func _IdentityManagementAPI_RegisterDigitalTwinWithoutCredential_Handler(srv int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/RegisterDigitalTwinWithoutCredential",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/RegisterDigitalTwinWithoutCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).RegisterDigitalTwinWithoutCredential(ctx, req.(*RegisterDigitalTwinWithoutCredentialRequest))
@@ -842,7 +907,7 @@ func _IdentityManagementAPI_PatchDigitalTwin_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/PatchDigitalTwin",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/PatchDigitalTwin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).PatchDigitalTwin(ctx, req.(*PatchDigitalTwinRequest))
@@ -860,7 +925,7 @@ func _IdentityManagementAPI_DeleteDigitalTwin_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/DeleteDigitalTwin",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/DeleteDigitalTwin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).DeleteDigitalTwin(ctx, req.(*DeleteDigitalTwinRequest))
@@ -878,7 +943,7 @@ func _IdentityManagementAPI_GetDocument_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/GetDocument",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/GetDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).GetDocument(ctx, req.(*GetDocumentRequest))
@@ -917,7 +982,7 @@ func _IdentityManagementAPI_ListDocuments_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ListDocuments",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ListDocuments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).ListDocuments(ctx, req.(*ListDocumentsRequest))
@@ -935,7 +1000,7 @@ func _IdentityManagementAPI_MutateDocuments_Handler(srv interface{}, ctx context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/MutateDocuments",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/MutateDocuments",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).MutateDocuments(ctx, req.(*MutateDocumentsRequest))
@@ -964,38 +1029,38 @@ func (x *identityManagementAPIRunQueryServer) Send(m *RunQueryResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _IdentityManagementAPI_CheckConsentChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckConsentChallengeRequest)
+func _IdentityManagementAPI_CheckOAuth2ConsentChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckOAuth2ConsentChallengeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).CheckConsentChallenge(ctx, in)
+		return srv.(IdentityManagementAPIServer).CheckOAuth2ConsentChallenge(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/CheckConsentChallenge",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CheckOAuth2ConsentChallenge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).CheckConsentChallenge(ctx, req.(*CheckConsentChallengeRequest))
+		return srv.(IdentityManagementAPIServer).CheckOAuth2ConsentChallenge(ctx, req.(*CheckOAuth2ConsentChallengeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IdentityManagementAPI_CreateConsentVerifier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateConsentVerifierRequest)
+func _IdentityManagementAPI_CreateOAuth2ConsentVerifier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOAuth2ConsentVerifierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).CreateConsentVerifier(ctx, in)
+		return srv.(IdentityManagementAPIServer).CreateOAuth2ConsentVerifier(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/CreateConsentVerifier",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CreateOAuth2ConsentVerifier",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).CreateConsentVerifier(ctx, req.(*CreateConsentVerifierRequest))
+		return srv.(IdentityManagementAPIServer).CreateOAuth2ConsentVerifier(ctx, req.(*CreateOAuth2ConsentVerifierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1010,7 +1075,7 @@ func _IdentityManagementAPI_CreateInvitation_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/CreateInvitation",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CreateInvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).CreateInvitation(ctx, req.(*CreateInvitationRequest))
@@ -1028,7 +1093,7 @@ func _IdentityManagementAPI_CheckInvitationState_Handler(srv interface{}, ctx co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/CheckInvitationState",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CheckInvitationState",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).CheckInvitationState(ctx, req.(*CheckInvitationStateRequest))
@@ -1046,7 +1111,7 @@ func _IdentityManagementAPI_ResendInvitation_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/ResendInvitation",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ResendInvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).ResendInvitation(ctx, req.(*ResendInvitationRequest))
@@ -1064,7 +1129,7 @@ func _IdentityManagementAPI_CancelInvitation_Handler(srv interface{}, ctx contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/CancelInvitation",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CancelInvitation",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).CancelInvitation(ctx, req.(*CancelInvitationRequest))
@@ -1082,10 +1147,85 @@ func _IdentityManagementAPI_IsAuthorized_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/IsAuthorized",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/IsAuthorized",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).IsAuthorized(ctx, req.(*IsAuthorizedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityManagementAPI_EnrichToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnrichTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityManagementAPIServer).EnrichToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/EnrichToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityManagementAPIServer).EnrichToken(ctx, req.(*EnrichTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityManagementAPI_CreateConsent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateConsentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityManagementAPIServer).CreateConsent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CreateConsent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityManagementAPIServer).CreateConsent(ctx, req.(*CreateConsentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityManagementAPI_ListConsents_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListConsentsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(IdentityManagementAPIServer).ListConsents(m, &identityManagementAPIListConsentsServer{stream})
+}
+
+type IdentityManagementAPI_ListConsentsServer interface {
+	Send(*ListConsentsResponse) error
+	grpc.ServerStream
+}
+
+type identityManagementAPIListConsentsServer struct {
+	grpc.ServerStream
+}
+
+func (x *identityManagementAPIListConsentsServer) Send(m *ListConsentsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _IdentityManagementAPI_RevokeConsent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeConsentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityManagementAPIServer).RevokeConsent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/RevokeConsent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityManagementAPIServer).RevokeConsent(ctx, req.(*RevokeConsentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1100,7 +1240,7 @@ func _IdentityManagementAPI_GetPasswordCredential_Handler(srv interface{}, ctx c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/GetPasswordCredential",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/GetPasswordCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).GetPasswordCredential(ctx, req.(*GetPasswordCredentialRequest))
@@ -1118,7 +1258,7 @@ func _IdentityManagementAPI_UpdatePasswordCredential_Handler(srv interface{}, ct
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/UpdatePasswordCredential",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/UpdatePasswordCredential",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).UpdatePasswordCredential(ctx, req.(*UpdatePasswordCredentialRequest))
@@ -1136,7 +1276,7 @@ func _IdentityManagementAPI_GetAccessToken_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/GetAccessToken",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/GetAccessToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).GetAccessToken(ctx, req.(*GetAccessTokenRequest))
@@ -1154,28 +1294,10 @@ func _IdentityManagementAPI_SessionIntrospect_Handler(srv interface{}, ctx conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/SessionIntrospect",
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/SessionIntrospect",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IdentityManagementAPIServer).SessionIntrospect(ctx, req.(*SessionIntrospectRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityManagementAPI_EnrichToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EnrichTokenRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).EnrichToken(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/EnrichToken",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).EnrichToken(ctx, req.(*EnrichTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1184,7 +1306,7 @@ func _IdentityManagementAPI_EnrichToken_Handler(srv interface{}, ctx context.Con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "indykite.identity.v1beta1.IdentityManagementAPI",
+	ServiceName: "indykite.identity.v1beta2.IdentityManagementAPI",
 	HandlerType: (*IdentityManagementAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -1248,12 +1370,12 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _IdentityManagementAPI_MutateDocuments_Handler,
 		},
 		{
-			MethodName: "CheckConsentChallenge",
-			Handler:    _IdentityManagementAPI_CheckConsentChallenge_Handler,
+			MethodName: "CheckOAuth2ConsentChallenge",
+			Handler:    _IdentityManagementAPI_CheckOAuth2ConsentChallenge_Handler,
 		},
 		{
-			MethodName: "CreateConsentVerifier",
-			Handler:    _IdentityManagementAPI_CreateConsentVerifier_Handler,
+			MethodName: "CreateOAuth2ConsentVerifier",
+			Handler:    _IdentityManagementAPI_CreateOAuth2ConsentVerifier_Handler,
 		},
 		{
 			MethodName: "CreateInvitation",
@@ -1276,6 +1398,18 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _IdentityManagementAPI_IsAuthorized_Handler,
 		},
 		{
+			MethodName: "EnrichToken",
+			Handler:    _IdentityManagementAPI_EnrichToken_Handler,
+		},
+		{
+			MethodName: "CreateConsent",
+			Handler:    _IdentityManagementAPI_CreateConsent_Handler,
+		},
+		{
+			MethodName: "RevokeConsent",
+			Handler:    _IdentityManagementAPI_RevokeConsent_Handler,
+		},
+		{
 			MethodName: "GetPasswordCredential",
 			Handler:    _IdentityManagementAPI_GetPasswordCredential_Handler,
 		},
@@ -1291,10 +1425,6 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SessionIntrospect",
 			Handler:    _IdentityManagementAPI_SessionIntrospect_Handler,
 		},
-		{
-			MethodName: "EnrichToken",
-			Handler:    _IdentityManagementAPI_EnrichToken_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -1307,6 +1437,11 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _IdentityManagementAPI_RunQuery_Handler,
 			ServerStreams: true,
 		},
+		{
+			StreamName:    "ListConsents",
+			Handler:       _IdentityManagementAPI_ListConsents_Handler,
+			ServerStreams: true,
+		},
 	},
-	Metadata: "indykite/identity/v1beta1/identity_management_api.proto",
+	Metadata: "indykite/identity/v1beta2/identity_management_api.proto",
 }

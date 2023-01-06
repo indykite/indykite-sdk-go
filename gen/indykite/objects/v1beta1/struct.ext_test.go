@@ -15,11 +15,9 @@
 package objectsv1beta1_test
 
 import (
-	"encoding/base64"
 	"fmt"
 	"time"
 
-	"github.com/pborman/uuid"
 	"google.golang.org/genproto/googleapis/type/latlng"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -32,7 +30,6 @@ import (
 )
 
 var _ = Describe("Objects", func() {
-	var UUID = uuid.NewRandom()
 	DescribeTable("SendVerificationEmailActivity - Verify attributes",
 		func(fields map[string]*objects.Value, expect map[string]interface{}) {
 			result, err := objects.ToMap(fields)
@@ -101,16 +98,6 @@ var _ = Describe("Objects", func() {
 			},
 			map[string]interface{}{
 				"Key": durationpb.New(time.Duration(10) * time.Second).AsDuration().String(),
-			},
-		),
-		Entry("Identifier",
-			map[string]*objects.Value{
-				"Key": {Value: &objects.Value_IdentifierValue{
-					IdentifierValue: objects.FromUUID(UUID.String())},
-				},
-			},
-			map[string]interface{}{
-				"Key": base64.StdEncoding.EncodeToString(UUID[:]),
 			},
 		),
 		Entry("Bytes",
