@@ -16,9 +16,9 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        (unknown)
-// source: indykite/identity/v1beta1/document.proto
+// source: indykite/identity/v1beta2/document.proto
 
-package identityv1beta1
+package identityv1beta2
 
 import (
 	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
@@ -58,7 +58,7 @@ type Document struct {
 func (x *Document) Reset() {
 	*x = Document{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[0]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -71,7 +71,7 @@ func (x *Document) String() string {
 func (*Document) ProtoMessage() {}
 
 func (x *Document) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[0]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -84,7 +84,7 @@ func (x *Document) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Document.ProtoReflect.Descriptor instead.
 func (*Document) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{0}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Document) GetName() string {
@@ -128,7 +128,7 @@ type DocumentMask struct {
 func (x *DocumentMask) Reset() {
 	*x = DocumentMask{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[1]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -141,7 +141,7 @@ func (x *DocumentMask) String() string {
 func (*DocumentMask) ProtoMessage() {}
 
 func (x *DocumentMask) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[1]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +154,7 @@ func (x *DocumentMask) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DocumentMask.ProtoReflect.Descriptor instead.
 func (*DocumentMask) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{1}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DocumentMask) GetFieldPaths() []string {
@@ -179,7 +179,7 @@ type Precondition struct {
 func (x *Precondition) Reset() {
 	*x = Precondition{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[2]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -192,7 +192,7 @@ func (x *Precondition) String() string {
 func (*Precondition) ProtoMessage() {}
 
 func (x *Precondition) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[2]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -205,7 +205,7 @@ func (x *Precondition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Precondition.ProtoReflect.Descriptor instead.
 func (*Precondition) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{2}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{2}
 }
 
 func (m *Precondition) GetConditionType() isPrecondition_ConditionType {
@@ -283,7 +283,7 @@ type Write struct {
 func (x *Write) Reset() {
 	*x = Write{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[3]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -296,7 +296,7 @@ func (x *Write) String() string {
 func (*Write) ProtoMessage() {}
 
 func (x *Write) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[3]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +309,7 @@ func (x *Write) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Write.ProtoReflect.Descriptor instead.
 func (*Write) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{3}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{3}
 }
 
 func (m *Write) GetOperation() isWrite_Operation {
@@ -401,7 +401,7 @@ type WriteResult struct {
 func (x *WriteResult) Reset() {
 	*x = WriteResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[4]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -414,7 +414,7 @@ func (x *WriteResult) String() string {
 func (*WriteResult) ProtoMessage() {}
 
 func (x *WriteResult) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[4]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -427,7 +427,7 @@ func (x *WriteResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WriteResult.ProtoReflect.Descriptor instead.
 func (*WriteResult) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{4}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *WriteResult) GetUpdateTime() *timestamppb.Timestamp {
@@ -452,7 +452,7 @@ type DocumentTransform struct {
 func (x *DocumentTransform) Reset() {
 	*x = DocumentTransform{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[5]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -465,7 +465,7 @@ func (x *DocumentTransform) String() string {
 func (*DocumentTransform) ProtoMessage() {}
 
 func (x *DocumentTransform) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[5]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -478,7 +478,7 @@ func (x *DocumentTransform) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DocumentTransform.ProtoReflect.Descriptor instead.
 func (*DocumentTransform) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{5}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DocumentTransform) GetDocument() string {
@@ -514,7 +514,7 @@ type DocumentTransform_FieldTransform struct {
 func (x *DocumentTransform_FieldTransform) Reset() {
 	*x = DocumentTransform_FieldTransform{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[7]
+		mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -527,7 +527,7 @@ func (x *DocumentTransform_FieldTransform) String() string {
 func (*DocumentTransform_FieldTransform) ProtoMessage() {}
 
 func (x *DocumentTransform_FieldTransform) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_identity_v1beta1_document_proto_msgTypes[7]
+	mi := &file_indykite_identity_v1beta2_document_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -540,7 +540,7 @@ func (x *DocumentTransform_FieldTransform) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DocumentTransform_FieldTransform.ProtoReflect.Descriptor instead.
 func (*DocumentTransform_FieldTransform) Descriptor() ([]byte, []int) {
-	return file_indykite_identity_v1beta1_document_proto_rawDescGZIP(), []int{5, 0}
+	return file_indykite_identity_v1beta2_document_proto_rawDescGZIP(), []int{5, 0}
 }
 
 func (x *DocumentTransform_FieldTransform) GetFieldPath() string {
@@ -604,14 +604,14 @@ func (*DocumentTransform_FieldTransform_AppendMissingElements) isDocumentTransfo
 func (*DocumentTransform_FieldTransform_RemoveAllFromArray) isDocumentTransform_FieldTransform_TransformType() {
 }
 
-var File_indykite_identity_v1beta1_document_proto protoreflect.FileDescriptor
+var File_indykite_identity_v1beta2_document_proto protoreflect.FileDescriptor
 
-var file_indykite_identity_v1beta1_document_proto_rawDesc = []byte{
+var file_indykite_identity_v1beta2_document_proto_rawDesc = []byte{
 	0x0a, 0x28, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x64, 0x6f, 0x63, 0x75,
+	0x69, 0x74, 0x79, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x64, 0x6f, 0x63, 0x75,
 	0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x19, 0x69, 0x6e, 0x64, 0x79,
 	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x25, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65,
 	0x2f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
@@ -620,7 +620,7 @@ var file_indykite_identity_v1beta1_document_proto_rawDesc = []byte{
 	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x47,
 	0x0a, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2f,
 	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x44, 0x6f, 0x63, 0x75, 0x6d,
+	0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x44, 0x6f, 0x63, 0x75, 0x6d,
 	0x65, 0x6e, 0x74, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52,
 	0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x3b, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x65, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67,
@@ -649,30 +649,30 @@ var file_indykite_identity_v1beta1_document_proto_rawDesc = []byte{
 	0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x22, 0xc3, 0x03, 0x0a, 0x05, 0x57, 0x72,
 	0x69, 0x74, 0x65, 0x12, 0x3d, 0x0a, 0x06, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69,
-	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e,
 	0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x06, 0x75, 0x70, 0x64, 0x61,
 	0x74, 0x65, 0x12, 0x18, 0x0a, 0x06, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01,
 	0x28, 0x09, 0x48, 0x00, 0x52, 0x06, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x4c, 0x0a, 0x09,
 	0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x2c, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x44, 0x6f, 0x63, 0x75,
+	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x44, 0x6f, 0x63, 0x75,
 	0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x48, 0x00, 0x52,
 	0x09, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x12, 0x48, 0x0a, 0x0b, 0x75, 0x70,
 	0x64, 0x61, 0x74, 0x65, 0x5f, 0x6d, 0x61, 0x73, 0x6b, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x27, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x44, 0x6f, 0x63, 0x75,
+	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x44, 0x6f, 0x63, 0x75,
 	0x6d, 0x65, 0x6e, 0x74, 0x4d, 0x61, 0x73, 0x6b, 0x52, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65,
 	0x4d, 0x61, 0x73, 0x6b, 0x12, 0x68, 0x0a, 0x11, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x74,
 	0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32,
 	0x3b, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x44, 0x6f, 0x63, 0x75,
+	0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x44, 0x6f, 0x63, 0x75,
 	0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x2e, 0x46, 0x69,
 	0x65, 0x6c, 0x64, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x52, 0x10, 0x75, 0x70,
 	0x64, 0x61, 0x74, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x73, 0x12, 0x52,
 	0x0a, 0x10, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x64, 0x6f, 0x63, 0x75, 0x6d, 0x65,
 	0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b,
 	0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f,
+	0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f,
 	0x6e, 0x52, 0x0f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65,
 	0x6e, 0x74, 0x42, 0x0b, 0x0a, 0x09, 0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22,
 	0x4a, 0x0a, 0x0b, 0x57, 0x72, 0x69, 0x74, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x3b,
@@ -686,7 +686,7 @@ var file_indykite_identity_v1beta1_document_proto_rawDesc = []byte{
 	0x10, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d,
 	0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3b, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
 	0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x31, 0x2e, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e,
+	0x74, 0x61, 0x32, 0x2e, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x54, 0x72, 0x61, 0x6e,
 	0x73, 0x66, 0x6f, 0x72, 0x6d, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x54, 0x72, 0x61, 0x6e, 0x73,
 	0x66, 0x6f, 0x72, 0x6d, 0x52, 0x0f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x54, 0x72, 0x61, 0x6e, 0x73,
 	0x66, 0x6f, 0x72, 0x6d, 0x73, 0x1a, 0xfc, 0x01, 0x0a, 0x0e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x54,
@@ -707,65 +707,65 @@ var file_indykite_identity_v1beta1_document_proto_rawDesc = []byte{
 	0x61, 0x79, 0x42, 0x10, 0x0a, 0x0e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x66, 0x6f, 0x72, 0x6d, 0x5f,
 	0x74, 0x79, 0x70, 0x65, 0x42, 0x85, 0x02, 0x0a, 0x1d, 0x63, 0x6f, 0x6d, 0x2e, 0x69, 0x6e, 0x64,
 	0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x0d, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0d, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74,
 	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
 	0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x6a, 0x61, 0x72,
 	0x76, 0x69, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2d, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69,
 	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
-	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
-	0x79, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x49, 0x49, 0x58, 0xaa, 0x02,
+	0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74,
+	0x79, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x49, 0x49, 0x58, 0xaa, 0x02,
 	0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x19, 0x49, 0x6e, 0x64,
+	0x74, 0x79, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xca, 0x02, 0x19, 0x49, 0x6e, 0x64,
 	0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5c, 0x56,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x25, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x25, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
 	0x65, 0x5c, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
+	0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02,
 	0x1b, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x3a, 0x3a, 0x49, 0x64, 0x65, 0x6e, 0x74,
-	0x69, 0x74, 0x79, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72,
+	0x69, 0x74, 0x79, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_indykite_identity_v1beta1_document_proto_rawDescOnce sync.Once
-	file_indykite_identity_v1beta1_document_proto_rawDescData = file_indykite_identity_v1beta1_document_proto_rawDesc
+	file_indykite_identity_v1beta2_document_proto_rawDescOnce sync.Once
+	file_indykite_identity_v1beta2_document_proto_rawDescData = file_indykite_identity_v1beta2_document_proto_rawDesc
 )
 
-func file_indykite_identity_v1beta1_document_proto_rawDescGZIP() []byte {
-	file_indykite_identity_v1beta1_document_proto_rawDescOnce.Do(func() {
-		file_indykite_identity_v1beta1_document_proto_rawDescData = protoimpl.X.CompressGZIP(file_indykite_identity_v1beta1_document_proto_rawDescData)
+func file_indykite_identity_v1beta2_document_proto_rawDescGZIP() []byte {
+	file_indykite_identity_v1beta2_document_proto_rawDescOnce.Do(func() {
+		file_indykite_identity_v1beta2_document_proto_rawDescData = protoimpl.X.CompressGZIP(file_indykite_identity_v1beta2_document_proto_rawDescData)
 	})
-	return file_indykite_identity_v1beta1_document_proto_rawDescData
+	return file_indykite_identity_v1beta2_document_proto_rawDescData
 }
 
-var file_indykite_identity_v1beta1_document_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_indykite_identity_v1beta1_document_proto_goTypes = []interface{}{
-	(*Document)(nil),                         // 0: indykite.identity.v1beta1.Document
-	(*DocumentMask)(nil),                     // 1: indykite.identity.v1beta1.DocumentMask
-	(*Precondition)(nil),                     // 2: indykite.identity.v1beta1.Precondition
-	(*Write)(nil),                            // 3: indykite.identity.v1beta1.Write
-	(*WriteResult)(nil),                      // 4: indykite.identity.v1beta1.WriteResult
-	(*DocumentTransform)(nil),                // 5: indykite.identity.v1beta1.DocumentTransform
-	nil,                                      // 6: indykite.identity.v1beta1.Document.FieldsEntry
-	(*DocumentTransform_FieldTransform)(nil), // 7: indykite.identity.v1beta1.DocumentTransform.FieldTransform
+var file_indykite_identity_v1beta2_document_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_indykite_identity_v1beta2_document_proto_goTypes = []interface{}{
+	(*Document)(nil),                         // 0: indykite.identity.v1beta2.Document
+	(*DocumentMask)(nil),                     // 1: indykite.identity.v1beta2.DocumentMask
+	(*Precondition)(nil),                     // 2: indykite.identity.v1beta2.Precondition
+	(*Write)(nil),                            // 3: indykite.identity.v1beta2.Write
+	(*WriteResult)(nil),                      // 4: indykite.identity.v1beta2.WriteResult
+	(*DocumentTransform)(nil),                // 5: indykite.identity.v1beta2.DocumentTransform
+	nil,                                      // 6: indykite.identity.v1beta2.Document.FieldsEntry
+	(*DocumentTransform_FieldTransform)(nil), // 7: indykite.identity.v1beta2.DocumentTransform.FieldTransform
 	(*timestamppb.Timestamp)(nil),            // 8: google.protobuf.Timestamp
 	(*v1beta1.Value)(nil),                    // 9: indykite.objects.v1beta1.Value
 	(*v1beta1.ArrayValue)(nil),               // 10: indykite.objects.v1beta1.ArrayValue
 }
-var file_indykite_identity_v1beta1_document_proto_depIdxs = []int32{
-	6,  // 0: indykite.identity.v1beta1.Document.fields:type_name -> indykite.identity.v1beta1.Document.FieldsEntry
-	8,  // 1: indykite.identity.v1beta1.Document.create_time:type_name -> google.protobuf.Timestamp
-	8,  // 2: indykite.identity.v1beta1.Document.update_time:type_name -> google.protobuf.Timestamp
-	8,  // 3: indykite.identity.v1beta1.Precondition.update_time:type_name -> google.protobuf.Timestamp
-	0,  // 4: indykite.identity.v1beta1.Write.update:type_name -> indykite.identity.v1beta1.Document
-	5,  // 5: indykite.identity.v1beta1.Write.transform:type_name -> indykite.identity.v1beta1.DocumentTransform
-	1,  // 6: indykite.identity.v1beta1.Write.update_mask:type_name -> indykite.identity.v1beta1.DocumentMask
-	7,  // 7: indykite.identity.v1beta1.Write.update_transforms:type_name -> indykite.identity.v1beta1.DocumentTransform.FieldTransform
-	2,  // 8: indykite.identity.v1beta1.Write.current_document:type_name -> indykite.identity.v1beta1.Precondition
-	8,  // 9: indykite.identity.v1beta1.WriteResult.update_time:type_name -> google.protobuf.Timestamp
-	7,  // 10: indykite.identity.v1beta1.DocumentTransform.field_transforms:type_name -> indykite.identity.v1beta1.DocumentTransform.FieldTransform
-	9,  // 11: indykite.identity.v1beta1.Document.FieldsEntry.value:type_name -> indykite.objects.v1beta1.Value
-	10, // 12: indykite.identity.v1beta1.DocumentTransform.FieldTransform.append_missing_elements:type_name -> indykite.objects.v1beta1.ArrayValue
-	10, // 13: indykite.identity.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array:type_name -> indykite.objects.v1beta1.ArrayValue
+var file_indykite_identity_v1beta2_document_proto_depIdxs = []int32{
+	6,  // 0: indykite.identity.v1beta2.Document.fields:type_name -> indykite.identity.v1beta2.Document.FieldsEntry
+	8,  // 1: indykite.identity.v1beta2.Document.create_time:type_name -> google.protobuf.Timestamp
+	8,  // 2: indykite.identity.v1beta2.Document.update_time:type_name -> google.protobuf.Timestamp
+	8,  // 3: indykite.identity.v1beta2.Precondition.update_time:type_name -> google.protobuf.Timestamp
+	0,  // 4: indykite.identity.v1beta2.Write.update:type_name -> indykite.identity.v1beta2.Document
+	5,  // 5: indykite.identity.v1beta2.Write.transform:type_name -> indykite.identity.v1beta2.DocumentTransform
+	1,  // 6: indykite.identity.v1beta2.Write.update_mask:type_name -> indykite.identity.v1beta2.DocumentMask
+	7,  // 7: indykite.identity.v1beta2.Write.update_transforms:type_name -> indykite.identity.v1beta2.DocumentTransform.FieldTransform
+	2,  // 8: indykite.identity.v1beta2.Write.current_document:type_name -> indykite.identity.v1beta2.Precondition
+	8,  // 9: indykite.identity.v1beta2.WriteResult.update_time:type_name -> google.protobuf.Timestamp
+	7,  // 10: indykite.identity.v1beta2.DocumentTransform.field_transforms:type_name -> indykite.identity.v1beta2.DocumentTransform.FieldTransform
+	9,  // 11: indykite.identity.v1beta2.Document.FieldsEntry.value:type_name -> indykite.objects.v1beta1.Value
+	10, // 12: indykite.identity.v1beta2.DocumentTransform.FieldTransform.append_missing_elements:type_name -> indykite.objects.v1beta1.ArrayValue
+	10, // 13: indykite.identity.v1beta2.DocumentTransform.FieldTransform.remove_all_from_array:type_name -> indykite.objects.v1beta1.ArrayValue
 	14, // [14:14] is the sub-list for method output_type
 	14, // [14:14] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
@@ -773,13 +773,13 @@ var file_indykite_identity_v1beta1_document_proto_depIdxs = []int32{
 	0,  // [0:14] is the sub-list for field type_name
 }
 
-func init() { file_indykite_identity_v1beta1_document_proto_init() }
-func file_indykite_identity_v1beta1_document_proto_init() {
-	if File_indykite_identity_v1beta1_document_proto != nil {
+func init() { file_indykite_identity_v1beta2_document_proto_init() }
+func file_indykite_identity_v1beta2_document_proto_init() {
+	if File_indykite_identity_v1beta2_document_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_indykite_identity_v1beta1_document_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Document); i {
 			case 0:
 				return &v.state
@@ -791,7 +791,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DocumentMask); i {
 			case 0:
 				return &v.state
@@ -803,7 +803,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Precondition); i {
 			case 0:
 				return &v.state
@@ -815,7 +815,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Write); i {
 			case 0:
 				return &v.state
@@ -827,7 +827,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WriteResult); i {
 			case 0:
 				return &v.state
@@ -839,7 +839,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DocumentTransform); i {
 			case 0:
 				return &v.state
@@ -851,7 +851,7 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_identity_v1beta1_document_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_identity_v1beta2_document_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DocumentTransform_FieldTransform); i {
 			case 0:
 				return &v.state
@@ -864,16 +864,16 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 			}
 		}
 	}
-	file_indykite_identity_v1beta1_document_proto_msgTypes[2].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_document_proto_msgTypes[2].OneofWrappers = []interface{}{
 		(*Precondition_Exists)(nil),
 		(*Precondition_UpdateTime)(nil),
 	}
-	file_indykite_identity_v1beta1_document_proto_msgTypes[3].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_document_proto_msgTypes[3].OneofWrappers = []interface{}{
 		(*Write_Update)(nil),
 		(*Write_Delete)(nil),
 		(*Write_Transform)(nil),
 	}
-	file_indykite_identity_v1beta1_document_proto_msgTypes[7].OneofWrappers = []interface{}{
+	file_indykite_identity_v1beta2_document_proto_msgTypes[7].OneofWrappers = []interface{}{
 		(*DocumentTransform_FieldTransform_AppendMissingElements)(nil),
 		(*DocumentTransform_FieldTransform_RemoveAllFromArray)(nil),
 	}
@@ -881,18 +881,18 @@ func file_indykite_identity_v1beta1_document_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_indykite_identity_v1beta1_document_proto_rawDesc,
+			RawDescriptor: file_indykite_identity_v1beta2_document_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_indykite_identity_v1beta1_document_proto_goTypes,
-		DependencyIndexes: file_indykite_identity_v1beta1_document_proto_depIdxs,
-		MessageInfos:      file_indykite_identity_v1beta1_document_proto_msgTypes,
+		GoTypes:           file_indykite_identity_v1beta2_document_proto_goTypes,
+		DependencyIndexes: file_indykite_identity_v1beta2_document_proto_depIdxs,
+		MessageInfos:      file_indykite_identity_v1beta2_document_proto_msgTypes,
 	}.Build()
-	File_indykite_identity_v1beta1_document_proto = out.File
-	file_indykite_identity_v1beta1_document_proto_rawDesc = nil
-	file_indykite_identity_v1beta1_document_proto_goTypes = nil
-	file_indykite_identity_v1beta1_document_proto_depIdxs = nil
+	File_indykite_identity_v1beta2_document_proto = out.File
+	file_indykite_identity_v1beta2_document_proto_rawDesc = nil
+	file_indykite_identity_v1beta2_document_proto_goTypes = nil
+	file_indykite_identity_v1beta2_document_proto_depIdxs = nil
 }

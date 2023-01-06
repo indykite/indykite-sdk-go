@@ -21,15 +21,12 @@
 package ingestv1beta1
 
 import (
-	reflect "reflect"
-	sync "sync"
-
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (

@@ -21,16 +21,13 @@
 package knowledge_graphv1beta1
 
 import (
-	reflect "reflect"
-	sync "sync"
-
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	v1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
-
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -323,7 +320,7 @@ type Path_Entity_IdentityProperty struct {
 
 	Property              string                 `protobuf:"bytes,1,opt,name=property,proto3" json:"property,omitempty"`
 	Value                 string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	MinimumAssuranceLevel v1beta1.AssuranceLevel `protobuf:"varint,3,opt,name=minimum_assurance_level,json=minimumAssuranceLevel,proto3,enum=indykite.identity.v1beta1.AssuranceLevel" json:"minimum_assurance_level,omitempty"`
+	MinimumAssuranceLevel v1beta2.AssuranceLevel `protobuf:"varint,3,opt,name=minimum_assurance_level,json=minimumAssuranceLevel,proto3,enum=indykite.identity.v1beta2.AssuranceLevel" json:"minimum_assurance_level,omitempty"`
 	AllowedIssuers        []string               `protobuf:"bytes,4,rep,name=allowed_issuers,json=allowedIssuers,proto3" json:"allowed_issuers,omitempty"`
 	VerificationTime      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=verification_time,json=verificationTime,proto3" json:"verification_time,omitempty"`
 	AllowedVerifiers      []string               `protobuf:"bytes,6,rep,name=allowed_verifiers,json=allowedVerifiers,proto3" json:"allowed_verifiers,omitempty"`
@@ -376,11 +373,11 @@ func (x *Path_Entity_IdentityProperty) GetValue() string {
 	return ""
 }
 
-func (x *Path_Entity_IdentityProperty) GetMinimumAssuranceLevel() v1beta1.AssuranceLevel {
+func (x *Path_Entity_IdentityProperty) GetMinimumAssuranceLevel() v1beta2.AssuranceLevel {
 	if x != nil {
 		return x.MinimumAssuranceLevel
 	}
-	return v1beta1.AssuranceLevel(0)
+	return v1beta2.AssuranceLevel(0)
 }
 
 func (x *Path_Entity_IdentityProperty) GetAllowedIssuers() []string {
@@ -477,7 +474,7 @@ var file_indykite_knowledge_graph_v1beta1_policy_proto_rawDesc = []byte{
 	0x31, 0x1a, 0x17, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69,
 	0x64, 0x61, 0x74, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x2a, 0x69, 0x6e, 0x64, 0x79,
 	0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2f, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73,
+	0x62, 0x65, 0x74, 0x61, 0x32, 0x2f, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d,
 	0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xb0, 0x01, 0x0a, 0x06, 0x50, 0x6f, 0x6c, 0x69,
@@ -540,7 +537,7 @@ var file_indykite_knowledge_graph_v1beta1_policy_proto_rawDesc = []byte{
 	0x17, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x5f, 0x61, 0x73, 0x73, 0x75, 0x72, 0x61, 0x6e,
 	0x63, 0x65, 0x5f, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x29,
 	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
-	0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x73, 0x73, 0x75, 0x72,
+	0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x41, 0x73, 0x73, 0x75, 0x72,
 	0x61, 0x6e, 0x63, 0x65, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x82, 0x01,
 	0x02, 0x10, 0x01, 0x52, 0x15, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x41, 0x73, 0x73, 0x75,
 	0x72, 0x61, 0x6e, 0x63, 0x65, 0x4c, 0x65, 0x76, 0x65, 0x6c, 0x12, 0x27, 0x0a, 0x0f, 0x61, 0x6c,
@@ -618,7 +615,7 @@ var file_indykite_knowledge_graph_v1beta1_policy_proto_goTypes = []interface{}{
 	(*Path_Relationship)(nil),             // 3: indykite.knowledge_graph.v1beta1.Path.Relationship
 	(*Path_Entity_IdentityProperty)(nil),  // 4: indykite.knowledge_graph.v1beta1.Path.Entity.IdentityProperty
 	(*Path_Entity_KnowledgeProperty)(nil), // 5: indykite.knowledge_graph.v1beta1.Path.Entity.KnowledgeProperty
-	(v1beta1.AssuranceLevel)(0),           // 6: indykite.identity.v1beta1.AssuranceLevel
+	(v1beta2.AssuranceLevel)(0),           // 6: indykite.identity.v1beta2.AssuranceLevel
 	(*timestamppb.Timestamp)(nil),         // 7: google.protobuf.Timestamp
 }
 var file_indykite_knowledge_graph_v1beta1_policy_proto_depIdxs = []int32{
@@ -627,7 +624,7 @@ var file_indykite_knowledge_graph_v1beta1_policy_proto_depIdxs = []int32{
 	3, // 2: indykite.knowledge_graph.v1beta1.Path.relationships:type_name -> indykite.knowledge_graph.v1beta1.Path.Relationship
 	4, // 3: indykite.knowledge_graph.v1beta1.Path.Entity.identity_properties:type_name -> indykite.knowledge_graph.v1beta1.Path.Entity.IdentityProperty
 	5, // 4: indykite.knowledge_graph.v1beta1.Path.Entity.knowledge_properties:type_name -> indykite.knowledge_graph.v1beta1.Path.Entity.KnowledgeProperty
-	6, // 5: indykite.knowledge_graph.v1beta1.Path.Entity.IdentityProperty.minimum_assurance_level:type_name -> indykite.identity.v1beta1.AssuranceLevel
+	6, // 5: indykite.knowledge_graph.v1beta1.Path.Entity.IdentityProperty.minimum_assurance_level:type_name -> indykite.identity.v1beta2.AssuranceLevel
 	7, // 6: indykite.knowledge_graph.v1beta1.Path.Entity.IdentityProperty.verification_time:type_name -> google.protobuf.Timestamp
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type

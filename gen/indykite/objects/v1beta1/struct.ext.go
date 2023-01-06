@@ -15,7 +15,6 @@
 package objectsv1beta1
 
 import (
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"reflect"
@@ -132,15 +131,6 @@ func createFromProtoValue(v *Value) (interface{}, error) {
 		return v.DurationValue.AsDuration().String(), nil
 	case *Value_ValueTime:
 		return v.ValueTime.AsTime().UTC().Format(time.RFC3339), nil
-	case *Value_IdentifierValue:
-		switch id := v.IdentifierValue.Id.(type) {
-		case *Identifier_IdString:
-			return id.IdString, nil
-		case *Identifier_IdBytes:
-			return base64.StdEncoding.EncodeToString(id.IdBytes), nil
-		default:
-			return nil, fmt.Errorf("unknown Identifier type %T", v)
-		}
 	case *Value_GeoPointValue:
 		return fmt.Sprintf("POINT (%v %v)", v.GeoPointValue.GetLatitude(), v.GeoPointValue.GetLongitude()), nil
 	case *Value_ArrayValue:

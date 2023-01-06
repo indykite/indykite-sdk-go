@@ -3484,6 +3484,37 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 
+	case *ConfigNode_ReadidProviderConfig:
+
+		if all {
+			switch v := interface{}(m.GetReadidProviderConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "ReadidProviderConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReadidProviderConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "ReadidProviderConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		err := ConfigNodeValidationError{
 			field:  "Config",
@@ -7042,6 +7073,214 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AuthenteqProviderConfigValidationError{}
+
+// Validate checks the field values on ReadIDProviderConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadIDProviderConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadIDProviderConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReadIDProviderConfigMultiError, or nil if none found.
+func (m *ReadIDProviderConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadIDProviderConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetSubmitterSecret() != "" {
+
+		if utf8.RuneCountInString(m.GetSubmitterSecret()) < 36 {
+			err := ReadIDProviderConfigValidationError{
+				field:  "SubmitterSecret",
+				reason: "value length must be at least 36 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetManagerSecret() != "" {
+
+		if utf8.RuneCountInString(m.GetManagerSecret()) < 36 {
+			err := ReadIDProviderConfigValidationError{
+				field:  "ManagerSecret",
+				reason: "value length must be at least 36 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetSubmitterPassword() != "" {
+
+		if l := utf8.RuneCountInString(m.GetSubmitterPassword()); l < 4 || l > 254 {
+			err := ReadIDProviderConfigValidationError{
+				field:  "SubmitterPassword",
+				reason: "value length must be between 4 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetHostAddress() != "" {
+
+		if l := utf8.RuneCountInString(m.GetHostAddress()); l < 4 || l > 254 {
+			err := ReadIDProviderConfigValidationError{
+				field:  "HostAddress",
+				reason: "value length must be between 4 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetPropertyMap()))
+		i := 0
+		for key := range m.GetPropertyMap() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetPropertyMap()[key]
+			_ = val
+
+			// no validation rules for PropertyMap[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, ReadIDProviderConfigValidationError{
+							field:  fmt.Sprintf("PropertyMap[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, ReadIDProviderConfigValidationError{
+							field:  fmt.Sprintf("PropertyMap[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return ReadIDProviderConfigValidationError{
+						field:  fmt.Sprintf("PropertyMap[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return ReadIDProviderConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadIDProviderConfigMultiError is an error wrapping multiple validation
+// errors returned by ReadIDProviderConfig.ValidateAll() if the designated
+// constraints aren't met.
+type ReadIDProviderConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadIDProviderConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadIDProviderConfigMultiError) AllErrors() []error { return m }
+
+// ReadIDProviderConfigValidationError is the validation error returned by
+// ReadIDProviderConfig.Validate if the designated constraints aren't met.
+type ReadIDProviderConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadIDProviderConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadIDProviderConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadIDProviderConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadIDProviderConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadIDProviderConfigValidationError) ErrorName() string {
+	return "ReadIDProviderConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadIDProviderConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadIDProviderConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadIDProviderConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadIDProviderConfigValidationError{}
 
 // Validate checks the field values on SAFRProviderConfig with the rules
 // defined in the proto definition for this message. If any rules are
@@ -10687,44 +10926,15 @@ func (m *KnowledgeGraphSchemaConfig) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetSchema() == nil {
+	if utf8.RuneCountInString(m.GetSchema()) < 1 {
 		err := KnowledgeGraphSchemaConfigValidationError{
 			field:  "Schema",
-			reason: "value is required",
+			reason: "value length must be at least 1 runes",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetSchema()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, KnowledgeGraphSchemaConfigValidationError{
-					field:  "Schema",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, KnowledgeGraphSchemaConfigValidationError{
-					field:  "Schema",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetSchema()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return KnowledgeGraphSchemaConfigValidationError{
-				field:  "Schema",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
 	}
 
 	if len(errors) > 0 {
@@ -10806,6 +11016,122 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = KnowledgeGraphSchemaConfigValidationError{}
+
+// Validate checks the field values on ReadIDProviderConfig_Property with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReadIDProviderConfig_Property) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReadIDProviderConfig_Property with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ReadIDProviderConfig_PropertyMultiError, or nil if none found.
+func (m *ReadIDProviderConfig_Property) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReadIDProviderConfig_Property) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetExpression()); l < 4 || l > 512 {
+		err := ReadIDProviderConfig_PropertyValidationError{
+			field:  "Expression",
+			reason: "value length must be between 4 and 512 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Enabled
+
+	if len(errors) > 0 {
+		return ReadIDProviderConfig_PropertyMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReadIDProviderConfig_PropertyMultiError is an error wrapping multiple
+// validation errors returned by ReadIDProviderConfig_Property.ValidateAll()
+// if the designated constraints aren't met.
+type ReadIDProviderConfig_PropertyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReadIDProviderConfig_PropertyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReadIDProviderConfig_PropertyMultiError) AllErrors() []error { return m }
+
+// ReadIDProviderConfig_PropertyValidationError is the validation error
+// returned by ReadIDProviderConfig_Property.Validate if the designated
+// constraints aren't met.
+type ReadIDProviderConfig_PropertyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReadIDProviderConfig_PropertyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReadIDProviderConfig_PropertyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReadIDProviderConfig_PropertyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReadIDProviderConfig_PropertyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReadIDProviderConfig_PropertyValidationError) ErrorName() string {
+	return "ReadIDProviderConfig_PropertyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReadIDProviderConfig_PropertyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReadIDProviderConfig_Property.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReadIDProviderConfig_PropertyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReadIDProviderConfig_PropertyValidationError{}
 
 // Validate checks the field values on IngestMappingConfig_UpsertData with the
 // rules defined in the proto definition for this message. If any rules are

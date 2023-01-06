@@ -23,8 +23,7 @@ import (
 	"github.com/spf13/cobra"
 
 	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/identity"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 var isAuthorizedCmd = &cobra.Command{
@@ -78,17 +77,9 @@ var withDigitalTwinCmd = &cobra.Command{
 		fmt.Print("Enter tenant_id: ")
 		fmt.Scanln(&tenantID)
 
-		digitalTwinUUID, err := identity.ParseUUID(digitalTwinID)
-		if err != nil {
-			log.Fatalf("failed to parse digitalTwinID: %v", err)
-		}
-		tenantUUID, err := identity.ParseUUID(tenantID)
-		if err != nil {
-			log.Fatalf("failed to parse tenantID: %v", err)
-		}
 		digitalTwin := &identitypb.DigitalTwin{
-			Id:       digitalTwinUUID,
-			TenantId: tenantUUID,
+			Id:       digitalTwinID,
+			TenantId: tenantID,
 		}
 
 		actions := []string{"ACTION"}
