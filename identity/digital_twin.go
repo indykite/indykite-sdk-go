@@ -21,7 +21,7 @@ import (
 	"google.golang.org/grpc/codes"
 
 	"github.com/indykite/jarvis-sdk-go/errors"
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
@@ -32,9 +32,6 @@ import (
 // This is a protected operation and it can be accessed only with valid agent credentials!
 func (c *Client) StartEmailVerification(ctx context.Context, digitalTwin *identitypb.DigitalTwin, email string,
 	attributes *objects.MapValue, opts ...grpc.CallOption) error {
-	if _, _, err := digitalTwin.Verify(); err != nil {
-		return errors.NewInvalidArgumentError(err.Error())
-	}
 	req := &identitypb.StartDigitalTwinEmailVerificationRequest{
 		DigitalTwin: digitalTwin,
 		Email:       email,
@@ -128,9 +125,6 @@ func (c *Client) ChangePasswordOfDigitalTwin(ctx context.Context,
 	newPassword string,
 	opts ...grpc.CallOption,
 ) (*identitypb.ChangePasswordResponse, error) {
-	if _, _, err := digitalTwin.Verify(); err != nil {
-		return nil, errors.NewInvalidArgumentError(err.Error())
-	}
 	if len(newPassword) <= 4 {
 		return nil, errors.NewInvalidArgumentError("password is too short")
 	}
@@ -172,10 +166,6 @@ func (c *Client) GetDigitalTwin(ctx context.Context,
 	properties []*identitypb.PropertyMask,
 	opts ...grpc.CallOption,
 ) (*identitypb.GetDigitalTwinResponse, error) {
-	if _, _, err := digitalTwin.Verify(); err != nil {
-		return nil, errors.NewInvalidArgumentError(err.Error())
-	}
-
 	return c.getDigitalTwinWithProperties(ctx, &identitypb.DigitalTwinIdentifier{
 		Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
 	}, properties, opts...)
@@ -202,7 +192,7 @@ func (c *Client) patchDigitalTwinProperties(ctx context.Context,
 	forceDelete bool,
 	opts ...grpc.CallOption,
 ) ([]*identitypb.BatchOperationResult, error) {
-	if err := identitypb.PropertyBatchOperations(operations).Validate(false); err != nil {
+	if err := identitypb.PropertyBatchOperations(operations).Validate(); err != nil {
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "invalid patch request")
 	}
 	req := &identitypb.PatchDigitalTwinRequest{
@@ -230,10 +220,6 @@ func (c *Client) PatchDigitalTwin(ctx context.Context,
 	forceDelete bool,
 	opts ...grpc.CallOption,
 ) ([]*identitypb.BatchOperationResult, error) {
-	if _, _, err := digitalTwin.Verify(); err != nil {
-		return nil, errors.NewInvalidArgumentError(err.Error())
-	}
-
 	return c.patchDigitalTwinProperties(ctx, &identitypb.DigitalTwinIdentifier{
 		Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
 	}, operations, forceDelete, opts...)
@@ -278,10 +264,6 @@ func (c *Client) DeleteDigitalTwin(ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
 	opts ...grpc.CallOption,
 ) (*identitypb.DigitalTwin, error) {
-	if _, _, err := digitalTwin.Verify(); err != nil {
-		return nil, errors.NewInvalidArgumentError(err.Error())
-	}
-
 	return c.deleteDigitalTwinByIdentifier(ctx, &identitypb.DigitalTwinIdentifier{
 		Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
 	}, opts...)

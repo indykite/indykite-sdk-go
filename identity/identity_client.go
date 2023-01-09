@@ -21,7 +21,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	api "github.com/indykite/jarvis-sdk-go/grpc"
 )
 

@@ -22,9 +22,8 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/identity"
 )
 
 // emailVerCmd represents the plan command
@@ -43,22 +42,13 @@ var emailVerCmd = &cobra.Command{
 		fmt.Print("Enter email address: ")
 		fmt.Scanln(&email)
 
-		digitalTwinUUID, err := identity.ParseUUID(digitalTwinID)
-		if err != nil {
-			log.Fatalf("failed to parse digitalTwinID: %v", err)
-		}
-		tenantUUID, err := identity.ParseUUID(tenantID)
-		if err != nil {
-			log.Fatalf("failed to parse tenantID: %v", err)
-		}
-
 		// anyPb, _ := anypb.New(wrapperspb.String("test"))
 		// anyObject, _ := objects.Any(anyPb)
 
-		err = client.StartEmailVerification(context.Background(),
+		err := client.StartEmailVerification(context.Background(),
 			&identitypb.DigitalTwin{
-				TenantId: tenantUUID,
-				Id:       digitalTwinUUID,
+				TenantId: tenantID,
+				Id:       digitalTwinID,
 			}, email,
 			&objects.MapValue{
 				Fields: map[string]*objects.Value{

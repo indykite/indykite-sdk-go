@@ -17,7 +17,6 @@ import (
 	"unicode/utf8"
 
 	"google.golang.org/protobuf/types/known/anypb"
-
 	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 

@@ -21,13 +21,15 @@
 package eventsv1beta1
 
 import (
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	reflect "reflect"
+	sync "sync"
+
 	latlng "google.golang.org/genproto/googleapis/type/latlng"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
+
+	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 const (

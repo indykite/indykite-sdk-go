@@ -57,46 +57,6 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetSubject() == nil {
-		err := IsAuthorizedRequestValidationError{
-			field:  "Subject",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetSubject()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IsAuthorizedRequestValidationError{
-					field:  "Subject",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, IsAuthorizedRequestValidationError{
-					field:  "Subject",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetSubject()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return IsAuthorizedRequestValidationError{
-				field:  "Subject",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	if l := len(m.GetResources()); l < 1 || l > 32 {
 		err := IsAuthorizedRequestValidationError{
 			field:  "Resources",
@@ -177,6 +137,62 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 			}
 			errors = append(errors, err)
 		}
+
+	}
+
+	switch m.Subject.(type) {
+
+	case *IsAuthorizedRequest_DigitalTwinIdentifier:
+
+		if m.GetDigitalTwinIdentifier() == nil {
+			err := IsAuthorizedRequestValidationError{
+				field:  "DigitalTwinIdentifier",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDigitalTwinIdentifier()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IsAuthorizedRequestValidationError{
+						field:  "DigitalTwinIdentifier",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IsAuthorizedRequestValidationError{
+						field:  "DigitalTwinIdentifier",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDigitalTwinIdentifier()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IsAuthorizedRequestValidationError{
+					field:  "DigitalTwinIdentifier",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		err := IsAuthorizedRequestValidationError{
+			field:  "Subject",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 
 	}
 

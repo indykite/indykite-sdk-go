@@ -21,13 +21,16 @@
 package knowledge_graphv1beta1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
-	v1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
+
+	v1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 )
 
 const (

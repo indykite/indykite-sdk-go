@@ -23,7 +23,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // planCmd represents the plan command
@@ -47,7 +47,7 @@ var checkConsentChallengeCmd = &cobra.Command{
 
 		resp, err := client.CheckConsentChallenge(
 			context.Background(),
-			&identitypb.CheckConsentChallengeRequest{Challenge: consentChallenge},
+			&identitypb.CheckOAuth2ConsentChallengeRequest{Challenge: consentChallenge},
 			retry.WithMax(2),
 		)
 		if err != nil {
@@ -67,7 +67,7 @@ var createConsentVerifier = &cobra.Command{
 		var consentChallenge string
 		fmt.Scanln(&consentChallenge)
 
-		req := &identitypb.CreateConsentVerifierRequest{Challenge: consentChallenge}
+		req := &identitypb.CreateOAuth2ConsentVerifierRequest{ConsentChallenge: consentChallenge}
 		fmt.Print("Enter 1 for Approval or 2 for Denial: ")
 		var result string
 		fmt.Scanln(&result)
@@ -85,7 +85,7 @@ var createConsentVerifier = &cobra.Command{
 
 			fmt.Println(jsonp.Format(denial))
 
-			req.Result = &identitypb.CreateConsentVerifierRequest_Denial{Denial: denial}
+			req.Result = &identitypb.CreateOAuth2ConsentVerifierRequest_Denial{Denial: denial}
 		default:
 			approval := &identitypb.ConsentApproval{}
 			for {
@@ -97,7 +97,7 @@ var createConsentVerifier = &cobra.Command{
 				}
 				approval.GrantScopes = append(approval.GrantScopes, scope)
 			}
-			req.Result = &identitypb.CreateConsentVerifierRequest_Approval{Approval: approval}
+			req.Result = &identitypb.CreateOAuth2ConsentVerifierRequest_Approval{Approval: approval}
 		}
 
 		resp, err := client.CreateConsentVerifier(context.Background(), req, retry.WithMax(2))
