@@ -22,9 +22,8 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/identity"
 )
 
 // patchPropDtTokenCmd represents the patch command
@@ -78,18 +77,9 @@ var patchPropDtCmd = &cobra.Command{
 		fmt.Print("Enter tenant_id: ")
 		fmt.Scanln(&tenantID)
 
-		digitalTwinUUID, err := identity.ParseUUID(digitalTwinID)
-		if err != nil {
-			log.Fatalf("failed to parse digitalTwinID: %v", err)
-		}
-		tenantUUID, err := identity.ParseUUID(tenantID)
-		if err != nil {
-			log.Fatalf("failed to parse tenantID: %v", err)
-		}
-
 		resp, err := client.PatchDigitalTwin(
 			context.Background(),
-			&identitypb.DigitalTwin{Id: digitalTwinUUID, TenantId: tenantUUID},
+			&identitypb.DigitalTwin{Id: digitalTwinID, TenantId: tenantID},
 			[]*identitypb.PropertyBatchOperation{
 				// {Operation: &identitypb.PropertyBatchOperation_Add{Add: &identitypb.Property{
 				//	Definition: &identitypb.PropertyDefinition{Property: "email"},

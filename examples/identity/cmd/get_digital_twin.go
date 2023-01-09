@@ -22,8 +22,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/identity"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // planCmd represents the plan command
@@ -68,18 +67,9 @@ var getDtCmd = &cobra.Command{
 		fmt.Print("Enter tenant_id: ")
 		fmt.Scanln(&tenantID)
 
-		digitalTwinUUID, err := identity.ParseUUID(digitalTwinID)
-		if err != nil {
-			log.Fatalf("failed to parse digitalTwinID: %v", err)
-		}
-		tenantUUID, err := identity.ParseUUID(tenantID)
-		if err != nil {
-			log.Fatalf("failed to parse tenantID: %v", err)
-		}
-
 		resp, err := client.GetDigitalTwin(
 			context.Background(),
-			&identitypb.DigitalTwin{Id: digitalTwinUUID, TenantId: tenantUUID},
+			&identitypb.DigitalTwin{Id: digitalTwinID, TenantId: tenantID},
 			[]*identitypb.PropertyMask{
 				{Definition: &identitypb.PropertyDefinition{Property: "email"}},
 				{Definition: &identitypb.PropertyDefinition{Property: "mobile"}},

@@ -21,13 +21,16 @@
 package identityv1beta2
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
+
+	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 )
 
 const (
@@ -175,24 +178,25 @@ func (x *Schema) GetAttributeName() string {
 // The location consist of three component:
 // 1. Schema namespace where the property is defined.
 // Some examples like:
-//  "schema": "http://schema.org/",
-//  "bibo": "http://purl.org/ontology/bibo/",
-//  "dc": "http://purl.org/dc/elements/1.1/",
-//  "dcat": "http://www.w3.org/ns/dcat#",
-//  "dct": "http://purl.org/dc/terms/",
-//  "dcterms": "http://purl.org/dc/terms/",
-//  "dctype": "http://purl.org/dc/dcmitype/",
-//  "eli": "http://data.europa.eu/eli/ontology#",
-//  "foaf": "http://xmlns.com/foaf/0.1/",
-//  "owl": "http://www.w3.org/2002/07/owl#",
-//  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-//  "rdfa": "http://www.w3.org/ns/rdfa#",
-//  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-//  "skos": "http://www.w3.org/2004/02/skos/core#",
-//  "snomed": "http://purl.bioontology.org/ontology/SNOMEDCT/",
-//  "void": "http://rdfs.org/ns/void#",
-//  "xsd": "http://www.w3.org/2001/XMLSchema#",
-//  "xsd1": "hhttp://www.w3.org/2001/XMLSchema#"
+//
+//	"schema": "http://schema.org/",
+//	"bibo": "http://purl.org/ontology/bibo/",
+//	"dc": "http://purl.org/dc/elements/1.1/",
+//	"dcat": "http://www.w3.org/ns/dcat#",
+//	"dct": "http://purl.org/dc/terms/",
+//	"dcterms": "http://purl.org/dc/terms/",
+//	"dctype": "http://purl.org/dc/dcmitype/",
+//	"eli": "http://data.europa.eu/eli/ontology#",
+//	"foaf": "http://xmlns.com/foaf/0.1/",
+//	"owl": "http://www.w3.org/2002/07/owl#",
+//	"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+//	"rdfa": "http://www.w3.org/ns/rdfa#",
+//	"rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+//	"skos": "http://www.w3.org/2004/02/skos/core#",
+//	"snomed": "http://purl.bioontology.org/ontology/SNOMEDCT/",
+//	"void": "http://rdfs.org/ns/void#",
+//	"xsd": "http://www.w3.org/2001/XMLSchema#",
+//	"xsd1": "hhttp://www.w3.org/2001/XMLSchema#"
 //
 // 2. Type definition withing the names space.
 // 3. Exact property name, it may be unambiguous if there is one definition but ambiguous without

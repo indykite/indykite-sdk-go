@@ -18,12 +18,10 @@ import (
 	"context"
 	"time"
 
-	guuid "github.com/google/uuid"
-	"github.com/pborman/uuid"
 	"google.golang.org/grpc"
 
 	"github.com/indykite/jarvis-sdk-go/errors"
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
@@ -97,7 +95,7 @@ func (c *Client) CancelInvitation(ctx context.Context, referenceID string, opts 
 
 // CreateEmailInvitation receive all properties for digital twin.
 func (c *Client) CreateEmailInvitation(ctx context.Context,
-	invitee string, tenantID interface{}, referenceID string,
+	invitee string, tenantID string, referenceID string,
 	expireTime, inviteAtTime time.Time, messageAttributes map[string]interface{},
 	opts ...grpc.CallOption) error {
 	var request = &identitypb.CreateInvitationRequest{
@@ -107,22 +105,7 @@ func (c *Client) CreateEmailInvitation(ctx context.Context,
 		},
 		InviteAtTime: optionalTime(inviteAtTime),
 		ExpireTime:   optionalTime(expireTime),
-	}
-
-	switch v := tenantID.(type) {
-	case string:
-		var err error
-		request.TenantId, err = ParseUUID(v)
-		if err != nil {
-			return err
-		}
-	case []byte:
-		if uuid.UUID(v).Variant() != guuid.RFC4122 {
-			return errors.NewInvalidArgumentError("invalid UUID RFC4122 variant")
-		}
-		request.TenantId = v
-	default:
-		return errors.NewInvalidArgumentError("unsupported tenantID type")
+		TenantId:     tenantID,
 	}
 
 	if len(messageAttributes) > 0 {

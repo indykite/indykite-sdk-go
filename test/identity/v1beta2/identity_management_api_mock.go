@@ -27,7 +27,7 @@ import (
 	grpc "google.golang.org/grpc"
 	metadata "google.golang.org/grpc/metadata"
 
-	identityv1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta1"
+	identityv1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // MockIdentityManagementAPIClient is a mock of IdentityManagementAPIClient interface.
@@ -54,14 +54,14 @@ func (m *MockIdentityManagementAPIClient) EXPECT() *MockIdentityManagementAPICli
 }
 
 // BatchGetDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) BatchGetDocuments(ctx context.Context, in *identityv1beta1.BatchGetDocumentsRequest, opts ...grpc.CallOption) (identityv1beta1.IdentityManagementAPI_BatchGetDocumentsClient, error) {
+func (m *MockIdentityManagementAPIClient) BatchGetDocuments(ctx context.Context, in *identityv1beta2.BatchGetDocumentsRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_BatchGetDocumentsClient, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchGetDocuments", varargs...)
-	ret0, _ := ret[0].(identityv1beta1.IdentityManagementAPI_BatchGetDocumentsClient)
+	ret0, _ := ret[0].(identityv1beta2.IdentityManagementAPI_BatchGetDocumentsClient)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -74,14 +74,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) BatchGetDocuments(ctx, in
 }
 
 // CancelInvitation mocks base method.
-func (m *MockIdentityManagementAPIClient) CancelInvitation(ctx context.Context, in *identityv1beta1.CancelInvitationRequest, opts ...grpc.CallOption) (*identityv1beta1.CancelInvitationResponse, error) {
+func (m *MockIdentityManagementAPIClient) CancelInvitation(ctx context.Context, in *identityv1beta2.CancelInvitationRequest, opts ...grpc.CallOption) (*identityv1beta2.CancelInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CancelInvitation", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.CancelInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CancelInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,14 +94,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) CancelInvitation(ctx, in 
 }
 
 // ChangePassword mocks base method.
-func (m *MockIdentityManagementAPIClient) ChangePassword(ctx context.Context, in *identityv1beta1.ChangePasswordRequest, opts ...grpc.CallOption) (*identityv1beta1.ChangePasswordResponse, error) {
+func (m *MockIdentityManagementAPIClient) ChangePassword(ctx context.Context, in *identityv1beta2.ChangePasswordRequest, opts ...grpc.CallOption) (*identityv1beta2.ChangePasswordResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ChangePassword", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.ChangePasswordResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ChangePasswordResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -113,35 +113,35 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ChangePassword(ctx, in in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ChangePassword", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ChangePassword), varargs...)
 }
 
-// CheckConsentChallenge mocks base method.
-func (m *MockIdentityManagementAPIClient) CheckConsentChallenge(ctx context.Context, in *identityv1beta1.CheckConsentChallengeRequest, opts ...grpc.CallOption) (*identityv1beta1.CheckConsentChallengeResponse, error) {
+// CheckOAuth2ConsentChallenge mocks base method.
+func (m *MockIdentityManagementAPIClient) CheckOAuth2ConsentChallenge(ctx context.Context, in *identityv1beta2.CheckOAuth2ConsentChallengeRequest, opts ...grpc.CallOption) (*identityv1beta2.CheckOAuth2ConsentChallengeResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "CheckConsentChallenge", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.CheckConsentChallengeResponse)
+	ret := m.ctrl.Call(m, "CheckOAuth2ConsentChallenge", varargs...)
+	ret0, _ := ret[0].(*identityv1beta2.CheckOAuth2ConsentChallengeResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CheckConsentChallenge indicates an expected call of CheckConsentChallenge.
-func (mr *MockIdentityManagementAPIClientMockRecorder) CheckConsentChallenge(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+// CheckOAuth2ConsentChallenge indicates an expected call of CheckOAuth2ConsentChallenge.
+func (mr *MockIdentityManagementAPIClientMockRecorder) CheckOAuth2ConsentChallenge(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckConsentChallenge", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CheckConsentChallenge), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckOAuth2ConsentChallenge", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CheckOAuth2ConsentChallenge), varargs...)
 }
 
 // CheckInvitationState mocks base method.
-func (m *MockIdentityManagementAPIClient) CheckInvitationState(ctx context.Context, in *identityv1beta1.CheckInvitationStateRequest, opts ...grpc.CallOption) (*identityv1beta1.CheckInvitationStateResponse, error) {
+func (m *MockIdentityManagementAPIClient) CheckInvitationState(ctx context.Context, in *identityv1beta2.CheckInvitationStateRequest, opts ...grpc.CallOption) (*identityv1beta2.CheckInvitationStateResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CheckInvitationState", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.CheckInvitationStateResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CheckInvitationStateResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -153,35 +153,35 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) CheckInvitationState(ctx,
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckInvitationState", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CheckInvitationState), varargs...)
 }
 
-// CreateConsentVerifier mocks base method.
-func (m *MockIdentityManagementAPIClient) CreateConsentVerifier(ctx context.Context, in *identityv1beta1.CreateConsentVerifierRequest, opts ...grpc.CallOption) (*identityv1beta1.CreateConsentVerifierResponse, error) {
+// CreateOAuth2ConsentVerifier mocks base method.
+func (m *MockIdentityManagementAPIClient) CreateOAuth2ConsentVerifier(ctx context.Context, in *identityv1beta2.CreateOAuth2ConsentVerifierRequest, opts ...grpc.CallOption) (*identityv1beta2.CreateOAuth2ConsentVerifierResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "CreateConsentVerifier", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.CreateConsentVerifierResponse)
+	ret := m.ctrl.Call(m, "CreateOAuth2ConsentVerifier", varargs...)
+	ret0, _ := ret[0].(*identityv1beta2.CreateOAuth2ConsentVerifierResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateConsentVerifier indicates an expected call of CreateConsentVerifier.
-func (mr *MockIdentityManagementAPIClientMockRecorder) CreateConsentVerifier(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+// CreateOAuth2ConsentVerifier indicates an expected call of CreateOAuth2ConsentVerifier.
+func (mr *MockIdentityManagementAPIClientMockRecorder) CreateOAuth2ConsentVerifier(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConsentVerifier", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CreateConsentVerifier), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOAuth2ConsentVerifier", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CreateOAuth2ConsentVerifier), varargs...)
 }
 
 // CreateInvitation mocks base method.
-func (m *MockIdentityManagementAPIClient) CreateInvitation(ctx context.Context, in *identityv1beta1.CreateInvitationRequest, opts ...grpc.CallOption) (*identityv1beta1.CreateInvitationResponse, error) {
+func (m *MockIdentityManagementAPIClient) CreateInvitation(ctx context.Context, in *identityv1beta2.CreateInvitationRequest, opts ...grpc.CallOption) (*identityv1beta2.CreateInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateInvitation", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.CreateInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CreateInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -194,14 +194,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) CreateInvitation(ctx, in 
 }
 
 // DeleteDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIClient) DeleteDigitalTwin(ctx context.Context, in *identityv1beta1.DeleteDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta1.DeleteDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIClient) DeleteDigitalTwin(ctx context.Context, in *identityv1beta2.DeleteDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta2.DeleteDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteDigitalTwin", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.DeleteDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.DeleteDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -214,14 +214,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) DeleteDigitalTwin(ctx, in
 }
 
 // EnrichToken mocks base method.
-func (m *MockIdentityManagementAPIClient) EnrichToken(ctx context.Context, in *identityv1beta1.EnrichTokenRequest, opts ...grpc.CallOption) (*identityv1beta1.EnrichTokenResponse, error) {
+func (m *MockIdentityManagementAPIClient) EnrichToken(ctx context.Context, in *identityv1beta2.EnrichTokenRequest, opts ...grpc.CallOption) (*identityv1beta2.EnrichTokenResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "EnrichToken", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.EnrichTokenResponse)
+	ret0, _ := ret[0].(*identityv1beta2.EnrichTokenResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -234,14 +234,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) EnrichToken(ctx, in inter
 }
 
 // GetAccessToken mocks base method.
-func (m *MockIdentityManagementAPIClient) GetAccessToken(ctx context.Context, in *identityv1beta1.GetAccessTokenRequest, opts ...grpc.CallOption) (*identityv1beta1.GetAccessTokenResponse, error) {
+func (m *MockIdentityManagementAPIClient) GetAccessToken(ctx context.Context, in *identityv1beta2.GetAccessTokenRequest, opts ...grpc.CallOption) (*identityv1beta2.GetAccessTokenResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetAccessToken", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.GetAccessTokenResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetAccessTokenResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -254,14 +254,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetAccessToken(ctx, in in
 }
 
 // GetDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIClient) GetDigitalTwin(ctx context.Context, in *identityv1beta1.GetDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta1.GetDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIClient) GetDigitalTwin(ctx context.Context, in *identityv1beta2.GetDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta2.GetDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetDigitalTwin", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.GetDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -274,14 +274,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetDigitalTwin(ctx, in in
 }
 
 // GetDocument mocks base method.
-func (m *MockIdentityManagementAPIClient) GetDocument(ctx context.Context, in *identityv1beta1.GetDocumentRequest, opts ...grpc.CallOption) (*identityv1beta1.GetDocumentResponse, error) {
+func (m *MockIdentityManagementAPIClient) GetDocument(ctx context.Context, in *identityv1beta2.GetDocumentRequest, opts ...grpc.CallOption) (*identityv1beta2.GetDocumentResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetDocument", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.GetDocumentResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetDocumentResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -294,14 +294,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetDocument(ctx, in inter
 }
 
 // GetPasswordCredential mocks base method.
-func (m *MockIdentityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *identityv1beta1.GetPasswordCredentialRequest, opts ...grpc.CallOption) (*identityv1beta1.GetPasswordCredentialResponse, error) {
+func (m *MockIdentityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *identityv1beta2.GetPasswordCredentialRequest, opts ...grpc.CallOption) (*identityv1beta2.GetPasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GetPasswordCredential", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.GetPasswordCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetPasswordCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -314,14 +314,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetPasswordCredential(ctx
 }
 
 // ImportDigitalTwins mocks base method.
-func (m *MockIdentityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in *identityv1beta1.ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*identityv1beta1.ImportDigitalTwinsResponse, error) {
+func (m *MockIdentityManagementAPIClient) ImportDigitalTwins(ctx context.Context, in *identityv1beta2.ImportDigitalTwinsRequest, opts ...grpc.CallOption) (*identityv1beta2.ImportDigitalTwinsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ImportDigitalTwins", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.ImportDigitalTwinsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ImportDigitalTwinsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -334,14 +334,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ImportDigitalTwins(ctx, i
 }
 
 // IsAuthorized mocks base method.
-func (m *MockIdentityManagementAPIClient) IsAuthorized(ctx context.Context, in *identityv1beta1.IsAuthorizedRequest, opts ...grpc.CallOption) (*identityv1beta1.IsAuthorizedResponse, error) {
+func (m *MockIdentityManagementAPIClient) IsAuthorized(ctx context.Context, in *identityv1beta2.IsAuthorizedRequest, opts ...grpc.CallOption) (*identityv1beta2.IsAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "IsAuthorized", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.IsAuthorizedResponse)
+	ret0, _ := ret[0].(*identityv1beta2.IsAuthorizedResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -354,14 +354,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) IsAuthorized(ctx, in inte
 }
 
 // ListDigitalTwins mocks base method.
-func (m *MockIdentityManagementAPIClient) ListDigitalTwins(ctx context.Context, in *identityv1beta1.ListDigitalTwinsRequest, opts ...grpc.CallOption) (*identityv1beta1.ListDigitalTwinsResponse, error) {
+func (m *MockIdentityManagementAPIClient) ListDigitalTwins(ctx context.Context, in *identityv1beta2.ListDigitalTwinsRequest, opts ...grpc.CallOption) (*identityv1beta2.ListDigitalTwinsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListDigitalTwins", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.ListDigitalTwinsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ListDigitalTwinsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -374,14 +374,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ListDigitalTwins(ctx, in 
 }
 
 // ListDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) ListDocuments(ctx context.Context, in *identityv1beta1.ListDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta1.ListDocumentsResponse, error) {
+func (m *MockIdentityManagementAPIClient) ListDocuments(ctx context.Context, in *identityv1beta2.ListDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta2.ListDocumentsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListDocuments", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.ListDocumentsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ListDocumentsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -394,14 +394,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ListDocuments(ctx, in int
 }
 
 // MutateDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) MutateDocuments(ctx context.Context, in *identityv1beta1.MutateDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta1.MutateDocumentsResponse, error) {
+func (m *MockIdentityManagementAPIClient) MutateDocuments(ctx context.Context, in *identityv1beta2.MutateDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta2.MutateDocumentsResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "MutateDocuments", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.MutateDocumentsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.MutateDocumentsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -414,14 +414,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) MutateDocuments(ctx, in i
 }
 
 // PatchDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIClient) PatchDigitalTwin(ctx context.Context, in *identityv1beta1.PatchDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta1.PatchDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIClient) PatchDigitalTwin(ctx context.Context, in *identityv1beta2.PatchDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta2.PatchDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "PatchDigitalTwin", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.PatchDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.PatchDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -434,14 +434,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) PatchDigitalTwin(ctx, in 
 }
 
 // RegisterDigitalTwinWithoutCredential mocks base method.
-func (m *MockIdentityManagementAPIClient) RegisterDigitalTwinWithoutCredential(ctx context.Context, in *identityv1beta1.RegisterDigitalTwinWithoutCredentialRequest, opts ...grpc.CallOption) (*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse, error) {
+func (m *MockIdentityManagementAPIClient) RegisterDigitalTwinWithoutCredential(ctx context.Context, in *identityv1beta2.RegisterDigitalTwinWithoutCredentialRequest, opts ...grpc.CallOption) (*identityv1beta2.RegisterDigitalTwinWithoutCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RegisterDigitalTwinWithoutCredential", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.RegisterDigitalTwinWithoutCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -454,14 +454,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) RegisterDigitalTwinWithou
 }
 
 // ResendInvitation mocks base method.
-func (m *MockIdentityManagementAPIClient) ResendInvitation(ctx context.Context, in *identityv1beta1.ResendInvitationRequest, opts ...grpc.CallOption) (*identityv1beta1.ResendInvitationResponse, error) {
+func (m *MockIdentityManagementAPIClient) ResendInvitation(ctx context.Context, in *identityv1beta2.ResendInvitationRequest, opts ...grpc.CallOption) (*identityv1beta2.ResendInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ResendInvitation", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.ResendInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ResendInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -474,14 +474,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ResendInvitation(ctx, in 
 }
 
 // RunQuery mocks base method.
-func (m *MockIdentityManagementAPIClient) RunQuery(ctx context.Context, in *identityv1beta1.RunQueryRequest, opts ...grpc.CallOption) (identityv1beta1.IdentityManagementAPI_RunQueryClient, error) {
+func (m *MockIdentityManagementAPIClient) RunQuery(ctx context.Context, in *identityv1beta2.RunQueryRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_RunQueryClient, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RunQuery", varargs...)
-	ret0, _ := ret[0].(identityv1beta1.IdentityManagementAPI_RunQueryClient)
+	ret0, _ := ret[0].(identityv1beta2.IdentityManagementAPI_RunQueryClient)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -494,14 +494,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) RunQuery(ctx, in interfac
 }
 
 // SelfServiceTerminateSession mocks base method.
-func (m *MockIdentityManagementAPIClient) SelfServiceTerminateSession(ctx context.Context, in *identityv1beta1.SelfServiceTerminateSessionRequest, opts ...grpc.CallOption) (*identityv1beta1.SelfServiceTerminateSessionResponse, error) {
+func (m *MockIdentityManagementAPIClient) SelfServiceTerminateSession(ctx context.Context, in *identityv1beta2.SelfServiceTerminateSessionRequest, opts ...grpc.CallOption) (*identityv1beta2.SelfServiceTerminateSessionResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "SelfServiceTerminateSession", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.SelfServiceTerminateSessionResponse)
+	ret0, _ := ret[0].(*identityv1beta2.SelfServiceTerminateSessionResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -514,14 +514,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) SelfServiceTerminateSessi
 }
 
 // SessionIntrospect mocks base method.
-func (m *MockIdentityManagementAPIClient) SessionIntrospect(ctx context.Context, in *identityv1beta1.SessionIntrospectRequest, opts ...grpc.CallOption) (*identityv1beta1.SessionIntrospectResponse, error) {
+func (m *MockIdentityManagementAPIClient) SessionIntrospect(ctx context.Context, in *identityv1beta2.SessionIntrospectRequest, opts ...grpc.CallOption) (*identityv1beta2.SessionIntrospectResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "SessionIntrospect", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.SessionIntrospectResponse)
+	ret0, _ := ret[0].(*identityv1beta2.SessionIntrospectResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -534,14 +534,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) SessionIntrospect(ctx, in
 }
 
 // StartDigitalTwinEmailVerification mocks base method.
-func (m *MockIdentityManagementAPIClient) StartDigitalTwinEmailVerification(ctx context.Context, in *identityv1beta1.StartDigitalTwinEmailVerificationRequest, opts ...grpc.CallOption) (*identityv1beta1.StartDigitalTwinEmailVerificationResponse, error) {
+func (m *MockIdentityManagementAPIClient) StartDigitalTwinEmailVerification(ctx context.Context, in *identityv1beta2.StartDigitalTwinEmailVerificationRequest, opts ...grpc.CallOption) (*identityv1beta2.StartDigitalTwinEmailVerificationResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "StartDigitalTwinEmailVerification", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.StartDigitalTwinEmailVerificationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.StartDigitalTwinEmailVerificationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -554,14 +554,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) StartDigitalTwinEmailVeri
 }
 
 // StartForgottenPasswordFlow mocks base method.
-func (m *MockIdentityManagementAPIClient) StartForgottenPasswordFlow(ctx context.Context, in *identityv1beta1.StartForgottenPasswordFlowRequest, opts ...grpc.CallOption) (*identityv1beta1.StartForgottenPasswordFlowResponse, error) {
+func (m *MockIdentityManagementAPIClient) StartForgottenPasswordFlow(ctx context.Context, in *identityv1beta2.StartForgottenPasswordFlowRequest, opts ...grpc.CallOption) (*identityv1beta2.StartForgottenPasswordFlowResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "StartForgottenPasswordFlow", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.StartForgottenPasswordFlowResponse)
+	ret0, _ := ret[0].(*identityv1beta2.StartForgottenPasswordFlowResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -574,14 +574,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) StartForgottenPasswordFlo
 }
 
 // TokenIntrospect mocks base method.
-func (m *MockIdentityManagementAPIClient) TokenIntrospect(ctx context.Context, in *identityv1beta1.TokenIntrospectRequest, opts ...grpc.CallOption) (*identityv1beta1.TokenIntrospectResponse, error) {
+func (m *MockIdentityManagementAPIClient) TokenIntrospect(ctx context.Context, in *identityv1beta2.TokenIntrospectRequest, opts ...grpc.CallOption) (*identityv1beta2.TokenIntrospectResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "TokenIntrospect", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.TokenIntrospectResponse)
+	ret0, _ := ret[0].(*identityv1beta2.TokenIntrospectResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -594,14 +594,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) TokenIntrospect(ctx, in i
 }
 
 // UpdatePasswordCredential mocks base method.
-func (m *MockIdentityManagementAPIClient) UpdatePasswordCredential(ctx context.Context, in *identityv1beta1.UpdatePasswordCredentialRequest, opts ...grpc.CallOption) (*identityv1beta1.UpdatePasswordCredentialResponse, error) {
+func (m *MockIdentityManagementAPIClient) UpdatePasswordCredential(ctx context.Context, in *identityv1beta2.UpdatePasswordCredentialRequest, opts ...grpc.CallOption) (*identityv1beta2.UpdatePasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdatePasswordCredential", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.UpdatePasswordCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.UpdatePasswordCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -614,14 +614,14 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) UpdatePasswordCredential(
 }
 
 // VerifyDigitalTwinEmail mocks base method.
-func (m *MockIdentityManagementAPIClient) VerifyDigitalTwinEmail(ctx context.Context, in *identityv1beta1.VerifyDigitalTwinEmailRequest, opts ...grpc.CallOption) (*identityv1beta1.VerifyDigitalTwinEmailResponse, error) {
+func (m *MockIdentityManagementAPIClient) VerifyDigitalTwinEmail(ctx context.Context, in *identityv1beta2.VerifyDigitalTwinEmailRequest, opts ...grpc.CallOption) (*identityv1beta2.VerifyDigitalTwinEmailResponse, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "VerifyDigitalTwinEmail", varargs...)
-	ret0, _ := ret[0].(*identityv1beta1.VerifyDigitalTwinEmailResponse)
+	ret0, _ := ret[0].(*identityv1beta2.VerifyDigitalTwinEmailResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -700,10 +700,10 @@ func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) Header(
 }
 
 // Recv mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Recv() (*identityv1beta1.BatchGetDocumentsResponse, error) {
+func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Recv() (*identityv1beta2.BatchGetDocumentsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*identityv1beta1.BatchGetDocumentsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.BatchGetDocumentsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -823,10 +823,10 @@ func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) Header() *gomock
 }
 
 // Recv mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) Recv() (*identityv1beta1.RunQueryResponse, error) {
+func (m *MockIdentityManagementAPI_RunQueryClient) Recv() (*identityv1beta2.RunQueryResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*identityv1beta1.RunQueryResponse)
+	ret0, _ := ret[0].(*identityv1beta2.RunQueryResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -903,7 +903,7 @@ func (m *MockIdentityManagementAPIServer) EXPECT() *MockIdentityManagementAPISer
 }
 
 // BatchGetDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) BatchGetDocuments(arg0 *identityv1beta1.BatchGetDocumentsRequest, arg1 identityv1beta1.IdentityManagementAPI_BatchGetDocumentsServer) error {
+func (m *MockIdentityManagementAPIServer) BatchGetDocuments(arg0 *identityv1beta2.BatchGetDocumentsRequest, arg1 identityv1beta2.IdentityManagementAPI_BatchGetDocumentsServer) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "BatchGetDocuments", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -917,10 +917,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) BatchGetDocuments(arg0, a
 }
 
 // CancelInvitation mocks base method.
-func (m *MockIdentityManagementAPIServer) CancelInvitation(arg0 context.Context, arg1 *identityv1beta1.CancelInvitationRequest) (*identityv1beta1.CancelInvitationResponse, error) {
+func (m *MockIdentityManagementAPIServer) CancelInvitation(arg0 context.Context, arg1 *identityv1beta2.CancelInvitationRequest) (*identityv1beta2.CancelInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CancelInvitation", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.CancelInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CancelInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -932,10 +932,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) CancelInvitation(arg0, ar
 }
 
 // ChangePassword mocks base method.
-func (m *MockIdentityManagementAPIServer) ChangePassword(arg0 context.Context, arg1 *identityv1beta1.ChangePasswordRequest) (*identityv1beta1.ChangePasswordResponse, error) {
+func (m *MockIdentityManagementAPIServer) ChangePassword(arg0 context.Context, arg1 *identityv1beta2.ChangePasswordRequest) (*identityv1beta2.ChangePasswordResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ChangePassword", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.ChangePasswordResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ChangePasswordResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -946,26 +946,26 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) ChangePassword(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ChangePassword", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).ChangePassword), arg0, arg1)
 }
 
-// CheckConsentChallenge mocks base method.
-func (m *MockIdentityManagementAPIServer) CheckConsentChallenge(arg0 context.Context, arg1 *identityv1beta1.CheckConsentChallengeRequest) (*identityv1beta1.CheckConsentChallengeResponse, error) {
+// CheckOAuth2ConsentChallenge mocks base method.
+func (m *MockIdentityManagementAPIServer) CheckOAuth2ConsentChallenge(arg0 context.Context, arg1 *identityv1beta2.CheckOAuth2ConsentChallengeRequest) (*identityv1beta2.CheckOAuth2ConsentChallengeResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CheckConsentChallenge", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.CheckConsentChallengeResponse)
+	ret := m.ctrl.Call(m, "CheckOAuth2ConsentChallenge", arg0, arg1)
+	ret0, _ := ret[0].(*identityv1beta2.CheckOAuth2ConsentChallengeResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CheckConsentChallenge indicates an expected call of CheckConsentChallenge.
-func (mr *MockIdentityManagementAPIServerMockRecorder) CheckConsentChallenge(arg0, arg1 interface{}) *gomock.Call {
+// CheckOAuth2ConsentChallenge indicates an expected call of CheckOAuth2ConsentChallenge.
+func (mr *MockIdentityManagementAPIServerMockRecorder) CheckOAuth2ConsentChallenge(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckConsentChallenge", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).CheckConsentChallenge), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckOAuth2ConsentChallenge", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).CheckOAuth2ConsentChallenge), arg0, arg1)
 }
 
 // CheckInvitationState mocks base method.
-func (m *MockIdentityManagementAPIServer) CheckInvitationState(arg0 context.Context, arg1 *identityv1beta1.CheckInvitationStateRequest) (*identityv1beta1.CheckInvitationStateResponse, error) {
+func (m *MockIdentityManagementAPIServer) CheckInvitationState(arg0 context.Context, arg1 *identityv1beta2.CheckInvitationStateRequest) (*identityv1beta2.CheckInvitationStateResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CheckInvitationState", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.CheckInvitationStateResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CheckInvitationStateResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -977,10 +977,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) CheckInvitationState(arg0
 }
 
 // CreateConsentVerifier mocks base method.
-func (m *MockIdentityManagementAPIServer) CreateConsentVerifier(arg0 context.Context, arg1 *identityv1beta1.CreateConsentVerifierRequest) (*identityv1beta1.CreateConsentVerifierResponse, error) {
+func (m *MockIdentityManagementAPIServer) CreateConsentVerifier(arg0 context.Context, arg1 *identityv1beta2.CreateOAuth2ConsentVerifierRequest) (*identityv1beta2.CreateOAuth2ConsentVerifierResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateConsentVerifier", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.CreateConsentVerifierResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CreateOAuth2ConsentVerifierResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -992,10 +992,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) CreateConsentVerifier(arg
 }
 
 // CreateInvitation mocks base method.
-func (m *MockIdentityManagementAPIServer) CreateInvitation(arg0 context.Context, arg1 *identityv1beta1.CreateInvitationRequest) (*identityv1beta1.CreateInvitationResponse, error) {
+func (m *MockIdentityManagementAPIServer) CreateInvitation(arg0 context.Context, arg1 *identityv1beta2.CreateInvitationRequest) (*identityv1beta2.CreateInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateInvitation", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.CreateInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.CreateInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1007,10 +1007,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) CreateInvitation(arg0, ar
 }
 
 // DeleteDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIServer) DeleteDigitalTwin(arg0 context.Context, arg1 *identityv1beta1.DeleteDigitalTwinRequest) (*identityv1beta1.DeleteDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIServer) DeleteDigitalTwin(arg0 context.Context, arg1 *identityv1beta2.DeleteDigitalTwinRequest) (*identityv1beta2.DeleteDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteDigitalTwin", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.DeleteDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.DeleteDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1022,10 +1022,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) DeleteDigitalTwin(arg0, a
 }
 
 // EnrichToken mocks base method.
-func (m *MockIdentityManagementAPIServer) EnrichToken(arg0 context.Context, arg1 *identityv1beta1.EnrichTokenRequest) (*identityv1beta1.EnrichTokenResponse, error) {
+func (m *MockIdentityManagementAPIServer) EnrichToken(arg0 context.Context, arg1 *identityv1beta2.EnrichTokenRequest) (*identityv1beta2.EnrichTokenResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "EnrichToken", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.EnrichTokenResponse)
+	ret0, _ := ret[0].(*identityv1beta2.EnrichTokenResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1037,10 +1037,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) EnrichToken(arg0, arg1 in
 }
 
 // GetAccessToken mocks base method.
-func (m *MockIdentityManagementAPIServer) GetAccessToken(arg0 context.Context, arg1 *identityv1beta1.GetAccessTokenRequest) (*identityv1beta1.GetAccessTokenResponse, error) {
+func (m *MockIdentityManagementAPIServer) GetAccessToken(arg0 context.Context, arg1 *identityv1beta2.GetAccessTokenRequest) (*identityv1beta2.GetAccessTokenResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAccessToken", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.GetAccessTokenResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetAccessTokenResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1052,10 +1052,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) GetAccessToken(arg0, arg1
 }
 
 // GetDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIServer) GetDigitalTwin(arg0 context.Context, arg1 *identityv1beta1.GetDigitalTwinRequest) (*identityv1beta1.GetDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIServer) GetDigitalTwin(arg0 context.Context, arg1 *identityv1beta2.GetDigitalTwinRequest) (*identityv1beta2.GetDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDigitalTwin", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.GetDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1067,10 +1067,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) GetDigitalTwin(arg0, arg1
 }
 
 // GetDocument mocks base method.
-func (m *MockIdentityManagementAPIServer) GetDocument(arg0 context.Context, arg1 *identityv1beta1.GetDocumentRequest) (*identityv1beta1.GetDocumentResponse, error) {
+func (m *MockIdentityManagementAPIServer) GetDocument(arg0 context.Context, arg1 *identityv1beta2.GetDocumentRequest) (*identityv1beta2.GetDocumentResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDocument", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.GetDocumentResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetDocumentResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1082,10 +1082,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) GetDocument(arg0, arg1 in
 }
 
 // GetPasswordCredential mocks base method.
-func (m *MockIdentityManagementAPIServer) GetPasswordCredential(arg0 context.Context, arg1 *identityv1beta1.GetPasswordCredentialRequest) (*identityv1beta1.GetPasswordCredentialResponse, error) {
+func (m *MockIdentityManagementAPIServer) GetPasswordCredential(arg0 context.Context, arg1 *identityv1beta2.GetPasswordCredentialRequest) (*identityv1beta2.GetPasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPasswordCredential", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.GetPasswordCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.GetPasswordCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1097,10 +1097,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) GetPasswordCredential(arg
 }
 
 // ImportDigitalTwins mocks base method.
-func (m *MockIdentityManagementAPIServer) ImportDigitalTwins(arg0 context.Context, arg1 *identityv1beta1.ImportDigitalTwinsRequest) (*identityv1beta1.ImportDigitalTwinsResponse, error) {
+func (m *MockIdentityManagementAPIServer) ImportDigitalTwins(arg0 context.Context, arg1 *identityv1beta2.ImportDigitalTwinsRequest) (*identityv1beta2.ImportDigitalTwinsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ImportDigitalTwins", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.ImportDigitalTwinsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ImportDigitalTwinsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1112,10 +1112,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) ImportDigitalTwins(arg0, 
 }
 
 // IsAuthorized mocks base method.
-func (m *MockIdentityManagementAPIServer) IsAuthorized(arg0 context.Context, arg1 *identityv1beta1.IsAuthorizedRequest) (*identityv1beta1.IsAuthorizedResponse, error) {
+func (m *MockIdentityManagementAPIServer) IsAuthorized(arg0 context.Context, arg1 *identityv1beta2.IsAuthorizedRequest) (*identityv1beta2.IsAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IsAuthorized", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.IsAuthorizedResponse)
+	ret0, _ := ret[0].(*identityv1beta2.IsAuthorizedResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1127,10 +1127,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) IsAuthorized(arg0, arg1 i
 }
 
 // ListDigitalTwins mocks base method.
-func (m *MockIdentityManagementAPIServer) ListDigitalTwins(arg0 context.Context, arg1 *identityv1beta1.ListDigitalTwinsRequest) (*identityv1beta1.ListDigitalTwinsResponse, error) {
+func (m *MockIdentityManagementAPIServer) ListDigitalTwins(arg0 context.Context, arg1 *identityv1beta2.ListDigitalTwinsRequest) (*identityv1beta2.ListDigitalTwinsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListDigitalTwins", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.ListDigitalTwinsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ListDigitalTwinsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1142,10 +1142,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) ListDigitalTwins(arg0, ar
 }
 
 // ListDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) ListDocuments(arg0 context.Context, arg1 *identityv1beta1.ListDocumentsRequest) (*identityv1beta1.ListDocumentsResponse, error) {
+func (m *MockIdentityManagementAPIServer) ListDocuments(arg0 context.Context, arg1 *identityv1beta2.ListDocumentsRequest) (*identityv1beta2.ListDocumentsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListDocuments", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.ListDocumentsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ListDocumentsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1157,10 +1157,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) ListDocuments(arg0, arg1 
 }
 
 // MutateDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) MutateDocuments(arg0 context.Context, arg1 *identityv1beta1.MutateDocumentsRequest) (*identityv1beta1.MutateDocumentsResponse, error) {
+func (m *MockIdentityManagementAPIServer) MutateDocuments(arg0 context.Context, arg1 *identityv1beta2.MutateDocumentsRequest) (*identityv1beta2.MutateDocumentsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "MutateDocuments", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.MutateDocumentsResponse)
+	ret0, _ := ret[0].(*identityv1beta2.MutateDocumentsResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1172,10 +1172,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) MutateDocuments(arg0, arg
 }
 
 // PatchDigitalTwin mocks base method.
-func (m *MockIdentityManagementAPIServer) PatchDigitalTwin(arg0 context.Context, arg1 *identityv1beta1.PatchDigitalTwinRequest) (*identityv1beta1.PatchDigitalTwinResponse, error) {
+func (m *MockIdentityManagementAPIServer) PatchDigitalTwin(arg0 context.Context, arg1 *identityv1beta2.PatchDigitalTwinRequest) (*identityv1beta2.PatchDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchDigitalTwin", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.PatchDigitalTwinResponse)
+	ret0, _ := ret[0].(*identityv1beta2.PatchDigitalTwinResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1187,10 +1187,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) PatchDigitalTwin(arg0, ar
 }
 
 // RegisterDigitalTwinWithoutCredential mocks base method.
-func (m *MockIdentityManagementAPIServer) RegisterDigitalTwinWithoutCredential(arg0 context.Context, arg1 *identityv1beta1.RegisterDigitalTwinWithoutCredentialRequest) (*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse, error) {
+func (m *MockIdentityManagementAPIServer) RegisterDigitalTwinWithoutCredential(arg0 context.Context, arg1 *identityv1beta2.RegisterDigitalTwinWithoutCredentialRequest) (*identityv1beta2.RegisterDigitalTwinWithoutCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RegisterDigitalTwinWithoutCredential", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.RegisterDigitalTwinWithoutCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.RegisterDigitalTwinWithoutCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1202,10 +1202,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) RegisterDigitalTwinWithou
 }
 
 // ResendInvitation mocks base method.
-func (m *MockIdentityManagementAPIServer) ResendInvitation(arg0 context.Context, arg1 *identityv1beta1.ResendInvitationRequest) (*identityv1beta1.ResendInvitationResponse, error) {
+func (m *MockIdentityManagementAPIServer) ResendInvitation(arg0 context.Context, arg1 *identityv1beta2.ResendInvitationRequest) (*identityv1beta2.ResendInvitationResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ResendInvitation", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.ResendInvitationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.ResendInvitationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1217,7 +1217,7 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) ResendInvitation(arg0, ar
 }
 
 // RunQuery mocks base method.
-func (m *MockIdentityManagementAPIServer) RunQuery(arg0 *identityv1beta1.RunQueryRequest, arg1 identityv1beta1.IdentityManagementAPI_RunQueryServer) error {
+func (m *MockIdentityManagementAPIServer) RunQuery(arg0 *identityv1beta2.RunQueryRequest, arg1 identityv1beta2.IdentityManagementAPI_RunQueryServer) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RunQuery", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -1231,10 +1231,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) RunQuery(arg0, arg1 inter
 }
 
 // SelfServiceTerminateSession mocks base method.
-func (m *MockIdentityManagementAPIServer) SelfServiceTerminateSession(arg0 context.Context, arg1 *identityv1beta1.SelfServiceTerminateSessionRequest) (*identityv1beta1.SelfServiceTerminateSessionResponse, error) {
+func (m *MockIdentityManagementAPIServer) SelfServiceTerminateSession(arg0 context.Context, arg1 *identityv1beta2.SelfServiceTerminateSessionRequest) (*identityv1beta2.SelfServiceTerminateSessionResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SelfServiceTerminateSession", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.SelfServiceTerminateSessionResponse)
+	ret0, _ := ret[0].(*identityv1beta2.SelfServiceTerminateSessionResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1246,10 +1246,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) SelfServiceTerminateSessi
 }
 
 // SessionIntrospect mocks base method.
-func (m *MockIdentityManagementAPIServer) SessionIntrospect(arg0 context.Context, arg1 *identityv1beta1.SessionIntrospectRequest) (*identityv1beta1.SessionIntrospectResponse, error) {
+func (m *MockIdentityManagementAPIServer) SessionIntrospect(arg0 context.Context, arg1 *identityv1beta2.SessionIntrospectRequest) (*identityv1beta2.SessionIntrospectResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SessionIntrospect", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.SessionIntrospectResponse)
+	ret0, _ := ret[0].(*identityv1beta2.SessionIntrospectResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1261,10 +1261,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) SessionIntrospect(arg0, a
 }
 
 // StartDigitalTwinEmailVerification mocks base method.
-func (m *MockIdentityManagementAPIServer) StartDigitalTwinEmailVerification(arg0 context.Context, arg1 *identityv1beta1.StartDigitalTwinEmailVerificationRequest) (*identityv1beta1.StartDigitalTwinEmailVerificationResponse, error) {
+func (m *MockIdentityManagementAPIServer) StartDigitalTwinEmailVerification(arg0 context.Context, arg1 *identityv1beta2.StartDigitalTwinEmailVerificationRequest) (*identityv1beta2.StartDigitalTwinEmailVerificationResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "StartDigitalTwinEmailVerification", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.StartDigitalTwinEmailVerificationResponse)
+	ret0, _ := ret[0].(*identityv1beta2.StartDigitalTwinEmailVerificationResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1276,10 +1276,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) StartDigitalTwinEmailVeri
 }
 
 // StartForgottenPasswordFlow mocks base method.
-func (m *MockIdentityManagementAPIServer) StartForgottenPasswordFlow(arg0 context.Context, arg1 *identityv1beta1.StartForgottenPasswordFlowRequest) (*identityv1beta1.StartForgottenPasswordFlowResponse, error) {
+func (m *MockIdentityManagementAPIServer) StartForgottenPasswordFlow(arg0 context.Context, arg1 *identityv1beta2.StartForgottenPasswordFlowRequest) (*identityv1beta2.StartForgottenPasswordFlowResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "StartForgottenPasswordFlow", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.StartForgottenPasswordFlowResponse)
+	ret0, _ := ret[0].(*identityv1beta2.StartForgottenPasswordFlowResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1291,10 +1291,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) StartForgottenPasswordFlo
 }
 
 // TokenIntrospect mocks base method.
-func (m *MockIdentityManagementAPIServer) TokenIntrospect(arg0 context.Context, arg1 *identityv1beta1.TokenIntrospectRequest) (*identityv1beta1.TokenIntrospectResponse, error) {
+func (m *MockIdentityManagementAPIServer) TokenIntrospect(arg0 context.Context, arg1 *identityv1beta2.TokenIntrospectRequest) (*identityv1beta2.TokenIntrospectResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TokenIntrospect", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.TokenIntrospectResponse)
+	ret0, _ := ret[0].(*identityv1beta2.TokenIntrospectResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1306,10 +1306,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) TokenIntrospect(arg0, arg
 }
 
 // UpdatePasswordCredential mocks base method.
-func (m *MockIdentityManagementAPIServer) UpdatePasswordCredential(arg0 context.Context, arg1 *identityv1beta1.UpdatePasswordCredentialRequest) (*identityv1beta1.UpdatePasswordCredentialResponse, error) {
+func (m *MockIdentityManagementAPIServer) UpdatePasswordCredential(arg0 context.Context, arg1 *identityv1beta2.UpdatePasswordCredentialRequest) (*identityv1beta2.UpdatePasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdatePasswordCredential", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.UpdatePasswordCredentialResponse)
+	ret0, _ := ret[0].(*identityv1beta2.UpdatePasswordCredentialResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1321,10 +1321,10 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) UpdatePasswordCredential(
 }
 
 // VerifyDigitalTwinEmail mocks base method.
-func (m *MockIdentityManagementAPIServer) VerifyDigitalTwinEmail(arg0 context.Context, arg1 *identityv1beta1.VerifyDigitalTwinEmailRequest) (*identityv1beta1.VerifyDigitalTwinEmailResponse, error) {
+func (m *MockIdentityManagementAPIServer) VerifyDigitalTwinEmail(arg0 context.Context, arg1 *identityv1beta2.VerifyDigitalTwinEmailRequest) (*identityv1beta2.VerifyDigitalTwinEmailResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "VerifyDigitalTwinEmail", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta1.VerifyDigitalTwinEmailResponse)
+	ret0, _ := ret[0].(*identityv1beta2.VerifyDigitalTwinEmailResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1422,7 +1422,7 @@ func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) RecvMsg
 }
 
 // Send mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) Send(arg0 *identityv1beta1.BatchGetDocumentsResponse) error {
+func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) Send(arg0 *identityv1beta2.BatchGetDocumentsResponse) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)
@@ -1541,7 +1541,7 @@ func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) RecvMsg(m interf
 }
 
 // Send mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) Send(arg0 *identityv1beta1.RunQueryResponse) error {
+func (m *MockIdentityManagementAPI_RunQueryServer) Send(arg0 *identityv1beta2.RunQueryResponse) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)
@@ -1606,4 +1606,64 @@ func (m *MockIdentityManagementAPI_RunQueryServer) SetTrailer(arg0 metadata.MD) 
 func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) SetTrailer(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTrailer", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).SetTrailer), arg0)
+}
+
+// CreateConsent indicates an expected call of CreateConsent.
+func (mr *MockIdentityManagementAPIClientMockRecorder) CreateConsent(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConsent", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CreateConsent), varargs...)
+}
+
+// CreateConsent mocks base method.
+func (m *MockIdentityManagementAPIClient) CreateConsent(ctx context.Context, in *identityv1beta2.CreateConsentRequest, opts ...grpc.CallOption) (*identityv1beta2.CreateConsentResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateConsent", varargs...)
+	ret0, _ := ret[0].(*identityv1beta2.CreateConsentResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RevokeConsent indicates an expected call of RevokeConsent.
+func (mr *MockIdentityManagementAPIClientMockRecorder) RevokeConsent(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeConsent", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).RevokeConsent), varargs...)
+}
+
+// RevokeConsent mocks base method.
+func (m *MockIdentityManagementAPIClient) RevokeConsent(ctx context.Context, in *identityv1beta2.RevokeConsentRequest, opts ...grpc.CallOption) (*identityv1beta2.RevokeConsentResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "RevokeConsent", varargs...)
+	ret0, _ := ret[0].(*identityv1beta2.RevokeConsentResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConsents indicates an expected call of ListConsents.
+func (mr *MockIdentityManagementAPIClientMockRecorder) ListConsents(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConsents", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ListConsents), varargs...)
+}
+
+// ListConsents mocks base method.
+func (m *MockIdentityManagementAPIClient) ListConsents(ctx context.Context, in *identityv1beta2.ListConsentsRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_ListConsentsClient, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConsents", varargs...)
+	ret0, _ := ret[0].(identityv1beta2.IdentityManagementAPI_ListConsentsClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }

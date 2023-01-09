@@ -41,9 +41,11 @@ func (c *Client) IsAuthorized(
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
-		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{
-			DigitalTwin: digitalTwin,
-		}},
+		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
+			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
+				Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
+			},
+		},
 		Actions:   actions,
 		Resources: resources,
 	}, opts...)
@@ -59,9 +61,10 @@ func (c *Client) IsAuthorizedByToken(
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
-		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_AccessToken{
-			AccessToken: token,
-		}},
+		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
+			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
+				Filter: &identitypb.DigitalTwinIdentifier_AccessToken{AccessToken: token},
+			}},
 		Actions:   actions,
 		Resources: resources,
 	}, opts...)
@@ -77,12 +80,15 @@ func (c *Client) IsAuthorizedByStringExternalID(
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
-		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
-			PropertyFilter: &identitypb.PropertyFilter{
-				Type:  externalIDProperty,
-				Value: objects.String(externalID),
-			},
-		}},
+		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
+			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
+				Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
+					PropertyFilter: &identitypb.PropertyFilter{
+						Type:  externalIDProperty,
+						Value: objects.String(externalID),
+					},
+				},
+			}},
 		Actions:   actions,
 		Resources: resources,
 	}, opts...)
@@ -98,12 +104,15 @@ func (c *Client) IsAuthorizedByNumericExternalID(
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
-		Subject: &identitypb.DigitalTwinIdentifier{Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
-			PropertyFilter: &identitypb.PropertyFilter{
-				Type:  externalIDProperty,
-				Value: objects.Int64(externalID),
-			},
-		}},
+		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
+			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
+				Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
+					PropertyFilter: &identitypb.PropertyFilter{
+						Type:  externalIDProperty,
+						Value: objects.Int64(externalID),
+					},
+				},
+			}},
 		Actions:   actions,
 		Resources: resources,
 	}, opts...)
@@ -118,10 +127,11 @@ func (c *Client) IsAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call IsAuthorized client endpoint")
 	}
 
-	switch sub := req.Subject.Filter.(type) {
-	case *identitypb.DigitalTwinIdentifier_AccessToken:
-		if err := verifyTokenFormat(sub.AccessToken); err != nil {
-			return nil, err
+	if sub, ok := req.Subject.(*authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier); ok {
+		if filter, ok := sub.DigitalTwinIdentifier.Filter.(*identitypb.DigitalTwinIdentifier_AccessToken); ok {
+			if err := verifyTokenFormat(filter.AccessToken); err != nil {
+				return nil, err
+			}
 		}
 	}
 

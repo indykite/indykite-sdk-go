@@ -21,13 +21,15 @@
 package configv1beta1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
-	reflect "reflect"
-	sync "sync"
+
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 )
 
 const (

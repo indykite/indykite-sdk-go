@@ -23,14 +23,17 @@
 package identityv1beta1
 
 import (
-	_ "github.com/envoyproxy/protoc-gen-validate/validate"
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	reflect "reflect"
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
+
+	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+
+	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 )
 
 const (
