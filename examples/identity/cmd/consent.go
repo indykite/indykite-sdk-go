@@ -17,6 +17,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"strings"
 
@@ -108,8 +109,103 @@ var createConsentVerifier = &cobra.Command{
 	},
 }
 
+var createConsent = &cobra.Command{
+	Use:   "create",
+	Short: "Create consent operation",
+	Long:  `Create consent and return consent id`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Print("Enter PiiPrincipalId (DigitalTwin ID): ")
+		var piiPrincipalId string
+		fmt.Scanln(&piiPrincipalId)
+
+		fmt.Print("Enter PiiProcessorId (OAuth2 App ID): ")
+		var piiProcessorId string
+		fmt.Scanln(&piiProcessorId)
+
+		resp, err := client.CreateConsent(
+			context.Background(),
+			&identitypb.CreateConsentRequest{
+				PiiPrincipalId: piiPrincipalId,
+				PiiProcessorId: piiProcessorId,
+				Properties:     []string{"email"},
+			},
+			retry.WithMax(2),
+		)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+	},
+}
+
+var revokeConsent = &cobra.Command{
+	Use:   "revoke",
+	Short: "Revoke consent operation",
+	Long:  `Revoke consent for user by id`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Print("Enter PiiPrincipalId (DigitalTwin ID): ")
+		var piiPrincipalId string
+		fmt.Scanln(&piiPrincipalId)
+
+		fmt.Print("Enter consent ID: ")
+		var consentId string
+		fmt.Scanln(&consentId)
+
+		_, err := client.RevokeConsent(
+			context.Background(),
+			&identitypb.RevokeConsentRequest{
+				PiiPrincipalId: piiPrincipalId,
+				ConsentIds:     []string{consentId},
+			},
+			retry.WithMax(2),
+		)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println()
+	},
+}
+
+var listConsents = &cobra.Command{
+	Use:   "list",
+	Short: "List consents operation",
+	Long:  `List all consents for a user`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Print("Enter PiiPrincipalId (DigitalTwin ID): ")
+		var piiPrincipalId string
+		fmt.Scanln(&piiPrincipalId)
+
+		resp, err := client.ListConsents(
+			context.Background(),
+			&identitypb.ListConsentsRequest{
+				PiiPrincipalId: piiPrincipalId,
+			},
+			retry.WithMax(2),
+		)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+
+		for {
+			consent, err := resp.Recv()
+			if err == io.EOF {
+				fmt.Println("no more consents for a user")
+				break
+			}
+			if err != nil {
+				log.Fatalf("failed to receive consent receipt %v", err)
+			}
+			fmt.Println("consent receipt:")
+			fmt.Println(jsonp.Format(consent.ConsentReceipt))
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(consentCmd)
 	consentCmd.AddCommand(checkConsentChallengeCmd)
 	consentCmd.AddCommand(createConsentVerifier)
+	consentCmd.AddCommand(createConsent)
+	consentCmd.AddCommand(revokeConsent)
+	consentCmd.AddCommand(listConsents)
 }
