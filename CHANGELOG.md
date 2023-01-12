@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.3.0...v0.4.0) (2023-01-12)
+
+
+### Features
+
+* add isauthorized by property ([3f3a6e5](https://github.com/indykite/jarvis-sdk-go/commit/3f3a6e56577bcd8598c18c848d79d93e508b8412))
+
 ## [0.3.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.3...v0.3.0) (2023-01-12)
 
 
