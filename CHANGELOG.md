@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.3...v0.3.0) (2023-01-12)
+
+
+### Features
+
+* upgrade identity api to v1beta2 ([8a8b328](https://github.com/indykite/jarvis-sdk-go/commit/8a8b32893dbf613f56f5953cde570632e8878756))
+
+
+### Miscellaneous Chores
+
+* add .gitattributes file ([5cf3e20](https://github.com/indykite/jarvis-sdk-go/commit/5cf3e20cb1f1f20cd96b9fb74c2fe0a56f8167c5))
+* generate buf files ([0b09909](https://github.com/indykite/jarvis-sdk-go/commit/0b099093dbd462a3304b08c7aacd089dd684a444))
+
 ### [0.2.3](https://github.com/indykite/jarvis-sdk-go/compare/v0.2.2...v0.2.3) (2022-12-14)
 
 
