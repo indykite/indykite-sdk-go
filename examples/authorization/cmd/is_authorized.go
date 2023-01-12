@@ -24,6 +24,7 @@ import (
 
 	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 var isAuthorizedCmd = &cobra.Command{
@@ -40,8 +41,6 @@ var withTokenCmd = &cobra.Command{
 		fmt.Print("Enter access_token: ")
 		var accessToken string
 		fmt.Scanln(&accessToken)
-
-		accessToken = "eyJhbGciOiJFUzI1NiIsImN0eSI6IkpXVCIsImtpZCI6ImtRWnIyYUk1TUUwQ0o1ejR3U1AwQk9oNkRNOTI2QTVla2tfLUYtYmJBVnciLCJub25jZSI6InRjYmRXdHBBRGdGSjVOQ0U4UHhta0EiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiM2M4ZWZmN2EtYzljYS00NGZjLThhYzgtMWY0ZjYwMTVkYWIwIl0sImV4cCI6MTY2OTYzMjU4OCwiaWF0IjoxNjY5NjI4OTg4LCJpc3MiOiJodHRwczovL2phcnZpcy1kZXYuaW5keWtpdGUuY29tL29hdXRoMi9jZmRiY2Y1Mi00YjEyLTRjYTMtYWMwNi0wZGQwZGE2OThjMTIiLCJqdGkiOiI4ZWJjOGU4My1lOWE1LTQ2OGYtYjcxZC0yYWY4N2EwYTAwMDgjMCIsIm5iZiI6MTY2OTYyODk4OCwic3ViIjoiMWM2MDNhNjEtY2ZjYy00YzRhLWFiNjktMmQ4NmM5NmZlZjk5In0.Xi22X4ncGjY_W52PLJPkg6PZ_OHuJl3g7GEC_fQOdCuMSfTsFMq4s0NLy_YaY2jb9OEFYEMpS5Akvdsyhe1q1A"
 
 		actions := []string{"ACTION"}
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
@@ -105,8 +104,49 @@ var withDigitalTwinCmd = &cobra.Command{
 	},
 }
 
+var withPropertyCmd = &cobra.Command{
+	Use:   "with_prop",
+	Short: "Is Authorized by digital twin property",
+	Long:  "Check if a digital twin is authorized to perform action based on digital twin property",
+	Run: func(cmd *cobra.Command, args []string) {
+		var propertyType, propertyValue string
+		fmt.Print("Enter property type: ")
+		fmt.Scanln(&propertyType)
+		fmt.Print("Enter property value: ")
+		fmt.Scanln(&propertyValue)
+
+		actions := []string{"ACTION"}
+		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
+			{
+				Id:    "resourceID",
+				Label: "Label",
+			},
+		}
+
+		propertyFilter := &identitypb.PropertyFilter{
+			Type:  propertyType,
+			Value: objects.String(propertyValue),
+		}
+
+		resp, err := client.IsAuthorizedByProperty(
+			context.Background(),
+			propertyFilter,
+			actions,
+			resources,
+			retry.WithMax(2),
+		)
+
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(isAuthorizedCmd)
 	isAuthorizedCmd.AddCommand(withTokenCmd)
 	isAuthorizedCmd.AddCommand(withDigitalTwinCmd)
+	isAuthorizedCmd.AddCommand(withPropertyCmd)
 }

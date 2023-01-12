@@ -25,11 +25,6 @@ import (
 	"github.com/indykite/jarvis-sdk-go/errors"
 	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
 	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-)
-
-const (
-	externalIDProperty = "extid"
 )
 
 // IsAuthorized checks if DigitalTwin can perform actions on resources.
@@ -70,11 +65,11 @@ func (c *Client) IsAuthorizedByToken(
 	}, opts...)
 }
 
-// IsAuthorizedByStringExternalID checks if DigitalTwin, identified by textual ExternalID,
+// IsAuthorizedByProperty checks if DigitalTwin, identified by property filter,
 // can perform actions on resources.
-func (c *Client) IsAuthorizedByStringExternalID(
+func (c *Client) IsAuthorizedByProperty(
 	ctx context.Context,
-	externalID string,
+	propertyFilter *identitypb.PropertyFilter,
 	actions []string,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	opts ...grpc.CallOption,
@@ -82,36 +77,7 @@ func (c *Client) IsAuthorizedByStringExternalID(
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
 		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
 			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-				Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
-					PropertyFilter: &identitypb.PropertyFilter{
-						Type:  externalIDProperty,
-						Value: objects.String(externalID),
-					},
-				},
-			}},
-		Actions:   actions,
-		Resources: resources,
-	}, opts...)
-}
-
-// IsAuthorizedByNumericExternalID checks if DigitalTwin, identified by numerical ExternalID,
-// can perform actions on resources.
-func (c *Client) IsAuthorizedByNumericExternalID(
-	ctx context.Context,
-	externalID int64,
-	actions []string,
-	resources []*authorizationpb.IsAuthorizedRequest_Resource,
-	opts ...grpc.CallOption,
-) (*authorizationpb.IsAuthorizedResponse, error) {
-	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
-		Subject: &authorizationpb.IsAuthorizedRequest_DigitalTwinIdentifier{
-			DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-				Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
-					PropertyFilter: &identitypb.PropertyFilter{
-						Type:  externalIDProperty,
-						Value: objects.Int64(externalID),
-					},
-				},
+				Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{PropertyFilter: propertyFilter},
 			}},
 		Actions:   actions,
 		Resources: resources,
