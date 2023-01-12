@@ -58,3 +58,57 @@ func (c *Client) CreateConsentVerifier(
 	}
 	return resp, nil
 }
+
+func (c *Client) CreateConsent(
+	ctx context.Context,
+	req *identitypb.CreateConsentRequest,
+	opts ...grpc.CallOption,
+) (*identitypb.CreateConsentResponse, error) {
+	if err := req.Validate(); err != nil {
+		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call CreateConsent")
+	}
+
+	ctx = insertMetadata(ctx, c.xMetadata)
+	resp, err := c.client.CreateConsent(ctx, req, opts...)
+
+	if s := errors.FromError(err); s != nil {
+		return nil, s
+	}
+	return resp, nil
+}
+
+func (c *Client) RevokeConsent(
+	ctx context.Context,
+	req *identitypb.RevokeConsentRequest,
+	opts ...grpc.CallOption,
+) (*identitypb.RevokeConsentResponse, error) {
+	if err := req.Validate(); err != nil {
+		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call RevokeConsent")
+	}
+
+	ctx = insertMetadata(ctx, c.xMetadata)
+	resp, err := c.client.RevokeConsent(ctx, req, opts...)
+
+	if s := errors.FromError(err); s != nil {
+		return nil, s
+	}
+	return resp, nil
+}
+
+func (c *Client) ListConsents(
+	ctx context.Context,
+	req *identitypb.ListConsentsRequest,
+	opts ...grpc.CallOption,
+) (identitypb.IdentityManagementAPI_ListConsentsClient, error) {
+	if err := req.Validate(); err != nil {
+		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call ListConsents")
+	}
+
+	ctx = insertMetadata(ctx, c.xMetadata)
+	resp, err := c.client.ListConsents(ctx, req, opts...)
+
+	if s := errors.FromError(err); s != nil {
+		return nil, s
+	}
+	return resp, nil
+}
