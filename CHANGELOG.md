@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.4.0...v0.5.0) (2023-01-13)
+
+
+### Features
+
+* add consent api methods and examples ([6197d4d](https://github.com/indykite/jarvis-sdk-go/commit/6197d4d6ac84de8d0193b5140dbe44a7a69a14e7))
+
+
+### Miscellaneous Chores
+
+* generate mock files ([0fe5430](https://github.com/indykite/jarvis-sdk-go/commit/0fe54308684f9befff64c83b414b211b6f400a23))
+
 ## [0.4.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.3.0...v0.4.0) (2023-01-12)
 
 
