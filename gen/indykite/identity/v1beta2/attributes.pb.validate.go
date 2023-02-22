@@ -596,6 +596,185 @@ var _ interface {
 	ErrorName() string
 } = PropertyMaskValidationError{}
 
+// Validate checks the field values on PropertyFilter with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PropertyFilter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PropertyFilter with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PropertyFilterMultiError,
+// or nil if none found.
+func (m *PropertyFilter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PropertyFilter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetType()); l < 2 || l > 20 {
+		err := PropertyFilterValidationError{
+			field:  "Type",
+			reason: "value length must be between 2 and 20 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetValue() == nil {
+		err := PropertyFilterValidationError{
+			field:  "Value",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetValue()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, PropertyFilterValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, PropertyFilterValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetValue()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PropertyFilterValidationError{
+				field:  "Value",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if m.GetTenantId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetTenantId()); l < 27 || l > 100 {
+			err := PropertyFilterValidationError{
+				field:  "TenantId",
+				reason: "value length must be between 27 and 100 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_PropertyFilter_TenantId_Pattern.MatchString(m.GetTenantId()) {
+			err := PropertyFilterValidationError{
+				field:  "TenantId",
+				reason: "value does not match regex pattern \"^gid:[A-Za-z0-9-_]{27,100}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return PropertyFilterMultiError(errors)
+	}
+
+	return nil
+}
+
+// PropertyFilterMultiError is an error wrapping multiple validation errors
+// returned by PropertyFilter.ValidateAll() if the designated constraints
+// aren't met.
+type PropertyFilterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PropertyFilterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PropertyFilterMultiError) AllErrors() []error { return m }
+
+// PropertyFilterValidationError is the validation error returned by
+// PropertyFilter.Validate if the designated constraints aren't met.
+type PropertyFilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PropertyFilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PropertyFilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PropertyFilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PropertyFilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PropertyFilterValidationError) ErrorName() string { return "PropertyFilterValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PropertyFilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPropertyFilter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PropertyFilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PropertyFilterValidationError{}
+
+var _PropertyFilter_TenantId_Pattern = regexp.MustCompile("^gid:[A-Za-z0-9-_]{27,100}$")
+
 // Validate checks the field values on PropertyMetadata with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.

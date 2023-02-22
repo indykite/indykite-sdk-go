@@ -7202,6 +7202,21 @@ func (m *ReadIDProviderConfig) validate(all bool) error {
 		}
 	}
 
+	if m.GetUniquePropertyName() != "" {
+
+		if l := utf8.RuneCountInString(m.GetUniquePropertyName()); l < 4 || l > 512 {
+			err := ReadIDProviderConfigValidationError{
+				field:  "UniquePropertyName",
+				reason: "value length must be between 4 and 512 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return ReadIDProviderConfigMultiError(errors)
 	}
@@ -7595,35 +7610,6 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return EmailServiceConfigValidationError{
 				field:  "Default",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetAuthenticationMessage()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "AuthenticationMessage",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "AuthenticationMessage",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetAuthenticationMessage()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EmailServiceConfigValidationError{
-				field:  "AuthenticationMessage",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -10784,44 +10770,15 @@ func (m *AuthorizationPolicyConfig) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetPolicy() == nil {
+	if len(m.GetPolicy()) > 512000 {
 		err := AuthorizationPolicyConfigValidationError{
 			field:  "Policy",
-			reason: "value is required",
+			reason: "value length must be at most 512000 bytes",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetPolicy()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, AuthorizationPolicyConfigValidationError{
-					field:  "Policy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, AuthorizationPolicyConfigValidationError{
-					field:  "Policy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPolicy()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return AuthorizationPolicyConfigValidationError{
-				field:  "Policy",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
 	}
 
 	if len(errors) > 0 {

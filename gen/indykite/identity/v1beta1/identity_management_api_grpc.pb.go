@@ -114,7 +114,6 @@ type IdentityManagementAPIClient interface {
 	ResendInvitation(ctx context.Context, in *ResendInvitationRequest, opts ...grpc.CallOption) (*ResendInvitationResponse, error)
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(ctx context.Context, in *CancelInvitationRequest, opts ...grpc.CallOption) (*CancelInvitationResponse, error)
-	IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
 	GetPasswordCredential(ctx context.Context, in *GetPasswordCredentialRequest, opts ...grpc.CallOption) (*GetPasswordCredentialResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
@@ -388,15 +387,6 @@ func (c *identityManagementAPIClient) CancelInvitation(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *identityManagementAPIClient) IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error) {
-	out := new(IsAuthorizedResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/IsAuthorized", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *identityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *GetPasswordCredentialRequest, opts ...grpc.CallOption) (*GetPasswordCredentialResponse, error) {
 	out := new(GetPasswordCredentialResponse)
 	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta1.IdentityManagementAPI/GetPasswordCredential", in, out, opts...)
@@ -537,7 +527,6 @@ type IdentityManagementAPIServer interface {
 	ResendInvitation(context.Context, *ResendInvitationRequest) (*ResendInvitationResponse, error)
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(context.Context, *CancelInvitationRequest) (*CancelInvitationResponse, error)
-	IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
 	GetPasswordCredential(context.Context, *GetPasswordCredentialRequest) (*GetPasswordCredentialResponse, error)
 	// GetPasswordCredential is Experimental and not implemented yet
@@ -622,9 +611,6 @@ func (UnimplementedIdentityManagementAPIServer) ResendInvitation(context.Context
 }
 func (UnimplementedIdentityManagementAPIServer) CancelInvitation(context.Context, *CancelInvitationRequest) (*CancelInvitationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelInvitation not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IsAuthorized not implemented")
 }
 func (UnimplementedIdentityManagementAPIServer) GetPasswordCredential(context.Context, *GetPasswordCredentialRequest) (*GetPasswordCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPasswordCredential not implemented")
@@ -1073,24 +1059,6 @@ func _IdentityManagementAPI_CancelInvitation_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IdentityManagementAPI_IsAuthorized_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IsAuthorizedRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).IsAuthorized(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta1.IdentityManagementAPI/IsAuthorized",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).IsAuthorized(ctx, req.(*IsAuthorizedRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _IdentityManagementAPI_GetPasswordCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPasswordCredentialRequest)
 	if err := dec(in); err != nil {
@@ -1271,10 +1239,6 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelInvitation",
 			Handler:    _IdentityManagementAPI_CancelInvitation_Handler,
-		},
-		{
-			MethodName: "IsAuthorized",
-			Handler:    _IdentityManagementAPI_IsAuthorized_Handler,
 		},
 		{
 			MethodName: "GetPasswordCredential",

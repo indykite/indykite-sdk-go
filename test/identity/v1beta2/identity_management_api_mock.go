@@ -353,26 +353,6 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ImportDigitalTwins(ctx, i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ImportDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ImportDigitalTwins), varargs...)
 }
 
-// IsAuthorized mocks base method.
-func (m *MockIdentityManagementAPIClient) IsAuthorized(ctx context.Context, in *identityv1beta2.IsAuthorizedRequest, opts ...grpc.CallOption) (*identityv1beta2.IsAuthorizedResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "IsAuthorized", varargs...)
-	ret0, _ := ret[0].(*identityv1beta2.IsAuthorizedResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// IsAuthorized indicates an expected call of IsAuthorized.
-func (mr *MockIdentityManagementAPIClientMockRecorder) IsAuthorized(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsAuthorized", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).IsAuthorized), varargs...)
-}
-
 // ListConsents mocks base method.
 func (m *MockIdentityManagementAPIClient) ListConsents(ctx context.Context, in *identityv1beta2.ListConsentsRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_ListConsentsClient, error) {
 	m.ctrl.T.Helper()
@@ -1307,21 +1287,6 @@ func (m *MockIdentityManagementAPIServer) ImportDigitalTwins(arg0 context.Contex
 func (mr *MockIdentityManagementAPIServerMockRecorder) ImportDigitalTwins(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ImportDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).ImportDigitalTwins), arg0, arg1)
-}
-
-// IsAuthorized mocks base method.
-func (m *MockIdentityManagementAPIServer) IsAuthorized(arg0 context.Context, arg1 *identityv1beta2.IsAuthorizedRequest) (*identityv1beta2.IsAuthorizedResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsAuthorized", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta2.IsAuthorizedResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// IsAuthorized indicates an expected call of IsAuthorized.
-func (mr *MockIdentityManagementAPIServerMockRecorder) IsAuthorized(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsAuthorized", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).IsAuthorized), arg0, arg1)
 }
 
 // ListConsents mocks base method.

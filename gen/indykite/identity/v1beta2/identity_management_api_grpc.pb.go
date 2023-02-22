@@ -114,7 +114,6 @@ type IdentityManagementAPIClient interface {
 	ResendInvitation(ctx context.Context, in *ResendInvitationRequest, opts ...grpc.CallOption) (*ResendInvitationResponse, error)
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(ctx context.Context, in *CancelInvitationRequest, opts ...grpc.CallOption) (*CancelInvitationResponse, error)
-	IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error)
 	// EnrichToken allows a session and an access token to be enriched with additional data
 	EnrichToken(ctx context.Context, in *EnrichTokenRequest, opts ...grpc.CallOption) (*EnrichTokenResponse, error)
 	CreateConsent(ctx context.Context, in *CreateConsentRequest, opts ...grpc.CallOption) (*CreateConsentResponse, error)
@@ -391,15 +390,6 @@ func (c *identityManagementAPIClient) CancelInvitation(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *identityManagementAPIClient) IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error) {
-	out := new(IsAuthorizedResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/IsAuthorized", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *identityManagementAPIClient) EnrichToken(ctx context.Context, in *EnrichTokenRequest, opts ...grpc.CallOption) (*EnrichTokenResponse, error) {
 	out := new(EnrichTokenResponse)
 	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/EnrichToken", in, out, opts...)
@@ -590,7 +580,6 @@ type IdentityManagementAPIServer interface {
 	ResendInvitation(context.Context, *ResendInvitationRequest) (*ResendInvitationResponse, error)
 	// CancelInvitation expects reference ID of invitation to cancel
 	CancelInvitation(context.Context, *CancelInvitationRequest) (*CancelInvitationResponse, error)
-	IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error)
 	// EnrichToken allows a session and an access token to be enriched with additional data
 	EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error)
 	CreateConsent(context.Context, *CreateConsentRequest) (*CreateConsentResponse, error)
@@ -678,9 +667,6 @@ func (UnimplementedIdentityManagementAPIServer) ResendInvitation(context.Context
 }
 func (UnimplementedIdentityManagementAPIServer) CancelInvitation(context.Context, *CancelInvitationRequest) (*CancelInvitationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CancelInvitation not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IsAuthorized not implemented")
 }
 func (UnimplementedIdentityManagementAPIServer) EnrichToken(context.Context, *EnrichTokenRequest) (*EnrichTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EnrichToken not implemented")
@@ -1138,24 +1124,6 @@ func _IdentityManagementAPI_CancelInvitation_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IdentityManagementAPI_IsAuthorized_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IsAuthorizedRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).IsAuthorized(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/IsAuthorized",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).IsAuthorized(ctx, req.(*IsAuthorizedRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _IdentityManagementAPI_EnrichToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EnrichTokenRequest)
 	if err := dec(in); err != nil {
@@ -1393,10 +1361,6 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelInvitation",
 			Handler:    _IdentityManagementAPI_CancelInvitation_Handler,
-		},
-		{
-			MethodName: "IsAuthorized",
-			Handler:    _IdentityManagementAPI_IsAuthorized_Handler,
 		},
 		{
 			MethodName: "EnrichToken",
