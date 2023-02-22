@@ -6501,6 +6501,36 @@ func (m *DeleteApplicationAgentCredentialRequest) validate(all bool) error {
 
 	}
 
+	if wrapper := m.GetEtag(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 8 || l > 18 {
+				err := DeleteApplicationAgentCredentialRequestValidationError{
+					field:  "Etag",
+					reason: "value length must be between 8 and 18 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_DeleteApplicationAgentCredentialRequest_Etag_Pattern.MatchString(wrapper.GetValue()) {
+				err := DeleteApplicationAgentCredentialRequestValidationError{
+					field:  "Etag",
+					reason: "value does not match regex pattern \"^[A-Za-z0-9-_]{8,18}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DeleteApplicationAgentCredentialRequestMultiError(errors)
 	}
@@ -6586,6 +6616,8 @@ var _ interface {
 var _DeleteApplicationAgentCredentialRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _DeleteApplicationAgentCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
+var _DeleteApplicationAgentCredentialRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
 // Validate checks the field values on DeleteApplicationAgentCredentialResponse
 // with the rules defined in the proto definition for this message. If any
@@ -12804,33 +12836,34 @@ func (m *DeleteConfigNodeRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetEtag()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, DeleteConfigNodeRequestValidationError{
+	if wrapper := m.GetEtag(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 8 || l > 18 {
+				err := DeleteConfigNodeRequestValidationError{
 					field:  "Etag",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+					reason: "value length must be between 8 and 18 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
 			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, DeleteConfigNodeRequestValidationError{
+
+			if !_DeleteConfigNodeRequest_Etag_Pattern.MatchString(wrapper.GetValue()) {
+				err := DeleteConfigNodeRequestValidationError{
 					field:  "Etag",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+					reason: "value does not match regex pattern \"^[A-Za-z0-9-_]{8,18}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
 			}
+
 		}
-	} else if v, ok := interface{}(m.GetEtag()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return DeleteConfigNodeRequestValidationError{
-				field:  "Etag",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	for idx, item := range m.GetBookmarks() {
@@ -12941,6 +12974,8 @@ var _ interface {
 } = DeleteConfigNodeRequestValidationError{}
 
 var _DeleteConfigNodeRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _DeleteConfigNodeRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
 var _DeleteConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
@@ -15678,33 +15713,34 @@ func (m *DeleteOAuth2ApplicationRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetEtag()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, DeleteOAuth2ApplicationRequestValidationError{
+	if wrapper := m.GetEtag(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 8 || l > 18 {
+				err := DeleteOAuth2ApplicationRequestValidationError{
 					field:  "Etag",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+					reason: "value length must be between 8 and 18 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
 			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, DeleteOAuth2ApplicationRequestValidationError{
+
+			if !_DeleteOAuth2ApplicationRequest_Etag_Pattern.MatchString(wrapper.GetValue()) {
+				err := DeleteOAuth2ApplicationRequestValidationError{
 					field:  "Etag",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+					reason: "value does not match regex pattern \"^[A-Za-z0-9-_]{8,18}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
 			}
+
 		}
-	} else if v, ok := interface{}(m.GetEtag()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return DeleteOAuth2ApplicationRequestValidationError{
-				field:  "Etag",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	for idx, item := range m.GetBookmarks() {
@@ -15816,6 +15852,8 @@ var _ interface {
 } = DeleteOAuth2ApplicationRequestValidationError{}
 
 var _DeleteOAuth2ApplicationRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _DeleteOAuth2ApplicationRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8,18}$")
 
 var _DeleteOAuth2ApplicationRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 

@@ -451,6 +451,219 @@ var _ interface {
 	ErrorName() string
 } = DigitalEntityValidationError{}
 
+// Validate checks the field values on DigitalTwinIdentifier with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DigitalTwinIdentifier) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DigitalTwinIdentifier with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DigitalTwinIdentifierMultiError, or nil if none found.
+func (m *DigitalTwinIdentifier) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DigitalTwinIdentifier) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	switch m.Filter.(type) {
+
+	case *DigitalTwinIdentifier_DigitalTwin:
+
+		if m.GetDigitalTwin() == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "DigitalTwin",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDigitalTwin()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, DigitalTwinIdentifierValidationError{
+						field:  "DigitalTwin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, DigitalTwinIdentifierValidationError{
+						field:  "DigitalTwin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDigitalTwin()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return DigitalTwinIdentifierValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *DigitalTwinIdentifier_PropertyFilter:
+
+		if m.GetPropertyFilter() == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "PropertyFilter",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPropertyFilter()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, DigitalTwinIdentifierValidationError{
+						field:  "PropertyFilter",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, DigitalTwinIdentifierValidationError{
+						field:  "PropertyFilter",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPropertyFilter()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return DigitalTwinIdentifierValidationError{
+					field:  "PropertyFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *DigitalTwinIdentifier_AccessToken:
+
+		if utf8.RuneCountInString(m.GetAccessToken()) < 20 {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "AccessToken",
+				reason: "value length must be at least 20 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	default:
+		err := DigitalTwinIdentifierValidationError{
+			field:  "Filter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
+	if len(errors) > 0 {
+		return DigitalTwinIdentifierMultiError(errors)
+	}
+
+	return nil
+}
+
+// DigitalTwinIdentifierMultiError is an error wrapping multiple validation
+// errors returned by DigitalTwinIdentifier.ValidateAll() if the designated
+// constraints aren't met.
+type DigitalTwinIdentifierMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DigitalTwinIdentifierMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DigitalTwinIdentifierMultiError) AllErrors() []error { return m }
+
+// DigitalTwinIdentifierValidationError is the validation error returned by
+// DigitalTwinIdentifier.Validate if the designated constraints aren't met.
+type DigitalTwinIdentifierValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DigitalTwinIdentifierValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DigitalTwinIdentifierValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DigitalTwinIdentifierValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DigitalTwinIdentifierValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DigitalTwinIdentifierValidationError) ErrorName() string {
+	return "DigitalTwinIdentifierValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DigitalTwinIdentifierValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDigitalTwinIdentifier.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DigitalTwinIdentifierValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DigitalTwinIdentifierValidationError{}
+
 // Validate checks the field values on ErrorMessage with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
