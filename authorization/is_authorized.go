@@ -16,11 +16,8 @@ package authorization
 
 import (
 	"context"
-	"time"
 
-	"github.com/lestrrat-go/jwx/jwt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 
 	"github.com/indykite/jarvis-sdk-go/errors"
 	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
@@ -108,12 +105,4 @@ func (c *Client) IsAuthorizedWithRawRequest(
 		return nil, s
 	}
 	return resp, nil
-}
-
-func verifyTokenFormat(bearerToken string) error {
-	_, err := jwt.ParseString(bearerToken, jwt.WithValidate(true), jwt.WithAcceptableSkew(time.Second))
-	if err != nil {
-		return errors.NewWithCause(codes.InvalidArgument, err, "invalid token format")
-	}
-	return nil
 }

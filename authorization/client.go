@@ -18,10 +18,14 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"time"
 
+	"github.com/lestrrat-go/jwx/jwt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
+	"github.com/indykite/jarvis-sdk-go/errors"
 	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
 	api "github.com/indykite/jarvis-sdk-go/grpc"
 )
@@ -85,4 +89,12 @@ func insertMetadata(ctx context.Context, mds ...metadata.MD) context.Context {
 		}
 	}
 	return metadata.NewOutgoingContext(ctx, out)
+}
+
+func verifyTokenFormat(bearerToken string) error {
+	_, err := jwt.ParseString(bearerToken, jwt.WithValidate(true), jwt.WithAcceptableSkew(time.Second))
+	if err != nil {
+		return errors.NewWithCause(codes.InvalidArgument, err, "invalid token format")
+	}
+	return nil
 }

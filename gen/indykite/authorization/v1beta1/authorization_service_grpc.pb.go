@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthorizationAPIClient interface {
 	IsAuthorized(ctx context.Context, in *IsAuthorizedRequest, opts ...grpc.CallOption) (*IsAuthorizedResponse, error)
+	WhatAuthorized(ctx context.Context, in *WhatAuthorizedRequest, opts ...grpc.CallOption) (*WhatAuthorizedResponse, error)
 }
 
 type authorizationAPIClient struct {
@@ -43,11 +44,21 @@ func (c *authorizationAPIClient) IsAuthorized(ctx context.Context, in *IsAuthori
 	return out, nil
 }
 
+func (c *authorizationAPIClient) WhatAuthorized(ctx context.Context, in *WhatAuthorizedRequest, opts ...grpc.CallOption) (*WhatAuthorizedResponse, error) {
+	out := new(WhatAuthorizedResponse)
+	err := c.cc.Invoke(ctx, "/indykite.authorization.v1beta1.AuthorizationAPI/WhatAuthorized", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthorizationAPIServer is the server API for AuthorizationAPI service.
 // All implementations should embed UnimplementedAuthorizationAPIServer
 // for forward compatibility
 type AuthorizationAPIServer interface {
 	IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error)
+	WhatAuthorized(context.Context, *WhatAuthorizedRequest) (*WhatAuthorizedResponse, error)
 }
 
 // UnimplementedAuthorizationAPIServer should be embedded to have forward compatible implementations.
@@ -56,6 +67,9 @@ type UnimplementedAuthorizationAPIServer struct {
 
 func (UnimplementedAuthorizationAPIServer) IsAuthorized(context.Context, *IsAuthorizedRequest) (*IsAuthorizedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsAuthorized not implemented")
+}
+func (UnimplementedAuthorizationAPIServer) WhatAuthorized(context.Context, *WhatAuthorizedRequest) (*WhatAuthorizedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhatAuthorized not implemented")
 }
 
 // UnsafeAuthorizationAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -87,6 +101,24 @@ func _AuthorizationAPI_IsAuthorized_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthorizationAPI_WhatAuthorized_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhatAuthorizedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorizationAPIServer).WhatAuthorized(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.authorization.v1beta1.AuthorizationAPI/WhatAuthorized",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorizationAPIServer).WhatAuthorized(ctx, req.(*WhatAuthorizedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthorizationAPI_ServiceDesc is the grpc.ServiceDesc for AuthorizationAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -97,6 +129,10 @@ var AuthorizationAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsAuthorized",
 			Handler:    _AuthorizationAPI_IsAuthorized_Handler,
+		},
+		{
+			MethodName: "WhatAuthorized",
+			Handler:    _AuthorizationAPI_WhatAuthorized_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
