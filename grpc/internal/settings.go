@@ -18,7 +18,6 @@ package internal
 import (
 	"context"
 	"crypto/tls"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"net"
@@ -37,7 +36,7 @@ import (
 	"google.golang.org/grpc/credentials/oauth"
 
 	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	grpc_jwt "github.com/indykite/jarvis-sdk-go/grpc/jwt"
+	"github.com/indykite/jarvis-sdk-go/grpc/jwt"
 )
 
 const (
@@ -98,25 +97,10 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 		}
 
 		if ds.TokenSource == nil {
-			switch {
-			case ds.credentials.PrivateKeyJWK != nil:
-				ds.TokenSource, err = grpc_jwt.JWTokenSource(ds.credentials.PrivateKeyJWK, false, clientID)
-			case ds.credentials.PrivateKeyPKCS8Base64 != "":
-				var raw []byte
-				raw, err = base64.StdEncoding.DecodeString(ds.credentials.PrivateKeyPKCS8Base64)
-				if err != nil {
-					return nil, nil, err
-				}
-				ds.TokenSource, err = grpc_jwt.JWTokenSource(raw, true, clientID)
-			case ds.credentials.PrivateKeyPKCS8 != "":
-				ds.TokenSource, err = grpc_jwt.JWTokenSource([]byte(ds.credentials.PrivateKeyPKCS8), true, clientID)
-			default:
-				return nil, nil, errors.New("unable to find secret credential")
+			ds.TokenSource, err = jwt.CreateTokenSource(ds.credentials)
+			if err != nil {
+				return nil, nil, err
 			}
-		}
-		// do not shadow error above!
-		if err != nil {
-			return nil, nil, err
 		}
 	}
 

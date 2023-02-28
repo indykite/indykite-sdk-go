@@ -26,12 +26,12 @@ var (
 	IntTestAppAgentID = uuid.MustParse("696e6479-6b69-4465-8000-050f00000000")
 )
 
-var _ = Describe("CreateTokenSourceFrom", func() {
+var _ = Describe("CreateTokenSourceFromPrivateKey", func() {
 	It("invalid string key", func() {
 		appAgentID := IntTestAppAgentID
 
 		invalidPrivateKeyJWK := "invalid_key"
-		resp, err := CreateTokenSourceFrom(invalidPrivateKeyJWK, appAgentID.String())
+		resp, err := CreateTokenSourceFromPrivateKey(invalidPrivateKeyJWK, appAgentID.String())
 
 		Expect(resp).To(BeNil())
 		Expect(err).To(MatchError(ContainSubstring("failed to unmarshal JSON into key hint")))
@@ -40,7 +40,7 @@ var _ = Describe("CreateTokenSourceFrom", func() {
 	DescribeTable(
 		"validate JSON correctly create tokenSource",
 		func(privateKeyJWK interface{}) {
-			resp, err := CreateTokenSourceFrom(privateKeyJWK, IntTestAppAgentID.String())
+			resp, err := CreateTokenSourceFromPrivateKey(privateKeyJWK, IntTestAppAgentID.String())
 			Expect(resp).To(Not(BeNil()))
 			Expect(err).To(Succeed())
 		},
