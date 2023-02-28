@@ -64,11 +64,10 @@ to setup and configure the platform.
 
 ```json
 {
-  "appSpaceId": "696e6479-6b69-4465-8000-010100000002",
+  "appSpaceId": "gid:AAAAAimlBsA9X0Gnlv2UTituW4Q",
   "baseUrl": "https://jarvis.indykite.com",
-  "applicationId": "696e6479-6b69-4465-8000-020100000002",
-  "defaultTenantId": "696e6479-6b69-4465-8000-030100000002",
-  "appAgentId": "696e6479-6b69-4465-8000-050100000002",
+  "applicationId": "gid:AAAABKiMFRKkFEiEn3c-izbz9sk",
+  "appAgentId": "gid:AAAABUqz8GXJB0cDikdAH8ywz8I",
   "endpoint": "jarvis.indykite.com",
   "privateKeyJWK": {
     "kty": "EC",

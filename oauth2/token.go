@@ -16,55 +16,68 @@ package oauth2
 
 import (
 	"context"
-	"fmt"
-	"time"
+	"net/http"
 
 	"golang.org/x/oauth2"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/oauth"
+	"google.golang.org/grpc/codes"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-)
-
-type (
-	tokenSource struct {
-		ctx              context.Context
-		client           identitypb.IdentityManagementAPIClient
-		applicationToken oauth2.TokenSource
-	}
+	"github.com/indykite/jarvis-sdk-go/errors"
+	"github.com/indykite/jarvis-sdk-go/grpc/config"
+	"github.com/indykite/jarvis-sdk-go/grpc/jwt"
 )
 
 var (
-	defaultGrantType = "urn:ietf:params:oauth:grant-type:jwt-bearer"
-	_                = defaultGrantType
+	credentials *config.CredentialsConfig
+	tokenSource oauth2.TokenSource
 )
 
-func IndyKiteTokenSource(
-	ctx context.Context,
-	source identitypb.IdentityManagementAPIClient,
-) (oauth2.TokenSource, error) {
-	return &tokenSource{
-		ctx:    ctx,
-		client: source,
-	}, nil
-}
-
-// Token returns a token or an error.
+// GetRefreshableTokenSource Token returns a token or an error.
 // Token must be safe for concurrent use by multiple goroutines.
 // The returned Token must not be modified.
-func (t *tokenSource) Token() (*oauth2.Token, error) {
-	resp, err := t.client.GetAccessToken(t.ctx, &identitypb.GetAccessTokenRequest{
-		// Id: "urn:indy:token",
-	}, grpc.PerRPCCredentials(oauth.TokenSource{TokenSource: t.applicationToken}))
+func GetRefreshableTokenSource(
+	ctx context.Context,
+	credentialsLoaders []config.CredentialsLoader,
+) (oauth2.TokenSource, error) {
+	var err error
+	for _, v := range credentialsLoaders {
+		credentials, err = v(ctx)
+		if err != nil {
+			return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to load credentials")
+		}
+		if credentials != nil {
+			break
+		}
+	}
+
+	if credentials == nil {
+		return nil, errors.NewInvalidArgumentError("credentials not found")
+	}
+
+	if tokenSource == nil {
+		tokenSource, err = jwt.CreateTokenSource(credentials)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// first token
+	token, err := tokenSource.Token()
 	if err != nil {
-		return nil, err
+		return nil, errors.New(codes.Internal, "unable to fetch token %v", err)
 	}
-	if resp.Token != nil {
-		return &oauth2.Token{
-			AccessToken: resp.Token.AccessToken,
-			TokenType:   resp.Token.TokenType,
-			Expiry:      time.Now().Add(time.Duration(resp.Token.ExpiresIn-60) * time.Second),
-		}, nil
+
+	// refreshable token source, it can refresh every time we need a new one transparently.
+	return oauth2.ReuseTokenSource(token, tokenSource), nil
+}
+
+// GetHTTPClient returns an authenticated HTTP client
+// that always injects a valid token.
+func GetHTTPClient(ctx context.Context, credentialsLoaders []config.CredentialsLoader) (*http.Client, error) {
+	reusableTokenSource, err := GetRefreshableTokenSource(ctx, credentialsLoaders)
+	if err != nil {
+		return nil, errors.New(codes.Internal, "unable to fetch token %v", err)
 	}
-	return nil, fmt.Errorf("indykite: token is not found")
+
+	// Create an http.Client that always injects the valid token
+	return oauth2.NewClient(ctx, reusableTokenSource), nil
 }

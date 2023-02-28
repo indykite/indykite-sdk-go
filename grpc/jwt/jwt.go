@@ -15,6 +15,7 @@
 package jwt
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"time"
@@ -25,6 +26,8 @@ import (
 	"github.com/lestrrat-go/jwx/jws"
 	"github.com/lestrrat-go/jwx/jwt"
 	"golang.org/x/oauth2"
+
+	"github.com/indykite/jarvis-sdk-go/grpc/config"
 )
 
 type (
@@ -35,13 +38,32 @@ type (
 	}
 )
 
-func CreateTokenSourceFrom(privateKeyJWK interface{}, clientID string) (oauth2.TokenSource, error) {
+func CreateTokenSourceFromPrivateKey(privateKeyJWK interface{}, clientID string) (oauth2.TokenSource, error) {
 	privateKeyJWKBytes, err := interfaceToBytes(privateKeyJWK)
 	if err != nil {
 		return nil, err
 	}
 
 	return JWTokenSource(privateKeyJWKBytes, false, clientID)
+}
+
+func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSource, error) {
+	var err error
+	switch {
+	case credentials.PrivateKeyJWK != nil:
+		return JWTokenSource(credentials.PrivateKeyJWK, false, credentials.AppAgentID)
+	case credentials.PrivateKeyPKCS8Base64 != "":
+		var raw []byte
+		raw, err = base64.StdEncoding.DecodeString(credentials.PrivateKeyPKCS8Base64)
+		if err != nil {
+			return nil, err
+		}
+		return JWTokenSource(raw, true, credentials.AppAgentID)
+	case credentials.PrivateKeyPKCS8 != "":
+		return JWTokenSource([]byte(credentials.PrivateKeyPKCS8), true, credentials.AppAgentID)
+	default:
+		return nil, errors.New("unable to find secret credential")
+	}
 }
 
 func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
