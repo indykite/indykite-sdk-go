@@ -71,3 +71,23 @@ func (mr *MockAuthorizationAPIClientMockRecorder) IsAuthorized(arg0, arg1 interf
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsAuthorized", reflect.TypeOf((*MockAuthorizationAPIClient)(nil).IsAuthorized), varargs...)
 }
+
+// WhatAuthorized mocks base method.
+func (m *MockAuthorizationAPIClient) WhatAuthorized(arg0 context.Context, arg1 *authorizationv1beta1.WhatAuthorizedRequest, arg2 ...grpc.CallOption) (*authorizationv1beta1.WhatAuthorizedResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "WhatAuthorized", varargs...)
+	ret0, _ := ret[0].(*authorizationv1beta1.WhatAuthorizedResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// WhatAuthorized indicates an expected call of WhatAuthorized.
+func (mr *MockAuthorizationAPIClientMockRecorder) WhatAuthorized(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WhatAuthorized", reflect.TypeOf((*MockAuthorizationAPIClient)(nil).WhatAuthorized), varargs...)
+}
