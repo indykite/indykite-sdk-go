@@ -60,7 +60,6 @@ func (c *Client) WhatAuthorizedByToken(
 				},
 			},
 		},
-
 		ResourceTypes: resourceTypes,
 	}, opts...)
 }

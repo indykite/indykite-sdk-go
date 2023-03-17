@@ -42,18 +42,17 @@ var withTokenCmd = &cobra.Command{
 		var accessToken string
 		fmt.Scanln(&accessToken)
 
-		actions := []string{"ACTION"}
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				Id:    "resourceID",
-				Label: "Label",
+				Id:      "resourceID",
+				Type:    "Type",
+				Actions: []string{"ACTION"},
 			},
 		}
 
 		resp, err := client.IsAuthorizedByToken(
 			context.Background(),
 			accessToken,
-			actions,
 			resources,
 			retry.WithMax(2),
 		)
@@ -81,18 +80,17 @@ var withDigitalTwinCmd = &cobra.Command{
 			TenantId: tenantID,
 		}
 
-		actions := []string{"ACTION"}
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				Id:    "resourceID",
-				Label: "Label",
+				Id:      "resourceID",
+				Type:    "Type",
+				Actions: []string{"ACTION"},
 			},
 		}
 
 		resp, err := client.IsAuthorized(
 			context.Background(),
 			digitalTwin,
-			actions,
 			resources,
 			retry.WithMax(2),
 		)
@@ -115,11 +113,11 @@ var withPropertyCmd = &cobra.Command{
 		fmt.Print("Enter property value: ")
 		fmt.Scanln(&propertyValue)
 
-		actions := []string{"ACTION"}
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				Id:    "resourceID",
-				Label: "Label",
+				Id:      "resourceID",
+				Type:    "Type",
+				Actions: []string{"ACTION"},
 			},
 		}
 
@@ -131,7 +129,6 @@ var withPropertyCmd = &cobra.Command{
 		resp, err := client.IsAuthorizedByProperty(
 			context.Background(),
 			propertyFilter,
-			actions,
 			resources,
 			retry.WithMax(2),
 		)
