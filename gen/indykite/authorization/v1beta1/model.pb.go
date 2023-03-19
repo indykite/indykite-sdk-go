@@ -108,159 +108,6 @@ type Subject_DigitalTwinIdentifier struct {
 
 func (*Subject_DigitalTwinIdentifier) isSubject_Subject() {}
 
-// Resource to authorize against.
-type Resource struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Resource type
-	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
-}
-
-func (x *Resource) Reset() {
-	*x = Resource{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Resource) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Resource) ProtoMessage() {}
-
-func (x *Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Resource.ProtoReflect.Descriptor instead.
-func (*Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_authorization_v1beta1_model_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Resource) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *Resource) GetType() string {
-	if x != nil {
-		return x.Type
-	}
-	return ""
-}
-
-// Resource type to authorize against.
-type ResourceType struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// Resource type
-	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-}
-
-func (x *ResourceType) Reset() {
-	*x = ResourceType{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *ResourceType) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ResourceType) ProtoMessage() {}
-
-func (x *ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ResourceType.ProtoReflect.Descriptor instead.
-func (*ResourceType) Descriptor() ([]byte, []int) {
-	return file_indykite_authorization_v1beta1_model_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ResourceType) GetType() string {
-	if x != nil {
-		return x.Type
-	}
-	return ""
-}
-
-type Action struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-}
-
-func (x *Action) Reset() {
-	*x = Action{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Action) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Action) ProtoMessage() {}
-
-func (x *Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Action.ProtoReflect.Descriptor instead.
-func (*Action) Descriptor() ([]byte, []int) {
-	return file_indykite_authorization_v1beta1_model_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *Action) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
 type Option struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -270,7 +117,7 @@ type Option struct {
 func (x *Option) Reset() {
 	*x = Option{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[4]
+		mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -283,7 +130,7 @@ func (x *Option) String() string {
 func (*Option) ProtoMessage() {}
 
 func (x *Option) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[4]
+	mi := &file_indykite_authorization_v1beta1_model_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -296,7 +143,7 @@ func (x *Option) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Option.ProtoReflect.Descriptor instead.
 func (*Option) Descriptor() ([]byte, []int) {
-	return file_indykite_authorization_v1beta1_model_proto_rawDescGZIP(), []int{4}
+	return file_indykite_authorization_v1beta1_model_proto_rawDescGZIP(), []int{1}
 }
 
 var File_indykite_authorization_v1beta1_model_proto protoreflect.FileDescriptor
@@ -319,21 +166,7 @@ var file_indykite_authorization_v1beta1_model_proto_rawDesc = []byte{
 	0x6e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x42, 0x08, 0xfa, 0x42, 0x05,
 	0x8a, 0x01, 0x02, 0x10, 0x01, 0x48, 0x00, 0x52, 0x15, 0x64, 0x69, 0x67, 0x69, 0x74, 0x61, 0x6c,
 	0x54, 0x77, 0x69, 0x6e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x69, 0x65, 0x72, 0x42, 0x0e,
-	0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x03, 0xf8, 0x42, 0x01, 0x22, 0x58,
-	0x0a, 0x08, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x19, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x09, 0xfa, 0x42, 0x06, 0x72, 0x04, 0x10, 0x02, 0x18,
-	0x32, 0x52, 0x02, 0x69, 0x64, 0x12, 0x31, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x1d, 0xfa, 0x42, 0x1a, 0x72, 0x18, 0x10, 0x02, 0x18, 0x32, 0x32, 0x12,
-	0x5e, 0x28, 0x3f, 0x3a, 0x5b, 0x41, 0x2d, 0x5a, 0x5d, 0x5b, 0x61, 0x2d, 0x7a, 0x5d, 0x2b, 0x29,
-	0x2b, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22, 0x41, 0x0a, 0x0c, 0x52, 0x65, 0x73, 0x6f,
-	0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x1d, 0xfa, 0x42, 0x1a, 0x72, 0x18, 0x10, 0x02, 0x18,
-	0x32, 0x32, 0x12, 0x5e, 0x28, 0x3f, 0x3a, 0x5b, 0x41, 0x2d, 0x5a, 0x5d, 0x5b, 0x61, 0x2d, 0x7a,
-	0x5d, 0x2b, 0x29, 0x2b, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22, 0x41, 0x0a, 0x06, 0x41,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x37, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x23, 0xfa, 0x42, 0x20, 0x72, 0x1e, 0x10, 0x02, 0x18, 0x32, 0x32, 0x18,
-	0x5e, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30, 0x2d, 0x39, 0x2e, 0x3a, 0x5f, 0x5c, 0x2d,
-	0x5c, 0x2f, 0x5d, 0x7b, 0x32, 0x2c, 0x7d, 0x24, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x08,
+	0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x03, 0xf8, 0x42, 0x01, 0x22, 0x08,
 	0x0a, 0x06, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0xa5, 0x02, 0x0a, 0x22, 0x63, 0x6f, 0x6d,
 	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72,
 	0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42,
@@ -368,17 +201,14 @@ func file_indykite_authorization_v1beta1_model_proto_rawDescGZIP() []byte {
 	return file_indykite_authorization_v1beta1_model_proto_rawDescData
 }
 
-var file_indykite_authorization_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_indykite_authorization_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_indykite_authorization_v1beta1_model_proto_goTypes = []interface{}{
 	(*Subject)(nil),                       // 0: indykite.authorization.v1beta1.Subject
-	(*Resource)(nil),                      // 1: indykite.authorization.v1beta1.Resource
-	(*ResourceType)(nil),                  // 2: indykite.authorization.v1beta1.ResourceType
-	(*Action)(nil),                        // 3: indykite.authorization.v1beta1.Action
-	(*Option)(nil),                        // 4: indykite.authorization.v1beta1.Option
-	(*v1beta2.DigitalTwinIdentifier)(nil), // 5: indykite.identity.v1beta2.DigitalTwinIdentifier
+	(*Option)(nil),                        // 1: indykite.authorization.v1beta1.Option
+	(*v1beta2.DigitalTwinIdentifier)(nil), // 2: indykite.identity.v1beta2.DigitalTwinIdentifier
 }
 var file_indykite_authorization_v1beta1_model_proto_depIdxs = []int32{
-	5, // 0: indykite.authorization.v1beta1.Subject.digital_twin_identifier:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
+	2, // 0: indykite.authorization.v1beta1.Subject.digital_twin_identifier:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -405,42 +235,6 @@ func file_indykite_authorization_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_authorization_v1beta1_model_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Resource); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_indykite_authorization_v1beta1_model_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ResourceType); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_indykite_authorization_v1beta1_model_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Action); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_indykite_authorization_v1beta1_model_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Option); i {
 			case 0:
 				return &v.state
@@ -462,7 +256,7 @@ func file_indykite_authorization_v1beta1_model_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_authorization_v1beta1_model_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
