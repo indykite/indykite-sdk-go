@@ -1422,6 +1422,179 @@ var _ interface {
 	ErrorName() string
 } = IsAuthorizedResponse_ResourceTypeValidationError{}
 
+// Validate checks the field values on WhatAuthorizedRequest_ResourceType with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *WhatAuthorizedRequest_ResourceType) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WhatAuthorizedRequest_ResourceType
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// WhatAuthorizedRequest_ResourceTypeMultiError, or nil if none found.
+func (m *WhatAuthorizedRequest_ResourceType) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WhatAuthorizedRequest_ResourceType) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetType()); l < 2 || l > 50 {
+		err := WhatAuthorizedRequest_ResourceTypeValidationError{
+			field:  "Type",
+			reason: "value length must be between 2 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_WhatAuthorizedRequest_ResourceType_Type_Pattern.MatchString(m.GetType()) {
+		err := WhatAuthorizedRequest_ResourceTypeValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^(?:[A-Z][a-z]+)+$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetActions()) > 0 {
+
+		if l := len(m.GetActions()); l < 1 || l > 5 {
+			err := WhatAuthorizedRequest_ResourceTypeValidationError{
+				field:  "Actions",
+				reason: "value must contain between 1 and 5 items, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		for idx, item := range m.GetActions() {
+			_, _ = idx, item
+
+			if l := utf8.RuneCountInString(item); l < 2 || l > 50 {
+				err := WhatAuthorizedRequest_ResourceTypeValidationError{
+					field:  fmt.Sprintf("Actions[%v]", idx),
+					reason: "value length must be between 2 and 50 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_WhatAuthorizedRequest_ResourceType_Actions_Pattern.MatchString(item) {
+				err := WhatAuthorizedRequest_ResourceTypeValidationError{
+					field:  fmt.Sprintf("Actions[%v]", idx),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9.:_\\\\-\\\\/]{2,}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return WhatAuthorizedRequest_ResourceTypeMultiError(errors)
+	}
+
+	return nil
+}
+
+// WhatAuthorizedRequest_ResourceTypeMultiError is an error wrapping multiple
+// validation errors returned by
+// WhatAuthorizedRequest_ResourceType.ValidateAll() if the designated
+// constraints aren't met.
+type WhatAuthorizedRequest_ResourceTypeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WhatAuthorizedRequest_ResourceTypeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WhatAuthorizedRequest_ResourceTypeMultiError) AllErrors() []error { return m }
+
+// WhatAuthorizedRequest_ResourceTypeValidationError is the validation error
+// returned by WhatAuthorizedRequest_ResourceType.Validate if the designated
+// constraints aren't met.
+type WhatAuthorizedRequest_ResourceTypeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) ErrorName() string {
+	return "WhatAuthorizedRequest_ResourceTypeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e WhatAuthorizedRequest_ResourceTypeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sWhatAuthorizedRequest_ResourceType.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = WhatAuthorizedRequest_ResourceTypeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = WhatAuthorizedRequest_ResourceTypeValidationError{}
+
+var _WhatAuthorizedRequest_ResourceType_Type_Pattern = regexp.MustCompile("^(?:[A-Z][a-z]+)+$")
+
+var _WhatAuthorizedRequest_ResourceType_Actions_Pattern = regexp.MustCompile("^[a-zA-Z0-9.:_\\-\\/]{2,}$")
+
 // Validate checks the field values on WhatAuthorizedResponse_Resource with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1444,41 +1617,7 @@ func (m *WhatAuthorizedResponse_Resource) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ResourceId
-
-	for idx, item := range m.GetActions() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, WhatAuthorizedResponse_ResourceValidationError{
-						field:  fmt.Sprintf("Actions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, WhatAuthorizedResponse_ResourceValidationError{
-						field:  fmt.Sprintf("Actions[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return WhatAuthorizedResponse_ResourceValidationError{
-					field:  fmt.Sprintf("Actions[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
+	// no validation rules for ExternalId
 
 	if len(errors) > 0 {
 		return WhatAuthorizedResponse_ResourceMultiError(errors)
@@ -1561,23 +1700,22 @@ var _ interface {
 	ErrorName() string
 } = WhatAuthorizedResponse_ResourceValidationError{}
 
-// Validate checks the field values on WhatAuthorizedResponse_Resources with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the first error encountered is returned, or nil if there are
-// no violations.
-func (m *WhatAuthorizedResponse_Resources) Validate() error {
+// Validate checks the field values on WhatAuthorizedResponse_Action with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *WhatAuthorizedResponse_Action) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on WhatAuthorizedResponse_Resources with
+// ValidateAll checks the field values on WhatAuthorizedResponse_Action with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the result is a list of violation errors wrapped in
-// WhatAuthorizedResponse_ResourcesMultiError, or nil if none found.
-func (m *WhatAuthorizedResponse_Resources) ValidateAll() error {
+// WhatAuthorizedResponse_ActionMultiError, or nil if none found.
+func (m *WhatAuthorizedResponse_Action) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *WhatAuthorizedResponse_Resources) validate(all bool) error {
+func (m *WhatAuthorizedResponse_Action) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1591,7 +1729,7 @@ func (m *WhatAuthorizedResponse_Resources) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, WhatAuthorizedResponse_ResourcesValidationError{
+					errors = append(errors, WhatAuthorizedResponse_ActionValidationError{
 						field:  fmt.Sprintf("Resources[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1599,7 +1737,7 @@ func (m *WhatAuthorizedResponse_Resources) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, WhatAuthorizedResponse_ResourcesValidationError{
+					errors = append(errors, WhatAuthorizedResponse_ActionValidationError{
 						field:  fmt.Sprintf("Resources[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1608,7 +1746,7 @@ func (m *WhatAuthorizedResponse_Resources) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return WhatAuthorizedResponse_ResourcesValidationError{
+				return WhatAuthorizedResponse_ActionValidationError{
 					field:  fmt.Sprintf("Resources[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1619,20 +1757,19 @@ func (m *WhatAuthorizedResponse_Resources) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return WhatAuthorizedResponse_ResourcesMultiError(errors)
+		return WhatAuthorizedResponse_ActionMultiError(errors)
 	}
 
 	return nil
 }
 
-// WhatAuthorizedResponse_ResourcesMultiError is an error wrapping multiple
-// validation errors returned by
-// WhatAuthorizedResponse_Resources.ValidateAll() if the designated
-// constraints aren't met.
-type WhatAuthorizedResponse_ResourcesMultiError []error
+// WhatAuthorizedResponse_ActionMultiError is an error wrapping multiple
+// validation errors returned by WhatAuthorizedResponse_Action.ValidateAll()
+// if the designated constraints aren't met.
+type WhatAuthorizedResponse_ActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m WhatAuthorizedResponse_ResourcesMultiError) Error() string {
+func (m WhatAuthorizedResponse_ActionMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1641,12 +1778,12 @@ func (m WhatAuthorizedResponse_ResourcesMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m WhatAuthorizedResponse_ResourcesMultiError) AllErrors() []error { return m }
+func (m WhatAuthorizedResponse_ActionMultiError) AllErrors() []error { return m }
 
-// WhatAuthorizedResponse_ResourcesValidationError is the validation error
-// returned by WhatAuthorizedResponse_Resources.Validate if the designated
+// WhatAuthorizedResponse_ActionValidationError is the validation error
+// returned by WhatAuthorizedResponse_Action.Validate if the designated
 // constraints aren't met.
-type WhatAuthorizedResponse_ResourcesValidationError struct {
+type WhatAuthorizedResponse_ActionValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1654,24 +1791,24 @@ type WhatAuthorizedResponse_ResourcesValidationError struct {
 }
 
 // Field function returns field value.
-func (e WhatAuthorizedResponse_ResourcesValidationError) Field() string { return e.field }
+func (e WhatAuthorizedResponse_ActionValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e WhatAuthorizedResponse_ResourcesValidationError) Reason() string { return e.reason }
+func (e WhatAuthorizedResponse_ActionValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e WhatAuthorizedResponse_ResourcesValidationError) Cause() error { return e.cause }
+func (e WhatAuthorizedResponse_ActionValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e WhatAuthorizedResponse_ResourcesValidationError) Key() bool { return e.key }
+func (e WhatAuthorizedResponse_ActionValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e WhatAuthorizedResponse_ResourcesValidationError) ErrorName() string {
-	return "WhatAuthorizedResponse_ResourcesValidationError"
+func (e WhatAuthorizedResponse_ActionValidationError) ErrorName() string {
+	return "WhatAuthorizedResponse_ActionValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e WhatAuthorizedResponse_ResourcesValidationError) Error() string {
+func (e WhatAuthorizedResponse_ActionValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1683,14 +1820,14 @@ func (e WhatAuthorizedResponse_ResourcesValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sWhatAuthorizedResponse_Resources.%s: %s%s",
+		"invalid %sWhatAuthorizedResponse_Action.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = WhatAuthorizedResponse_ResourcesValidationError{}
+var _ error = WhatAuthorizedResponse_ActionValidationError{}
 
 var _ interface {
 	Field() string
@@ -1698,4 +1835,155 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = WhatAuthorizedResponse_ResourcesValidationError{}
+} = WhatAuthorizedResponse_ActionValidationError{}
+
+// Validate checks the field values on WhatAuthorizedResponse_ResourceType with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *WhatAuthorizedResponse_ResourceType) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on WhatAuthorizedResponse_ResourceType
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// WhatAuthorizedResponse_ResourceTypeMultiError, or nil if none found.
+func (m *WhatAuthorizedResponse_ResourceType) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *WhatAuthorizedResponse_ResourceType) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	{
+		sorted_keys := make([]string, len(m.GetActions()))
+		i := 0
+		for key := range m.GetActions() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetActions()[key]
+			_ = val
+
+			// no validation rules for Actions[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, WhatAuthorizedResponse_ResourceTypeValidationError{
+							field:  fmt.Sprintf("Actions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, WhatAuthorizedResponse_ResourceTypeValidationError{
+							field:  fmt.Sprintf("Actions[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return WhatAuthorizedResponse_ResourceTypeValidationError{
+						field:  fmt.Sprintf("Actions[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return WhatAuthorizedResponse_ResourceTypeMultiError(errors)
+	}
+
+	return nil
+}
+
+// WhatAuthorizedResponse_ResourceTypeMultiError is an error wrapping multiple
+// validation errors returned by
+// WhatAuthorizedResponse_ResourceType.ValidateAll() if the designated
+// constraints aren't met.
+type WhatAuthorizedResponse_ResourceTypeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m WhatAuthorizedResponse_ResourceTypeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m WhatAuthorizedResponse_ResourceTypeMultiError) AllErrors() []error { return m }
+
+// WhatAuthorizedResponse_ResourceTypeValidationError is the validation error
+// returned by WhatAuthorizedResponse_ResourceType.Validate if the designated
+// constraints aren't met.
+type WhatAuthorizedResponse_ResourceTypeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) ErrorName() string {
+	return "WhatAuthorizedResponse_ResourceTypeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e WhatAuthorizedResponse_ResourceTypeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sWhatAuthorizedResponse_ResourceType.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = WhatAuthorizedResponse_ResourceTypeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = WhatAuthorizedResponse_ResourceTypeValidationError{}

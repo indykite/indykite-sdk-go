@@ -42,7 +42,10 @@ var whatWithTokenCmd = &cobra.Command{
 		var accessToken string
 		fmt.Scanln(&accessToken)
 
-		resourceTypes := []*authorizationpb.ResourceType{{Type: "Type"}}
+		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+			{Type: "TypeA"},
+			{Type: "TypeB", Actions: []string{"ACTION"}},
+		}
 
 		resp, err := client.WhatAuthorizedByToken(
 			context.Background(),
@@ -74,7 +77,10 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 			TenantId: tenantID,
 		}
 
-		resourceTypes := []*authorizationpb.ResourceType{{Type: "Type"}}
+		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+			{Type: "TypeA"},
+			{Type: "TypeB", Actions: []string{"ACTION"}},
+		}
 
 		resp, err := client.WhatAuthorized(
 			context.Background(),
@@ -101,7 +107,10 @@ var whatWithPropertyCmd = &cobra.Command{
 		fmt.Print("Enter property value: ")
 		fmt.Scanln(&propertyValue)
 
-		resourceTypes := []*authorizationpb.ResourceType{{Type: "Type"}}
+		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+			{Type: "TypeA"},
+			{Type: "TypeB", Actions: []string{"ACTION"}},
+		}
 
 		propertyFilter := &identitypb.PropertyFilter{
 			Type:  propertyType,

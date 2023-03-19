@@ -29,7 +29,7 @@ import (
 func (c *Client) WhatAuthorized(
 	ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
-	resourceTypes []*authorizationpb.ResourceType,
+	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
@@ -49,7 +49,7 @@ func (c *Client) WhatAuthorized(
 func (c *Client) WhatAuthorizedByToken(
 	ctx context.Context,
 	token string,
-	resourceTypes []*authorizationpb.ResourceType,
+	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
@@ -69,7 +69,7 @@ func (c *Client) WhatAuthorizedByToken(
 func (c *Client) WhatAuthorizedByProperty(
 	ctx context.Context,
 	propertyFilter *identitypb.PropertyFilter,
-	resourceTypes []*authorizationpb.ResourceType,
+	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
