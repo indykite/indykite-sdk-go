@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.5.0...v0.6.0) (2023-03-21)
+
+
+### Features
+
+* add whatauthorized endpoint ([3ad7c13](https://github.com/indykite/jarvis-sdk-go/commit/3ad7c13dd3c2aa642bf21aa06ed14dc105dac9bc))
+* implement token and http client functions ([1da0bb8](https://github.com/indykite/jarvis-sdk-go/commit/1da0bb8cf36a44232b1e7335d51ceb7e13002f39))
+* update isauthorized implementation ([758599e](https://github.com/indykite/jarvis-sdk-go/commit/758599e4b653f7f5eedf365d5f2a43275a806c98))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([6c8d7a5](https://github.com/indykite/jarvis-sdk-go/commit/6c8d7a52ca66bb1a18f098e17897300b30046007))
+
 ## [0.5.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.4.0...v0.5.0) (2023-01-13)
 
 
