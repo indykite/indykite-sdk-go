@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.6.0...v0.7.0) (2023-03-21)
+
+
+### Features
+
+* update whatauthorized implementation ([25bf78f](https://github.com/indykite/jarvis-sdk-go/commit/25bf78fbfce862f06f767ba7fe8053a63a09603b))
+
 ## [0.6.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.5.0...v0.6.0) (2023-03-21)
 
 
