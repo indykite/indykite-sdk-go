@@ -30,6 +30,7 @@ func (c *Client) WhatAuthorized(
 	ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
 	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
@@ -41,6 +42,7 @@ func (c *Client) WhatAuthorized(
 			},
 		},
 		ResourceTypes: resourceTypes,
+		Options:       options,
 	}, opts...)
 }
 
@@ -50,6 +52,7 @@ func (c *Client) WhatAuthorizedByToken(
 	ctx context.Context,
 	token string,
 	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
@@ -61,6 +64,7 @@ func (c *Client) WhatAuthorizedByToken(
 			},
 		},
 		ResourceTypes: resourceTypes,
+		Options:       options,
 	}, opts...)
 }
 
@@ -70,6 +74,7 @@ func (c *Client) WhatAuthorizedByProperty(
 	ctx context.Context,
 	propertyFilter *identitypb.PropertyFilter,
 	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
@@ -80,6 +85,7 @@ func (c *Client) WhatAuthorizedByProperty(
 				}},
 		},
 		ResourceTypes: resourceTypes,
+		Options:       options,
 	}, opts...)
 }
 

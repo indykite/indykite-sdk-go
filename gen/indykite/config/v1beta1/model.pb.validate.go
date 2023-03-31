@@ -10781,6 +10781,54 @@ func (m *AuthorizationPolicyConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Status
+
+	if len(m.GetTags()) > 0 {
+
+		_AuthorizationPolicyConfig_Tags_Unique := make(map[string]struct{}, len(m.GetTags()))
+
+		for idx, item := range m.GetTags() {
+			_, _ = idx, item
+
+			if _, exists := _AuthorizationPolicyConfig_Tags_Unique[item]; exists {
+				err := AuthorizationPolicyConfigValidationError{
+					field:  fmt.Sprintf("Tags[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_AuthorizationPolicyConfig_Tags_Unique[item] = struct{}{}
+			}
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 20 {
+				err := AuthorizationPolicyConfigValidationError{
+					field:  fmt.Sprintf("Tags[%v]", idx),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_AuthorizationPolicyConfig_Tags_Pattern.MatchString(item) {
+				err := AuthorizationPolicyConfigValidationError{
+					field:  fmt.Sprintf("Tags[%v]", idx),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return AuthorizationPolicyConfigMultiError(errors)
 	}
@@ -10860,6 +10908,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AuthorizationPolicyConfigValidationError{}
+
+var _AuthorizationPolicyConfig_Tags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
 // Validate checks the field values on KnowledgeGraphSchemaConfig with the
 // rules defined in the proto definition for this message. If any rules are
