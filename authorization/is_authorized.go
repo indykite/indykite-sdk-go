@@ -29,6 +29,7 @@ func (c *Client) IsAuthorized(
 	ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -40,6 +41,7 @@ func (c *Client) IsAuthorized(
 			},
 		},
 		Resources: resources,
+		Options:   options,
 	}, opts...)
 }
 
@@ -49,6 +51,7 @@ func (c *Client) IsAuthorizedByToken(
 	ctx context.Context,
 	token string,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -60,6 +63,7 @@ func (c *Client) IsAuthorizedByToken(
 			},
 		},
 		Resources: resources,
+		Options:   options,
 	}, opts...)
 }
 
@@ -69,6 +73,7 @@ func (c *Client) IsAuthorizedByProperty(
 	ctx context.Context,
 	propertyFilter *identitypb.PropertyFilter,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
+	options map[string]*authorizationpb.Option,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -80,6 +85,7 @@ func (c *Client) IsAuthorizedByProperty(
 			},
 		},
 		Resources: resources,
+		Options:   options,
 	}, opts...)
 }
 

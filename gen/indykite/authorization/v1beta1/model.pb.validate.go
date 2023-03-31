@@ -210,6 +210,42 @@ func (m *Option) validate(all bool) error {
 
 	var errors []error
 
+	switch m.Value.(type) {
+
+	case *Option_StringValue:
+
+		if l := utf8.RuneCountInString(m.GetStringValue()); l < 1 || l > 50 {
+			err := OptionValidationError{
+				field:  "StringValue",
+				reason: "value length must be between 1 and 50 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	case *Option_BoolValue:
+		// no validation rules for BoolValue
+
+	case *Option_IntegerValue:
+		// no validation rules for IntegerValue
+
+	case *Option_DoubleValue:
+		// no validation rules for DoubleValue
+
+	default:
+		err := OptionValidationError{
+			field:  "Value",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
 	if len(errors) > 0 {
 		return OptionMultiError(errors)
 	}

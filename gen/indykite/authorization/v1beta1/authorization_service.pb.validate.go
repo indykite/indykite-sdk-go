@@ -142,17 +142,57 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 
 	}
 
-	if len(m.GetOptions()) > 0 {
+	if len(m.GetOptions()) > 20 {
+		err := IsAuthorizedRequestValidationError{
+			field:  "Options",
+			reason: "value must contain no more than 20 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-		for idx, item := range m.GetOptions() {
-			_, _ = idx, item
+	{
+		sorted_keys := make([]string, len(m.GetOptions()))
+		i := 0
+		for key := range m.GetOptions() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetOptions()[key]
+			_ = val
+
+			if l := utf8.RuneCountInString(key); l < 1 || l > 20 {
+				err := IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("Options[%v]", key),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_IsAuthorizedRequest_Options_Pattern.MatchString(key) {
+				err := IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("Options[%v]", key),
+					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
 
 			if all {
-				switch v := interface{}(item).(type) {
+				switch v := interface{}(val).(type) {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, IsAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", idx),
+							field:  fmt.Sprintf("Options[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -160,16 +200,16 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, IsAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", idx),
+							field:  fmt.Sprintf("Options[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
 					}
 				}
-			} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return IsAuthorizedRequestValidationError{
-						field:  fmt.Sprintf("Options[%v]", idx),
+						field:  fmt.Sprintf("Options[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -177,7 +217,6 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 			}
 
 		}
-
 	}
 
 	if len(errors) > 0 {
@@ -259,6 +298,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = IsAuthorizedRequestValidationError{}
+
+var _IsAuthorizedRequest_Options_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
 
 // Validate checks the field values on IsAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -544,17 +585,57 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 
 	}
 
-	if len(m.GetOptions()) > 0 {
+	if len(m.GetOptions()) > 20 {
+		err := WhatAuthorizedRequestValidationError{
+			field:  "Options",
+			reason: "value must contain no more than 20 pair(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-		for idx, item := range m.GetOptions() {
-			_, _ = idx, item
+	{
+		sorted_keys := make([]string, len(m.GetOptions()))
+		i := 0
+		for key := range m.GetOptions() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetOptions()[key]
+			_ = val
+
+			if l := utf8.RuneCountInString(key); l < 1 || l > 20 {
+				err := WhatAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("Options[%v]", key),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_WhatAuthorizedRequest_Options_Pattern.MatchString(key) {
+				err := WhatAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("Options[%v]", key),
+					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
 
 			if all {
-				switch v := interface{}(item).(type) {
+				switch v := interface{}(val).(type) {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, WhatAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", idx),
+							field:  fmt.Sprintf("Options[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -562,16 +643,16 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, WhatAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", idx),
+							field:  fmt.Sprintf("Options[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
 					}
 				}
-			} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return WhatAuthorizedRequestValidationError{
-						field:  fmt.Sprintf("Options[%v]", idx),
+						field:  fmt.Sprintf("Options[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -579,7 +660,6 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 			}
 
 		}
-
 	}
 
 	if len(errors) > 0 {
@@ -661,6 +741,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = WhatAuthorizedRequestValidationError{}
+
+var _WhatAuthorizedRequest_Options_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
 
 // Validate checks the field values on WhatAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
