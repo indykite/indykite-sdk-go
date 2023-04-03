@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.7.0...v0.8.0) (2023-04-03)
+
+
+### Features
+
+* add authorization options ([d1c7df3](https://github.com/indykite/jarvis-sdk-go/commit/d1c7df3bc987782828867ff0e03daecbc7b856c9))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([04acc96](https://github.com/indykite/jarvis-sdk-go/commit/04acc966dceaa216db3f119e348b64c741c3a647))
+
 ## [0.7.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.6.0...v0.7.0) (2023-03-21)
 
 
