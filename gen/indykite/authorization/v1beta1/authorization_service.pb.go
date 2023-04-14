@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2023 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -286,6 +286,120 @@ func (x *WhatAuthorizedResponse) GetDecisions() map[string]*WhatAuthorizedRespon
 	return nil
 }
 
+type WhoAuthorizedRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// A list of resources to authorize against.
+	Resources []*WhoAuthorizedRequest_Resource `protobuf:"bytes,1,rep,name=resources,proto3" json:"resources,omitempty"`
+	// Authorization options
+	Options map[string]*Option `protobuf:"bytes,2,rep,name=options,proto3" json:"options,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *WhoAuthorizedRequest) Reset() {
+	*x = WhoAuthorizedRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedRequest) ProtoMessage() {}
+
+func (x *WhoAuthorizedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedRequest.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedRequest) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *WhoAuthorizedRequest) GetResources() []*WhoAuthorizedRequest_Resource {
+	if x != nil {
+		return x.Resources
+	}
+	return nil
+}
+
+func (x *WhoAuthorizedRequest) GetOptions() map[string]*Option {
+	if x != nil {
+		return x.Options
+	}
+	return nil
+}
+
+type WhoAuthorizedResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Time the decision was made.
+	DecisionTime *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=decision_time,json=decisionTime,proto3" json:"decision_time,omitempty"`
+	// Map with resource type as key.
+	Decisions map[string]*WhoAuthorizedResponse_ResourceType `protobuf:"bytes,2,rep,name=decisions,proto3" json:"decisions,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *WhoAuthorizedResponse) Reset() {
+	*x = WhoAuthorizedResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedResponse) ProtoMessage() {}
+
+func (x *WhoAuthorizedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedResponse.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedResponse) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *WhoAuthorizedResponse) GetDecisionTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DecisionTime
+	}
+	return nil
+}
+
+func (x *WhoAuthorizedResponse) GetDecisions() map[string]*WhoAuthorizedResponse_ResourceType {
+	if x != nil {
+		return x.Decisions
+	}
+	return nil
+}
+
 // Resource to authorize against.
 type IsAuthorizedRequest_Resource struct {
 	state         protoimpl.MessageState
@@ -303,7 +417,7 @@ type IsAuthorizedRequest_Resource struct {
 func (x *IsAuthorizedRequest_Resource) Reset() {
 	*x = IsAuthorizedRequest_Resource{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[4]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -316,7 +430,7 @@ func (x *IsAuthorizedRequest_Resource) String() string {
 func (*IsAuthorizedRequest_Resource) ProtoMessage() {}
 
 func (x *IsAuthorizedRequest_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[4]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -364,7 +478,7 @@ type IsAuthorizedResponse_Action struct {
 func (x *IsAuthorizedResponse_Action) Reset() {
 	*x = IsAuthorizedResponse_Action{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[6]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -377,7 +491,7 @@ func (x *IsAuthorizedResponse_Action) String() string {
 func (*IsAuthorizedResponse_Action) ProtoMessage() {}
 
 func (x *IsAuthorizedResponse_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[6]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -412,7 +526,7 @@ type IsAuthorizedResponse_Resource struct {
 func (x *IsAuthorizedResponse_Resource) Reset() {
 	*x = IsAuthorizedResponse_Resource{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[7]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -425,7 +539,7 @@ func (x *IsAuthorizedResponse_Resource) String() string {
 func (*IsAuthorizedResponse_Resource) ProtoMessage() {}
 
 func (x *IsAuthorizedResponse_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[7]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -460,7 +574,7 @@ type IsAuthorizedResponse_ResourceType struct {
 func (x *IsAuthorizedResponse_ResourceType) Reset() {
 	*x = IsAuthorizedResponse_ResourceType{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[8]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -473,7 +587,7 @@ func (x *IsAuthorizedResponse_ResourceType) String() string {
 func (*IsAuthorizedResponse_ResourceType) ProtoMessage() {}
 
 func (x *IsAuthorizedResponse_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[8]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -511,7 +625,7 @@ type WhatAuthorizedRequest_ResourceType struct {
 func (x *WhatAuthorizedRequest_ResourceType) Reset() {
 	*x = WhatAuthorizedRequest_ResourceType{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[12]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -524,7 +638,7 @@ func (x *WhatAuthorizedRequest_ResourceType) String() string {
 func (*WhatAuthorizedRequest_ResourceType) ProtoMessage() {}
 
 func (x *WhatAuthorizedRequest_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[12]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -566,7 +680,7 @@ type WhatAuthorizedResponse_Resource struct {
 func (x *WhatAuthorizedResponse_Resource) Reset() {
 	*x = WhatAuthorizedResponse_Resource{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -579,7 +693,7 @@ func (x *WhatAuthorizedResponse_Resource) String() string {
 func (*WhatAuthorizedResponse_Resource) ProtoMessage() {}
 
 func (x *WhatAuthorizedResponse_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -614,7 +728,7 @@ type WhatAuthorizedResponse_Action struct {
 func (x *WhatAuthorizedResponse_Action) Reset() {
 	*x = WhatAuthorizedResponse_Action{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[15]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -627,7 +741,7 @@ func (x *WhatAuthorizedResponse_Action) String() string {
 func (*WhatAuthorizedResponse_Action) ProtoMessage() {}
 
 func (x *WhatAuthorizedResponse_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[15]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -662,7 +776,7 @@ type WhatAuthorizedResponse_ResourceType struct {
 func (x *WhatAuthorizedResponse_ResourceType) Reset() {
 	*x = WhatAuthorizedResponse_ResourceType{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16]
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -675,7 +789,7 @@ func (x *WhatAuthorizedResponse_ResourceType) String() string {
 func (*WhatAuthorizedResponse_ResourceType) ProtoMessage() {}
 
 func (x *WhatAuthorizedResponse_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16]
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -694,6 +808,265 @@ func (*WhatAuthorizedResponse_ResourceType) Descriptor() ([]byte, []int) {
 func (x *WhatAuthorizedResponse_ResourceType) GetActions() map[string]*WhatAuthorizedResponse_Action {
 	if x != nil {
 		return x.Actions
+	}
+	return nil
+}
+
+// Resource to authorize against.
+type WhoAuthorizedRequest_Resource struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Resource id.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Resource type.
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	// A list of actions the subject want to perform.
+	Actions []string `protobuf:"bytes,3,rep,name=actions,proto3" json:"actions,omitempty"`
+}
+
+func (x *WhoAuthorizedRequest_Resource) Reset() {
+	*x = WhoAuthorizedRequest_Resource{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedRequest_Resource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedRequest_Resource) ProtoMessage() {}
+
+func (x *WhoAuthorizedRequest_Resource) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedRequest_Resource.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedRequest_Resource) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *WhoAuthorizedRequest_Resource) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *WhoAuthorizedRequest_Resource) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *WhoAuthorizedRequest_Resource) GetActions() []string {
+	if x != nil {
+		return x.Actions
+	}
+	return nil
+}
+
+type WhoAuthorizedResponse_Subject struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Resource external identifier.
+	ExternalId string `protobuf:"bytes,1,opt,name=external_id,json=externalId,proto3" json:"external_id,omitempty"`
+}
+
+func (x *WhoAuthorizedResponse_Subject) Reset() {
+	*x = WhoAuthorizedResponse_Subject{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedResponse_Subject) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedResponse_Subject) ProtoMessage() {}
+
+func (x *WhoAuthorizedResponse_Subject) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedResponse_Subject.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedResponse_Subject) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *WhoAuthorizedResponse_Subject) GetExternalId() string {
+	if x != nil {
+		return x.ExternalId
+	}
+	return ""
+}
+
+type WhoAuthorizedResponse_Action struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// List of subjects.
+	Subjects []*WhoAuthorizedResponse_Subject `protobuf:"bytes,1,rep,name=subjects,proto3" json:"subjects,omitempty"`
+}
+
+func (x *WhoAuthorizedResponse_Action) Reset() {
+	*x = WhoAuthorizedResponse_Action{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedResponse_Action) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedResponse_Action) ProtoMessage() {}
+
+func (x *WhoAuthorizedResponse_Action) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedResponse_Action.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedResponse_Action) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{5, 1}
+}
+
+func (x *WhoAuthorizedResponse_Action) GetSubjects() []*WhoAuthorizedResponse_Subject {
+	if x != nil {
+		return x.Subjects
+	}
+	return nil
+}
+
+type WhoAuthorizedResponse_Resource struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Map with actions as key.
+	Actions map[string]*WhoAuthorizedResponse_Action `protobuf:"bytes,1,rep,name=actions,proto3" json:"actions,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *WhoAuthorizedResponse_Resource) Reset() {
+	*x = WhoAuthorizedResponse_Resource{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedResponse_Resource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedResponse_Resource) ProtoMessage() {}
+
+func (x *WhoAuthorizedResponse_Resource) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedResponse_Resource.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedResponse_Resource) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{5, 2}
+}
+
+func (x *WhoAuthorizedResponse_Resource) GetActions() map[string]*WhoAuthorizedResponse_Action {
+	if x != nil {
+		return x.Actions
+	}
+	return nil
+}
+
+type WhoAuthorizedResponse_ResourceType struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Map with resource id as key.
+	Resources map[string]*WhoAuthorizedResponse_Resource `protobuf:"bytes,1,rep,name=resources,proto3" json:"resources,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *WhoAuthorizedResponse_ResourceType) Reset() {
+	*x = WhoAuthorizedResponse_ResourceType{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhoAuthorizedResponse_ResourceType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhoAuthorizedResponse_ResourceType) ProtoMessage() {}
+
+func (x *WhoAuthorizedResponse_ResourceType) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhoAuthorizedResponse_ResourceType.ProtoReflect.Descriptor instead.
+func (*WhoAuthorizedResponse_ResourceType) Descriptor() ([]byte, []int) {
+	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP(), []int{5, 3}
+}
+
+func (x *WhoAuthorizedResponse_ResourceType) GetResources() map[string]*WhoAuthorizedResponse_Resource {
+	if x != nil {
+		return x.Resources
 	}
 	return nil
 }
@@ -886,44 +1259,146 @@ var file_indykite_authorization_v1beta1_authorization_service_proto_rawDesc = []
 	0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
 	0x2e, 0x57, 0x68, 0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
-	0x54, 0x79, 0x70, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x32,
-	0x8e, 0x02, 0x0a, 0x10, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x41, 0x50, 0x49, 0x12, 0x79, 0x0a, 0x0c, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
-	0x69, 0x7a, 0x65, 0x64, 0x12, 0x33, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e,
+	0x54, 0x79, 0x70, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22,
+	0x97, 0x04, 0x0a, 0x14, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65,
+	0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x67, 0x0a, 0x09, 0x72, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3d, 0x2e, 0x69, 0x6e,
+	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f,
+	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x42, 0x0a, 0xfa, 0x42, 0x07, 0x92,
+	0x01, 0x04, 0x08, 0x01, 0x10, 0x20, 0x52, 0x09, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x73, 0x12, 0x8c, 0x01, 0x0a, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x41, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61,
+	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
+	0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x42, 0x2f, 0xfa, 0x42, 0x2c, 0x9a, 0x01, 0x29, 0x08, 0x00,
+	0x10, 0x14, 0x22, 0x23, 0x72, 0x21, 0x10, 0x01, 0x18, 0x14, 0x32, 0x1b, 0x5e, 0x28, 0x3f, 0x3a,
+	0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x5d, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30,
+	0x2d, 0x39, 0x5d, 0x2b, 0x29, 0x2b, 0x24, 0x52, 0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x1a, 0xa2, 0x01, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x19, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x09, 0xfa, 0x42, 0x06, 0x72, 0x04,
+	0x10, 0x02, 0x18, 0x32, 0x52, 0x02, 0x69, 0x64, 0x12, 0x31, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x1d, 0xfa, 0x42, 0x1a, 0x72, 0x18, 0x10, 0x02, 0x18,
+	0x32, 0x32, 0x12, 0x5e, 0x28, 0x3f, 0x3a, 0x5b, 0x41, 0x2d, 0x5a, 0x5d, 0x5b, 0x61, 0x2d, 0x7a,
+	0x5d, 0x2b, 0x29, 0x2b, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x48, 0x0a, 0x07, 0x61,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x09, 0x42, 0x2e, 0xfa, 0x42,
+	0x2b, 0x92, 0x01, 0x28, 0x08, 0x01, 0x10, 0x05, 0x22, 0x20, 0x72, 0x1e, 0x10, 0x02, 0x18, 0x32,
+	0x32, 0x18, 0x5e, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30, 0x2d, 0x39, 0x2e, 0x3a, 0x5f,
+	0x5c, 0x2d, 0x5c, 0x2f, 0x5d, 0x7b, 0x32, 0x2c, 0x7d, 0x24, 0x28, 0x01, 0x52, 0x07, 0x61, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0x62, 0x0a, 0x0c, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73,
+	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x3c, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
+	0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xbe, 0x07, 0x0a, 0x15, 0x57, 0x68,
+	0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x3f, 0x0a, 0x0d, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x5f,
+	0x74, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d,
+	0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0c, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e,
+	0x54, 0x69, 0x6d, 0x65, 0x12, 0x62, 0x0a, 0x09, 0x64, 0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x44, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
+	0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68,
+	0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x44,
+	0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x09, 0x64,
+	0x65, 0x63, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0x2a, 0x0a, 0x07, 0x53, 0x75, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x65, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x65, 0x78, 0x74, 0x65, 0x72, 0x6e,
+	0x61, 0x6c, 0x49, 0x64, 0x1a, 0x63, 0x0a, 0x06, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x59,
+	0x0a, 0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x3d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68,
+	0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x2e, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52,
+	0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x1a, 0xeb, 0x01, 0x0a, 0x08, 0x52, 0x65,
+	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x12, 0x65, 0x0a, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x4b, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
+	0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68,
+	0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x52,
+	0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x45,
+	0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x1a, 0x78, 0x0a,
+	0x0c, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
+	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
+	0x52, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3c,
+	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e,
+	0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0xfd, 0x01, 0x0a, 0x0c, 0x52, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x6f, 0x0a, 0x09, 0x72, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x51, 0x2e, 0x69, 0x6e,
+	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f,
+	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x2e,
+	0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x09,
+	0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x1a, 0x7c, 0x0a, 0x0e, 0x52, 0x65, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b,
+	0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x54, 0x0a,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3e, 0x2e, 0x69,
+	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68,
+	0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x80, 0x01, 0x0a, 0x0e, 0x44, 0x65, 0x63, 0x69,
+	0x73, 0x69, 0x6f, 0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65,
+	0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x58, 0x0a, 0x05,
+	0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x42, 0x2e, 0x69, 0x6e,
+	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f,
+	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x2e, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x32, 0x8c, 0x03, 0x0a, 0x10, 0x41,
+	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x50, 0x49, 0x12,
+	0x79, 0x0a, 0x0c, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x12,
+	0x33, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f,
+	0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x2e, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e,
 	0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31,
 	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x49, 0x73, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
-	0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x69, 0x6e, 0x64, 0x79,
-	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x49, 0x73, 0x41, 0x75, 0x74,
-	0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x7f, 0x0a, 0x0e, 0x57, 0x68, 0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65,
-	0x64, 0x12, 0x35, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74,
-	0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x31, 0x2e, 0x57, 0x68, 0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65,
-	0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x36, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b,
-	0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x61, 0x74, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x42, 0xb4, 0x02, 0x0a, 0x22, 0x63, 0x6f, 0x6d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
-	0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x42, 0x19, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69,
-	0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x59, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x6a, 0x61, 0x72, 0x76, 0x69, 0x73,
-	0x2d, 0x73, 0x64, 0x6b, 0x2d, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x64, 0x79,
-	0x6b, 0x69, 0x74, 0x65, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x3b, 0x61, 0x75, 0x74, 0x68, 0x6f,
-	0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2,
-	0x02, 0x03, 0x49, 0x41, 0x58, 0xaa, 0x02, 0x1e, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65,
-	0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x56,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca, 0x02, 0x1e, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
-	0x65, 0x5c, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5c,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xe2, 0x02, 0x2a, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69,
-	0x74, 0x65, 0x5c, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
-	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x20, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x3a,
-	0x3a, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x3a,
-	0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7f, 0x0a, 0x0e, 0x57, 0x68,
+	0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x12, 0x35, 0x2e, 0x69,
+	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68,
+	0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x36, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61,
+	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x61, 0x74, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69,
+	0x7a, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x7c, 0x0a, 0x0d, 0x57,
+	0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x12, 0x34, 0x2e, 0x69,
+	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x57, 0x68,
+	0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x35, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2e, 0x57, 0x68, 0x6f, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x65,
+	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0xb4, 0x02, 0x0a, 0x22, 0x63, 0x6f,
+	0x6d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x6f,
+	0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x42, 0x19, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x53,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x59, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69,
+	0x74, 0x65, 0x2f, 0x6a, 0x61, 0x72, 0x76, 0x69, 0x73, 0x2d, 0x73, 0x64, 0x6b, 0x2d, 0x67, 0x6f,
+	0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x61, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x3b, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xa2, 0x02, 0x03, 0x49, 0x41, 0x58, 0xaa, 0x02,
+	0x1e, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0xca,
+	0x02, 0x1e, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x41, 0x75, 0x74, 0x68, 0x6f,
+	0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0xe2, 0x02, 0x2a, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x41, 0x75, 0x74, 0x68,
+	0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61,
+	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x20,
+	0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x3a, 0x3a, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -938,62 +1413,86 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_rawDescGZIP
 	return file_indykite_authorization_v1beta1_authorization_service_proto_rawDescData
 }
 
-var file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_indykite_authorization_v1beta1_authorization_service_proto_goTypes = []interface{}{
 	(*IsAuthorizedRequest)(nil),               // 0: indykite.authorization.v1beta1.IsAuthorizedRequest
 	(*IsAuthorizedResponse)(nil),              // 1: indykite.authorization.v1beta1.IsAuthorizedResponse
 	(*WhatAuthorizedRequest)(nil),             // 2: indykite.authorization.v1beta1.WhatAuthorizedRequest
 	(*WhatAuthorizedResponse)(nil),            // 3: indykite.authorization.v1beta1.WhatAuthorizedResponse
-	(*IsAuthorizedRequest_Resource)(nil),      // 4: indykite.authorization.v1beta1.IsAuthorizedRequest.Resource
-	nil,                                       // 5: indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry
-	(*IsAuthorizedResponse_Action)(nil),       // 6: indykite.authorization.v1beta1.IsAuthorizedResponse.Action
-	(*IsAuthorizedResponse_Resource)(nil),     // 7: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource
-	(*IsAuthorizedResponse_ResourceType)(nil), // 8: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType
-	nil, // 9: indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry
-	nil, // 10: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry
-	nil, // 11: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry
-	(*WhatAuthorizedRequest_ResourceType)(nil), // 12: indykite.authorization.v1beta1.WhatAuthorizedRequest.ResourceType
-	nil,                                     // 13: indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry
-	(*WhatAuthorizedResponse_Resource)(nil), // 14: indykite.authorization.v1beta1.WhatAuthorizedResponse.Resource
-	(*WhatAuthorizedResponse_Action)(nil),   // 15: indykite.authorization.v1beta1.WhatAuthorizedResponse.Action
-	(*WhatAuthorizedResponse_ResourceType)(nil), // 16: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType
-	nil,                           // 17: indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry
-	nil,                           // 18: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry
-	(*Subject)(nil),               // 19: indykite.authorization.v1beta1.Subject
-	(*timestamppb.Timestamp)(nil), // 20: google.protobuf.Timestamp
-	(*Option)(nil),                // 21: indykite.authorization.v1beta1.Option
+	(*WhoAuthorizedRequest)(nil),              // 4: indykite.authorization.v1beta1.WhoAuthorizedRequest
+	(*WhoAuthorizedResponse)(nil),             // 5: indykite.authorization.v1beta1.WhoAuthorizedResponse
+	(*IsAuthorizedRequest_Resource)(nil),      // 6: indykite.authorization.v1beta1.IsAuthorizedRequest.Resource
+	nil,                                       // 7: indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry
+	(*IsAuthorizedResponse_Action)(nil),       // 8: indykite.authorization.v1beta1.IsAuthorizedResponse.Action
+	(*IsAuthorizedResponse_Resource)(nil),     // 9: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource
+	(*IsAuthorizedResponse_ResourceType)(nil), // 10: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType
+	nil, // 11: indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry
+	nil, // 12: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry
+	nil, // 13: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry
+	(*WhatAuthorizedRequest_ResourceType)(nil), // 14: indykite.authorization.v1beta1.WhatAuthorizedRequest.ResourceType
+	nil,                                     // 15: indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry
+	(*WhatAuthorizedResponse_Resource)(nil), // 16: indykite.authorization.v1beta1.WhatAuthorizedResponse.Resource
+	(*WhatAuthorizedResponse_Action)(nil),   // 17: indykite.authorization.v1beta1.WhatAuthorizedResponse.Action
+	(*WhatAuthorizedResponse_ResourceType)(nil), // 18: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType
+	nil,                                    // 19: indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry
+	nil,                                    // 20: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry
+	(*WhoAuthorizedRequest_Resource)(nil),  // 21: indykite.authorization.v1beta1.WhoAuthorizedRequest.Resource
+	nil,                                    // 22: indykite.authorization.v1beta1.WhoAuthorizedRequest.OptionsEntry
+	(*WhoAuthorizedResponse_Subject)(nil),  // 23: indykite.authorization.v1beta1.WhoAuthorizedResponse.Subject
+	(*WhoAuthorizedResponse_Action)(nil),   // 24: indykite.authorization.v1beta1.WhoAuthorizedResponse.Action
+	(*WhoAuthorizedResponse_Resource)(nil), // 25: indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource
+	(*WhoAuthorizedResponse_ResourceType)(nil), // 26: indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType
+	nil,                           // 27: indykite.authorization.v1beta1.WhoAuthorizedResponse.DecisionsEntry
+	nil,                           // 28: indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource.ActionsEntry
+	nil,                           // 29: indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType.ResourcesEntry
+	(*Subject)(nil),               // 30: indykite.authorization.v1beta1.Subject
+	(*timestamppb.Timestamp)(nil), // 31: google.protobuf.Timestamp
+	(*Option)(nil),                // 32: indykite.authorization.v1beta1.Option
 }
 var file_indykite_authorization_v1beta1_authorization_service_proto_depIdxs = []int32{
-	19, // 0: indykite.authorization.v1beta1.IsAuthorizedRequest.subject:type_name -> indykite.authorization.v1beta1.Subject
-	4,  // 1: indykite.authorization.v1beta1.IsAuthorizedRequest.resources:type_name -> indykite.authorization.v1beta1.IsAuthorizedRequest.Resource
-	5,  // 2: indykite.authorization.v1beta1.IsAuthorizedRequest.options:type_name -> indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry
-	20, // 3: indykite.authorization.v1beta1.IsAuthorizedResponse.decision_time:type_name -> google.protobuf.Timestamp
-	9,  // 4: indykite.authorization.v1beta1.IsAuthorizedResponse.decisions:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry
-	19, // 5: indykite.authorization.v1beta1.WhatAuthorizedRequest.subject:type_name -> indykite.authorization.v1beta1.Subject
-	12, // 6: indykite.authorization.v1beta1.WhatAuthorizedRequest.resource_types:type_name -> indykite.authorization.v1beta1.WhatAuthorizedRequest.ResourceType
-	13, // 7: indykite.authorization.v1beta1.WhatAuthorizedRequest.options:type_name -> indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry
-	20, // 8: indykite.authorization.v1beta1.WhatAuthorizedResponse.decision_time:type_name -> google.protobuf.Timestamp
-	17, // 9: indykite.authorization.v1beta1.WhatAuthorizedResponse.decisions:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry
-	21, // 10: indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry.value:type_name -> indykite.authorization.v1beta1.Option
-	10, // 11: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.actions:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry
-	11, // 12: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.resources:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry
-	8,  // 13: indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType
-	6,  // 14: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Action
-	7,  // 15: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Resource
-	21, // 16: indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry.value:type_name -> indykite.authorization.v1beta1.Option
-	14, // 17: indykite.authorization.v1beta1.WhatAuthorizedResponse.Action.resources:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.Resource
-	18, // 18: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.actions:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry
-	16, // 19: indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry.value:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType
-	15, // 20: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry.value:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.Action
-	0,  // 21: indykite.authorization.v1beta1.AuthorizationAPI.IsAuthorized:input_type -> indykite.authorization.v1beta1.IsAuthorizedRequest
-	2,  // 22: indykite.authorization.v1beta1.AuthorizationAPI.WhatAuthorized:input_type -> indykite.authorization.v1beta1.WhatAuthorizedRequest
-	1,  // 23: indykite.authorization.v1beta1.AuthorizationAPI.IsAuthorized:output_type -> indykite.authorization.v1beta1.IsAuthorizedResponse
-	3,  // 24: indykite.authorization.v1beta1.AuthorizationAPI.WhatAuthorized:output_type -> indykite.authorization.v1beta1.WhatAuthorizedResponse
-	23, // [23:25] is the sub-list for method output_type
-	21, // [21:23] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	30, // 0: indykite.authorization.v1beta1.IsAuthorizedRequest.subject:type_name -> indykite.authorization.v1beta1.Subject
+	6,  // 1: indykite.authorization.v1beta1.IsAuthorizedRequest.resources:type_name -> indykite.authorization.v1beta1.IsAuthorizedRequest.Resource
+	7,  // 2: indykite.authorization.v1beta1.IsAuthorizedRequest.options:type_name -> indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry
+	31, // 3: indykite.authorization.v1beta1.IsAuthorizedResponse.decision_time:type_name -> google.protobuf.Timestamp
+	11, // 4: indykite.authorization.v1beta1.IsAuthorizedResponse.decisions:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry
+	30, // 5: indykite.authorization.v1beta1.WhatAuthorizedRequest.subject:type_name -> indykite.authorization.v1beta1.Subject
+	14, // 6: indykite.authorization.v1beta1.WhatAuthorizedRequest.resource_types:type_name -> indykite.authorization.v1beta1.WhatAuthorizedRequest.ResourceType
+	15, // 7: indykite.authorization.v1beta1.WhatAuthorizedRequest.options:type_name -> indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry
+	31, // 8: indykite.authorization.v1beta1.WhatAuthorizedResponse.decision_time:type_name -> google.protobuf.Timestamp
+	19, // 9: indykite.authorization.v1beta1.WhatAuthorizedResponse.decisions:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry
+	21, // 10: indykite.authorization.v1beta1.WhoAuthorizedRequest.resources:type_name -> indykite.authorization.v1beta1.WhoAuthorizedRequest.Resource
+	22, // 11: indykite.authorization.v1beta1.WhoAuthorizedRequest.options:type_name -> indykite.authorization.v1beta1.WhoAuthorizedRequest.OptionsEntry
+	31, // 12: indykite.authorization.v1beta1.WhoAuthorizedResponse.decision_time:type_name -> google.protobuf.Timestamp
+	27, // 13: indykite.authorization.v1beta1.WhoAuthorizedResponse.decisions:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.DecisionsEntry
+	32, // 14: indykite.authorization.v1beta1.IsAuthorizedRequest.OptionsEntry.value:type_name -> indykite.authorization.v1beta1.Option
+	12, // 15: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.actions:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry
+	13, // 16: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.resources:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry
+	10, // 17: indykite.authorization.v1beta1.IsAuthorizedResponse.DecisionsEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType
+	8,  // 18: indykite.authorization.v1beta1.IsAuthorizedResponse.Resource.ActionsEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Action
+	9,  // 19: indykite.authorization.v1beta1.IsAuthorizedResponse.ResourceType.ResourcesEntry.value:type_name -> indykite.authorization.v1beta1.IsAuthorizedResponse.Resource
+	32, // 20: indykite.authorization.v1beta1.WhatAuthorizedRequest.OptionsEntry.value:type_name -> indykite.authorization.v1beta1.Option
+	16, // 21: indykite.authorization.v1beta1.WhatAuthorizedResponse.Action.resources:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.Resource
+	20, // 22: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.actions:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry
+	18, // 23: indykite.authorization.v1beta1.WhatAuthorizedResponse.DecisionsEntry.value:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType
+	17, // 24: indykite.authorization.v1beta1.WhatAuthorizedResponse.ResourceType.ActionsEntry.value:type_name -> indykite.authorization.v1beta1.WhatAuthorizedResponse.Action
+	32, // 25: indykite.authorization.v1beta1.WhoAuthorizedRequest.OptionsEntry.value:type_name -> indykite.authorization.v1beta1.Option
+	23, // 26: indykite.authorization.v1beta1.WhoAuthorizedResponse.Action.subjects:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.Subject
+	28, // 27: indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource.actions:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource.ActionsEntry
+	29, // 28: indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType.resources:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType.ResourcesEntry
+	26, // 29: indykite.authorization.v1beta1.WhoAuthorizedResponse.DecisionsEntry.value:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType
+	24, // 30: indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource.ActionsEntry.value:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.Action
+	25, // 31: indykite.authorization.v1beta1.WhoAuthorizedResponse.ResourceType.ResourcesEntry.value:type_name -> indykite.authorization.v1beta1.WhoAuthorizedResponse.Resource
+	0,  // 32: indykite.authorization.v1beta1.AuthorizationAPI.IsAuthorized:input_type -> indykite.authorization.v1beta1.IsAuthorizedRequest
+	2,  // 33: indykite.authorization.v1beta1.AuthorizationAPI.WhatAuthorized:input_type -> indykite.authorization.v1beta1.WhatAuthorizedRequest
+	4,  // 34: indykite.authorization.v1beta1.AuthorizationAPI.WhoAuthorized:input_type -> indykite.authorization.v1beta1.WhoAuthorizedRequest
+	1,  // 35: indykite.authorization.v1beta1.AuthorizationAPI.IsAuthorized:output_type -> indykite.authorization.v1beta1.IsAuthorizedResponse
+	3,  // 36: indykite.authorization.v1beta1.AuthorizationAPI.WhatAuthorized:output_type -> indykite.authorization.v1beta1.WhatAuthorizedResponse
+	5,  // 37: indykite.authorization.v1beta1.AuthorizationAPI.WhoAuthorized:output_type -> indykite.authorization.v1beta1.WhoAuthorizedResponse
+	35, // [35:38] is the sub-list for method output_type
+	32, // [32:35] is the sub-list for method input_type
+	32, // [32:32] is the sub-list for extension type_name
+	32, // [32:32] is the sub-list for extension extendee
+	0,  // [0:32] is the sub-list for field type_name
 }
 
 func init() { file_indykite_authorization_v1beta1_authorization_service_proto_init() }
@@ -1052,7 +1551,19 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 			}
 		}
 		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IsAuthorizedRequest_Resource); i {
+			switch v := v.(*WhoAuthorizedRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1064,19 +1575,7 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 			}
 		}
 		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IsAuthorizedResponse_Action); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*IsAuthorizedResponse_Resource); i {
+			switch v := v.(*IsAuthorizedRequest_Resource); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1088,6 +1587,30 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 			}
 		}
 		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IsAuthorizedResponse_Action); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*IsAuthorizedResponse_Resource); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IsAuthorizedResponse_ResourceType); i {
 			case 0:
 				return &v.state
@@ -1099,7 +1622,7 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhatAuthorizedRequest_ResourceType); i {
 			case 0:
 				return &v.state
@@ -1111,7 +1634,7 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhatAuthorizedResponse_Resource); i {
 			case 0:
 				return &v.state
@@ -1123,7 +1646,7 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhatAuthorizedResponse_Action); i {
 			case 0:
 				return &v.state
@@ -1135,8 +1658,68 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhatAuthorizedResponse_ResourceType); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedRequest_Resource); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedResponse_Subject); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedResponse_Action); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedResponse_Resource); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_authorization_v1beta1_authorization_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhoAuthorizedResponse_ResourceType); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1154,7 +1737,7 @@ func file_indykite_authorization_v1beta1_authorization_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_authorization_v1beta1_authorization_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
