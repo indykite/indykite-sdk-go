@@ -4,6 +4,13 @@
 </a>
 </div>
 
+## Documentation
+[IndyKite documentation](https://docs.indykite.com)
+
+## Terminology
+
+[IndyKite glossary](https://docs.indykite.com/docs/resources/glossary)
+
 # IndyKite Client Libraries for Go
 
 IndyKite is a cloud identity platform built to secure and manage
@@ -20,40 +27,17 @@ Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK
 import "github.com/indykite/jarvis-sdk-go"
 ```
 
-In order to access to the platform you must obtain an API key first.
+In order to access to the platform you must first obtain AppAgent credentials.
 This key can be obtained either from the [Admin Console](https://console.indykite.id)
 or request one from your point of contact at IndyKite.
 
 ## Requirements
 
-Go 1.19
+- Go version 1.19 or later
+- An AppSpace, App, AppAgent, and AppAgent credentials
+- Service account credentials
 
-## Used terminology
-
-| Definition               | Description                                                                                      |
-|--------------------------|--------------------------------------------------------------------------------------------------|
-| Digital Twin             | A digital twin is the digital identity of a physical entity on/in a software/identity system     |
-| Application Space ID     | ID of the application where the digital twin belongs to                                          |
-| Application Agent ID     | ID of the agent which makes the application available for the different calls                    |
-| Tenant ID                | ID of the tenant where the digital twin belongs to. The tenant is belong to an application space |
-| Private Key and Settings | The secret which required to reach the system. Indykite provides the necessary secrets           |
-| Property                 | The digital twin's property (eg.: email, name)                                                   |
-| JWT                      | JSON Web Tokens                                                                                  |
-| Introspect               | A process used to validate the token and to retrieve properties assigned to the token            |
-| Patch property           | Add, change or delete a property of a digital twin                                               |
-
-## Documentation
-
-Visit the IndyKite One Developer Community site for official
-[IndyKite documentation](https://indykite.one/blog?category=5e3e9297-3451-4b52-91ee-8027dcd1789c)
-and to find out how to use the entire platform for your project.
-
-## Getting Started
-
-### Trial
-
-For a trial please contact [IndyKite](https://www.indykite.com/contact-us)
-to setup and configure the platform.
+# Getting Started
 
 ## Initial settings
 
@@ -132,9 +116,6 @@ Checkout our roadmap on our
 [Contribution guidelines for this project](contributing.md)
 
 ## Support, Feedback, Connect with other developers
-
-We'd love to have you connect with us or other community developers over at
-[IndyKite.one](https://indykite.one)
 
 Feel free to file a bug, submit an issue or give us feedback on our
 [issues page](https://github.com/indykite/jarvis-sdk-go/issues)
