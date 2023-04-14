@@ -10781,7 +10781,16 @@ func (m *AuthorizationPolicyConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Status
+	if _, ok := AuthorizationPolicyConfig_Status_name[int32(m.GetStatus())]; !ok {
+		err := AuthorizationPolicyConfigValidationError{
+			field:  "Status",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(m.GetTags()) > 0 {
 
