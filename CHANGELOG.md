@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.8.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.8.0...v0.8.1) (2023-04-14)
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([342b8d4](https://github.com/indykite/jarvis-sdk-go/commit/342b8d4dd1630dc0c8895397cbc04d103cb0deb8))
+* **deps:** update everything ([410f108](https://github.com/indykite/jarvis-sdk-go/commit/410f108d6d15b7cfdc6c9628d3edaa52b3b271e2))
+
 ## [0.8.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.7.0...v0.8.0) (2023-04-03)
 
 
