@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.8.1...v0.9.0) (2023-04-17)
+
+
+### Features
+
+* add who authorized method ([ce97ee7](https://github.com/indykite/jarvis-sdk-go/commit/ce97ee730eca164adb259011ef462ac06ad64e69))
+
 ### [0.8.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.8.0...v0.8.1) (2023-04-14)
 
 
