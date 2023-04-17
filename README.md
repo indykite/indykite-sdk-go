@@ -28,14 +28,14 @@ import "github.com/indykite/jarvis-sdk-go"
 ```
 
 In order to access to the platform you must first obtain AppAgent credentials.
-This key can be obtained either from the [Admin Console](https://console.indykite.id)
+These credentials can be obtained either from the [Admin Console](https://console.indykite.id)
 or request one from your point of contact at IndyKite.
 
 ## Requirements
 
 - Go version 1.19 or later
-- An AppSpace, App, AppAgent, and AppAgent credentials
-- Service account credentials
+- An AppSpace, App, AppAgent, and AppAgent credentials for all APIs except for Config API
+- Service account credentials for Config API
 
 # Getting Started
 
