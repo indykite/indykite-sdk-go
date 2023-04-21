@@ -46,13 +46,13 @@ var whatWithTokenCmd = &cobra.Command{
 			{Type: "TypeA"},
 			{Type: "TypeB", Actions: []string{"ACTION"}},
 		}
-		options := map[string]*authorizationpb.Option{}
+		inputParams := map[string]*authorizationpb.InputParam{}
 
 		resp, err := client.WhatAuthorizedByToken(
 			context.Background(),
 			accessToken,
 			resourceTypes,
-			options,
+			inputParams,
 			retry.WithMax(2),
 		)
 		if err != nil {
@@ -83,13 +83,13 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 			{Type: "TypeA"},
 			{Type: "TypeB", Actions: []string{"ACTION"}},
 		}
-		options := map[string]*authorizationpb.Option{}
+		inputParams := map[string]*authorizationpb.InputParam{}
 
 		resp, err := client.WhatAuthorized(
 			context.Background(),
 			digitalTwin,
 			resourceTypes,
-			options,
+			inputParams,
 			retry.WithMax(2),
 		)
 		if err != nil {
@@ -120,13 +120,13 @@ var whatWithPropertyCmd = &cobra.Command{
 			Type:  propertyType,
 			Value: objects.String(propertyValue),
 		}
-		options := map[string]*authorizationpb.Option{}
+		inputParams := map[string]*authorizationpb.InputParam{}
 
 		resp, err := client.WhatAuthorizedByProperty(
 			context.Background(),
 			propertyFilter,
 			resourceTypes,
-			options,
+			inputParams,
 			retry.WithMax(2),
 		)
 

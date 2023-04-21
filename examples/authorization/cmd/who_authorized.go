@@ -37,13 +37,13 @@ var whoAuthorizedCmd = &cobra.Command{
 				Actions: []string{"ACTION"},
 			},
 		}
-		options := map[string]*authorizationpb.Option{}
+		inputParams := map[string]*authorizationpb.InputParam{}
 
 		resp, err := client.WhoAuthorized(
 			context.Background(),
 			&authorizationpb.WhoAuthorizedRequest{
-				Resources: resources,
-				Options:   options,
+				Resources:   resources,
+				InputParams: inputParams,
 			},
 			retry.WithMax(2),
 		)

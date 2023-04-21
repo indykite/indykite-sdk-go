@@ -142,9 +142,9 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 
 	}
 
-	if len(m.GetOptions()) > 20 {
+	if len(m.GetInputParams()) > 20 {
 		err := IsAuthorizedRequestValidationError{
-			field:  "Options",
+			field:  "InputParams",
 			reason: "value must contain no more than 20 pair(s)",
 		}
 		if !all {
@@ -154,20 +154,20 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 	}
 
 	{
-		sorted_keys := make([]string, len(m.GetOptions()))
+		sorted_keys := make([]string, len(m.GetInputParams()))
 		i := 0
-		for key := range m.GetOptions() {
+		for key := range m.GetInputParams() {
 			sorted_keys[i] = key
 			i++
 		}
 		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
 		for _, key := range sorted_keys {
-			val := m.GetOptions()[key]
+			val := m.GetInputParams()[key]
 			_ = val
 
 			if l := utf8.RuneCountInString(key); l < 1 || l > 20 {
 				err := IsAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value length must be between 1 and 20 runes, inclusive",
 				}
 				if !all {
@@ -176,9 +176,9 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 				errors = append(errors, err)
 			}
 
-			if !_IsAuthorizedRequest_Options_Pattern.MatchString(key) {
+			if !_IsAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := IsAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
 				}
 				if !all {
@@ -192,7 +192,7 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, IsAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -200,7 +200,7 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, IsAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -209,7 +209,7 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return IsAuthorizedRequestValidationError{
-						field:  fmt.Sprintf("Options[%v]", key),
+						field:  fmt.Sprintf("InputParams[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -217,6 +217,52 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 			}
 
 		}
+	}
+
+	if len(m.GetPolicyTags()) > 0 {
+
+		_IsAuthorizedRequest_PolicyTags_Unique := make(map[string]struct{}, len(m.GetPolicyTags()))
+
+		for idx, item := range m.GetPolicyTags() {
+			_, _ = idx, item
+
+			if _, exists := _IsAuthorizedRequest_PolicyTags_Unique[item]; exists {
+				err := IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_IsAuthorizedRequest_PolicyTags_Unique[item] = struct{}{}
+			}
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 20 {
+				err := IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_IsAuthorizedRequest_PolicyTags_Pattern.MatchString(item) {
+				err := IsAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -299,7 +345,9 @@ var _ interface {
 	ErrorName() string
 } = IsAuthorizedRequestValidationError{}
 
-var _IsAuthorizedRequest_Options_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _IsAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+
+var _IsAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
 // Validate checks the field values on IsAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -585,9 +633,9 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 
 	}
 
-	if len(m.GetOptions()) > 20 {
+	if len(m.GetInputParams()) > 20 {
 		err := WhatAuthorizedRequestValidationError{
-			field:  "Options",
+			field:  "InputParams",
 			reason: "value must contain no more than 20 pair(s)",
 		}
 		if !all {
@@ -597,20 +645,20 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 	}
 
 	{
-		sorted_keys := make([]string, len(m.GetOptions()))
+		sorted_keys := make([]string, len(m.GetInputParams()))
 		i := 0
-		for key := range m.GetOptions() {
+		for key := range m.GetInputParams() {
 			sorted_keys[i] = key
 			i++
 		}
 		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
 		for _, key := range sorted_keys {
-			val := m.GetOptions()[key]
+			val := m.GetInputParams()[key]
 			_ = val
 
 			if l := utf8.RuneCountInString(key); l < 1 || l > 20 {
 				err := WhatAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value length must be between 1 and 20 runes, inclusive",
 				}
 				if !all {
@@ -619,9 +667,9 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 				errors = append(errors, err)
 			}
 
-			if !_WhatAuthorizedRequest_Options_Pattern.MatchString(key) {
+			if !_WhatAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := WhatAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
 				}
 				if !all {
@@ -635,7 +683,7 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, WhatAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -643,7 +691,7 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, WhatAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -652,7 +700,7 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return WhatAuthorizedRequestValidationError{
-						field:  fmt.Sprintf("Options[%v]", key),
+						field:  fmt.Sprintf("InputParams[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -660,6 +708,52 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 			}
 
 		}
+	}
+
+	if len(m.GetPolicyTags()) > 0 {
+
+		_WhatAuthorizedRequest_PolicyTags_Unique := make(map[string]struct{}, len(m.GetPolicyTags()))
+
+		for idx, item := range m.GetPolicyTags() {
+			_, _ = idx, item
+
+			if _, exists := _WhatAuthorizedRequest_PolicyTags_Unique[item]; exists {
+				err := WhatAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_WhatAuthorizedRequest_PolicyTags_Unique[item] = struct{}{}
+			}
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 20 {
+				err := WhatAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_WhatAuthorizedRequest_PolicyTags_Pattern.MatchString(item) {
+				err := WhatAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -742,7 +836,9 @@ var _ interface {
 	ErrorName() string
 } = WhatAuthorizedRequestValidationError{}
 
-var _WhatAuthorizedRequest_Options_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _WhatAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+
+var _WhatAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
 // Validate checks the field values on WhatAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -988,9 +1084,9 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 
 	}
 
-	if len(m.GetOptions()) > 20 {
+	if len(m.GetInputParams()) > 20 {
 		err := WhoAuthorizedRequestValidationError{
-			field:  "Options",
+			field:  "InputParams",
 			reason: "value must contain no more than 20 pair(s)",
 		}
 		if !all {
@@ -1000,20 +1096,20 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 	}
 
 	{
-		sorted_keys := make([]string, len(m.GetOptions()))
+		sorted_keys := make([]string, len(m.GetInputParams()))
 		i := 0
-		for key := range m.GetOptions() {
+		for key := range m.GetInputParams() {
 			sorted_keys[i] = key
 			i++
 		}
 		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
 		for _, key := range sorted_keys {
-			val := m.GetOptions()[key]
+			val := m.GetInputParams()[key]
 			_ = val
 
 			if l := utf8.RuneCountInString(key); l < 1 || l > 20 {
 				err := WhoAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value length must be between 1 and 20 runes, inclusive",
 				}
 				if !all {
@@ -1022,9 +1118,9 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 				errors = append(errors, err)
 			}
 
-			if !_WhoAuthorizedRequest_Options_Pattern.MatchString(key) {
+			if !_WhoAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := WhoAuthorizedRequestValidationError{
-					field:  fmt.Sprintf("Options[%v]", key),
+					field:  fmt.Sprintf("InputParams[%v]", key),
 					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
 				}
 				if !all {
@@ -1038,7 +1134,7 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, WhoAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -1046,7 +1142,7 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, WhoAuthorizedRequestValidationError{
-							field:  fmt.Sprintf("Options[%v]", key),
+							field:  fmt.Sprintf("InputParams[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -1055,7 +1151,7 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return WhoAuthorizedRequestValidationError{
-						field:  fmt.Sprintf("Options[%v]", key),
+						field:  fmt.Sprintf("InputParams[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -1063,6 +1159,52 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 			}
 
 		}
+	}
+
+	if len(m.GetPolicyTags()) > 0 {
+
+		_WhoAuthorizedRequest_PolicyTags_Unique := make(map[string]struct{}, len(m.GetPolicyTags()))
+
+		for idx, item := range m.GetPolicyTags() {
+			_, _ = idx, item
+
+			if _, exists := _WhoAuthorizedRequest_PolicyTags_Unique[item]; exists {
+				err := WhoAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_WhoAuthorizedRequest_PolicyTags_Unique[item] = struct{}{}
+			}
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 20 {
+				err := WhoAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value length must be between 1 and 20 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_WhoAuthorizedRequest_PolicyTags_Pattern.MatchString(item) {
+				err := WhoAuthorizedRequestValidationError{
+					field:  fmt.Sprintf("PolicyTags[%v]", idx),
+					reason: "value does not match regex pattern \"^[a-zA-Z0-9]+$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1145,7 +1287,9 @@ var _ interface {
 	ErrorName() string
 } = WhoAuthorizedRequestValidationError{}
 
-var _WhoAuthorizedRequest_Options_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _WhoAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+
+var _WhoAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
 // Validate checks the field values on WhoAuthorizedResponse with the rules
 // defined in the proto definition for this message. If any rules are
