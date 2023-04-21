@@ -30,6 +30,7 @@ func (c *Client) IsAuthorized(
 	digitalTwin *identitypb.DigitalTwin,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	inputParams map[string]*authorizationpb.InputParam,
+	policyTags []string,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -42,6 +43,7 @@ func (c *Client) IsAuthorized(
 		},
 		Resources:   resources,
 		InputParams: inputParams,
+		PolicyTags:  policyTags,
 	}, opts...)
 }
 
@@ -52,6 +54,7 @@ func (c *Client) IsAuthorizedByToken(
 	token string,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	inputParams map[string]*authorizationpb.InputParam,
+	policyTags []string,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -64,6 +67,7 @@ func (c *Client) IsAuthorizedByToken(
 		},
 		Resources:   resources,
 		InputParams: inputParams,
+		PolicyTags:  policyTags,
 	}, opts...)
 }
 
@@ -74,6 +78,7 @@ func (c *Client) IsAuthorizedByProperty(
 	propertyFilter *identitypb.PropertyFilter,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	inputParams map[string]*authorizationpb.InputParam,
+	policyTags []string,
 	opts ...grpc.CallOption,
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
@@ -86,6 +91,7 @@ func (c *Client) IsAuthorizedByProperty(
 		},
 		Resources:   resources,
 		InputParams: inputParams,
+		PolicyTags:  policyTags,
 	}, opts...)
 }
 
