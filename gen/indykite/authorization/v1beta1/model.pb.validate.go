@@ -189,21 +189,22 @@ var _ interface {
 	ErrorName() string
 } = SubjectValidationError{}
 
-// Validate checks the field values on Option with the rules defined in the
+// Validate checks the field values on InputParam with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *Option) Validate() error {
+func (m *InputParam) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Option with the rules defined in the
-// proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in OptionMultiError, or nil if none found.
-func (m *Option) ValidateAll() error {
+// ValidateAll checks the field values on InputParam with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in InputParamMultiError, or
+// nil if none found.
+func (m *InputParam) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Option) validate(all bool) error {
+func (m *InputParam) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -212,10 +213,10 @@ func (m *Option) validate(all bool) error {
 
 	switch m.Value.(type) {
 
-	case *Option_StringValue:
+	case *InputParam_StringValue:
 
 		if l := utf8.RuneCountInString(m.GetStringValue()); l < 1 || l > 50 {
-			err := OptionValidationError{
+			err := InputParamValidationError{
 				field:  "StringValue",
 				reason: "value length must be between 1 and 50 runes, inclusive",
 			}
@@ -225,17 +226,17 @@ func (m *Option) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-	case *Option_BoolValue:
+	case *InputParam_BoolValue:
 		// no validation rules for BoolValue
 
-	case *Option_IntegerValue:
+	case *InputParam_IntegerValue:
 		// no validation rules for IntegerValue
 
-	case *Option_DoubleValue:
+	case *InputParam_DoubleValue:
 		// no validation rules for DoubleValue
 
 	default:
-		err := OptionValidationError{
+		err := InputParamValidationError{
 			field:  "Value",
 			reason: "value is required",
 		}
@@ -247,18 +248,18 @@ func (m *Option) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return OptionMultiError(errors)
+		return InputParamMultiError(errors)
 	}
 
 	return nil
 }
 
-// OptionMultiError is an error wrapping multiple validation errors returned by
-// Option.ValidateAll() if the designated constraints aren't met.
-type OptionMultiError []error
+// InputParamMultiError is an error wrapping multiple validation errors
+// returned by InputParam.ValidateAll() if the designated constraints aren't met.
+type InputParamMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m OptionMultiError) Error() string {
+func (m InputParamMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -267,11 +268,11 @@ func (m OptionMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m OptionMultiError) AllErrors() []error { return m }
+func (m InputParamMultiError) AllErrors() []error { return m }
 
-// OptionValidationError is the validation error returned by Option.Validate if
-// the designated constraints aren't met.
-type OptionValidationError struct {
+// InputParamValidationError is the validation error returned by
+// InputParam.Validate if the designated constraints aren't met.
+type InputParamValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -279,22 +280,22 @@ type OptionValidationError struct {
 }
 
 // Field function returns field value.
-func (e OptionValidationError) Field() string { return e.field }
+func (e InputParamValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OptionValidationError) Reason() string { return e.reason }
+func (e InputParamValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OptionValidationError) Cause() error { return e.cause }
+func (e InputParamValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OptionValidationError) Key() bool { return e.key }
+func (e InputParamValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OptionValidationError) ErrorName() string { return "OptionValidationError" }
+func (e InputParamValidationError) ErrorName() string { return "InputParamValidationError" }
 
 // Error satisfies the builtin error interface
-func (e OptionValidationError) Error() string {
+func (e InputParamValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -306,14 +307,14 @@ func (e OptionValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOption.%s: %s%s",
+		"invalid %sInputParam.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OptionValidationError{}
+var _ error = InputParamValidationError{}
 
 var _ interface {
 	Field() string
@@ -321,4 +322,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OptionValidationError{}
+} = InputParamValidationError{}
