@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.9.0...v0.10.0) (2023-04-24)
+
+
+### Features
+
+* add policy tags ([01c53eb](https://github.com/indykite/jarvis-sdk-go/commit/01c53eb79961e741e6c9d7542745c7f40d0f68c3))
+
 ## [0.9.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.8.1...v0.9.0) (2023-04-17)
 
 
