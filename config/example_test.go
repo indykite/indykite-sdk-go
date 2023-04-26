@@ -18,10 +18,7 @@ import (
 	"context"
 	"log"
 
-	"google.golang.org/protobuf/encoding/protojson"
-
 	"github.com/indykite/jarvis-sdk-go/config"
-	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
 	api "github.com/indykite/jarvis-sdk-go/grpc"
 )
 
@@ -46,103 +43,4 @@ func ExampleNewClient_options() {
 	defer func() {
 		_ = client.Close()
 	}()
-}
-
-// This example demonstrates how to use a Config Client to create an ingest mapping.
-func ExampleClient_CreateIngestMapping() {
-	client, err := config.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	mappingBuilder := config.NewMappingBuilder()
-	var dts []*configpb.IngestMappingConfig_Entity
-	var entities []*configpb.IngestMappingConfig_Entity
-	dtBuilder := config.NewDigitalTwinBuilder()
-	dtBuilder.ExternalID("nin").
-		TenantID("gid:AAAAA2luZHlraURlgAADDwAAAAE").
-		Properties([]*configpb.IngestMappingConfig_Property{
-			{
-				SourceName: "fn",
-				MappedName: "firstname",
-				IsRequired: false,
-			},
-		}).Relationships([]*configpb.IngestMappingConfig_Relationship{
-		{
-			ExternalId: "familynumber",
-			Type:       "MEMBER_OF",
-			Direction:  configpb.IngestMappingConfig_DIRECTION_OUTBOUND,
-			MatchLabel: "Family",
-		},
-	})
-
-	dts = append(dts, dtBuilder.Build())
-
-	familyBuilder := config.NewEntityBuilder()
-	familyBuilder.Labels([]string{"Family"}).ExternalID("familynumber")
-
-	entities = append(entities, familyBuilder.Build())
-
-	mappingBuilder.Name("DSF mapping").DisplayName("some cool display name").
-		Description("Description").DigitalTwins(dts).
-		Entities(entities)
-	mapping := mappingBuilder.Mapping
-
-	location := "locationGID"
-	resp, err := client.CreateIngestMapping(context.Background(), location, *mapping)
-	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	println(json.Format(resp))
-}
-
-// This example demonstrates how to use a Config Client to get an ingest mapping.
-func ExampleClient_GetIngestMapping() {
-	client, err := config.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	id := "ingest mapping id"
-	resp, err := client.GetIngestMapping(context.Background(), id)
-	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	println(json.Format(resp))
-}
-
-// This example demonstrates how to use a Config Client to delete an ingest mapping.
-func ExampleClient_DeleteIngestMapping() {
-	client, err := config.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	id := "ingest mapping id"
-	resp, err := client.DeleteIngestMapping(context.Background(), id)
-	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	println(json.Format(resp))
 }
