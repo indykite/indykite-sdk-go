@@ -79,23 +79,17 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 		}
 	}
 	if ds.credentials != nil {
-		var (
-			clientID string
-			err      error
-		)
-
 		if ds.ServiceAccount {
-			clientID = ds.credentials.ServiceAccountID
-			if clientID == "" {
+			if ds.credentials.ServiceAccountID == "" {
 				return nil, nil, errors.New("empty serviceAccountId")
 			}
 		} else {
-			clientID = ds.credentials.AppAgentID
-			if clientID == "" {
+			if ds.credentials.AppAgentID == "" {
 				return nil, nil, errors.New("empty appAgentId")
 			}
 		}
 
+		var err error
 		if ds.TokenSource == nil {
 			ds.TokenSource, err = jwt.CreateTokenSource(ds.credentials)
 			if err != nil {

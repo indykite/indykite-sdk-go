@@ -48,19 +48,29 @@ func CreateTokenSourceFromPrivateKey(privateKeyJWK interface{}, clientID string)
 }
 
 func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSource, error) {
+	var clientID string
+	switch {
+	case credentials.AppAgentID != "":
+		clientID = credentials.AppAgentID
+	case credentials.ServiceAccountID != "":
+		clientID = credentials.ServiceAccountID
+	default:
+		return nil, errors.New("missing client ID, AppAgentID or ServiceAccountID must be specified")
+	}
+
 	var err error
 	switch {
 	case credentials.PrivateKeyJWK != nil:
-		return JWTokenSource(credentials.PrivateKeyJWK, false, credentials.AppAgentID)
+		return JWTokenSource(credentials.PrivateKeyJWK, false, clientID)
 	case credentials.PrivateKeyPKCS8Base64 != "":
 		var raw []byte
 		raw, err = base64.StdEncoding.DecodeString(credentials.PrivateKeyPKCS8Base64)
 		if err != nil {
 			return nil, err
 		}
-		return JWTokenSource(raw, true, credentials.AppAgentID)
+		return JWTokenSource(raw, true, clientID)
 	case credentials.PrivateKeyPKCS8 != "":
-		return JWTokenSource([]byte(credentials.PrivateKeyPKCS8), true, credentials.AppAgentID)
+		return JWTokenSource([]byte(credentials.PrivateKeyPKCS8), true, clientID)
 	default:
 		return nil, errors.New("unable to find secret credential")
 	}
