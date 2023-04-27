@@ -21,10 +21,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/jwa"
-	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/lestrrat-go/jwx/jws"
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 	"golang.org/x/oauth2"
 
 	"github.com/indykite/jarvis-sdk-go/grpc/config"
@@ -34,7 +32,6 @@ type (
 	jwtAccessTokenSource struct {
 		template jwt.Token
 		signer   jwk.Key
-		alg      jwa.SignatureAlgorithm
 	}
 )
 
@@ -127,7 +124,6 @@ func JWTokenSource(secretKey []byte, pem bool, clientID string) (oauth2.TokenSou
 	ts := &jwtAccessTokenSource{
 		template: t,
 		signer:   key,
-		alg:      jwa.SignatureAlgorithm(key.Algorithm()),
 	}
 	return oauth2.ReuseTokenSource(nil, ts), nil
 }
@@ -144,11 +140,8 @@ func (ts *jwtAccessTokenSource) Token() (*oauth2.Token, error) {
 	_ = token.Set(jwt.IssuedAtKey, iat)
 	_ = token.Set(jwt.ExpirationKey, exp)
 	_ = token.Set(jwt.JwtIDKey, uuid.New().String())
-	h := jws.NewHeaders()
-	// This is mandatory !!!
-	_ = h.Set(jws.KeyIDKey, ts.signer.KeyID())
 
-	signed, err := jwt.Sign(token, ts.alg, ts.signer, jwt.WithHeaders(h))
+	signed, err := jwt.Sign(token, jwt.WithKey(ts.signer.Algorithm(), ts.signer))
 	if err != nil {
 		return nil, err
 	}

@@ -20,7 +20,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -92,7 +92,7 @@ func insertMetadata(ctx context.Context, mds ...metadata.MD) context.Context {
 }
 
 func verifyTokenFormat(bearerToken string) error {
-	_, err := jwt.ParseString(bearerToken, jwt.WithValidate(true), jwt.WithAcceptableSkew(time.Second))
+	_, err := jwt.ParseString(bearerToken, jwt.WithVerify(false), jwt.WithAcceptableSkew(time.Second))
 	if err != nil {
 		return errors.NewWithCause(codes.InvalidArgument, err, "invalid token format")
 	}

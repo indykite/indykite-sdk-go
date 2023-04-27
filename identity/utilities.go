@@ -19,7 +19,7 @@ import (
 	"time"
 
 	guuid "github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/jwt"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 	"github.com/pborman/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -53,7 +53,7 @@ func ParseUUID(raw string) (uuid.UUID, error) {
 }
 
 func verifyTokenFormat(bearerToken string) error {
-	_, err := jwt.ParseString(bearerToken, jwt.WithValidate(true), jwt.WithAcceptableSkew(time.Second))
+	_, err := jwt.ParseString(bearerToken, jwt.WithVerify(false), jwt.WithAcceptableSkew(time.Second))
 	if err != nil {
 		return errors.NewWithCause(codes.InvalidArgument, err, "invalid token format")
 	}
