@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.10.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.10.0...v0.10.1) (2023-04-27)
+
+
+### Bug Fixes
+
+* generate service account token properly ([77b89c1](https://github.com/indykite/jarvis-sdk-go/commit/77b89c1e3cba646db2f531fcd8ff3d4f8376ac72))
+
+
+### Miscellaneous Chores
+
+* upgrade dependencies ([e3951d6](https://github.com/indykite/jarvis-sdk-go/commit/e3951d662984db64253df54508a02ec0a5f48fd2))
+
 ## [0.10.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.9.0...v0.10.0) (2023-04-24)
 
 
