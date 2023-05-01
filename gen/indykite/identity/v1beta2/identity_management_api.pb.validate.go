@@ -297,6 +297,17 @@ func (m *StartForgottenPasswordFlowRequest) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetDigitalTwin() == nil {
+		err := StartForgottenPasswordFlowRequestValidationError{
+			field:  "DigitalTwin",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if all {
 		switch v := interface{}(m.GetDigitalTwin()).(type) {
 		case interface{ ValidateAll() error }:
@@ -535,14 +546,33 @@ func (m *ChangePasswordRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Password
+	if l := utf8.RuneCountInString(m.GetPassword()); l < 4 || l > 254 {
+		err := ChangePasswordRequestValidationError{
+			field:  "Password",
+			reason: "value length must be between 4 and 254 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	// no validation rules for IgnorePolicy
 
 	switch m.Uid.(type) {
 
 	case *ChangePasswordRequest_Token:
-		// no validation rules for Token
+
+		if l := utf8.RuneCountInString(m.GetToken()); l < 128 || l > 4096 {
+			err := ChangePasswordRequestValidationError{
+				field:  "Token",
+				reason: "value length must be between 128 and 4096 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 	case *ChangePasswordRequest_DigitalTwin:
 
@@ -574,6 +604,16 @@ func (m *ChangePasswordRequest) validate(all bool) error {
 				}
 			}
 		}
+
+	default:
+		err := ChangePasswordRequestValidationError{
+			field:  "Uid",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 
 	}
 
@@ -9712,3 +9752,427 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RevokeConsentResponseValidationError{}
+
+// Validate checks the field values on CreateCustomLoginTokenRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateCustomLoginTokenRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateCustomLoginTokenRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// CreateCustomLoginTokenRequestMultiError, or nil if none found.
+func (m *CreateCustomLoginTokenRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateCustomLoginTokenRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetTokenClaims()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+					field:  "TokenClaims",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+					field:  "TokenClaims",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTokenClaims()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateCustomLoginTokenRequestValidationError{
+				field:  "TokenClaims",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetSessionClaims()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+					field:  "SessionClaims",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+					field:  "SessionClaims",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSessionClaims()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateCustomLoginTokenRequestValidationError{
+				field:  "SessionClaims",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	switch m.Uid.(type) {
+
+	case *CreateCustomLoginTokenRequest_DigitalTwin:
+
+		if m.GetDigitalTwin() == nil {
+			err := CreateCustomLoginTokenRequestValidationError{
+				field:  "DigitalTwin",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDigitalTwin()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "DigitalTwin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "DigitalTwin",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDigitalTwin()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateCustomLoginTokenRequestValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *CreateCustomLoginTokenRequest_PropertyFilter:
+
+		if m.GetPropertyFilter() == nil {
+			err := CreateCustomLoginTokenRequestValidationError{
+				field:  "PropertyFilter",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetPropertyFilter()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "PropertyFilter",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "PropertyFilter",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPropertyFilter()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateCustomLoginTokenRequestValidationError{
+					field:  "PropertyFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *CreateCustomLoginTokenRequest_CredentialReference:
+
+		if all {
+			switch v := interface{}(m.GetCredentialReference()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "CredentialReference",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateCustomLoginTokenRequestValidationError{
+						field:  "CredentialReference",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCredentialReference()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateCustomLoginTokenRequestValidationError{
+					field:  "CredentialReference",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		err := CreateCustomLoginTokenRequestValidationError{
+			field:  "Uid",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
+	if len(errors) > 0 {
+		return CreateCustomLoginTokenRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateCustomLoginTokenRequestMultiError is an error wrapping multiple
+// validation errors returned by CreateCustomLoginTokenRequest.ValidateAll()
+// if the designated constraints aren't met.
+type CreateCustomLoginTokenRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateCustomLoginTokenRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateCustomLoginTokenRequestMultiError) AllErrors() []error { return m }
+
+// CreateCustomLoginTokenRequestValidationError is the validation error
+// returned by CreateCustomLoginTokenRequest.Validate if the designated
+// constraints aren't met.
+type CreateCustomLoginTokenRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateCustomLoginTokenRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateCustomLoginTokenRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateCustomLoginTokenRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateCustomLoginTokenRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateCustomLoginTokenRequestValidationError) ErrorName() string {
+	return "CreateCustomLoginTokenRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateCustomLoginTokenRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateCustomLoginTokenRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateCustomLoginTokenRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateCustomLoginTokenRequestValidationError{}
+
+// Validate checks the field values on CreateCustomLoginTokenResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateCustomLoginTokenResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateCustomLoginTokenResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// CreateCustomLoginTokenResponseMultiError, or nil if none found.
+func (m *CreateCustomLoginTokenResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateCustomLoginTokenResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Token
+
+	if all {
+		switch v := interface{}(m.GetDigitalTwin()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenResponseValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateCustomLoginTokenResponseValidationError{
+					field:  "DigitalTwin",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDigitalTwin()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateCustomLoginTokenResponseValidationError{
+				field:  "DigitalTwin",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateCustomLoginTokenResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateCustomLoginTokenResponseMultiError is an error wrapping multiple
+// validation errors returned by CreateCustomLoginTokenResponse.ValidateAll()
+// if the designated constraints aren't met.
+type CreateCustomLoginTokenResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateCustomLoginTokenResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateCustomLoginTokenResponseMultiError) AllErrors() []error { return m }
+
+// CreateCustomLoginTokenResponseValidationError is the validation error
+// returned by CreateCustomLoginTokenResponse.Validate if the designated
+// constraints aren't met.
+type CreateCustomLoginTokenResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateCustomLoginTokenResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateCustomLoginTokenResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateCustomLoginTokenResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateCustomLoginTokenResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateCustomLoginTokenResponseValidationError) ErrorName() string {
+	return "CreateCustomLoginTokenResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateCustomLoginTokenResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateCustomLoginTokenResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateCustomLoginTokenResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateCustomLoginTokenResponseValidationError{}

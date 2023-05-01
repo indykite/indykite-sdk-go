@@ -18,10 +18,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"google.golang.org/protobuf/encoding/protojson"
 
 	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
+	ingestv2pb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 	api "github.com/indykite/jarvis-sdk-go/grpc"
 	"github.com/indykite/jarvis-sdk-go/ingest"
@@ -82,4 +84,66 @@ func ExampleClient_StreamRecords() {
 	for _, response := range responses {
 		fmt.Println(json.Format(response))
 	}
+}
+
+// This example demonstrates how to use the Ingest Client to stream multiple records.
+func ExampleV2Client_StreamRecords() {
+	client, err := ingest.NewV2Client(context.Background())
+	if err != nil {
+		log.Fatalf("failed to create client %v", err)
+	}
+	defer func() {
+		_ = client.Close()
+	}()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+	defer cancel()
+
+	err = client.OpenStreamClient(ctx)
+	if err != nil {
+		// nolint:gocritic
+		log.Fatalf("failed to open stream %v", err)
+	}
+
+	for _, record := range []*ingestv2pb.Record{record1, record2} {
+		err = client.SendRecord(record)
+		if err != nil {
+			log.Fatalf("failed to send record on stream %v", err)
+		}
+	}
+
+	for {
+		resp, err := client.ReceiveResponse()
+		if err != nil {
+			if err.Error() == "EOF" {
+				break
+			}
+			log.Fatalf("failed to receive responses %v", err)
+		}
+		json := protojson.MarshalOptions{
+			Multiline: true,
+		}
+		fmt.Println(json.Format(resp))
+	}
+}
+
+// This example demonstrates how to use the Ingest Client to ingest a single record.
+func ExampleV2Client_IngestRecord() {
+	client, err := ingest.NewV2Client(context.Background())
+	if err != nil {
+		log.Fatalf("failed to create client %v", err)
+	}
+	defer func() {
+		_ = client.Close()
+	}()
+
+	response, err := client.IngestRecord(context.Background(), record1)
+	if err != nil {
+		// nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+	}
+	json := protojson.MarshalOptions{
+		Multiline: true,
+	}
+	fmt.Println(json.Format(response))
 }

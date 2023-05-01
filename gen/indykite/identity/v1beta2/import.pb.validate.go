@@ -1852,6 +1852,130 @@ var _ interface {
 	ErrorName() string
 } = UserMetadataValidationError{}
 
+// Validate checks the field values on CredentialReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CredentialReference) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CredentialReference with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CredentialReferenceMultiError, or nil if none found.
+func (m *CredentialReference) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CredentialReference) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetProviderId()) > 1024 {
+		err := CredentialReferenceValidationError{
+			field:  "ProviderId",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetUid()) > 1024 {
+		err := CredentialReferenceValidationError{
+			field:  "Uid",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return CredentialReferenceMultiError(errors)
+	}
+
+	return nil
+}
+
+// CredentialReferenceMultiError is an error wrapping multiple validation
+// errors returned by CredentialReference.ValidateAll() if the designated
+// constraints aren't met.
+type CredentialReferenceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CredentialReferenceMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CredentialReferenceMultiError) AllErrors() []error { return m }
+
+// CredentialReferenceValidationError is the validation error returned by
+// CredentialReference.Validate if the designated constraints aren't met.
+type CredentialReferenceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CredentialReferenceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CredentialReferenceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CredentialReferenceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CredentialReferenceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CredentialReferenceValidationError) ErrorName() string {
+	return "CredentialReferenceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CredentialReferenceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCredentialReference.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CredentialReferenceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CredentialReferenceValidationError{}
+
 // Validate checks the field values on UserProvider with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

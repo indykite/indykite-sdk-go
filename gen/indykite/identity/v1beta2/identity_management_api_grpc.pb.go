@@ -127,6 +127,12 @@ type IdentityManagementAPIClient interface {
 	GetAccessToken(ctx context.Context, in *GetAccessTokenRequest, opts ...grpc.CallOption) (*GetAccessTokenResponse, error)
 	// SessionIntrospect is Experimental and not implemented yet
 	SessionIntrospect(ctx context.Context, in *SessionIntrospectRequest, opts ...grpc.CallOption) (*SessionIntrospectResponse, error)
+	// CreateCustomLoginToken creates a signed custom authentication token with the specified user ID.
+	//
+	// The resulting JWT can be used in a IndyKite AuthN SDK to trigger an authentication flow. See
+	// https://docs.indykite.com/sdk/authnn/create-custom-tokens#sign_in_using_custom_tokens_on_clients
+	// for more details on how to use custom tokens for client authentication.
+	CreateCustomLoginToken(ctx context.Context, in *CreateCustomLoginTokenRequest, opts ...grpc.CallOption) (*CreateCustomLoginTokenResponse, error)
 }
 
 type identityManagementAPIClient struct {
@@ -485,6 +491,15 @@ func (c *identityManagementAPIClient) SessionIntrospect(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *identityManagementAPIClient) CreateCustomLoginToken(ctx context.Context, in *CreateCustomLoginTokenRequest, opts ...grpc.CallOption) (*CreateCustomLoginTokenResponse, error) {
+	out := new(CreateCustomLoginTokenResponse)
+	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CreateCustomLoginToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityManagementAPIServer is the server API for IdentityManagementAPI service.
 // All implementations should embed UnimplementedIdentityManagementAPIServer
 // for forward compatibility
@@ -593,6 +608,12 @@ type IdentityManagementAPIServer interface {
 	GetAccessToken(context.Context, *GetAccessTokenRequest) (*GetAccessTokenResponse, error)
 	// SessionIntrospect is Experimental and not implemented yet
 	SessionIntrospect(context.Context, *SessionIntrospectRequest) (*SessionIntrospectResponse, error)
+	// CreateCustomLoginToken creates a signed custom authentication token with the specified user ID.
+	//
+	// The resulting JWT can be used in a IndyKite AuthN SDK to trigger an authentication flow. See
+	// https://docs.indykite.com/sdk/authnn/create-custom-tokens#sign_in_using_custom_tokens_on_clients
+	// for more details on how to use custom tokens for client authentication.
+	CreateCustomLoginToken(context.Context, *CreateCustomLoginTokenRequest) (*CreateCustomLoginTokenResponse, error)
 }
 
 // UnimplementedIdentityManagementAPIServer should be embedded to have forward compatible implementations.
@@ -691,6 +712,9 @@ func (UnimplementedIdentityManagementAPIServer) GetAccessToken(context.Context, 
 }
 func (UnimplementedIdentityManagementAPIServer) SessionIntrospect(context.Context, *SessionIntrospectRequest) (*SessionIntrospectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SessionIntrospect not implemented")
+}
+func (UnimplementedIdentityManagementAPIServer) CreateCustomLoginToken(context.Context, *CreateCustomLoginTokenRequest) (*CreateCustomLoginTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCustomLoginToken not implemented")
 }
 
 // UnsafeIdentityManagementAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -1271,6 +1295,24 @@ func _IdentityManagementAPI_SessionIntrospect_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityManagementAPI_CreateCustomLoginToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCustomLoginTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityManagementAPIServer).CreateCustomLoginToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/CreateCustomLoginToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityManagementAPIServer).CreateCustomLoginToken(ctx, req.(*CreateCustomLoginTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityManagementAPI_ServiceDesc is the grpc.ServiceDesc for IdentityManagementAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1389,6 +1431,10 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SessionIntrospect",
 			Handler:    _IdentityManagementAPI_SessionIntrospect_Handler,
+		},
+		{
+			MethodName: "CreateCustomLoginToken",
+			Handler:    _IdentityManagementAPI_CreateCustomLoginToken_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

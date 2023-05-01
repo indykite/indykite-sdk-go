@@ -173,6 +173,26 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) CreateConsent(ctx, in int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConsent", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CreateConsent), varargs...)
 }
 
+// CreateCustomLoginToken mocks base method.
+func (m *MockIdentityManagementAPIClient) CreateCustomLoginToken(ctx context.Context, in *identityv1beta2.CreateCustomLoginTokenRequest, opts ...grpc.CallOption) (*identityv1beta2.CreateCustomLoginTokenResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "CreateCustomLoginToken", varargs...)
+	ret0, _ := ret[0].(*identityv1beta2.CreateCustomLoginTokenResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateCustomLoginToken indicates an expected call of CreateCustomLoginToken.
+func (mr *MockIdentityManagementAPIClientMockRecorder) CreateCustomLoginToken(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCustomLoginToken", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).CreateCustomLoginToken), varargs...)
+}
+
 // CreateInvitation mocks base method.
 func (m *MockIdentityManagementAPIClient) CreateInvitation(ctx context.Context, in *identityv1beta2.CreateInvitationRequest, opts ...grpc.CallOption) (*identityv1beta2.CreateInvitationResponse, error) {
 	m.ctrl.T.Helper()
@@ -1152,6 +1172,21 @@ func (m *MockIdentityManagementAPIServer) CreateConsent(arg0 context.Context, ar
 func (mr *MockIdentityManagementAPIServerMockRecorder) CreateConsent(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConsent", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).CreateConsent), arg0, arg1)
+}
+
+// CreateCustomLoginToken mocks base method.
+func (m *MockIdentityManagementAPIServer) CreateCustomLoginToken(arg0 context.Context, arg1 *identityv1beta2.CreateCustomLoginTokenRequest) (*identityv1beta2.CreateCustomLoginTokenResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateCustomLoginToken", arg0, arg1)
+	ret0, _ := ret[0].(*identityv1beta2.CreateCustomLoginTokenResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateCustomLoginToken indicates an expected call of CreateCustomLoginToken.
+func (mr *MockIdentityManagementAPIServerMockRecorder) CreateCustomLoginToken(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCustomLoginToken", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).CreateCustomLoginToken), arg0, arg1)
 }
 
 // CreateInvitation mocks base method.
