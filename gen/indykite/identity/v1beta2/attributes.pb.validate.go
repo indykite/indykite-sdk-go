@@ -216,21 +216,10 @@ func (m *PropertyDefinition) validate(all bool) error {
 
 	if m.GetProperty() != "" {
 
-		if len(m.GetProperty()) > 256 {
+		if utf8.RuneCountInString(m.GetProperty()) > 256 {
 			err := PropertyDefinitionValidationError{
 				field:  "Property",
-				reason: "value length must be at most 256 bytes",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if !_PropertyDefinition_Property_Pattern.MatchString(m.GetProperty()) {
-			err := PropertyDefinitionValidationError{
-				field:  "Property",
-				reason: "value does not match regex pattern \"^[a-zA-Z_][a-zA-Z0-9_]+$\"",
+				reason: "value length must be at most 256 runes",
 			}
 			if !all {
 				return err
@@ -321,8 +310,6 @@ var _ interface {
 } = PropertyDefinitionValidationError{}
 
 var _PropertyDefinition_Type_Pattern = regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]+$")
-
-var _PropertyDefinition_Property_Pattern = regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]+$")
 
 // Validate checks the field values on PropertyConstraint with the rules
 // defined in the proto definition for this message. If any rules are

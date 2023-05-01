@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2023 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,116 +15,111 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
-	"log"
-
 	"github.com/spf13/cobra"
+	"log"
+	"time"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
+	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
 	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 // streamCmd represents the upload command
 var streamCmd = &cobra.Command{
-	Use:   "stream [mappingID]",
-	Short: "Stream records to the IndyKite ingest service",
-	Long: `Stream records to the IndyKite Ingest Engine. A data mapping must have been set up and referenced
-		with the mappingID.`,
-	Args: cobra.ExactArgs(0),
+	Use:   "stream",
+	Short: "Stream multiple records to the IndyKite Ingest API",
+	Long:  `Stream multiple records to the IndyKite Ingest API`,
+	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		addressRecord := &ingestpb.Record{
-			Id:         "1",
-			ExternalId: "addressId",
-			Data: map[string]*objects.Value{
-				"addressId": objects.Int64(123),
-				"address":   objects.String("1 Ferry Building, San Francisco, CA 94105, United States"),
-			},
-		}
-		parentRecord := &ingestpb.Record{
-			Id:         "2",
-			ExternalId: "parentId",
-			Data: map[string]*objects.Value{
-				"parentId": objects.Int64(123456789),
-				"address":  objects.Int64(123),
-			},
-		}
-
-		playerRecord1 := &ingestpb.Record{
-			Id:         "3",
-			ExternalId: "playerId",
-			Data: map[string]*objects.Value{
-				"playerId":       objects.Int64(987654321),
-				"firstname":      objects.String("Kid Doe"),
-				"gender":         objects.String("male"),
-				"yearOfBirth":    objects.Int64(2006),
-				"sizeTop":        objects.String("M"),
-				"sizeBottom":     objects.String("M"),
-				"sizeShoe":       objects.Int64(36),
-				"subscriptionId": objects.Int64(10101010),
-				"parentId":       objects.Int64(123456789),
-			},
-		}
-
-		subscriptionRecord := &ingestpb.Record{
-			Id:         "4",
-			ExternalId: "subscriptionId",
-			Data: map[string]*objects.Value{
-				"subscriptionId": objects.Int64(10101010),
-				"clubId":         objects.Int64(1337),
+		record1 := &ingestpb.Record{
+			Id: "1",
+			Operation: &ingestpb.Record_Upsert{
+				Upsert: &ingestpb.UpsertData{
+					Data: &ingestpb.UpsertData_Relation{
+						Relation: &ingestpb.Relation{
+							Match: &ingestpb.RelationMatch{
+								SourceMatch: &ingestpb.NodeMatch{
+									ExternalId: "0000",
+									Type:       "Employee",
+								},
+								TargetMatch: &ingestpb.NodeMatch{
+									ExternalId: "0001",
+									Type:       "Truck",
+								},
+								Type: "SERVICES",
+							},
+							Properties: []*ingestpb.Property{
+								{
+									Key: "since",
+									Value: &objects.Value{
+										Value: &objects.Value_StringValue{
+											StringValue: "production",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		}
 
-		clubRecord := &ingestpb.Record{
-			Id:         "5",
-			ExternalId: "clubId",
-			Data: map[string]*objects.Value{
-				"clubId":         objects.Int64(1337),
-				"subscriptionId": objects.Int64(10101010),
-			},
-		}
-
-		orderRecord := &ingestpb.Record{
-			Id:         "6",
-			ExternalId: "orderId",
-			Data: map[string]*objects.Value{
-				"orderId":        objects.Int64(11),
-				"addressId":      objects.Int64(123),
-				"subscriptionId": objects.Int64(10101010),
-			},
-		}
-
-		playerRecord2 := &ingestpb.Record{
-			Id:         "7",
-			ExternalId: "playerId",
-			Data: map[string]*objects.Value{
-				"playerId":       objects.Int64(11223344),
-				"firstname":      objects.String("Kiddo Doe"),
-				"gender":         objects.String("female"),
-				"yearOfBirth":    objects.Int64(2005),
-				"sizeTop":        objects.String("S"),
-				"sizeBottom":     objects.String("S"),
-				"sizeShoe":       objects.Int64(32),
-				"subscriptionId": objects.Int64(11111111),
-				"parentId":       objects.Int64(123456789),
+		record2 := &ingestpb.Record{
+			Id: "2",
+			Operation: &ingestpb.Record_Upsert{
+				Upsert: &ingestpb.UpsertData{
+					Data: &ingestpb.UpsertData_Node{
+						Node: &ingestpb.Node{
+							Type: &ingestpb.Node_Resource{
+								Resource: &ingestpb.Resource{
+									ExternalId: "0001",
+									Type:       "Truck",
+									Properties: []*ingestpb.Property{
+										{
+											Key: "vin",
+											Value: &objects.Value{
+												Value: &objects.Value_IntegerValue{
+													IntegerValue: 1234,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		}
 
 		records := []*ingestpb.Record{
-			addressRecord,
-			parentRecord,
-			playerRecord1,
-			subscriptionRecord,
-			clubRecord,
-			orderRecord,
-			playerRecord2,
+			record1, record2,
 		}
-		responses, err := client.StreamRecords("", records)
+
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+		defer cancel()
+
+		err := client.OpenStreamClient(ctx)
 		if err != nil {
-			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+			log.Fatalf("failed to open ingest stream %v", err)
 		}
-		for _, response := range responses {
-			fmt.Println(jsonp.Format(response))
+		for _, record := range records {
+			err := client.SendRecord(record)
+			if err != nil {
+				log.Fatalf("failed to send record %v", err)
+			}
+			resp, err := client.ReceiveResponse()
+			if err != nil {
+				log.Fatalf("failed to receive response %v", err)
+			}
+			fmt.Println(jsonp.Format(resp))
+		}
+
+		err = client.Close()
+		if err != nil {
+			log.Fatalf("failed to close ingest stream %v", err)
 		}
 	},
 }
