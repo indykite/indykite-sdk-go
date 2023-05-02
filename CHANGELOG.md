@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.11.0](https://github.com/indykite/jarvis-sdk-go/compare/v0.10.1...v0.11.0) (2023-05-02)
+
+
+### Features
+
+* implement ingest v2 ([b25c71f](https://github.com/indykite/jarvis-sdk-go/commit/b25c71f1c4ba6734d4e480cd979362b527619133))
+
+
+### Bug Fixes
+
+* remove ingest mapping functionality ([dce7b8e](https://github.com/indykite/jarvis-sdk-go/commit/dce7b8ecf3924ef7f51cd02810d4415d1ee7355b))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([f6b3469](https://github.com/indykite/jarvis-sdk-go/commit/f6b3469ed47529f9c650bfdd884d918e07be2e7c))
+
 ### [0.10.1](https://github.com/indykite/jarvis-sdk-go/compare/v0.10.0...v0.10.1) (2023-04-27)
 
 
