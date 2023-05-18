@@ -7,7 +7,7 @@ When working with us according to this policy, you can expect us to:
 * Recognize your contribution to improving our security if you are the first to report a unique vulnerability, and your report triggers a code or configuration change. Scope Any service on our domains *.indykite.com, *.indykite.id, *.indykite.me and *.indykite.one, but not services that are hosted by third parties. Examples of 3rd party services may include, but are not limited to, Akamai, Azure and GCloud. If you have any questions about scope, please contact us on [responsible-disclosure@indykite.com](mailto:responsible-disclosure@indykite.com)
 
 When reporting vulnerabilities, please consider (1) attack scenario / exploitability, and (2) security impact of the bug.
-‍
+
 The following issues are considered out of scope:
 
 * Clickjacking and UI redressing on pages with no sensitive actions.
@@ -26,7 +26,7 @@ The following issues are considered out of scope:
 * Software version disclosure / Banner identification issues / Descriptive error messages or headers (e.g. stack traces, application or server errors).
 * Public Zero-day vulnerabilities that have had an official patch for less than 1 month will be awarded on a case by case basis.
 * Tabnabbing.
-* Open redirect – unless an additional security impact can be demonstrated Issues that require unlikely user interaction.
+* Open redirect - unless an additional security impact can be demonstrated Issues that require unlikely user interaction.
 
 
 # Rewards
