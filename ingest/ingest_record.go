@@ -19,7 +19,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
 func (c *V2Client) IngestRecord(

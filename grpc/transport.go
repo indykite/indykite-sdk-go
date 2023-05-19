@@ -19,8 +19,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/grpc/internal"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/internal"
 )
 
 // Dial returns a gRPC connection configured with the given ClientOptions.

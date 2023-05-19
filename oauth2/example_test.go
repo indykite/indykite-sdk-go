@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"log"
 
-	apicfg "github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/oauth2"
+	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/oauth2"
 )
 
 // This example demonstrates how to generate a token.

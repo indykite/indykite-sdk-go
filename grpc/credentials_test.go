@@ -21,9 +21,9 @@ import (
 
 	"github.com/ghodss/yaml"
 
-	"github.com/indykite/jarvis-sdk-go/grpc"
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/grpc/internal"
+	"github.com/indykite/indykite-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/internal"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

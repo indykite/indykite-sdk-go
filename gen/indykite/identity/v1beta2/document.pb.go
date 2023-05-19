@@ -28,7 +28,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 
-	v1beta1 "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	v1beta1 "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 const (

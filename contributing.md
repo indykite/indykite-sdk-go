@@ -33,10 +33,10 @@ In short, when you submit code changes, your submissions are understood to be
 under the same [Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
 that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using GitHub's [issues](https://github.com/indykite/jarvis-sdk-nodejs-proto/issues)
+## Report bugs using GitHub's [issues](https://github.com/indykite/indykite-sdk-go/issues)
 
 We use GitHub issues to track public bugs. Report a bug by
-[opening a new issue](https://github.com/indykite/jarvis-sdk-nodejs-proto/issues); it's that easy!
+[opening a new issue](https://github.com/indykite/indykite-sdk-go/issues); it's that easy!
 
 ## Write bug reports with detail, background, and sample code
 

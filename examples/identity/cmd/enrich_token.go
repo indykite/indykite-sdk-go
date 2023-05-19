@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/structpb"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // enrichTokenCmd represents the enrichToken command

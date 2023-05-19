@@ -82,26 +82,6 @@ type IdentityManagementAPIClient interface {
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
 	DeleteDigitalTwin(ctx context.Context, in *DeleteDigitalTwinRequest, opts ...grpc.CallOption) (*DeleteDigitalTwinResponse, error)
-	// GetDocument gets a single document.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
-	// BatchGetDocuments gets multiple documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	BatchGetDocuments(ctx context.Context, in *BatchGetDocumentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_BatchGetDocumentsClient, error)
-	// ListDocuments lists documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	ListDocuments(ctx context.Context, in *ListDocumentsRequest, opts ...grpc.CallOption) (*ListDocumentsResponse, error)
-	// MutateDocuments in single transaction creates, updates and deletes the requested documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	MutateDocuments(ctx context.Context, in *MutateDocumentsRequest, opts ...grpc.CallOption) (*MutateDocumentsResponse, error)
-	// RunQuery runs a query. NOT YET SUPPORTED!
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	RunQuery(ctx context.Context, in *RunQueryRequest, opts ...grpc.CallOption) (IdentityManagementAPI_RunQueryClient, error)
 	// CheckOAuth2ConsentChallenge read the Consent Challenge from DB.
 	CheckOAuth2ConsentChallenge(ctx context.Context, in *CheckOAuth2ConsentChallengeRequest, opts ...grpc.CallOption) (*CheckOAuth2ConsentChallengeResponse, error)
 	// CreateOAuth2ConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
@@ -251,97 +231,6 @@ func (c *identityManagementAPIClient) DeleteDigitalTwin(ctx context.Context, in 
 	return out, nil
 }
 
-func (c *identityManagementAPIClient) GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
-	out := new(GetDocumentResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/GetDocument", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) BatchGetDocuments(ctx context.Context, in *BatchGetDocumentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_BatchGetDocumentsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[0], "/indykite.identity.v1beta2.IdentityManagementAPI/BatchGetDocuments", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &identityManagementAPIBatchGetDocumentsClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type IdentityManagementAPI_BatchGetDocumentsClient interface {
-	Recv() (*BatchGetDocumentsResponse, error)
-	grpc.ClientStream
-}
-
-type identityManagementAPIBatchGetDocumentsClient struct {
-	grpc.ClientStream
-}
-
-func (x *identityManagementAPIBatchGetDocumentsClient) Recv() (*BatchGetDocumentsResponse, error) {
-	m := new(BatchGetDocumentsResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *identityManagementAPIClient) ListDocuments(ctx context.Context, in *ListDocumentsRequest, opts ...grpc.CallOption) (*ListDocumentsResponse, error) {
-	out := new(ListDocumentsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/ListDocuments", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) MutateDocuments(ctx context.Context, in *MutateDocumentsRequest, opts ...grpc.CallOption) (*MutateDocumentsResponse, error) {
-	out := new(MutateDocumentsResponse)
-	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/MutateDocuments", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *identityManagementAPIClient) RunQuery(ctx context.Context, in *RunQueryRequest, opts ...grpc.CallOption) (IdentityManagementAPI_RunQueryClient, error) {
-	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[1], "/indykite.identity.v1beta2.IdentityManagementAPI/RunQuery", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &identityManagementAPIRunQueryClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type IdentityManagementAPI_RunQueryClient interface {
-	Recv() (*RunQueryResponse, error)
-	grpc.ClientStream
-}
-
-type identityManagementAPIRunQueryClient struct {
-	grpc.ClientStream
-}
-
-func (x *identityManagementAPIRunQueryClient) Recv() (*RunQueryResponse, error) {
-	m := new(RunQueryResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 func (c *identityManagementAPIClient) CheckOAuth2ConsentChallenge(ctx context.Context, in *CheckOAuth2ConsentChallengeRequest, opts ...grpc.CallOption) (*CheckOAuth2ConsentChallengeResponse, error) {
 	out := new(CheckOAuth2ConsentChallengeResponse)
 	err := c.cc.Invoke(ctx, "/indykite.identity.v1beta2.IdentityManagementAPI/CheckOAuth2ConsentChallenge", in, out, opts...)
@@ -415,7 +304,7 @@ func (c *identityManagementAPIClient) CreateConsent(ctx context.Context, in *Cre
 }
 
 func (c *identityManagementAPIClient) ListConsents(ctx context.Context, in *ListConsentsRequest, opts ...grpc.CallOption) (IdentityManagementAPI_ListConsentsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[2], "/indykite.identity.v1beta2.IdentityManagementAPI/ListConsents", opts...)
+	stream, err := c.cc.NewStream(ctx, &IdentityManagementAPI_ServiceDesc.Streams[0], "/indykite.identity.v1beta2.IdentityManagementAPI/ListConsents", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -563,26 +452,6 @@ type IdentityManagementAPIServer interface {
 	//
 	// This is a protected operation and it can be accessed only with valid agent credentials!
 	DeleteDigitalTwin(context.Context, *DeleteDigitalTwinRequest) (*DeleteDigitalTwinResponse, error)
-	// GetDocument gets a single document.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error)
-	// BatchGetDocuments gets multiple documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	BatchGetDocuments(*BatchGetDocumentsRequest, IdentityManagementAPI_BatchGetDocumentsServer) error
-	// ListDocuments lists documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	ListDocuments(context.Context, *ListDocumentsRequest) (*ListDocumentsResponse, error)
-	// MutateDocuments in single transaction creates, updates and deletes the requested documents.
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	MutateDocuments(context.Context, *MutateDocumentsRequest) (*MutateDocumentsResponse, error)
-	// RunQuery runs a query. NOT YET SUPPORTED!
-	//
-	// This is a protected operation and it can be accessed only with valid agent credentials!
-	RunQuery(*RunQueryRequest, IdentityManagementAPI_RunQueryServer) error
 	// CheckOAuth2ConsentChallenge read the Consent Challenge from DB.
 	CheckOAuth2ConsentChallenge(context.Context, *CheckOAuth2ConsentChallengeRequest) (*CheckOAuth2ConsentChallengeResponse, error)
 	// CreateOAuth2ConsentVerifier invalidates the Consent Challenge and creates a new Consent Verifier.
@@ -655,21 +524,6 @@ func (UnimplementedIdentityManagementAPIServer) PatchDigitalTwin(context.Context
 }
 func (UnimplementedIdentityManagementAPIServer) DeleteDigitalTwin(context.Context, *DeleteDigitalTwinRequest) (*DeleteDigitalTwinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDigitalTwin not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDocument not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) BatchGetDocuments(*BatchGetDocumentsRequest, IdentityManagementAPI_BatchGetDocumentsServer) error {
-	return status.Errorf(codes.Unimplemented, "method BatchGetDocuments not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) ListDocuments(context.Context, *ListDocumentsRequest) (*ListDocumentsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListDocuments not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) MutateDocuments(context.Context, *MutateDocumentsRequest) (*MutateDocumentsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MutateDocuments not implemented")
-}
-func (UnimplementedIdentityManagementAPIServer) RunQuery(*RunQueryRequest, IdentityManagementAPI_RunQueryServer) error {
-	return status.Errorf(codes.Unimplemented, "method RunQuery not implemented")
 }
 func (UnimplementedIdentityManagementAPIServer) CheckOAuth2ConsentChallenge(context.Context, *CheckOAuth2ConsentChallengeRequest) (*CheckOAuth2ConsentChallengeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckOAuth2ConsentChallenge not implemented")
@@ -942,102 +796,6 @@ func _IdentityManagementAPI_DeleteDigitalTwin_Handler(srv interface{}, ctx conte
 		return srv.(IdentityManagementAPIServer).DeleteDigitalTwin(ctx, req.(*DeleteDigitalTwinRequest))
 	}
 	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityManagementAPI_GetDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDocumentRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).GetDocument(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/GetDocument",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).GetDocument(ctx, req.(*GetDocumentRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityManagementAPI_BatchGetDocuments_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(BatchGetDocumentsRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(IdentityManagementAPIServer).BatchGetDocuments(m, &identityManagementAPIBatchGetDocumentsServer{stream})
-}
-
-type IdentityManagementAPI_BatchGetDocumentsServer interface {
-	Send(*BatchGetDocumentsResponse) error
-	grpc.ServerStream
-}
-
-type identityManagementAPIBatchGetDocumentsServer struct {
-	grpc.ServerStream
-}
-
-func (x *identityManagementAPIBatchGetDocumentsServer) Send(m *BatchGetDocumentsResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _IdentityManagementAPI_ListDocuments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListDocumentsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).ListDocuments(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/ListDocuments",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).ListDocuments(ctx, req.(*ListDocumentsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityManagementAPI_MutateDocuments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MutateDocumentsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IdentityManagementAPIServer).MutateDocuments(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/indykite.identity.v1beta2.IdentityManagementAPI/MutateDocuments",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IdentityManagementAPIServer).MutateDocuments(ctx, req.(*MutateDocumentsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IdentityManagementAPI_RunQuery_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(RunQueryRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(IdentityManagementAPIServer).RunQuery(m, &identityManagementAPIRunQueryServer{stream})
-}
-
-type IdentityManagementAPI_RunQueryServer interface {
-	Send(*RunQueryResponse) error
-	grpc.ServerStream
-}
-
-type identityManagementAPIRunQueryServer struct {
-	grpc.ServerStream
-}
-
-func (x *identityManagementAPIRunQueryServer) Send(m *RunQueryResponse) error {
-	return x.ServerStream.SendMsg(m)
 }
 
 func _IdentityManagementAPI_CheckOAuth2ConsentChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1369,18 +1127,6 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _IdentityManagementAPI_DeleteDigitalTwin_Handler,
 		},
 		{
-			MethodName: "GetDocument",
-			Handler:    _IdentityManagementAPI_GetDocument_Handler,
-		},
-		{
-			MethodName: "ListDocuments",
-			Handler:    _IdentityManagementAPI_ListDocuments_Handler,
-		},
-		{
-			MethodName: "MutateDocuments",
-			Handler:    _IdentityManagementAPI_MutateDocuments_Handler,
-		},
-		{
 			MethodName: "CheckOAuth2ConsentChallenge",
 			Handler:    _IdentityManagementAPI_CheckOAuth2ConsentChallenge_Handler,
 		},
@@ -1438,16 +1184,6 @@ var IdentityManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "BatchGetDocuments",
-			Handler:       _IdentityManagementAPI_BatchGetDocuments_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "RunQuery",
-			Handler:       _IdentityManagementAPI_RunQuery_Handler,
-			ServerStreams: true,
-		},
 		{
 			StreamName:    "ListConsents",
 			Handler:       _IdentityManagementAPI_ListConsents_Handler,

@@ -25,7 +25,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	"golang.org/x/oauth2"
 
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
 )
 
 type (

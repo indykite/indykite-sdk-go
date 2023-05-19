@@ -21,10 +21,10 @@ import (
 	"github.com/golang/mock/gomock"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/identity"
-	midentity "github.com/indykite/jarvis-sdk-go/test/identity/v1beta2"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	"github.com/indykite/indykite-sdk-go/identity"
+	midentity "github.com/indykite/indykite-sdk-go/test/identity/v1beta2"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

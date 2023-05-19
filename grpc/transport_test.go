@@ -21,7 +21,7 @@ import (
 	google_grpc "google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/indykite/jarvis-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/grpc"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

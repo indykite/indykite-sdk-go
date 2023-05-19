@@ -21,10 +21,10 @@ import (
 
 	"github.com/golang/mock/gomock"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-	"github.com/indykite/jarvis-sdk-go/ingest"
-	ingestm "github.com/indykite/jarvis-sdk-go/test/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	"github.com/indykite/indykite-sdk-go/ingest"
+	ingestm "github.com/indykite/indykite-sdk-go/test/ingest/v1beta2"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

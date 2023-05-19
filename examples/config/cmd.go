@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/indykite/jarvis-sdk-go/examples/config/cmd"
+import "github.com/indykite/indykite-sdk-go/examples/config/cmd"
 
 func main() {
 	cmd.Execute()

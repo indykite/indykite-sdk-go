@@ -636,6 +636,8 @@ func (m *CreateApplicationSpaceResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -664,6 +666,8 @@ func (m *CreateApplicationSpaceResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -1701,6 +1705,37 @@ func (m *UpdateApplicationSpaceResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateApplicationSpaceResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateApplicationSpaceResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateApplicationSpaceResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -1728,6 +1763,8 @@ func (m *UpdateApplicationSpaceResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -2391,6 +2428,8 @@ func (m *CreateApplicationResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2419,6 +2458,8 @@ func (m *CreateApplicationResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -3450,6 +3491,37 @@ func (m *UpdateApplicationResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateApplicationResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateApplicationResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateApplicationResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -3477,6 +3549,8 @@ func (m *UpdateApplicationResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -4138,6 +4212,8 @@ func (m *CreateApplicationAgentResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -4166,6 +4242,8 @@ func (m *CreateApplicationAgentResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -5203,6 +5281,37 @@ func (m *UpdateApplicationAgentResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateApplicationAgentResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateApplicationAgentResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateApplicationAgentResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -5230,6 +5339,8 @@ func (m *UpdateApplicationAgentResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -6049,6 +6160,8 @@ func (m *RegisterApplicationAgentCredentialResponse) validate(all bool) error {
 
 	// no validation rules for Bookmark
 
+	// no validation rules for DisplayName
+
 	if len(errors) > 0 {
 		return RegisterApplicationAgentCredentialResponseMultiError(errors)
 	}
@@ -6826,7 +6939,7 @@ func (m *CreateServiceAccountRequest) validate(all bool) error {
 	if _, ok := _CreateServiceAccountRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := CreateServiceAccountRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer app_editor app_viewer authn_viewer authn_editor]",
+			reason: "value must be in list [all_editor all_viewer]",
 		}
 		if !all {
 			return err
@@ -6947,12 +7060,8 @@ var _CreateServiceAccountRequest_Location_Pattern = regexp.MustCompile("^[A-Za-z
 var _CreateServiceAccountRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
 var _CreateServiceAccountRequest_Role_InLookup = map[string]struct{}{
-	"all_editor":   {},
-	"all_viewer":   {},
-	"app_editor":   {},
-	"app_viewer":   {},
-	"authn_viewer": {},
-	"authn_editor": {},
+	"all_editor": {},
+	"all_viewer": {},
 }
 
 var _CreateServiceAccountRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
@@ -7030,6 +7139,8 @@ func (m *CreateServiceAccountResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -7058,6 +7169,8 @@ func (m *CreateServiceAccountResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -7750,6 +7863,37 @@ func (m *UpdateServiceAccountResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateServiceAccountResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateServiceAccountResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateServiceAccountResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -7777,6 +7921,8 @@ func (m *UpdateServiceAccountResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -9018,6 +9164,35 @@ func (m *DeleteServiceAccountCredentialRequest) validate(all bool) error {
 
 	}
 
+	if all {
+		switch v := interface{}(m.GetEtag()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DeleteServiceAccountCredentialRequestValidationError{
+					field:  "Etag",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DeleteServiceAccountCredentialRequestValidationError{
+					field:  "Etag",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetEtag()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteServiceAccountCredentialRequestValidationError{
+				field:  "Etag",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return DeleteServiceAccountCredentialRequestMultiError(errors)
 	}
@@ -9494,6 +9669,8 @@ func (m *CreateTenantResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -9522,6 +9699,8 @@ func (m *CreateTenantResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -10553,6 +10732,37 @@ func (m *UpdateTenantResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateTenantResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateTenantResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateTenantResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -10580,6 +10790,8 @@ func (m *UpdateTenantResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -11663,6 +11875,10 @@ func (m *CreateConfigNodeResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
+	// no validation rules for UpdatedBy
+
 	// no validation rules for Etag
 
 	// no validation rules for Bookmark
@@ -12678,6 +12894,35 @@ func (m *UpdateConfigNodeResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateConfigNodeResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateConfigNodeResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateConfigNodeResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -12705,6 +12950,10 @@ func (m *UpdateConfigNodeResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for CreatedBy
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -13414,6 +13663,8 @@ func (m *CreateOAuth2ProviderResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -13442,6 +13693,8 @@ func (m *CreateOAuth2ProviderResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -14113,6 +14366,37 @@ func (m *UpdateOAuth2ProviderResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateOAuth2ProviderResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateOAuth2ProviderResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateOAuth2ProviderResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -14140,6 +14424,8 @@ func (m *UpdateOAuth2ProviderResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -14849,6 +15135,8 @@ func (m *CreateOAuth2ApplicationResponse) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -14877,6 +15165,8 @@ func (m *CreateOAuth2ApplicationResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -15554,6 +15844,37 @@ func (m *UpdateOAuth2ApplicationResponse) validate(all bool) error {
 	}
 
 	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateOAuth2ApplicationResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateOAuth2ApplicationResponseValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateOAuth2ApplicationResponseValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for CreatedBy
+
+	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
@@ -15581,6 +15902,8 @@ func (m *UpdateOAuth2ApplicationResponse) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	// no validation rules for Etag
 
@@ -16009,7 +16332,7 @@ func (m *AssignPermissionsRequest) validate(all bool) error {
 	if _, ok := _AssignPermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := AssignPermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer app_editor app_viewer authn_viewer authn_editor]",
+			reason: "value must be in list [all_editor all_viewer]",
 		}
 		if !all {
 			return err
@@ -16171,12 +16494,8 @@ var _ interface {
 var _AssignPermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _AssignPermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor":   {},
-	"all_viewer":   {},
-	"app_editor":   {},
-	"app_viewer":   {},
-	"authn_viewer": {},
-	"authn_editor": {},
+	"all_editor": {},
+	"all_viewer": {},
 }
 
 var _AssignPermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
@@ -16338,7 +16657,7 @@ func (m *RevokePermissionsRequest) validate(all bool) error {
 	if _, ok := _RevokePermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := RevokePermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer app_editor app_viewer authn_viewer authn_editor]",
+			reason: "value must be in list [all_editor all_viewer]",
 		}
 		if !all {
 			return err
@@ -16500,12 +16819,8 @@ var _ interface {
 var _RevokePermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _RevokePermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor":   {},
-	"all_viewer":   {},
-	"app_editor":   {},
-	"app_viewer":   {},
-	"authn_viewer": {},
-	"authn_editor": {},
+	"all_editor": {},
+	"all_viewer": {},
 }
 
 var _RevokePermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
@@ -16978,6 +17293,239 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListPermissionsResponseValidationError{}
+
+// Validate checks the field values on GetSchemaHelpersRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetSchemaHelpersRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetSchemaHelpersRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetSchemaHelpersRequestMultiError, or nil if none found.
+func (m *GetSchemaHelpersRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetSchemaHelpersRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return GetSchemaHelpersRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetSchemaHelpersRequestMultiError is an error wrapping multiple validation
+// errors returned by GetSchemaHelpersRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetSchemaHelpersRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetSchemaHelpersRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetSchemaHelpersRequestMultiError) AllErrors() []error { return m }
+
+// GetSchemaHelpersRequestValidationError is the validation error returned by
+// GetSchemaHelpersRequest.Validate if the designated constraints aren't met.
+type GetSchemaHelpersRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSchemaHelpersRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSchemaHelpersRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSchemaHelpersRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSchemaHelpersRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSchemaHelpersRequestValidationError) ErrorName() string {
+	return "GetSchemaHelpersRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetSchemaHelpersRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSchemaHelpersRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSchemaHelpersRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSchemaHelpersRequestValidationError{}
+
+// Validate checks the field values on GetSchemaHelpersResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetSchemaHelpersResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetSchemaHelpersResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetSchemaHelpersResponseMultiError, or nil if none found.
+func (m *GetSchemaHelpersResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetSchemaHelpersResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetKnowledgeGraphSchemaHelpers()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetSchemaHelpersResponseValidationError{
+					field:  "KnowledgeGraphSchemaHelpers",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetSchemaHelpersResponseValidationError{
+					field:  "KnowledgeGraphSchemaHelpers",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetKnowledgeGraphSchemaHelpers()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetSchemaHelpersResponseValidationError{
+				field:  "KnowledgeGraphSchemaHelpers",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetSchemaHelpersResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetSchemaHelpersResponseMultiError is an error wrapping multiple validation
+// errors returned by GetSchemaHelpersResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetSchemaHelpersResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetSchemaHelpersResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetSchemaHelpersResponseMultiError) AllErrors() []error { return m }
+
+// GetSchemaHelpersResponseValidationError is the validation error returned by
+// GetSchemaHelpersResponse.Validate if the designated constraints aren't met.
+type GetSchemaHelpersResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSchemaHelpersResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSchemaHelpersResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSchemaHelpersResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSchemaHelpersResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSchemaHelpersResponseValidationError) ErrorName() string {
+	return "GetSchemaHelpersResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetSchemaHelpersResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSchemaHelpersResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSchemaHelpersResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSchemaHelpersResponseValidationError{}
 
 // Validate checks the field values on ListPermissionsResponse_PermissionRole
 // with the rules defined in the proto definition for this message. If any

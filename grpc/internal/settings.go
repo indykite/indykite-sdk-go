@@ -35,8 +35,8 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/credentials/oauth"
 
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/grpc/jwt"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/jwt"
 )
 
 const (

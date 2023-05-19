@@ -20,7 +20,7 @@ import (
 
 	"github.com/pborman/uuid"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
+	"github.com/indykite/indykite-sdk-go/errors"
 )
 
 const (

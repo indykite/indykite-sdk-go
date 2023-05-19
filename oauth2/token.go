@@ -21,9 +21,9 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc/codes"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/grpc/jwt"
+	"github.com/indykite/indykite-sdk-go/errors"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/jwt"
 )
 
 var (

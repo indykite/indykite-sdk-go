@@ -309,6 +309,8 @@ func (m *Customer) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -337,6 +339,8 @@ func (m *Customer) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -600,6 +604,8 @@ func (m *ApplicationSpace) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -628,6 +634,8 @@ func (m *ApplicationSpace) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -939,6 +947,8 @@ func (m *Tenant) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -967,6 +977,8 @@ func (m *Tenant) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -1302,6 +1314,8 @@ func (m *Application) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -1330,6 +1344,8 @@ func (m *Application) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -1641,6 +1657,8 @@ func (m *ApplicationAgent) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -1669,6 +1687,8 @@ func (m *ApplicationAgent) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -1989,6 +2009,8 @@ func (m *ApplicationAgentCredential) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for CreatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -2349,6 +2371,8 @@ func (m *ServiceAccount) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -2377,6 +2401,8 @@ func (m *ServiceAccount) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -2677,6 +2703,8 @@ func (m *ServiceAccountCredential) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for CreatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -3045,6 +3073,10 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for CreatedBy
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -4464,6 +4496,8 @@ func (m *OAuth2Application) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -4492,6 +4526,8 @@ func (m *OAuth2Application) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -5616,6 +5652,8 @@ func (m *OAuth2Provider) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for CreatedBy
+
 	if all {
 		switch v := interface{}(m.GetUpdateTime()).(type) {
 		case interface{ ValidateAll() error }:
@@ -5644,6 +5682,8 @@ func (m *OAuth2Provider) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for UpdatedBy
 
 	if all {
 		switch v := interface{}(m.GetDestroyTime()).(type) {
@@ -11032,6 +11072,131 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = KnowledgeGraphSchemaConfigValidationError{}
+
+// Validate checks the field values on KnowledgeGraphSchemaHelpers with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *KnowledgeGraphSchemaHelpers) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KnowledgeGraphSchemaHelpers with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// KnowledgeGraphSchemaHelpersMultiError, or nil if none found.
+func (m *KnowledgeGraphSchemaHelpers) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KnowledgeGraphSchemaHelpers) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetDefinitions()) < 1 {
+		err := KnowledgeGraphSchemaHelpersValidationError{
+			field:  "Definitions",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetDirectives()) < 1 {
+		err := KnowledgeGraphSchemaHelpersValidationError{
+			field:  "Directives",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return KnowledgeGraphSchemaHelpersMultiError(errors)
+	}
+
+	return nil
+}
+
+// KnowledgeGraphSchemaHelpersMultiError is an error wrapping multiple
+// validation errors returned by KnowledgeGraphSchemaHelpers.ValidateAll() if
+// the designated constraints aren't met.
+type KnowledgeGraphSchemaHelpersMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KnowledgeGraphSchemaHelpersMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KnowledgeGraphSchemaHelpersMultiError) AllErrors() []error { return m }
+
+// KnowledgeGraphSchemaHelpersValidationError is the validation error returned
+// by KnowledgeGraphSchemaHelpers.Validate if the designated constraints
+// aren't met.
+type KnowledgeGraphSchemaHelpersValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KnowledgeGraphSchemaHelpersValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KnowledgeGraphSchemaHelpersValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KnowledgeGraphSchemaHelpersValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KnowledgeGraphSchemaHelpersValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KnowledgeGraphSchemaHelpersValidationError) ErrorName() string {
+	return "KnowledgeGraphSchemaHelpersValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e KnowledgeGraphSchemaHelpersValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKnowledgeGraphSchemaHelpers.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KnowledgeGraphSchemaHelpersValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KnowledgeGraphSchemaHelpersValidationError{}
 
 // Validate checks the field values on ReadIDProviderConfig_Property with the
 // rules defined in the proto definition for this message. If any rules are

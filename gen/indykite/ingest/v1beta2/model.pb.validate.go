@@ -17,8 +17,6 @@ import (
 	"unicode/utf8"
 
 	"google.golang.org/protobuf/types/known/anypb"
-
-	identityv1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // ensure the imports are used
@@ -35,8 +33,6 @@ var (
 	_ = (*mail.Address)(nil)
 	_ = anypb.Any{}
 	_ = sort.Sort
-
-	_ = identityv1beta2.DigitalTwinKind(0)
 )
 
 // Validate checks the field values on Record with the rules defined in the
@@ -744,28 +740,6 @@ func (m *DigitalTwin) validate(all bool) error {
 
 	}
 
-	if _, ok := _DigitalTwin_Kind_NotInLookup[m.GetKind()]; ok {
-		err := DigitalTwinValidationError{
-			field:  "Kind",
-			reason: "value must not be in list [0]",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if _, ok := identityv1beta2.DigitalTwinKind_name[int32(m.GetKind())]; !ok {
-		err := DigitalTwinValidationError{
-			field:  "Kind",
-			reason: "value must be one of the defined enum values",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if m.GetTenantId() != "" {
 
 		if l := utf8.RuneCountInString(m.GetTenantId()); l < 22 || l > 254 {
@@ -962,10 +936,6 @@ var _ interface {
 var _DigitalTwin_Type_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
 
 var _DigitalTwin_Tags_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
-
-var _DigitalTwin_Kind_NotInLookup = map[identityv1beta2.DigitalTwinKind]struct{}{
-	0: {},
-}
 
 var _DigitalTwin_TenantId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 

@@ -21,8 +21,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
-	api "github.com/indykite/jarvis-sdk-go/grpc"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
 type V2Client struct {

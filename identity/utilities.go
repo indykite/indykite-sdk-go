@@ -24,7 +24,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
+	"github.com/indykite/indykite-sdk-go/errors"
 )
 
 // ParseUUID parse the raw input string and check if it's a RFC4122 variant UUID.

@@ -15,7 +15,7 @@
 package main
 
 import (
-	"github.com/indykite/jarvis-sdk-go/examples/oauth2/cmd"
+	"github.com/indykite/indykite-sdk-go/examples/oauth2/cmd"
 )
 
 func main() {
