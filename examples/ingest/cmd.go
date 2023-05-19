@@ -15,7 +15,7 @@
 package main
 
 import (
-	"github.com/indykite/jarvis-sdk-go/examples/ingest/cmd"
+	"github.com/indykite/indykite-sdk-go/examples/ingest/cmd"
 )
 
 func main() {

@@ -20,9 +20,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	"github.com/indykite/indykite-sdk-go/errors"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 // StartEmailVerification function initiates the flow where Indykite systems sends a

@@ -1,4 +1,4 @@
-module github.com/indykite/jarvis-sdk-go
+module github.com/indykite/indykite-sdk-go
 
 go 1.20
 

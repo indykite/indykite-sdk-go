@@ -19,8 +19,8 @@ import (
 	"encoding/json"
 	"os"
 
-	apicfg "github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/oauth2"
+	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/oauth2"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

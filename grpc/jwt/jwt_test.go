@@ -17,7 +17,7 @@ package jwt_test
 import (
 	"github.com/google/uuid"
 
-	. "github.com/indykite/jarvis-sdk-go/grpc/jwt"
+	. "github.com/indykite/indykite-sdk-go/grpc/jwt"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )

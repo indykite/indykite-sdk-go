@@ -21,8 +21,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-	api "github.com/indykite/jarvis-sdk-go/grpc"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
+	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
 type Client struct {

@@ -3,7 +3,7 @@ version: v1
 managed:
     enabled: true
     go_package_prefix:
-        default: github.com/indykite/jarvis-sdk-go/gen
+        default: github.com/indykite/indykite-sdk-go/gen
         except:
             - buf.build/googleapis/googleapis
             - buf.build/envoyproxy/protoc-gen-validate

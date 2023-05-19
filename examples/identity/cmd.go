@@ -15,7 +15,7 @@
 package main
 
 import (
-	"github.com/indykite/jarvis-sdk-go/examples/identity/cmd"
+	"github.com/indykite/indykite-sdk-go/examples/identity/cmd"
 )
 
 func main() {

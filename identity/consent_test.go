@@ -21,10 +21,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
-	"github.com/indykite/jarvis-sdk-go/identity"
-	"github.com/indykite/jarvis-sdk-go/test"
-	midentity "github.com/indykite/jarvis-sdk-go/test/identity/v1beta2"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
+	"github.com/indykite/indykite-sdk-go/identity"
+	"github.com/indykite/indykite-sdk-go/test"
+	midentity "github.com/indykite/indykite-sdk-go/test/identity/v1beta2"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

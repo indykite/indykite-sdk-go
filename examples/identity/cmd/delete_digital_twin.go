@@ -22,7 +22,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"github.com/spf13/cobra"
 
-	identitypb "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // deleteDtTokenCmd represents the delte DigitalTwin command.

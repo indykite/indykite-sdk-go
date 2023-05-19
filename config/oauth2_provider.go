@@ -19,8 +19,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+	"github.com/indykite/indykite-sdk-go/errors"
+	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 )
 
 func (c *Client) ReadOAuth2Provider(

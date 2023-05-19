@@ -18,8 +18,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/indykite/jarvis-sdk-go/config"
-	api "github.com/indykite/jarvis-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/config"
+	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
 // This example demonstrates how to create a new Config Client.

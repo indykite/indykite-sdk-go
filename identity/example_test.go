@@ -22,8 +22,8 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	api "github.com/indykite/jarvis-sdk-go/grpc"
-	"github.com/indykite/jarvis-sdk-go/identity"
+	api "github.com/indykite/indykite-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/identity"
 )
 
 // This example demonstrates how to create a new Identity Client.

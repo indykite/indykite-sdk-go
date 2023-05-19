@@ -20,8 +20,8 @@ import (
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
+	"github.com/indykite/indykite-sdk-go/errors"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
 // StreamRecords is a helper that takes a slice of records and handles opening the stream, sending the records,

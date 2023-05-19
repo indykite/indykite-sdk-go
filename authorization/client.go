@@ -25,9 +25,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
-	api "github.com/indykite/jarvis-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/errors"
+	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
+	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
 type Client struct {

@@ -27,7 +27,7 @@ import (
 	grpc "google.golang.org/grpc"
 	metadata "google.golang.org/grpc/metadata"
 
-	identityv1beta2 "github.com/indykite/jarvis-sdk-go/gen/indykite/identity/v1beta2"
+	identityv1beta2 "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // MockIdentityManagementAPIClient is a mock of IdentityManagementAPIClient interface.
@@ -51,26 +51,6 @@ func NewMockIdentityManagementAPIClient(ctrl *gomock.Controller) *MockIdentityMa
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIdentityManagementAPIClient) EXPECT() *MockIdentityManagementAPIClientMockRecorder {
 	return m.recorder
-}
-
-// BatchGetDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) BatchGetDocuments(ctx context.Context, in *identityv1beta2.BatchGetDocumentsRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_BatchGetDocumentsClient, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "BatchGetDocuments", varargs...)
-	ret0, _ := ret[0].(identityv1beta2.IdentityManagementAPI_BatchGetDocumentsClient)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// BatchGetDocuments indicates an expected call of BatchGetDocuments.
-func (mr *MockIdentityManagementAPIClientMockRecorder) BatchGetDocuments(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetDocuments", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).BatchGetDocuments), varargs...)
 }
 
 // CancelInvitation mocks base method.
@@ -313,26 +293,6 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) GetDigitalTwin(ctx, in in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDigitalTwin", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).GetDigitalTwin), varargs...)
 }
 
-// GetDocument mocks base method.
-func (m *MockIdentityManagementAPIClient) GetDocument(ctx context.Context, in *identityv1beta2.GetDocumentRequest, opts ...grpc.CallOption) (*identityv1beta2.GetDocumentResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetDocument", varargs...)
-	ret0, _ := ret[0].(*identityv1beta2.GetDocumentResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetDocument indicates an expected call of GetDocument.
-func (mr *MockIdentityManagementAPIClientMockRecorder) GetDocument(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDocument", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).GetDocument), varargs...)
-}
-
 // GetPasswordCredential mocks base method.
 func (m *MockIdentityManagementAPIClient) GetPasswordCredential(ctx context.Context, in *identityv1beta2.GetPasswordCredentialRequest, opts ...grpc.CallOption) (*identityv1beta2.GetPasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
@@ -413,46 +373,6 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) ListDigitalTwins(ctx, in 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ListDigitalTwins), varargs...)
 }
 
-// ListDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) ListDocuments(ctx context.Context, in *identityv1beta2.ListDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta2.ListDocumentsResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ListDocuments", varargs...)
-	ret0, _ := ret[0].(*identityv1beta2.ListDocumentsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListDocuments indicates an expected call of ListDocuments.
-func (mr *MockIdentityManagementAPIClientMockRecorder) ListDocuments(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDocuments", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).ListDocuments), varargs...)
-}
-
-// MutateDocuments mocks base method.
-func (m *MockIdentityManagementAPIClient) MutateDocuments(ctx context.Context, in *identityv1beta2.MutateDocumentsRequest, opts ...grpc.CallOption) (*identityv1beta2.MutateDocumentsResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "MutateDocuments", varargs...)
-	ret0, _ := ret[0].(*identityv1beta2.MutateDocumentsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// MutateDocuments indicates an expected call of MutateDocuments.
-func (mr *MockIdentityManagementAPIClientMockRecorder) MutateDocuments(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MutateDocuments", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).MutateDocuments), varargs...)
-}
-
 // PatchDigitalTwin mocks base method.
 func (m *MockIdentityManagementAPIClient) PatchDigitalTwin(ctx context.Context, in *identityv1beta2.PatchDigitalTwinRequest, opts ...grpc.CallOption) (*identityv1beta2.PatchDigitalTwinResponse, error) {
 	m.ctrl.T.Helper()
@@ -531,26 +451,6 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) RevokeConsent(ctx, in int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeConsent", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).RevokeConsent), varargs...)
-}
-
-// RunQuery mocks base method.
-func (m *MockIdentityManagementAPIClient) RunQuery(ctx context.Context, in *identityv1beta2.RunQueryRequest, opts ...grpc.CallOption) (identityv1beta2.IdentityManagementAPI_RunQueryClient, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "RunQuery", varargs...)
-	ret0, _ := ret[0].(identityv1beta2.IdentityManagementAPI_RunQueryClient)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// RunQuery indicates an expected call of RunQuery.
-func (mr *MockIdentityManagementAPIClientMockRecorder) RunQuery(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunQuery", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).RunQuery), varargs...)
 }
 
 // SelfServiceTerminateSession mocks base method.
@@ -691,252 +591,6 @@ func (mr *MockIdentityManagementAPIClientMockRecorder) VerifyDigitalTwinEmail(ct
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDigitalTwinEmail", reflect.TypeOf((*MockIdentityManagementAPIClient)(nil).VerifyDigitalTwinEmail), varargs...)
-}
-
-// MockIdentityManagementAPI_BatchGetDocumentsClient is a mock of IdentityManagementAPI_BatchGetDocumentsClient interface.
-type MockIdentityManagementAPI_BatchGetDocumentsClient struct {
-	ctrl     *gomock.Controller
-	recorder *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder
-}
-
-// MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder is the mock recorder for MockIdentityManagementAPI_BatchGetDocumentsClient.
-type MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder struct {
-	mock *MockIdentityManagementAPI_BatchGetDocumentsClient
-}
-
-// NewMockIdentityManagementAPI_BatchGetDocumentsClient creates a new mock instance.
-func NewMockIdentityManagementAPI_BatchGetDocumentsClient(ctrl *gomock.Controller) *MockIdentityManagementAPI_BatchGetDocumentsClient {
-	mock := &MockIdentityManagementAPI_BatchGetDocumentsClient{ctrl: ctrl}
-	mock.recorder = &MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) EXPECT() *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder {
-	return m.recorder
-}
-
-// CloseSend mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) CloseSend() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CloseSend")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CloseSend indicates an expected call of CloseSend.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) CloseSend() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseSend", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).CloseSend))
-}
-
-// Context mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Context() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Context")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// Context indicates an expected call of Context.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) Context() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).Context))
-}
-
-// Header mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Header() (metadata.MD, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Header")
-	ret0, _ := ret[0].(metadata.MD)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Header indicates an expected call of Header.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) Header() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Header", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).Header))
-}
-
-// Recv mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Recv() (*identityv1beta2.BatchGetDocumentsResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*identityv1beta2.BatchGetDocumentsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Recv indicates an expected call of Recv.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) Recv() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Recv", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).Recv))
-}
-
-// RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_BatchGetDocumentsClient) RecvMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) RecvMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).RecvMsg), m)
-}
-
-// SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_BatchGetDocumentsClient) SendMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendMsg indicates an expected call of SendMsg.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) SendMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).SendMsg), m)
-}
-
-// Trailer mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsClient) Trailer() metadata.MD {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Trailer")
-	ret0, _ := ret[0].(metadata.MD)
-	return ret0
-}
-
-// Trailer indicates an expected call of Trailer.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsClientMockRecorder) Trailer() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Trailer", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsClient)(nil).Trailer))
-}
-
-// MockIdentityManagementAPI_RunQueryClient is a mock of IdentityManagementAPI_RunQueryClient interface.
-type MockIdentityManagementAPI_RunQueryClient struct {
-	ctrl     *gomock.Controller
-	recorder *MockIdentityManagementAPI_RunQueryClientMockRecorder
-}
-
-// MockIdentityManagementAPI_RunQueryClientMockRecorder is the mock recorder for MockIdentityManagementAPI_RunQueryClient.
-type MockIdentityManagementAPI_RunQueryClientMockRecorder struct {
-	mock *MockIdentityManagementAPI_RunQueryClient
-}
-
-// NewMockIdentityManagementAPI_RunQueryClient creates a new mock instance.
-func NewMockIdentityManagementAPI_RunQueryClient(ctrl *gomock.Controller) *MockIdentityManagementAPI_RunQueryClient {
-	mock := &MockIdentityManagementAPI_RunQueryClient{ctrl: ctrl}
-	mock.recorder = &MockIdentityManagementAPI_RunQueryClientMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockIdentityManagementAPI_RunQueryClient) EXPECT() *MockIdentityManagementAPI_RunQueryClientMockRecorder {
-	return m.recorder
-}
-
-// CloseSend mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) CloseSend() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CloseSend")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CloseSend indicates an expected call of CloseSend.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) CloseSend() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseSend", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).CloseSend))
-}
-
-// Context mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) Context() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Context")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// Context indicates an expected call of Context.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) Context() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).Context))
-}
-
-// Header mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) Header() (metadata.MD, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Header")
-	ret0, _ := ret[0].(metadata.MD)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Header indicates an expected call of Header.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) Header() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Header", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).Header))
-}
-
-// Recv mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) Recv() (*identityv1beta2.RunQueryResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*identityv1beta2.RunQueryResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Recv indicates an expected call of Recv.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) Recv() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Recv", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).Recv))
-}
-
-// RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_RunQueryClient) RecvMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) RecvMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).RecvMsg), m)
-}
-
-// SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_RunQueryClient) SendMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendMsg indicates an expected call of SendMsg.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) SendMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).SendMsg), m)
-}
-
-// Trailer mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryClient) Trailer() metadata.MD {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Trailer")
-	ret0, _ := ret[0].(metadata.MD)
-	return ret0
-}
-
-// Trailer indicates an expected call of Trailer.
-func (mr *MockIdentityManagementAPI_RunQueryClientMockRecorder) Trailer() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Trailer", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryClient)(nil).Trailer))
 }
 
 // MockIdentityManagementAPI_ListConsentsClient is a mock of IdentityManagementAPI_ListConsentsClient interface.
@@ -1083,20 +737,6 @@ func NewMockIdentityManagementAPIServer(ctrl *gomock.Controller) *MockIdentityMa
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIdentityManagementAPIServer) EXPECT() *MockIdentityManagementAPIServerMockRecorder {
 	return m.recorder
-}
-
-// BatchGetDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) BatchGetDocuments(arg0 *identityv1beta2.BatchGetDocumentsRequest, arg1 identityv1beta2.IdentityManagementAPI_BatchGetDocumentsServer) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BatchGetDocuments", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// BatchGetDocuments indicates an expected call of BatchGetDocuments.
-func (mr *MockIdentityManagementAPIServerMockRecorder) BatchGetDocuments(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetDocuments", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).BatchGetDocuments), arg0, arg1)
 }
 
 // CancelInvitation mocks base method.
@@ -1279,21 +919,6 @@ func (mr *MockIdentityManagementAPIServerMockRecorder) GetDigitalTwin(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDigitalTwin", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).GetDigitalTwin), arg0, arg1)
 }
 
-// GetDocument mocks base method.
-func (m *MockIdentityManagementAPIServer) GetDocument(arg0 context.Context, arg1 *identityv1beta2.GetDocumentRequest) (*identityv1beta2.GetDocumentResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDocument", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta2.GetDocumentResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetDocument indicates an expected call of GetDocument.
-func (mr *MockIdentityManagementAPIServerMockRecorder) GetDocument(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDocument", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).GetDocument), arg0, arg1)
-}
-
 // GetPasswordCredential mocks base method.
 func (m *MockIdentityManagementAPIServer) GetPasswordCredential(arg0 context.Context, arg1 *identityv1beta2.GetPasswordCredentialRequest) (*identityv1beta2.GetPasswordCredentialResponse, error) {
 	m.ctrl.T.Helper()
@@ -1351,36 +976,6 @@ func (m *MockIdentityManagementAPIServer) ListDigitalTwins(arg0 context.Context,
 func (mr *MockIdentityManagementAPIServerMockRecorder) ListDigitalTwins(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDigitalTwins", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).ListDigitalTwins), arg0, arg1)
-}
-
-// ListDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) ListDocuments(arg0 context.Context, arg1 *identityv1beta2.ListDocumentsRequest) (*identityv1beta2.ListDocumentsResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListDocuments", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta2.ListDocumentsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListDocuments indicates an expected call of ListDocuments.
-func (mr *MockIdentityManagementAPIServerMockRecorder) ListDocuments(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDocuments", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).ListDocuments), arg0, arg1)
-}
-
-// MutateDocuments mocks base method.
-func (m *MockIdentityManagementAPIServer) MutateDocuments(arg0 context.Context, arg1 *identityv1beta2.MutateDocumentsRequest) (*identityv1beta2.MutateDocumentsResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MutateDocuments", arg0, arg1)
-	ret0, _ := ret[0].(*identityv1beta2.MutateDocumentsResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// MutateDocuments indicates an expected call of MutateDocuments.
-func (mr *MockIdentityManagementAPIServerMockRecorder) MutateDocuments(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MutateDocuments", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).MutateDocuments), arg0, arg1)
 }
 
 // PatchDigitalTwin mocks base method.
@@ -1441,20 +1036,6 @@ func (m *MockIdentityManagementAPIServer) RevokeConsent(arg0 context.Context, ar
 func (mr *MockIdentityManagementAPIServerMockRecorder) RevokeConsent(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeConsent", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).RevokeConsent), arg0, arg1)
-}
-
-// RunQuery mocks base method.
-func (m *MockIdentityManagementAPIServer) RunQuery(arg0 *identityv1beta2.RunQueryRequest, arg1 identityv1beta2.IdentityManagementAPI_RunQueryServer) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RunQuery", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RunQuery indicates an expected call of RunQuery.
-func (mr *MockIdentityManagementAPIServerMockRecorder) RunQuery(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunQuery", reflect.TypeOf((*MockIdentityManagementAPIServer)(nil).RunQuery), arg0, arg1)
 }
 
 // SelfServiceTerminateSession mocks base method.
@@ -1595,244 +1176,6 @@ func (m *MockUnsafeIdentityManagementAPIServer) mustEmbedUnimplementedIdentityMa
 func (mr *MockUnsafeIdentityManagementAPIServerMockRecorder) mustEmbedUnimplementedIdentityManagementAPIServer() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "mustEmbedUnimplementedIdentityManagementAPIServer", reflect.TypeOf((*MockUnsafeIdentityManagementAPIServer)(nil).mustEmbedUnimplementedIdentityManagementAPIServer))
-}
-
-// MockIdentityManagementAPI_BatchGetDocumentsServer is a mock of IdentityManagementAPI_BatchGetDocumentsServer interface.
-type MockIdentityManagementAPI_BatchGetDocumentsServer struct {
-	ctrl     *gomock.Controller
-	recorder *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder
-}
-
-// MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder is the mock recorder for MockIdentityManagementAPI_BatchGetDocumentsServer.
-type MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder struct {
-	mock *MockIdentityManagementAPI_BatchGetDocumentsServer
-}
-
-// NewMockIdentityManagementAPI_BatchGetDocumentsServer creates a new mock instance.
-func NewMockIdentityManagementAPI_BatchGetDocumentsServer(ctrl *gomock.Controller) *MockIdentityManagementAPI_BatchGetDocumentsServer {
-	mock := &MockIdentityManagementAPI_BatchGetDocumentsServer{ctrl: ctrl}
-	mock.recorder = &MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) EXPECT() *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder {
-	return m.recorder
-}
-
-// Context mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) Context() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Context")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// Context indicates an expected call of Context.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) Context() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).Context))
-}
-
-// RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_BatchGetDocumentsServer) RecvMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) RecvMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).RecvMsg), m)
-}
-
-// Send mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) Send(arg0 *identityv1beta2.BatchGetDocumentsResponse) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// Send indicates an expected call of Send.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) Send(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).Send), arg0)
-}
-
-// SendHeader mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) SendHeader(arg0 metadata.MD) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendHeader", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendHeader indicates an expected call of SendHeader.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) SendHeader(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendHeader", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).SendHeader), arg0)
-}
-
-// SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_BatchGetDocumentsServer) SendMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendMsg indicates an expected call of SendMsg.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) SendMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).SendMsg), m)
-}
-
-// SetHeader mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) SetHeader(arg0 metadata.MD) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetHeader", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SetHeader indicates an expected call of SetHeader.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) SetHeader(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetHeader", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).SetHeader), arg0)
-}
-
-// SetTrailer mocks base method.
-func (m *MockIdentityManagementAPI_BatchGetDocumentsServer) SetTrailer(arg0 metadata.MD) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetTrailer", arg0)
-}
-
-// SetTrailer indicates an expected call of SetTrailer.
-func (mr *MockIdentityManagementAPI_BatchGetDocumentsServerMockRecorder) SetTrailer(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTrailer", reflect.TypeOf((*MockIdentityManagementAPI_BatchGetDocumentsServer)(nil).SetTrailer), arg0)
-}
-
-// MockIdentityManagementAPI_RunQueryServer is a mock of IdentityManagementAPI_RunQueryServer interface.
-type MockIdentityManagementAPI_RunQueryServer struct {
-	ctrl     *gomock.Controller
-	recorder *MockIdentityManagementAPI_RunQueryServerMockRecorder
-}
-
-// MockIdentityManagementAPI_RunQueryServerMockRecorder is the mock recorder for MockIdentityManagementAPI_RunQueryServer.
-type MockIdentityManagementAPI_RunQueryServerMockRecorder struct {
-	mock *MockIdentityManagementAPI_RunQueryServer
-}
-
-// NewMockIdentityManagementAPI_RunQueryServer creates a new mock instance.
-func NewMockIdentityManagementAPI_RunQueryServer(ctrl *gomock.Controller) *MockIdentityManagementAPI_RunQueryServer {
-	mock := &MockIdentityManagementAPI_RunQueryServer{ctrl: ctrl}
-	mock.recorder = &MockIdentityManagementAPI_RunQueryServerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockIdentityManagementAPI_RunQueryServer) EXPECT() *MockIdentityManagementAPI_RunQueryServerMockRecorder {
-	return m.recorder
-}
-
-// Context mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) Context() context.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Context")
-	ret0, _ := ret[0].(context.Context)
-	return ret0
-}
-
-// Context indicates an expected call of Context.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) Context() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Context", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).Context))
-}
-
-// RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_RunQueryServer) RecvMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) RecvMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).RecvMsg), m)
-}
-
-// Send mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) Send(arg0 *identityv1beta2.RunQueryResponse) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// Send indicates an expected call of Send.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) Send(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).Send), arg0)
-}
-
-// SendHeader mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) SendHeader(arg0 metadata.MD) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendHeader", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendHeader indicates an expected call of SendHeader.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) SendHeader(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendHeader", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).SendHeader), arg0)
-}
-
-// SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_RunQueryServer) SendMsg(m interface{}) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SendMsg indicates an expected call of SendMsg.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) SendMsg(m interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).SendMsg), m)
-}
-
-// SetHeader mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) SetHeader(arg0 metadata.MD) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetHeader", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// SetHeader indicates an expected call of SetHeader.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) SetHeader(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetHeader", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).SetHeader), arg0)
-}
-
-// SetTrailer mocks base method.
-func (m *MockIdentityManagementAPI_RunQueryServer) SetTrailer(arg0 metadata.MD) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetTrailer", arg0)
-}
-
-// SetTrailer indicates an expected call of SetTrailer.
-func (mr *MockIdentityManagementAPI_RunQueryServerMockRecorder) SetTrailer(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTrailer", reflect.TypeOf((*MockIdentityManagementAPI_RunQueryServer)(nil).SetTrailer), arg0)
 }
 
 // MockIdentityManagementAPI_ListConsentsServer is a mock of IdentityManagementAPI_ListConsentsServer interface.

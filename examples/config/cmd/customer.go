@@ -21,7 +21,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	config "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+	config "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 )
 
 var customerCmd = &cobra.Command{

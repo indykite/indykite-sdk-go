@@ -19,8 +19,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
-	authorizationpb "github.com/indykite/jarvis-sdk-go/gen/indykite/authorization/v1beta1"
+	"github.com/indykite/indykite-sdk-go/errors"
+	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
 )
 
 // WhoAuthorized returns a list of subjects and allowed actions for provided resources.

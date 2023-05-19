@@ -10,14 +10,14 @@ IndyKite is a cloud identity platform built to secure and manage
 human & non-person (IoT) identities and their data. This repository contains the
 Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK.
 
-[![Build](https://github.com/indykite/jarvis-sdk-go/actions/workflows/pr-test.yaml/badge.svg)](https://github.com/indykite/jarvis-sdk-go/actions/workflows/pr-test.yaml)
-[![codecov](https://codecov.io/gh/indykite/jarvis-sdk-go/branch/master/graph/badge.svg?token=TFCDLXbnsh)](https://codecov.io/gh/indykite/jarvis-sdk-go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/indykite/jarvis-sdk-go)](https://goreportcard.com/report/github.com/indykite/jarvis-sdk-go)
-[![Go Reference](https://pkg.go.dev/badge/github.com/indykite/jarvis-sdk-go.svg)](https://pkg.go.dev/github.com/indykite/jarvis-sdk-go)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Findykite%2Fjarvis-sdk-go.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Findykite%2Fjarvis-sdk-go?ref=badge_shield)
+[![Build](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml/badge.svg)](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml)
+[![codecov](https://codecov.io/gh/indykite/indykite-sdk-go/branch/master/graph/badge.svg?token=TFCDLXbnsh)](https://codecov.io/gh/indykite/indykite-sdk-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/indykite/indykite-sdk-go)](https://goreportcard.com/report/github.com/indykite/indykite-sdk-go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/indykite/indykite-sdk-go.svg)](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Findykite%2Findykite-sdk-go.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Findykite%2Findykite-sdk-go?ref=badge_shield)
 
 ```go
-import "github.com/indykite/jarvis-sdk-go"
+import "github.com/indykite/indykite-sdk-go"
 ```
 
 In order to access to the platform you must obtain an API key first.
@@ -57,7 +57,7 @@ to setup and configure the platform.
 
 ## Initial settings
 
-1. You need to have a configuration json file to be able to use the Jarvis Proto SDK. You can get it from your
+1. You need to have a configuration json file to be able to use the IndyKite Proto SDK. You can get it from your
    Indykite contact or from Indykite console if you have access to it.
 
    Example configuration file:
@@ -125,7 +125,7 @@ Commit message follows
 ## Roadmap
 
 Checkout our roadmap on our
-[issues page](https://github.com/indykite/jarvis-sdk-go/issues)
+[issues page](https://github.com/indykite/indykite-sdk-go/issues)
 
 ## Contributing
 
@@ -137,7 +137,7 @@ We'd love to have you connect with us or other community developers over at
 [IndyKite.one](https://indykite.one)
 
 Feel free to file a bug, submit an issue or give us feedback on our
-[issues page](https://github.com/indykite/jarvis-sdk-go/issues)
+[issues page](https://github.com/indykite/indykite-sdk-go/issues)
 
 ## Vulnerability Reporting
 

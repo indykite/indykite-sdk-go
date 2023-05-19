@@ -45,7 +45,7 @@ linters-settings:
         sections:
             - standard
             - default
-            - prefix(github.com/indykite/jarvis-sdk-go)
+            - prefix(github.com/indykite/indykite-sdk-go)
             - blank
             - dot
     govet:

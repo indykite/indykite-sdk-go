@@ -19,8 +19,8 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 
-	"github.com/indykite/jarvis-sdk-go/grpc/config"
-	"github.com/indykite/jarvis-sdk-go/grpc/internal"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/internal"
 )
 
 // A ClientOption is an option for an API client.

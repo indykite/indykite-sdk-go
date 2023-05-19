@@ -17,7 +17,7 @@ package oauth2_test
 import (
 	"testing"
 
-	apicfg "github.com/indykite/jarvis-sdk-go/grpc/config"
+	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

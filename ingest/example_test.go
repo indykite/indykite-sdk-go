@@ -22,11 +22,11 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	ingestpb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta1"
-	ingestv2pb "github.com/indykite/jarvis-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
-	api "github.com/indykite/jarvis-sdk-go/grpc"
-	"github.com/indykite/jarvis-sdk-go/ingest"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta1"
+	ingestv2pb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	api "github.com/indykite/indykite-sdk-go/grpc"
+	"github.com/indykite/indykite-sdk-go/ingest"
 )
 
 // This example demonstrates how to create a new Ingest Client.

@@ -30,7 +30,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	"github.com/indykite/jarvis-sdk-go/errors"
+	"github.com/indykite/indykite-sdk-go/errors"
 )
 
 // BeBase64 match string if it is Base64 Standard encoded.

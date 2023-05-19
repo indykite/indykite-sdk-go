@@ -20,7 +20,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
 
 type PropertyIssuerPrefix string

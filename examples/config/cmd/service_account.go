@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
-	configpb "github.com/indykite/jarvis-sdk-go/gen/indykite/config/v1beta1"
+	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 )
 
 var serviceAccountCmd = &cobra.Command{

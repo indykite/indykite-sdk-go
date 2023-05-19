@@ -23,7 +23,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	objects "github.com/indykite/jarvis-sdk-go/gen/indykite/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
