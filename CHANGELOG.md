@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0](https://github.com/indykite/indykite-sdk-go/compare/v0.11.0...v0.12.0) (2023-05-19)
+
+
+### Features
+
+* rename repository ([6773676](https://github.com/indykite/indykite-sdk-go/commit/6773676ec990bff5df89fb1eab2490e526e037e0))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([6fd8f0f](https://github.com/indykite/indykite-sdk-go/commit/6fd8f0fce092cc4ef14cacffe83b4a676fade2f9))
+
 ## [0.11.0](https://github.com/indykite/indykite-sdk-go/compare/v0.10.1...v0.11.0) (2023-05-02)
 
 
