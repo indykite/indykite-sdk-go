@@ -26,33 +26,3 @@ jobs:
               with:
                   package-name: indykite-sdk-go
                   token: ${{ secrets.INDYKITE_PAT }}
-    analytics:
-        if: ${{ needs.release-please.outputs.released }}
-        name: Submit analytics data
-        needs: [release-please]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Repo
-              uses: actions/checkout@master
-            - name: Install CU tool
-              run: npm install -g clickup-simple-cli
-            - name: Get Version
-              run: |
-                  export VERSION="v$(cat .release-please-manifest.json | jq -r '."."')"
-                  echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-            - name: Authenticate to Google Cloud
-              id: auth
-              uses: google-github-actions/auth@v1
-              if: ${{ always() }}
-              with:
-                  workload_identity_provider: projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider
-                  service_account: jarvis-sdk-go@jarvis-dev-268314.iam.gserviceaccount.com
-
-            - name: Publish Deployment Metadata
-              if: ${{ always() }}
-              uses: indykite/metadata-publisher@v0
-              with:
-                  version: ${{ env.VERSION }}
-                  status: ${{ job.status }}
-                  bigquery_table: ${{ env.BIGQUERY_TABLE }}
