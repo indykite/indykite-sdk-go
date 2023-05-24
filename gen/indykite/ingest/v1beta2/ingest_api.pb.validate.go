@@ -513,33 +513,72 @@ func (m *IngestRecordResponse) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetRecordError()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IngestRecordResponseValidationError{
-					field:  "RecordError",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for RecordId
+
+	switch m.Error.(type) {
+
+	case *IngestRecordResponse_RecordError:
+
+		if all {
+			switch v := interface{}(m.GetRecordError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IngestRecordResponseValidationError{
+						field:  "RecordError",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IngestRecordResponseValidationError{
+						field:  "RecordError",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetRecordError()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IngestRecordResponseValidationError{
+				return IngestRecordResponseValidationError{
 					field:  "RecordError",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetRecordError()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return IngestRecordResponseValidationError{
-				field:  "RecordError",
-				reason: "embedded message failed validation",
-				cause:  err,
+
+	case *IngestRecordResponse_StatusError:
+
+		if all {
+			switch v := interface{}(m.GetStatusError()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IngestRecordResponseValidationError{
+						field:  "StatusError",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IngestRecordResponseValidationError{
+						field:  "StatusError",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetStatusError()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IngestRecordResponseValidationError{
+					field:  "StatusError",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
 			}
 		}
+
 	}
 
 	if len(errors) > 0 {

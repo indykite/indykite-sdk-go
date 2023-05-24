@@ -104,12 +104,13 @@ var _ = Describe("Ingest", func() {
 
 		mockClient.EXPECT().IngestRecord(gomock.Any(), gomock.Eq(&ingestpb.IngestRecordRequest{
 			Record: record1,
-		}), gomock.Any()).Return(&ingestpb.IngestRecordResponse{}, nil)
+		}), gomock.Any()).Return(&ingestpb.IngestRecordResponse{RecordId: record1.Id}, nil)
 
 		resp, err := client.IngestRecord(context.Background(), record1)
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"RecordError": BeNil(),
+			"RecordId": Equal("1"),
+			"Error":    BeNil(),
 		})))
 	})
 
