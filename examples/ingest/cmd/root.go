@@ -33,7 +33,7 @@ import (
 
 var (
 	cfgFile string
-	client  *ingest.V2Client
+	client  *ingest.Client
 	jsonp   = protojson.MarshalOptions{
 		Multiline:       true,
 		EmitUnpopulated: true,
@@ -103,7 +103,7 @@ func initConfig() {
 
 	}
 
-	client, err = ingest.NewV2Client(context.Background(),
+	client, err = ingest.NewClient(context.Background(),
 		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
 		grpc.WithRetryOptions(retry.Disable()),
 	)

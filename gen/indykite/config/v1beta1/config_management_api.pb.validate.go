@@ -11551,37 +11551,6 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
-	case *CreateConfigNodeRequest_IngestMappingConfig:
-
-		if all {
-			switch v := interface{}(m.GetIngestMappingConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "IngestMappingConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "IngestMappingConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetIngestMappingConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CreateConfigNodeRequestValidationError{
-					field:  "IngestMappingConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	case *CreateConfigNodeRequest_AuthorizationPolicyConfig:
 
 		if all {
@@ -12633,37 +12602,6 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
 					field:  "SafrProviderConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *UpdateConfigNodeRequest_IngestMappingConfig:
-
-		if all {
-			switch v := interface{}(m.GetIngestMappingConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "IngestMappingConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "IngestMappingConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetIngestMappingConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UpdateConfigNodeRequestValidationError{
-					field:  "IngestMappingConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

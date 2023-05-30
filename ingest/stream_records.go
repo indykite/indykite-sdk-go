@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2023 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@ package ingest
 
 import (
 	"context"
-	"log"
 	"time"
 
+	"google.golang.org/grpc/codes"
+
 	"github.com/indykite/indykite-sdk-go/errors"
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
-func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (
+// StreamRecords is a helper that takes a slice of records and handles opening the stream, sending the records,
+// getting the responses, and closing the stream.
+func (c *Client) StreamRecords(records []*ingestpb.Record) (
 	[]*ingestpb.StreamRecordsResponse,
 	error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
@@ -37,28 +40,76 @@ func (c *Client) StreamRecords(mappingID string, records []*ingestpb.Record) (
 	responses := make([]*ingestpb.StreamRecordsResponse, len(records))
 	for i, record := range records {
 		req := &ingestpb.StreamRecordsRequest{
-			MappingConfigId: mappingID,
-			Record:          record,
+			Record: record,
 		}
 
 		err = stream.Send(req)
 		if err != nil {
 			return nil, errors.FromError(err)
 		}
-		resp, err := stream.Recv()
+		var resp *ingestpb.StreamRecordsResponse
+		resp, err = stream.Recv()
 		if err != nil {
 			return nil, errors.FromError(err)
 		}
 		responses[i] = resp
-		if resp.GetRecordError() == nil {
-			log.Printf("record %d ingested succesfully", resp.GetRecordIndex())
-		} else {
-			log.Printf("record %v had error:", resp.GetRecordError())
-		}
-		err = stream.CloseSend()
-		if err != nil {
-			return nil, errors.FromError(err)
-		}
+	}
+	err = stream.CloseSend()
+	if err != nil {
+		return nil, errors.FromError(err)
 	}
 	return responses, nil
+}
+
+// OpenStreamClient opens a stream, ready to ingest records.
+func (c *Client) OpenStreamClient(ctx context.Context) error {
+	stream, err := c.client.StreamRecords(ctx)
+	if err != nil {
+		return errors.FromError(err)
+	}
+	c.stream = stream
+	return nil
+}
+
+// SendRecord sends a record on the opened stream.
+func (c *Client) SendRecord(record *ingestpb.Record) error {
+	if c.stream == nil {
+		return errors.New(codes.FailedPrecondition, "a stream must be opened first")
+	}
+
+	req := &ingestpb.StreamRecordsRequest{
+		Record: record,
+	}
+
+	err := c.stream.Send(req)
+	if err != nil {
+		return errors.FromError(err)
+	}
+	return nil
+}
+
+// ReceiveResponse returns the next response available on the stream.
+func (c *Client) ReceiveResponse() (*ingestpb.StreamRecordsResponse, error) {
+	if c.stream == nil {
+		return nil, errors.New(codes.FailedPrecondition, "a stream must be opened first")
+	}
+
+	resp, err := c.stream.Recv()
+	if err != nil {
+		return nil, errors.FromError(err)
+	}
+	return resp, nil
+}
+
+// CloseStream closes the gRPC stream.
+func (c *Client) CloseStream() error {
+	if c.stream == nil {
+		return errors.New(codes.FailedPrecondition, "the stream has already been closed")
+	}
+
+	err := c.stream.CloseSend()
+	if err != nil {
+		return errors.FromError(err)
+	}
+	return nil
 }

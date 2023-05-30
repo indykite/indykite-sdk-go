@@ -194,22 +194,6 @@ func (x *NodeRequest) WithAuthFlowConfig(v *configpb.AuthFlowConfig) *NodeReques
 	return x
 }
 
-func (x *NodeRequest) WithIngestMappingConfig(v *configpb.IngestMappingConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_IngestMappingConfig{IngestMappingConfig: v}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_IngestMappingConfig{IngestMappingConfig: v}
-		}
-	}
-	return x
-}
-
 func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPolicyConfig) *NodeRequest {
 	switch {
 	case x.create != nil:
