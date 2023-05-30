@@ -22,9 +22,7 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta1"
 	ingestv2pb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 	api "github.com/indykite/indykite-sdk-go/grpc"
 	"github.com/indykite/indykite-sdk-go/ingest"
 )
@@ -52,43 +50,9 @@ func ExampleNewClient_options() {
 	}()
 }
 
-// This example demonstrates how to use an Ingest Client to stream records.
+// This example demonstrates how to use the Ingest Client to stream multiple records.
 func ExampleClient_StreamRecords() {
 	client, err := ingest.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	record := map[string]*objects.Value{
-		"SomeKey":      objects.Int64(12345),
-		"SomeOtherKey": objects.String("SomeValue"),
-	}
-	records := []*ingestpb.Record{
-		{
-			ExternalId: "SomeKey",
-			Data:       record,
-		},
-	}
-	responses, err := client.StreamRecords("gid:AAAAFBtaAlxjDE8GuIWAPEFoSPs", records)
-	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-
-	for _, response := range responses {
-		fmt.Println(json.Format(response))
-	}
-}
-
-// This example demonstrates how to use the Ingest Client to stream multiple records.
-func ExampleV2Client_StreamRecords() {
-	client, err := ingest.NewV2Client(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
@@ -128,8 +92,8 @@ func ExampleV2Client_StreamRecords() {
 }
 
 // This example demonstrates how to use the Ingest Client to ingest a single record.
-func ExampleV2Client_IngestRecord() {
-	client, err := ingest.NewV2Client(context.Background())
+func ExampleClient_IngestRecord() {
+	client, err := ingest.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}

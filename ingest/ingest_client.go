@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2023 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
@@ -32,6 +32,8 @@ type Client struct {
 
 	// The gRPC API client.
 	client ingestpb.IngestAPIClient
+	// The gRPC StreamRecords client
+	stream ingestpb.IngestAPI_StreamRecordsClient
 
 	// The metadata to be sent with each request.
 	xMetadata metadata.MD
@@ -52,12 +54,36 @@ func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	return c, nil
 }
 
+// NewTestClient creates a new Ingest gRPC Client.
+func NewTestClient(client ingestpb.IngestAPIClient) (*Client, error) {
+	c := &Client{
+		xMetadata: metadata.Pairs("x-jarvis-client",
+			fmt.Sprintf("client/%s grpc/%s", versionClient, grpc.Version)),
+		client:       client,
+		closeHandler: func() error { return nil },
+	}
+	return c, nil
+}
+
 // Close closes the connection to the API service. The user should invoke this when
 // the client is no longer required.
 func (c *Client) Close() error {
+	if c.stream != nil {
+		_ = c.stream.CloseSend()
+	}
 	return c.closeHandler()
 }
 
+func insertMetadata(ctx context.Context, mds ...metadata.MD) context.Context {
+	out, _ := metadata.FromOutgoingContext(ctx)
+	out = out.Copy()
+	for _, md := range mds {
+		for k, v := range md {
+			out[k] = append(out[k], v...)
+		}
+	}
+	return metadata.NewOutgoingContext(ctx, out)
+}
 func defaultClientOptions() []api.ClientOption {
 	return []api.ClientOption{
 		api.WithGRPCDialOption(grpc.WithDisableServiceConfig()),

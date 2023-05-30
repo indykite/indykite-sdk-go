@@ -22,7 +22,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
-func (c *V2Client) IngestRecord(
+func (c *Client) IngestRecord(
 	ctx context.Context,
 	record *ingestpb.Record,
 	opts ...grpc.CallOption,
