@@ -2427,6 +2427,240 @@ var _ interface {
 	ErrorName() string
 } = RecordErrorValidationError{}
 
+// Validate checks the field values on Info with the rules defined in the proto
+// definition for this message. If any rules are violated, the first error
+// encountered is returned, or nil if there are no violations.
+func (m *Info) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Info with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in InfoMultiError, or nil if none found.
+func (m *Info) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Info) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetChanges() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InfoValidationError{
+						field:  fmt.Sprintf("Changes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InfoValidationError{
+						field:  fmt.Sprintf("Changes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InfoValidationError{
+					field:  fmt.Sprintf("Changes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return InfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// InfoMultiError is an error wrapping multiple validation errors returned by
+// Info.ValidateAll() if the designated constraints aren't met.
+type InfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InfoMultiError) AllErrors() []error { return m }
+
+// InfoValidationError is the validation error returned by Info.Validate if the
+// designated constraints aren't met.
+type InfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InfoValidationError) ErrorName() string { return "InfoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e InfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InfoValidationError{}
+
+// Validate checks the field values on Change with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Change) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Change with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in ChangeMultiError, or nil if none found.
+func (m *Change) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Change) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for DataType
+
+	if len(errors) > 0 {
+		return ChangeMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangeMultiError is an error wrapping multiple validation errors returned by
+// Change.ValidateAll() if the designated constraints aren't met.
+type ChangeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangeMultiError) AllErrors() []error { return m }
+
+// ChangeValidationError is the validation error returned by Change.Validate if
+// the designated constraints aren't met.
+type ChangeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangeValidationError) ErrorName() string { return "ChangeValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ChangeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChange.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangeValidationError{}
+
 // Validate checks the field values on DeleteData_NodePropertyMatch with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

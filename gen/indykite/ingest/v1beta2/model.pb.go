@@ -39,6 +39,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Change_DataType int32
+
+const (
+	Change_DATA_TYPE_INVALID      Change_DataType = 0
+	Change_DATA_TYPE_DIGITAL_TWIN Change_DataType = 1
+	Change_DATA_TYPE_RESOURCE     Change_DataType = 2
+	Change_DATA_TYPE_RELATION     Change_DataType = 3
+)
+
+// Enum value maps for Change_DataType.
+var (
+	Change_DataType_name = map[int32]string{
+		0: "DATA_TYPE_INVALID",
+		1: "DATA_TYPE_DIGITAL_TWIN",
+		2: "DATA_TYPE_RESOURCE",
+		3: "DATA_TYPE_RELATION",
+	}
+	Change_DataType_value = map[string]int32{
+		"DATA_TYPE_INVALID":      0,
+		"DATA_TYPE_DIGITAL_TWIN": 1,
+		"DATA_TYPE_RESOURCE":     2,
+		"DATA_TYPE_RELATION":     3,
+	}
+)
+
+func (x Change_DataType) Enum() *Change_DataType {
+	p := new(Change_DataType)
+	*p = x
+	return p
+}
+
+func (x Change_DataType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Change_DataType) Descriptor() protoreflect.EnumDescriptor {
+	return file_indykite_ingest_v1beta2_model_proto_enumTypes[0].Descriptor()
+}
+
+func (Change_DataType) Type() protoreflect.EnumType {
+	return &file_indykite_ingest_v1beta2_model_proto_enumTypes[0]
+}
+
+func (x Change_DataType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Change_DataType.Descriptor instead.
+func (Change_DataType) EnumDescriptor() ([]byte, []int) {
+	return file_indykite_ingest_v1beta2_model_proto_rawDescGZIP(), []int{14, 0}
+}
+
 type Record struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -932,6 +984,108 @@ func (x *RecordError) GetPropertyErrors() map[string]*PropertyError {
 	return nil
 }
 
+type Info struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Changes []*Change `protobuf:"bytes,1,rep,name=changes,proto3" json:"changes,omitempty"`
+}
+
+func (x *Info) Reset() {
+	*x = Info{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Info) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Info) ProtoMessage() {}
+
+func (x *Info) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Info.ProtoReflect.Descriptor instead.
+func (*Info) Descriptor() ([]byte, []int) {
+	return file_indykite_ingest_v1beta2_model_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *Info) GetChanges() []*Change {
+	if x != nil {
+		return x.Changes
+	}
+	return nil
+}
+
+type Change struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       string          `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	DataType Change_DataType `protobuf:"varint,2,opt,name=data_type,json=dataType,proto3,enum=indykite.ingest.v1beta2.Change_DataType" json:"data_type,omitempty"`
+}
+
+func (x *Change) Reset() {
+	*x = Change{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Change) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Change) ProtoMessage() {}
+
+func (x *Change) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Change.ProtoReflect.Descriptor instead.
+func (*Change) Descriptor() ([]byte, []int) {
+	return file_indykite_ingest_v1beta2_model_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *Change) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Change) GetDataType() Change_DataType {
+	if x != nil {
+		return x.DataType
+	}
+	return Change_DATA_TYPE_INVALID
+}
+
 type DeleteData_NodePropertyMatch struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -944,7 +1098,7 @@ type DeleteData_NodePropertyMatch struct {
 func (x *DeleteData_NodePropertyMatch) Reset() {
 	*x = DeleteData_NodePropertyMatch{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[13]
+		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -957,7 +1111,7 @@ func (x *DeleteData_NodePropertyMatch) String() string {
 func (*DeleteData_NodePropertyMatch) ProtoMessage() {}
 
 func (x *DeleteData_NodePropertyMatch) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[13]
+	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -999,7 +1153,7 @@ type DeleteData_RelationPropertyMatch struct {
 func (x *DeleteData_RelationPropertyMatch) Reset() {
 	*x = DeleteData_RelationPropertyMatch{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[14]
+		mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1012,7 +1166,7 @@ func (x *DeleteData_RelationPropertyMatch) String() string {
 func (*DeleteData_RelationPropertyMatch) ProtoMessage() {}
 
 func (x *DeleteData_RelationPropertyMatch) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[14]
+	mi := &file_indykite_ingest_v1beta2_model_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1229,23 +1383,40 @@ var file_indykite_ingest_v1beta2_model_proto_rawDesc = []byte{
 	0x32, 0x26, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x6e, 0x67, 0x65,
 	0x73, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x50, 0x72, 0x6f, 0x70, 0x65,
 	0x72, 0x74, 0x79, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
-	0x02, 0x38, 0x01, 0x42, 0xf6, 0x01, 0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e, 0x69, 0x6e, 0x64, 0x79,
-	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65,
-	0x74, 0x61, 0x32, 0x42, 0x0a, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
-	0x01, 0x5a, 0x4d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x6e,
-	0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2d,
-	0x73, 0x64, 0x6b, 0x2d, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b,
-	0x69, 0x74, 0x65, 0x2f, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74,
-	0x61, 0x32, 0x3b, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
-	0xa2, 0x02, 0x03, 0x49, 0x49, 0x58, 0xaa, 0x02, 0x17, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
-	0x65, 0x2e, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
-	0xca, 0x02, 0x17, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x6e, 0x67, 0x65,
-	0x73, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02, 0x23, 0x49, 0x6e, 0x64,
-	0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x5c, 0x56, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
-	0xea, 0x02, 0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x3a, 0x3a, 0x49, 0x6e, 0x67,
-	0x65, 0x73, 0x74, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x02, 0x38, 0x01, 0x22, 0x41, 0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x39, 0x0a, 0x07, 0x63,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x69,
+	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x07, 0x63,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x73, 0x22, 0xce, 0x01, 0x0a, 0x06, 0x43, 0x68, 0x61, 0x6e, 0x67,
+	0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x45, 0x0a, 0x09, 0x64, 0x61, 0x74, 0x61, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0e, 0x32, 0x28, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e,
+	0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x43,
+	0x68, 0x61, 0x6e, 0x67, 0x65, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65, 0x52, 0x08,
+	0x64, 0x61, 0x74, 0x61, 0x54, 0x79, 0x70, 0x65, 0x22, 0x6d, 0x0a, 0x08, 0x44, 0x61, 0x74, 0x61,
+	0x54, 0x79, 0x70, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x44, 0x41, 0x54, 0x41, 0x5f, 0x54, 0x59, 0x50,
+	0x45, 0x5f, 0x49, 0x4e, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x10, 0x00, 0x12, 0x1a, 0x0a, 0x16, 0x44,
+	0x41, 0x54, 0x41, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x44, 0x49, 0x47, 0x49, 0x54, 0x41, 0x4c,
+	0x5f, 0x54, 0x57, 0x49, 0x4e, 0x10, 0x01, 0x12, 0x16, 0x0a, 0x12, 0x44, 0x41, 0x54, 0x41, 0x5f,
+	0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x53, 0x4f, 0x55, 0x52, 0x43, 0x45, 0x10, 0x02, 0x12,
+	0x16, 0x0a, 0x12, 0x44, 0x41, 0x54, 0x41, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x4c,
+	0x41, 0x54, 0x49, 0x4f, 0x4e, 0x10, 0x03, 0x42, 0xf6, 0x01, 0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e,
+	0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x42, 0x0a, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x50, 0x72,
+	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x6e, 0x64, 0x79, 0x6b,
+	0x69, 0x74, 0x65, 0x2d, 0x73, 0x64, 0x6b, 0x2d, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x69,
+	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2f, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2f, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x3b, 0x69, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x32, 0xa2, 0x02, 0x03, 0x49, 0x49, 0x58, 0xaa, 0x02, 0x17, 0x49, 0x6e, 0x64,
+	0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x2e, 0x56, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x32, 0xca, 0x02, 0x17, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c,
+	0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0xe2, 0x02,
+	0x23, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x5c, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74,
+	0x5c, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
+	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x19, 0x49, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x3a,
+	0x3a, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1260,55 +1431,61 @@ func file_indykite_ingest_v1beta2_model_proto_rawDescGZIP() []byte {
 	return file_indykite_ingest_v1beta2_model_proto_rawDescData
 }
 
-var file_indykite_ingest_v1beta2_model_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_indykite_ingest_v1beta2_model_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_indykite_ingest_v1beta2_model_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_indykite_ingest_v1beta2_model_proto_goTypes = []interface{}{
-	(*Record)(nil),                           // 0: indykite.ingest.v1beta2.Record
-	(*UpsertData)(nil),                       // 1: indykite.ingest.v1beta2.UpsertData
-	(*DeleteData)(nil),                       // 2: indykite.ingest.v1beta2.DeleteData
-	(*DigitalTwin)(nil),                      // 3: indykite.ingest.v1beta2.DigitalTwin
-	(*Resource)(nil),                         // 4: indykite.ingest.v1beta2.Resource
-	(*IdentityProperty)(nil),                 // 5: indykite.ingest.v1beta2.IdentityProperty
-	(*Node)(nil),                             // 6: indykite.ingest.v1beta2.Node
-	(*Property)(nil),                         // 7: indykite.ingest.v1beta2.Property
-	(*Relation)(nil),                         // 8: indykite.ingest.v1beta2.Relation
-	(*NodeMatch)(nil),                        // 9: indykite.ingest.v1beta2.NodeMatch
-	(*RelationMatch)(nil),                    // 10: indykite.ingest.v1beta2.RelationMatch
-	(*PropertyError)(nil),                    // 11: indykite.ingest.v1beta2.PropertyError
-	(*RecordError)(nil),                      // 12: indykite.ingest.v1beta2.RecordError
-	(*DeleteData_NodePropertyMatch)(nil),     // 13: indykite.ingest.v1beta2.DeleteData.NodePropertyMatch
-	(*DeleteData_RelationPropertyMatch)(nil), // 14: indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch
-	nil,                                      // 15: indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry
-	(*v1beta1.Value)(nil),                    // 16: indykite.objects.v1beta1.Value
+	(Change_DataType)(0),                     // 0: indykite.ingest.v1beta2.Change.DataType
+	(*Record)(nil),                           // 1: indykite.ingest.v1beta2.Record
+	(*UpsertData)(nil),                       // 2: indykite.ingest.v1beta2.UpsertData
+	(*DeleteData)(nil),                       // 3: indykite.ingest.v1beta2.DeleteData
+	(*DigitalTwin)(nil),                      // 4: indykite.ingest.v1beta2.DigitalTwin
+	(*Resource)(nil),                         // 5: indykite.ingest.v1beta2.Resource
+	(*IdentityProperty)(nil),                 // 6: indykite.ingest.v1beta2.IdentityProperty
+	(*Node)(nil),                             // 7: indykite.ingest.v1beta2.Node
+	(*Property)(nil),                         // 8: indykite.ingest.v1beta2.Property
+	(*Relation)(nil),                         // 9: indykite.ingest.v1beta2.Relation
+	(*NodeMatch)(nil),                        // 10: indykite.ingest.v1beta2.NodeMatch
+	(*RelationMatch)(nil),                    // 11: indykite.ingest.v1beta2.RelationMatch
+	(*PropertyError)(nil),                    // 12: indykite.ingest.v1beta2.PropertyError
+	(*RecordError)(nil),                      // 13: indykite.ingest.v1beta2.RecordError
+	(*Info)(nil),                             // 14: indykite.ingest.v1beta2.Info
+	(*Change)(nil),                           // 15: indykite.ingest.v1beta2.Change
+	(*DeleteData_NodePropertyMatch)(nil),     // 16: indykite.ingest.v1beta2.DeleteData.NodePropertyMatch
+	(*DeleteData_RelationPropertyMatch)(nil), // 17: indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch
+	nil,                                      // 18: indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry
+	(*v1beta1.Value)(nil),                    // 19: indykite.objects.v1beta1.Value
 }
 var file_indykite_ingest_v1beta2_model_proto_depIdxs = []int32{
-	1,  // 0: indykite.ingest.v1beta2.Record.upsert:type_name -> indykite.ingest.v1beta2.UpsertData
-	2,  // 1: indykite.ingest.v1beta2.Record.delete:type_name -> indykite.ingest.v1beta2.DeleteData
-	6,  // 2: indykite.ingest.v1beta2.UpsertData.node:type_name -> indykite.ingest.v1beta2.Node
-	8,  // 3: indykite.ingest.v1beta2.UpsertData.relation:type_name -> indykite.ingest.v1beta2.Relation
-	9,  // 4: indykite.ingest.v1beta2.DeleteData.node:type_name -> indykite.ingest.v1beta2.NodeMatch
-	10, // 5: indykite.ingest.v1beta2.DeleteData.relation:type_name -> indykite.ingest.v1beta2.RelationMatch
-	13, // 6: indykite.ingest.v1beta2.DeleteData.node_property:type_name -> indykite.ingest.v1beta2.DeleteData.NodePropertyMatch
-	14, // 7: indykite.ingest.v1beta2.DeleteData.relation_property:type_name -> indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch
-	5,  // 8: indykite.ingest.v1beta2.DigitalTwin.identity_properties:type_name -> indykite.ingest.v1beta2.IdentityProperty
-	7,  // 9: indykite.ingest.v1beta2.DigitalTwin.properties:type_name -> indykite.ingest.v1beta2.Property
-	7,  // 10: indykite.ingest.v1beta2.Resource.properties:type_name -> indykite.ingest.v1beta2.Property
-	16, // 11: indykite.ingest.v1beta2.IdentityProperty.value:type_name -> indykite.objects.v1beta1.Value
-	3,  // 12: indykite.ingest.v1beta2.Node.digital_twin:type_name -> indykite.ingest.v1beta2.DigitalTwin
-	4,  // 13: indykite.ingest.v1beta2.Node.resource:type_name -> indykite.ingest.v1beta2.Resource
-	16, // 14: indykite.ingest.v1beta2.Property.value:type_name -> indykite.objects.v1beta1.Value
-	10, // 15: indykite.ingest.v1beta2.Relation.match:type_name -> indykite.ingest.v1beta2.RelationMatch
-	7,  // 16: indykite.ingest.v1beta2.Relation.properties:type_name -> indykite.ingest.v1beta2.Property
-	9,  // 17: indykite.ingest.v1beta2.RelationMatch.source_match:type_name -> indykite.ingest.v1beta2.NodeMatch
-	9,  // 18: indykite.ingest.v1beta2.RelationMatch.target_match:type_name -> indykite.ingest.v1beta2.NodeMatch
-	15, // 19: indykite.ingest.v1beta2.RecordError.property_errors:type_name -> indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry
-	9,  // 20: indykite.ingest.v1beta2.DeleteData.NodePropertyMatch.match:type_name -> indykite.ingest.v1beta2.NodeMatch
-	10, // 21: indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch.match:type_name -> indykite.ingest.v1beta2.RelationMatch
-	11, // 22: indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry.value:type_name -> indykite.ingest.v1beta2.PropertyError
-	23, // [23:23] is the sub-list for method output_type
-	23, // [23:23] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	2,  // 0: indykite.ingest.v1beta2.Record.upsert:type_name -> indykite.ingest.v1beta2.UpsertData
+	3,  // 1: indykite.ingest.v1beta2.Record.delete:type_name -> indykite.ingest.v1beta2.DeleteData
+	7,  // 2: indykite.ingest.v1beta2.UpsertData.node:type_name -> indykite.ingest.v1beta2.Node
+	9,  // 3: indykite.ingest.v1beta2.UpsertData.relation:type_name -> indykite.ingest.v1beta2.Relation
+	10, // 4: indykite.ingest.v1beta2.DeleteData.node:type_name -> indykite.ingest.v1beta2.NodeMatch
+	11, // 5: indykite.ingest.v1beta2.DeleteData.relation:type_name -> indykite.ingest.v1beta2.RelationMatch
+	16, // 6: indykite.ingest.v1beta2.DeleteData.node_property:type_name -> indykite.ingest.v1beta2.DeleteData.NodePropertyMatch
+	17, // 7: indykite.ingest.v1beta2.DeleteData.relation_property:type_name -> indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch
+	6,  // 8: indykite.ingest.v1beta2.DigitalTwin.identity_properties:type_name -> indykite.ingest.v1beta2.IdentityProperty
+	8,  // 9: indykite.ingest.v1beta2.DigitalTwin.properties:type_name -> indykite.ingest.v1beta2.Property
+	8,  // 10: indykite.ingest.v1beta2.Resource.properties:type_name -> indykite.ingest.v1beta2.Property
+	19, // 11: indykite.ingest.v1beta2.IdentityProperty.value:type_name -> indykite.objects.v1beta1.Value
+	4,  // 12: indykite.ingest.v1beta2.Node.digital_twin:type_name -> indykite.ingest.v1beta2.DigitalTwin
+	5,  // 13: indykite.ingest.v1beta2.Node.resource:type_name -> indykite.ingest.v1beta2.Resource
+	19, // 14: indykite.ingest.v1beta2.Property.value:type_name -> indykite.objects.v1beta1.Value
+	11, // 15: indykite.ingest.v1beta2.Relation.match:type_name -> indykite.ingest.v1beta2.RelationMatch
+	8,  // 16: indykite.ingest.v1beta2.Relation.properties:type_name -> indykite.ingest.v1beta2.Property
+	10, // 17: indykite.ingest.v1beta2.RelationMatch.source_match:type_name -> indykite.ingest.v1beta2.NodeMatch
+	10, // 18: indykite.ingest.v1beta2.RelationMatch.target_match:type_name -> indykite.ingest.v1beta2.NodeMatch
+	18, // 19: indykite.ingest.v1beta2.RecordError.property_errors:type_name -> indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry
+	15, // 20: indykite.ingest.v1beta2.Info.changes:type_name -> indykite.ingest.v1beta2.Change
+	0,  // 21: indykite.ingest.v1beta2.Change.data_type:type_name -> indykite.ingest.v1beta2.Change.DataType
+	10, // 22: indykite.ingest.v1beta2.DeleteData.NodePropertyMatch.match:type_name -> indykite.ingest.v1beta2.NodeMatch
+	11, // 23: indykite.ingest.v1beta2.DeleteData.RelationPropertyMatch.match:type_name -> indykite.ingest.v1beta2.RelationMatch
+	12, // 24: indykite.ingest.v1beta2.RecordError.PropertyErrorsEntry.value:type_name -> indykite.ingest.v1beta2.PropertyError
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_indykite_ingest_v1beta2_model_proto_init() }
@@ -1474,7 +1651,7 @@ func file_indykite_ingest_v1beta2_model_proto_init() {
 			}
 		}
 		file_indykite_ingest_v1beta2_model_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteData_NodePropertyMatch); i {
+			switch v := v.(*Info); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1486,6 +1663,30 @@ func file_indykite_ingest_v1beta2_model_proto_init() {
 			}
 		}
 		file_indykite_ingest_v1beta2_model_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Change); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_ingest_v1beta2_model_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteData_NodePropertyMatch); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_ingest_v1beta2_model_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteData_RelationPropertyMatch); i {
 			case 0:
 				return &v.state
@@ -1521,13 +1722,14 @@ func file_indykite_ingest_v1beta2_model_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_ingest_v1beta2_model_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   16,
+			NumEnums:      1,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_indykite_ingest_v1beta2_model_proto_goTypes,
 		DependencyIndexes: file_indykite_ingest_v1beta2_model_proto_depIdxs,
+		EnumInfos:         file_indykite_ingest_v1beta2_model_proto_enumTypes,
 		MessageInfos:      file_indykite_ingest_v1beta2_model_proto_msgTypes,
 	}.Build()
 	File_indykite_ingest_v1beta2_model_proto = out.File
