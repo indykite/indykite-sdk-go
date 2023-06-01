@@ -104,13 +104,27 @@ var _ = Describe("Ingest", func() {
 
 		mockClient.EXPECT().IngestRecord(gomock.Any(), gomock.Eq(&ingestpb.IngestRecordRequest{
 			Record: record1,
-		}), gomock.Any()).Return(&ingestpb.IngestRecordResponse{RecordId: record1.Id}, nil)
+		}), gomock.Any()).Return(&ingestpb.IngestRecordResponse{
+			RecordId: record1.Id,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+				},
+			}},
+		}, nil)
 
 		resp, err := client.IngestRecord(context.Background(), record1)
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 			"RecordId": Equal("1"),
 			"Error":    BeNil(),
+			"Info": PointTo(MatchFields(IgnoreExtras, Fields{
+				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id":       Not(BeEmpty()),
+					"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+				}))),
+			})),
 		})))
 	})
 
@@ -128,9 +142,25 @@ var _ = Describe("Ingest", func() {
 
 		mockClient.EXPECT().StreamRecords(gomock.Any()).Return(mockStreamClient, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record1}).Return(nil)
-		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{RecordId: "1", RecordIndex: 0}, nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "1",
+			RecordIndex: 0,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+				},
+			}}}, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
-		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{RecordId: "2", RecordIndex: 1}, nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "2",
+			RecordIndex: 1,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+				},
+			}}}, nil)
 		mockStreamClient.EXPECT().CloseSend()
 
 		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
@@ -138,6 +168,10 @@ var _ = Describe("Ingest", func() {
 
 		err = client.OpenStreamClient(ctx)
 		Expect(err).To(Succeed())
+		dataTypes := []ingestpb.Change_DataType{
+			ingestpb.Change_DATA_TYPE_RELATION,
+			ingestpb.Change_DATA_TYPE_RESOURCE,
+		}
 		for i, record := range records {
 			var resp *ingestpb.StreamRecordsResponse
 			err = client.SendRecord(record)
@@ -147,6 +181,12 @@ var _ = Describe("Ingest", func() {
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
 				"RecordIndex": Equal(uint32(i)),
+				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
+					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id":       Not(BeEmpty()),
+						"DataType": Equal(dataTypes[i]),
+					}))),
+				})),
 			})))
 		}
 		err = client.CloseStream()
@@ -167,17 +207,43 @@ var _ = Describe("Ingest", func() {
 
 		mockClient.EXPECT().StreamRecords(gomock.Any()).Return(mockStreamClient, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record1}).Return(nil)
-		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{RecordId: "1", RecordIndex: 0}, nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "1",
+			RecordIndex: 0,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+				},
+			}}}, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
-		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{RecordId: "2", RecordIndex: 1}, nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "2",
+			RecordIndex: 1,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+				},
+			}}}, nil)
 		mockStreamClient.EXPECT().CloseSend()
 
 		responses, err := client.StreamRecords(records)
 		Expect(err).To(BeNil())
+		dataTypes := []ingestpb.Change_DataType{
+			ingestpb.Change_DATA_TYPE_RELATION,
+			ingestpb.Change_DATA_TYPE_RESOURCE,
+		}
 		for i, response := range responses {
 			Expect(response).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
 				"RecordIndex": Equal(uint32(i)),
+				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
+					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id":       Not(BeEmpty()),
+						"DataType": Equal(dataTypes[i]),
+					}))),
+				})),
 			})))
 		}
 	})
