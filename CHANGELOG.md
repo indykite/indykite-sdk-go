@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.13.0](https://github.com/indykite/indykite-sdk-go/compare/v0.12.0...v0.13.0) (2023-06-01)
+
+
+### Features
+
+* return info in ingest response ([2eddddc](https://github.com/indykite/indykite-sdk-go/commit/2eddddc7800bb105b505ae59d6386fa5430a8b72))
+
+
+### Bug Fixes
+
+* remove v1 ingest and mapping ([65089d6](https://github.com/indykite/indykite-sdk-go/commit/65089d64a5fe754fc2e9f86736eb6ce66f191980))
+* update ingestrecord response ([aca8508](https://github.com/indykite/indykite-sdk-go/commit/aca8508c3d2d898f920f35b3d829d7c124127cf0))
+
 ## [0.12.0](https://github.com/indykite/indykite-sdk-go/compare/v0.11.0...v0.12.0) (2023-05-19)
 
 
