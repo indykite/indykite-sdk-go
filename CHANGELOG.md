@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.13.1](https://github.com/indykite/indykite-sdk-go/compare/v0.13.0...v0.13.1) (2023-06-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([4356bce](https://github.com/indykite/indykite-sdk-go/commit/4356bcec9435d781be41edc04d069c0ba974b5ed))
+
 ## [0.13.0](https://github.com/indykite/indykite-sdk-go/compare/v0.12.0...v0.13.0) (2023-06-01)
 
 
