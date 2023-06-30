@@ -828,9 +828,18 @@ func (m *Property) validate(all bool) error {
 		}
 	}
 
-	switch m.Value.(type) {
-
+	switch v := m.Value.(type) {
 	case *Property_ObjectValue:
+		if v == nil {
+			err := PropertyValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetObjectValue()).(type) {
@@ -862,8 +871,19 @@ func (m *Property) validate(all bool) error {
 		}
 
 	case *Property_ReferenceValue:
+		if v == nil {
+			err := PropertyValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for ReferenceValue
-
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -967,9 +987,20 @@ func (m *PropertyBatchOperation) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Operation.(type) {
-
+	oneofOperationPresent := false
+	switch v := m.Operation.(type) {
 	case *PropertyBatchOperation_Add:
+		if v == nil {
+			err := PropertyBatchOperationValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofOperationPresent = true
 
 		if m.GetAdd() == nil {
 			err := PropertyBatchOperationValidationError{
@@ -1012,6 +1043,17 @@ func (m *PropertyBatchOperation) validate(all bool) error {
 		}
 
 	case *PropertyBatchOperation_Replace:
+		if v == nil {
+			err := PropertyBatchOperationValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofOperationPresent = true
 
 		if m.GetReplace() == nil {
 			err := PropertyBatchOperationValidationError{
@@ -1054,6 +1096,17 @@ func (m *PropertyBatchOperation) validate(all bool) error {
 		}
 
 	case *PropertyBatchOperation_Remove:
+		if v == nil {
+			err := PropertyBatchOperationValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofOperationPresent = true
 
 		if m.GetRemove() == nil {
 			err := PropertyBatchOperationValidationError{
@@ -1096,6 +1149,9 @@ func (m *PropertyBatchOperation) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofOperationPresent {
 		err := PropertyBatchOperationValidationError{
 			field:  "Operation",
 			reason: "value is required",
@@ -1104,7 +1160,6 @@ func (m *PropertyBatchOperation) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -1211,9 +1266,20 @@ func (m *BatchOperationResult) validate(all bool) error {
 
 	// no validation rules for Index
 
-	switch m.Result.(type) {
-
+	oneofResultPresent := false
+	switch v := m.Result.(type) {
 	case *BatchOperationResult_Success:
+		if v == nil {
+			err := BatchOperationResultValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetSuccess()).(type) {
@@ -1245,6 +1311,17 @@ func (m *BatchOperationResult) validate(all bool) error {
 		}
 
 	case *BatchOperationResult_Error:
+		if v == nil {
+			err := BatchOperationResultValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetError()).(type) {
@@ -1276,6 +1353,9 @@ func (m *BatchOperationResult) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofResultPresent {
 		err := BatchOperationResultValidationError{
 			field:  "Result",
 			reason: "value is required",
@@ -1284,7 +1364,6 @@ func (m *BatchOperationResult) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

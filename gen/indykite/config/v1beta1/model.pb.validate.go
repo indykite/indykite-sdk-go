@@ -483,6 +483,162 @@ var _Customer_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _Customer_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
+// Validate checks the field values on CustomerConfig with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CustomerConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CustomerConfig with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CustomerConfigMultiError,
+// or nil if none found.
+func (m *CustomerConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CustomerConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetDefaultAuthFlowId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultAuthFlowId()); l < 22 || l > 254 {
+			err := CustomerConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CustomerConfig_DefaultAuthFlowId_Pattern.MatchString(m.GetDefaultAuthFlowId()) {
+			err := CustomerConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetDefaultEmailServiceId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultEmailServiceId()); l < 22 || l > 254 {
+			err := CustomerConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_CustomerConfig_DefaultEmailServiceId_Pattern.MatchString(m.GetDefaultEmailServiceId()) {
+			err := CustomerConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CustomerConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// CustomerConfigMultiError is an error wrapping multiple validation errors
+// returned by CustomerConfig.ValidateAll() if the designated constraints
+// aren't met.
+type CustomerConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CustomerConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CustomerConfigMultiError) AllErrors() []error { return m }
+
+// CustomerConfigValidationError is the validation error returned by
+// CustomerConfig.Validate if the designated constraints aren't met.
+type CustomerConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CustomerConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CustomerConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CustomerConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CustomerConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CustomerConfigValidationError) ErrorName() string { return "CustomerConfigValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CustomerConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCustomerConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CustomerConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CustomerConfigValidationError{}
+
+var _CustomerConfig_DefaultAuthFlowId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _CustomerConfig_DefaultEmailServiceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
 // Validate checks the field values on ApplicationSpace with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -827,6 +983,311 @@ var _ApplicationSpace_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{2
 
 var _ApplicationSpace_IssuerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+// Validate checks the field values on ApplicationSpaceConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ApplicationSpaceConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ApplicationSpaceConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ApplicationSpaceConfigMultiError, or nil if none found.
+func (m *ApplicationSpaceConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ApplicationSpaceConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetDefaultTenantId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultTenantId()); l < 22 || l > 254 {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultTenantId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ApplicationSpaceConfig_DefaultTenantId_Pattern.MatchString(m.GetDefaultTenantId()) {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultTenantId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetDefaultAuthFlowId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultAuthFlowId()); l < 22 || l > 254 {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ApplicationSpaceConfig_DefaultAuthFlowId_Pattern.MatchString(m.GetDefaultAuthFlowId()) {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetDefaultEmailServiceId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultEmailServiceId()); l < 22 || l > 254 {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_ApplicationSpaceConfig_DefaultEmailServiceId_Pattern.MatchString(m.GetDefaultEmailServiceId()) {
+			err := ApplicationSpaceConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetUniquePropertyConstraints()))
+		i := 0
+		for key := range m.GetUniquePropertyConstraints() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetUniquePropertyConstraints()[key]
+			_ = val
+
+			if l := utf8.RuneCountInString(key); l < 1 || l > 254 {
+				err := ApplicationSpaceConfigValidationError{
+					field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+					reason: "value length must be between 1 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if !_ApplicationSpaceConfig_UniquePropertyConstraints_Pattern.MatchString(key) {
+				err := ApplicationSpaceConfigValidationError{
+					field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+					reason: "value does not match regex pattern \"^[A-Za-z][A-Za-z0-9_]{0,253}$\"",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if val == nil {
+				err := ApplicationSpaceConfigValidationError{
+					field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+					reason: "value is required",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, ApplicationSpaceConfigValidationError{
+							field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, ApplicationSpaceConfigValidationError{
+							field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return ApplicationSpaceConfigValidationError{
+						field:  fmt.Sprintf("UniquePropertyConstraints[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if m.GetUsernamePolicy() == nil {
+		err := ApplicationSpaceConfigValidationError{
+			field:  "UsernamePolicy",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetUsernamePolicy()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ApplicationSpaceConfigValidationError{
+					field:  "UsernamePolicy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ApplicationSpaceConfigValidationError{
+					field:  "UsernamePolicy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUsernamePolicy()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ApplicationSpaceConfigValidationError{
+				field:  "UsernamePolicy",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ApplicationSpaceConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// ApplicationSpaceConfigMultiError is an error wrapping multiple validation
+// errors returned by ApplicationSpaceConfig.ValidateAll() if the designated
+// constraints aren't met.
+type ApplicationSpaceConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ApplicationSpaceConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ApplicationSpaceConfigMultiError) AllErrors() []error { return m }
+
+// ApplicationSpaceConfigValidationError is the validation error returned by
+// ApplicationSpaceConfig.Validate if the designated constraints aren't met.
+type ApplicationSpaceConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ApplicationSpaceConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ApplicationSpaceConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ApplicationSpaceConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ApplicationSpaceConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ApplicationSpaceConfigValidationError) ErrorName() string {
+	return "ApplicationSpaceConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ApplicationSpaceConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sApplicationSpaceConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ApplicationSpaceConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ApplicationSpaceConfigValidationError{}
+
+var _ApplicationSpaceConfig_DefaultTenantId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ApplicationSpaceConfig_DefaultAuthFlowId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ApplicationSpaceConfig_DefaultEmailServiceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _ApplicationSpaceConfig_UniquePropertyConstraints_Pattern = regexp.MustCompile("^[A-Za-z][A-Za-z0-9_]{0,253}$")
+
 // Validate checks the field values on Tenant with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1106,6 +1567,8 @@ func (m *Tenant) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Default
+
 	if len(errors) > 0 {
 		return TenantMultiError(errors)
 	}
@@ -1192,6 +1655,190 @@ var _Tenant_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 var _Tenant_AppSpaceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _Tenant_IssuerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+// Validate checks the field values on TenantConfig with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TenantConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TenantConfig with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TenantConfigMultiError, or
+// nil if none found.
+func (m *TenantConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TenantConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetDefaultAuthFlowId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultAuthFlowId()); l < 22 || l > 254 {
+			err := TenantConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_TenantConfig_DefaultAuthFlowId_Pattern.MatchString(m.GetDefaultAuthFlowId()) {
+			err := TenantConfigValidationError{
+				field:  "DefaultAuthFlowId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetDefaultEmailServiceId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetDefaultEmailServiceId()); l < 22 || l > 254 {
+			err := TenantConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_TenantConfig_DefaultEmailServiceId_Pattern.MatchString(m.GetDefaultEmailServiceId()) {
+			err := TenantConfigValidationError{
+				field:  "DefaultEmailServiceId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetUsernamePolicy()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TenantConfigValidationError{
+					field:  "UsernamePolicy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TenantConfigValidationError{
+					field:  "UsernamePolicy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUsernamePolicy()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TenantConfigValidationError{
+				field:  "UsernamePolicy",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TenantConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// TenantConfigMultiError is an error wrapping multiple validation errors
+// returned by TenantConfig.ValidateAll() if the designated constraints aren't met.
+type TenantConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TenantConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TenantConfigMultiError) AllErrors() []error { return m }
+
+// TenantConfigValidationError is the validation error returned by
+// TenantConfig.Validate if the designated constraints aren't met.
+type TenantConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TenantConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TenantConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TenantConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TenantConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TenantConfigValidationError) ErrorName() string { return "TenantConfigValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TenantConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTenantConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TenantConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TenantConfigValidationError{}
+
+var _TenantConfig_DefaultAuthFlowId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _TenantConfig_DefaultEmailServiceId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 // Validate checks the field values on Application with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -3204,9 +3851,20 @@ func (m *ConfigNode) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	switch m.Config.(type) {
-
+	oneofConfigPresent := false
+	switch v := m.Config.(type) {
 	case *ConfigNode_AuthFlowConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
@@ -3238,6 +3896,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_EmailServiceConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetEmailServiceConfig()).(type) {
@@ -3269,6 +3938,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_Oauth2ClientConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetOauth2ClientConfig()).(type) {
@@ -3300,6 +3980,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_PasswordProviderConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
@@ -3331,6 +4022,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_WebauthnProviderConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetWebauthnProviderConfig()).(type) {
@@ -3362,6 +4064,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_AuthenteqProviderConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAuthenteqProviderConfig()).(type) {
@@ -3393,6 +4106,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_SafrProviderConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetSafrProviderConfig()).(type) {
@@ -3424,6 +4148,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_AuthorizationPolicyConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
@@ -3455,6 +4190,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_KnowledgeGraphSchemaConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
@@ -3486,6 +4232,17 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	case *ConfigNode_ReadidProviderConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
 
 		if all {
 			switch v := interface{}(m.GetReadidProviderConfig()).(type) {
@@ -3517,6 +4274,9 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofConfigPresent {
 		err := ConfigNodeValidationError{
 			field:  "Config",
 			reason: "value is required",
@@ -3525,7 +4285,6 @@ func (m *ConfigNode) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -3640,7 +4399,7 @@ func (m *OAuth2ClientConfig) validate(all bool) error {
 	if _, ok := _OAuth2ClientConfig_ProviderType_NotInLookup[m.GetProviderType()]; ok {
 		err := OAuth2ClientConfigValidationError{
 			field:  "ProviderType",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [PROVIDER_TYPE_INVALID]",
 		}
 		if !all {
 			return err
@@ -5062,7 +5821,7 @@ func (m *OAuth2ApplicationConfig) validate(all bool) error {
 	if _, ok := _OAuth2ApplicationConfig_SubjectType_NotInLookup[m.GetSubjectType()]; ok {
 		err := OAuth2ApplicationConfigValidationError{
 			field:  "SubjectType",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [CLIENT_SUBJECT_TYPE_INVALID]",
 		}
 		if !all {
 			return err
@@ -5278,7 +6037,7 @@ func (m *OAuth2ApplicationConfig) validate(all bool) error {
 	if _, ok := _OAuth2ApplicationConfig_TokenEndpointAuthMethod_NotInLookup[m.GetTokenEndpointAuthMethod()]; ok {
 		err := OAuth2ApplicationConfigValidationError{
 			field:  "TokenEndpointAuthMethod",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [TOKEN_ENDPOINT_AUTH_METHOD_INVALID]",
 		}
 		if !all {
 			return err
@@ -6805,11 +7564,11 @@ func (m *AuthFlowConfig) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetDefault()).(type) {
+		switch v := interface{}(m.GetSetDefault()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, AuthFlowConfigValidationError{
-					field:  "Default",
+					field:  "SetDefault",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -6817,21 +7576,23 @@ func (m *AuthFlowConfig) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, AuthFlowConfigValidationError{
-					field:  "Default",
+					field:  "SetDefault",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetDefault()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetSetDefault()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return AuthFlowConfigValidationError{
-				field:  "Default",
+				field:  "SetDefault",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
 		}
 	}
+
+	// no validation rules for Default
 
 	if len(errors) > 0 {
 		return AuthFlowConfigMultiError(errors)
@@ -7597,11 +8358,11 @@ func (m *EmailServiceConfig) validate(all bool) error {
 	}
 
 	if all {
-		switch v := interface{}(m.GetDefault()).(type) {
+		switch v := interface{}(m.GetSetDefault()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "Default",
+					field:  "SetDefault",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -7609,21 +8370,23 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "Default",
+					field:  "SetDefault",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetDefault()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetSetDefault()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return EmailServiceConfigValidationError{
-				field:  "Default",
+				field:  "SetDefault",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
 		}
 	}
+
+	// no validation rules for Default
 
 	if all {
 		switch v := interface{}(m.GetInvitationMessage()).(type) {
@@ -7741,9 +8504,18 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		}
 	}
 
-	switch m.Provider.(type) {
-
+	switch v := m.Provider.(type) {
 	case *EmailServiceConfig_Sendgrid:
+		if v == nil {
+			err := EmailServiceConfigValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetSendgrid() == nil {
 			err := EmailServiceConfigValidationError{
@@ -7786,6 +8558,16 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		}
 
 	case *EmailServiceConfig_Mailjet:
+		if v == nil {
+			err := EmailServiceConfigValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetMailjet() == nil {
 			err := EmailServiceConfigValidationError{
@@ -7828,6 +8610,16 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		}
 
 	case *EmailServiceConfig_Mailgun:
+		if v == nil {
+			err := EmailServiceConfigValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetMailgun() == nil {
 			err := EmailServiceConfigValidationError{
@@ -7870,6 +8662,16 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		}
 
 	case *EmailServiceConfig_Amazon:
+		if v == nil {
+			err := EmailServiceConfigValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetAmazon() == nil {
 			err := EmailServiceConfigValidationError{
@@ -7911,6 +8713,8 @@ func (m *EmailServiceConfig) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -8963,9 +9767,18 @@ func (m *EmailDefinition) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Email.(type) {
-
+	switch v := m.Email.(type) {
 	case *EmailDefinition_Template:
+		if v == nil {
+			err := EmailDefinitionValidationError{
+				field:  "Email",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetTemplate() == nil {
 			err := EmailDefinitionValidationError{
@@ -9008,6 +9821,16 @@ func (m *EmailDefinition) validate(all bool) error {
 		}
 
 	case *EmailDefinition_Message:
+		if v == nil {
+			err := EmailDefinitionValidationError{
+				field:  "Email",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if m.GetMessage() == nil {
 			err := EmailDefinitionValidationError{
@@ -9049,6 +9872,8 @@ func (m *EmailDefinition) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -10397,9 +11222,82 @@ func (m *UsernamePolicy) validate(all bool) error {
 
 	var errors []error
 
+	if len(m.GetAllowedUsernameFormats()) > 3 {
+		err := UsernamePolicyValidationError{
+			field:  "AllowedUsernameFormats",
+			reason: "value must contain no more than 3 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	_UsernamePolicy_AllowedUsernameFormats_Unique := make(map[string]struct{}, len(m.GetAllowedUsernameFormats()))
+
+	for idx, item := range m.GetAllowedUsernameFormats() {
+		_, _ = idx, item
+
+		if _, exists := _UsernamePolicy_AllowedUsernameFormats_Unique[item]; exists {
+			err := UsernamePolicyValidationError{
+				field:  fmt.Sprintf("AllowedUsernameFormats[%v]", idx),
+				reason: "repeated value must contain unique items",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+			_UsernamePolicy_AllowedUsernameFormats_Unique[item] = struct{}{}
+		}
+
+		if _, ok := _UsernamePolicy_AllowedUsernameFormats_InLookup[item]; !ok {
+			err := UsernamePolicyValidationError{
+				field:  fmt.Sprintf("AllowedUsernameFormats[%v]", idx),
+				reason: "value must be in list [email mobile username]",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	// no validation rules for ValidEmail
 
 	// no validation rules for VerifyEmail
+
+	if d := m.GetVerifyEmailGracePeriod(); d != nil {
+		dur, err := d.AsDuration(), d.CheckValid()
+		if err != nil {
+			err = UsernamePolicyValidationError{
+				field:  "VerifyEmailGracePeriod",
+				reason: "value is not a valid duration",
+				cause:  err,
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			lte := time.Duration(900*time.Second + 0*time.Nanosecond)
+			gte := time.Duration(5*time.Second + 0*time.Nanosecond)
+
+			if dur < gte || dur > lte {
+				err := UsernamePolicyValidationError{
+					field:  "VerifyEmailGracePeriod",
+					reason: "value must be inside range [5s, 15m0s]",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+	}
 
 	if len(errors) > 0 {
 		return UsernamePolicyMultiError(errors)
@@ -10478,6 +11376,156 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UsernamePolicyValidationError{}
+
+var _UsernamePolicy_AllowedUsernameFormats_InLookup = map[string]struct{}{
+	"email":    {},
+	"mobile":   {},
+	"username": {},
+}
+
+// Validate checks the field values on UniquePropertyConstraint with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UniquePropertyConstraint) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UniquePropertyConstraint with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UniquePropertyConstraintMultiError, or nil if none found.
+func (m *UniquePropertyConstraint) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UniquePropertyConstraint) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantUnique
+
+	if len(m.GetCanonicalization()) > 0 {
+
+		_UniquePropertyConstraint_Canonicalization_Unique := make(map[string]struct{}, len(m.GetCanonicalization()))
+
+		for idx, item := range m.GetCanonicalization() {
+			_, _ = idx, item
+
+			if _, exists := _UniquePropertyConstraint_Canonicalization_Unique[item]; exists {
+				err := UniquePropertyConstraintValidationError{
+					field:  fmt.Sprintf("Canonicalization[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_UniquePropertyConstraint_Canonicalization_Unique[item] = struct{}{}
+			}
+
+			if _, ok := _UniquePropertyConstraint_Canonicalization_InLookup[item]; !ok {
+				err := UniquePropertyConstraintValidationError{
+					field:  fmt.Sprintf("Canonicalization[%v]", idx),
+					reason: "value must be in list [unicode case-insensitive]",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return UniquePropertyConstraintMultiError(errors)
+	}
+
+	return nil
+}
+
+// UniquePropertyConstraintMultiError is an error wrapping multiple validation
+// errors returned by UniquePropertyConstraint.ValidateAll() if the designated
+// constraints aren't met.
+type UniquePropertyConstraintMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UniquePropertyConstraintMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UniquePropertyConstraintMultiError) AllErrors() []error { return m }
+
+// UniquePropertyConstraintValidationError is the validation error returned by
+// UniquePropertyConstraint.Validate if the designated constraints aren't met.
+type UniquePropertyConstraintValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UniquePropertyConstraintValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UniquePropertyConstraintValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UniquePropertyConstraintValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UniquePropertyConstraintValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UniquePropertyConstraintValidationError) ErrorName() string {
+	return "UniquePropertyConstraintValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UniquePropertyConstraintValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUniquePropertyConstraint.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UniquePropertyConstraintValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UniquePropertyConstraintValidationError{}
+
+var _UniquePropertyConstraint_Canonicalization_InLookup = map[string]struct{}{
+	"unicode":          {},
+	"case-insensitive": {},
+}
 
 // Validate checks the field values on PasswordPolicy with the rules defined in
 // the proto definition for this message. If any rules are violated, the first

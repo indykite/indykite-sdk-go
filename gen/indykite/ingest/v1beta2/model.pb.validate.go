@@ -67,9 +67,20 @@ func (m *Record) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	switch m.Operation.(type) {
-
+	oneofOperationPresent := false
+	switch v := m.Operation.(type) {
 	case *Record_Upsert:
+		if v == nil {
+			err := RecordValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofOperationPresent = true
 
 		if all {
 			switch v := interface{}(m.GetUpsert()).(type) {
@@ -101,6 +112,17 @@ func (m *Record) validate(all bool) error {
 		}
 
 	case *Record_Delete:
+		if v == nil {
+			err := RecordValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofOperationPresent = true
 
 		if all {
 			switch v := interface{}(m.GetDelete()).(type) {
@@ -132,6 +154,9 @@ func (m *Record) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofOperationPresent {
 		err := RecordValidationError{
 			field:  "Operation",
 			reason: "value is required",
@@ -140,7 +165,6 @@ func (m *Record) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -242,9 +266,20 @@ func (m *UpsertData) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Data.(type) {
-
+	oneofDataPresent := false
+	switch v := m.Data.(type) {
 	case *UpsertData_Node:
+		if v == nil {
+			err := UpsertDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetNode()).(type) {
@@ -276,6 +311,17 @@ func (m *UpsertData) validate(all bool) error {
 		}
 
 	case *UpsertData_Relation:
+		if v == nil {
+			err := UpsertDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetRelation()).(type) {
@@ -307,6 +353,9 @@ func (m *UpsertData) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofDataPresent {
 		err := UpsertDataValidationError{
 			field:  "Data",
 			reason: "value is required",
@@ -315,7 +364,6 @@ func (m *UpsertData) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -417,9 +465,20 @@ func (m *DeleteData) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Data.(type) {
-
+	oneofDataPresent := false
+	switch v := m.Data.(type) {
 	case *DeleteData_Node:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetNode()).(type) {
@@ -451,6 +510,17 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 	case *DeleteData_Relation:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetRelation()).(type) {
@@ -482,6 +552,17 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 	case *DeleteData_NodeProperty:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetNodeProperty()).(type) {
@@ -513,6 +594,17 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 	case *DeleteData_RelationProperty:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
 
 		if all {
 			switch v := interface{}(m.GetRelationProperty()).(type) {
@@ -544,6 +636,9 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofDataPresent {
 		err := DeleteDataValidationError{
 			field:  "Data",
 			reason: "value is required",
@@ -552,7 +647,6 @@ func (m *DeleteData) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -1351,9 +1445,20 @@ func (m *Node) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Type.(type) {
-
+	oneofTypePresent := false
+	switch v := m.Type.(type) {
 	case *Node_DigitalTwin:
+		if v == nil {
+			err := NodeValidationError{
+				field:  "Type",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetDigitalTwin()).(type) {
@@ -1385,6 +1490,17 @@ func (m *Node) validate(all bool) error {
 		}
 
 	case *Node_Resource:
+		if v == nil {
+			err := NodeValidationError{
+				field:  "Type",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTypePresent = true
 
 		if all {
 			switch v := interface{}(m.GetResource()).(type) {
@@ -1416,6 +1532,9 @@ func (m *Node) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofTypePresent {
 		err := NodeValidationError{
 			field:  "Type",
 			reason: "value is required",
@@ -1424,7 +1543,6 @@ func (m *Node) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

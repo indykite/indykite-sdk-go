@@ -56,9 +56,20 @@ func (m *Subject) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Subject.(type) {
-
+	oneofSubjectPresent := false
+	switch v := m.Subject.(type) {
 	case *Subject_DigitalTwinIdentifier:
+		if v == nil {
+			err := SubjectValidationError{
+				field:  "Subject",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofSubjectPresent = true
 
 		if m.GetDigitalTwinIdentifier() == nil {
 			err := SubjectValidationError{
@@ -101,6 +112,9 @@ func (m *Subject) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofSubjectPresent {
 		err := SubjectValidationError{
 			field:  "Subject",
 			reason: "value is required",
@@ -109,7 +123,6 @@ func (m *Subject) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -211,9 +224,20 @@ func (m *InputParam) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Value.(type) {
-
+	oneofValuePresent := false
+	switch v := m.Value.(type) {
 	case *InputParam_StringValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
 
 		if l := utf8.RuneCountInString(m.GetStringValue()); l < 1 || l > 50 {
 			err := InputParamValidationError{
@@ -227,15 +251,48 @@ func (m *InputParam) validate(all bool) error {
 		}
 
 	case *InputParam_BoolValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
 		// no validation rules for BoolValue
-
 	case *InputParam_IntegerValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
 		// no validation rules for IntegerValue
-
 	case *InputParam_DoubleValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
 		// no validation rules for DoubleValue
-
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofValuePresent {
 		err := InputParamValidationError{
 			field:  "Value",
 			reason: "value is required",
@@ -244,7 +301,6 @@ func (m *InputParam) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

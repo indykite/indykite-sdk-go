@@ -113,9 +113,18 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 
 	}
 
-	switch m.HashAlgorithm.(type) {
-
+	switch v := m.HashAlgorithm.(type) {
 	case *ImportDigitalTwinsRequest_Bcrypt:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetBcrypt()).(type) {
@@ -147,6 +156,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_StandardScrypt:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetStandardScrypt()).(type) {
@@ -178,6 +197,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Scrypt:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetScrypt()).(type) {
@@ -209,6 +238,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_HmacMd5:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetHmacMd5()).(type) {
@@ -240,6 +279,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_HmacSha1:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetHmacSha1()).(type) {
@@ -271,6 +320,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_HmacSha512:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetHmacSha512()).(type) {
@@ -302,6 +361,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_HmacSha256:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetHmacSha256()).(type) {
@@ -333,6 +402,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Md5:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetMd5()).(type) {
@@ -364,6 +443,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Pbkdf2Sha256:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetPbkdf2Sha256()).(type) {
@@ -395,6 +484,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_PbkdfSha1:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetPbkdfSha1()).(type) {
@@ -426,6 +525,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Sha1:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetSha1()).(type) {
@@ -457,6 +566,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Sha256:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetSha256()).(type) {
@@ -488,6 +607,16 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinsRequest_Sha512:
+		if v == nil {
+			err := ImportDigitalTwinsRequestValidationError{
+				field:  "HashAlgorithm",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetSha512()).(type) {
@@ -518,6 +647,8 @@ func (m *ImportDigitalTwinsRequest) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -891,9 +1022,20 @@ func (m *ImportDigitalTwinResult) validate(all bool) error {
 
 	// no validation rules for Index
 
-	switch m.Result.(type) {
-
+	oneofResultPresent := false
+	switch v := m.Result.(type) {
 	case *ImportDigitalTwinResult_Success:
+		if v == nil {
+			err := ImportDigitalTwinResultValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetSuccess()).(type) {
@@ -925,6 +1067,17 @@ func (m *ImportDigitalTwinResult) validate(all bool) error {
 		}
 
 	case *ImportDigitalTwinResult_Error:
+		if v == nil {
+			err := ImportDigitalTwinResultValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetError()).(type) {
@@ -956,6 +1109,9 @@ func (m *ImportDigitalTwinResult) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofResultPresent {
 		err := ImportDigitalTwinResultValidationError{
 			field:  "Result",
 			reason: "value is required",
@@ -964,7 +1120,6 @@ func (m *ImportDigitalTwinResult) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -1234,7 +1389,7 @@ func (m *ImportDigitalTwin) validate(all bool) error {
 	if _, ok := _ImportDigitalTwin_Kind_InLookup[m.GetKind()]; !ok {
 		err := ImportDigitalTwinValidationError{
 			field:  "Kind",
-			reason: "value must be in list [1 3]",
+			reason: "value must be in list [DIGITAL_TWIN_KIND_PERSON DIGITAL_TWIN_KIND_THING]",
 		}
 		if !all {
 			return err
@@ -1256,7 +1411,7 @@ func (m *ImportDigitalTwin) validate(all bool) error {
 	if _, ok := _ImportDigitalTwin_State_InLookup[m.GetState()]; !ok {
 		err := ImportDigitalTwinValidationError{
 			field:  "State",
-			reason: "value must be in list [1 2]",
+			reason: "value must be in list [DIGITAL_TWIN_STATE_ACTIVE DIGITAL_TWIN_STATE_DISABLED]",
 		}
 		if !all {
 			return err
@@ -2176,9 +2331,18 @@ func (m *PasswordCredential) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Uid.(type) {
-
+	switch v := m.Uid.(type) {
 	case *PasswordCredential_Email:
+		if v == nil {
+			err := PasswordCredentialValidationError{
+				field:  "Uid",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetEmail()).(type) {
@@ -2210,6 +2374,16 @@ func (m *PasswordCredential) validate(all bool) error {
 		}
 
 	case *PasswordCredential_Mobile:
+		if v == nil {
+			err := PasswordCredentialValidationError{
+				field:  "Uid",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetMobile()).(type) {
@@ -2241,16 +2415,44 @@ func (m *PasswordCredential) validate(all bool) error {
 		}
 
 	case *PasswordCredential_Username:
+		if v == nil {
+			err := PasswordCredentialValidationError{
+				field:  "Uid",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Username
-
+	default:
+		_ = v // ensures v is used
 	}
-
-	switch m.Password.(type) {
-
+	switch v := m.Password.(type) {
 	case *PasswordCredential_Value:
+		if v == nil {
+			err := PasswordCredentialValidationError{
+				field:  "Password",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Value
-
 	case *PasswordCredential_Hash:
+		if v == nil {
+			err := PasswordCredentialValidationError{
+				field:  "Password",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetHash()).(type) {
@@ -2281,6 +2483,8 @@ func (m *PasswordCredential) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
