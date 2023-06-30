@@ -701,15 +701,38 @@ func (m *Invitation) validate(all bool) error {
 
 	// no validation rules for State
 
-	switch m.Invitee.(type) {
-
+	oneofInviteePresent := false
+	switch v := m.Invitee.(type) {
 	case *Invitation_Email:
+		if v == nil {
+			err := InvitationValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 		// no validation rules for Email
-
 	case *Invitation_Mobile:
+		if v == nil {
+			err := InvitationValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 		// no validation rules for Mobile
-
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofInviteePresent {
 		err := InvitationValidationError{
 			field:  "Invitee",
 			reason: "value is required",
@@ -718,7 +741,6 @@ func (m *Invitation) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

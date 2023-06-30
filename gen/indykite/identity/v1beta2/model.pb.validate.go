@@ -473,9 +473,20 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Filter.(type) {
-
+	oneofFilterPresent := false
+	switch v := m.Filter.(type) {
 	case *DigitalTwinIdentifier_DigitalTwin:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if m.GetDigitalTwin() == nil {
 			err := DigitalTwinIdentifierValidationError{
@@ -518,6 +529,17 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	case *DigitalTwinIdentifier_PropertyFilter:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if m.GetPropertyFilter() == nil {
 			err := DigitalTwinIdentifierValidationError{
@@ -560,6 +582,17 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	case *DigitalTwinIdentifier_AccessToken:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if utf8.RuneCountInString(m.GetAccessToken()) < 20 {
 			err := DigitalTwinIdentifierValidationError{
@@ -573,6 +606,9 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofFilterPresent {
 		err := DigitalTwinIdentifierValidationError{
 			field:  "Filter",
 			reason: "value is required",
@@ -581,7 +617,6 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -960,15 +995,38 @@ func (m *Invitation) validate(all bool) error {
 
 	// no validation rules for State
 
-	switch m.Invitee.(type) {
-
+	oneofInviteePresent := false
+	switch v := m.Invitee.(type) {
 	case *Invitation_Email:
+		if v == nil {
+			err := InvitationValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 		// no validation rules for Email
-
 	case *Invitation_Mobile:
+		if v == nil {
+			err := InvitationValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 		// no validation rules for Mobile
-
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofInviteePresent {
 		err := InvitationValidationError{
 			field:  "Invitee",
 			reason: "value is required",
@@ -977,7 +1035,6 @@ func (m *Invitation) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

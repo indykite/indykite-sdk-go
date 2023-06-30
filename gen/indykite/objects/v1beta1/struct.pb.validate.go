@@ -59,24 +59,78 @@ func (m *Value) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Value.(type) {
-
+	switch v := m.Value.(type) {
 	case *Value_NullValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for NullValue
-
 	case *Value_BoolValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for BoolValue
-
 	case *Value_IntegerValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for IntegerValue
-
 	case *Value_UnsignedIntegerValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for UnsignedIntegerValue
-
 	case *Value_DoubleValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for DoubleValue
-
 	case *Value_AnyValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetAnyValue()).(type) {
@@ -108,6 +162,16 @@ func (m *Value) validate(all bool) error {
 		}
 
 	case *Value_ValueTime:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetValueTime()).(type) {
@@ -139,6 +203,16 @@ func (m *Value) validate(all bool) error {
 		}
 
 	case *Value_DurationValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetDurationValue()).(type) {
@@ -170,12 +244,40 @@ func (m *Value) validate(all bool) error {
 		}
 
 	case *Value_StringValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for StringValue
-
 	case *Value_BytesValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for BytesValue
-
 	case *Value_GeoPointValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetGeoPointValue()).(type) {
@@ -207,6 +309,16 @@ func (m *Value) validate(all bool) error {
 		}
 
 	case *Value_ArrayValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetArrayValue()).(type) {
@@ -238,6 +350,16 @@ func (m *Value) validate(all bool) error {
 		}
 
 	case *Value_MapValue:
+		if v == nil {
+			err := ValueValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetMapValue()).(type) {
@@ -268,6 +390,8 @@ func (m *Value) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {

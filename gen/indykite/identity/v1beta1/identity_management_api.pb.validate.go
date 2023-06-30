@@ -539,12 +539,30 @@ func (m *ChangePasswordRequest) validate(all bool) error {
 
 	// no validation rules for IgnorePolicy
 
-	switch m.Uid.(type) {
-
+	switch v := m.Uid.(type) {
 	case *ChangePasswordRequest_Token:
+		if v == nil {
+			err := ChangePasswordRequestValidationError{
+				field:  "Uid",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Token
-
 	case *ChangePasswordRequest_DigitalTwin:
+		if v == nil {
+			err := ChangePasswordRequestValidationError{
+				field:  "Uid",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetDigitalTwin()).(type) {
@@ -575,6 +593,8 @@ func (m *ChangePasswordRequest) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -1602,9 +1622,20 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Filter.(type) {
-
+	oneofFilterPresent := false
+	switch v := m.Filter.(type) {
 	case *DigitalTwinIdentifier_DigitalTwin:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if m.GetDigitalTwin() == nil {
 			err := DigitalTwinIdentifierValidationError{
@@ -1647,6 +1678,17 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	case *DigitalTwinIdentifier_Property:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if m.GetProperty() == nil {
 			err := DigitalTwinIdentifierValidationError{
@@ -1689,6 +1731,17 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	case *DigitalTwinIdentifier_AccessToken:
+		if v == nil {
+			err := DigitalTwinIdentifierValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
 
 		if utf8.RuneCountInString(m.GetAccessToken()) < 20 {
 			err := DigitalTwinIdentifierValidationError{
@@ -1702,6 +1755,9 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofFilterPresent {
 		err := DigitalTwinIdentifierValidationError{
 			field:  "Filter",
 			reason: "value is required",
@@ -1710,7 +1766,6 @@ func (m *DigitalTwinIdentifier) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -2475,7 +2530,7 @@ func (m *RegisterDigitalTwinWithoutCredentialRequest) validate(all bool) error {
 	if _, ok := _RegisterDigitalTwinWithoutCredentialRequest_DigitalTwinKind_NotInLookup[m.GetDigitalTwinKind()]; ok {
 		err := RegisterDigitalTwinWithoutCredentialRequestValidationError{
 			field:  "DigitalTwinKind",
-			reason: "value must not be in list [0]",
+			reason: "value must not be in list [DIGITAL_TWIN_KIND_INVALID]",
 		}
 		if !all {
 			return err
@@ -2603,6 +2658,33 @@ func (m *RegisterDigitalTwinWithoutCredentialRequest) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetBookmarks() {
+		_, _ = idx, item
+
+		if utf8.RuneCountInString(item) < 40 {
+			err := RegisterDigitalTwinWithoutCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value length must be at least 40 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_RegisterDigitalTwinWithoutCredentialRequest_Bookmarks_Pattern.MatchString(item) {
+			err := RegisterDigitalTwinWithoutCredentialRequestValidationError{
+				field:  fmt.Sprintf("Bookmarks[%v]", idx),
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_-]{40,}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return RegisterDigitalTwinWithoutCredentialRequestMultiError(errors)
 	}
@@ -2690,6 +2772,8 @@ var _RegisterDigitalTwinWithoutCredentialRequest_DigitalTwinKind_NotInLookup = m
 }
 
 var _RegisterDigitalTwinWithoutCredentialRequest_DigitalTwinTags_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
+
+var _RegisterDigitalTwinWithoutCredentialRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
 // Validate checks the field values on
 // RegisterDigitalTwinWithoutCredentialResponse with the rules defined in the
@@ -3895,9 +3979,18 @@ func (m *BatchGetDocumentsResponse) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Result.(type) {
-
+	switch v := m.Result.(type) {
 	case *BatchGetDocumentsResponse_Found:
+		if v == nil {
+			err := BatchGetDocumentsResponseValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetFound()).(type) {
@@ -3929,8 +4022,19 @@ func (m *BatchGetDocumentsResponse) validate(all bool) error {
 		}
 
 	case *BatchGetDocumentsResponse_Missing:
+		if v == nil {
+			err := BatchGetDocumentsResponseValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Missing
-
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -4590,9 +4694,18 @@ func (m *RunQueryRequest) validate(all bool) error {
 
 	// no validation rules for Parent
 
-	switch m.QueryType.(type) {
-
+	switch v := m.QueryType.(type) {
 	case *RunQueryRequest_StructuredQuery:
+		if v == nil {
+			err := RunQueryRequestValidationError{
+				field:  "QueryType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetStructuredQuery()).(type) {
@@ -4623,6 +4736,8 @@ func (m *RunQueryRequest) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -5149,14 +5264,33 @@ func (m *UpdatePasswordCredentialRequest) validate(all bool) error {
 		}
 	}
 
-	switch m.Primary.(type) {
-
+	switch v := m.Primary.(type) {
 	case *UpdatePasswordCredentialRequest_Email:
+		if v == nil {
+			err := UpdatePasswordCredentialRequestValidationError{
+				field:  "Primary",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Email
-
 	case *UpdatePasswordCredentialRequest_Mobile:
+		if v == nil {
+			err := UpdatePasswordCredentialRequestValidationError{
+				field:  "Primary",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Mobile
-
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -5805,9 +5939,20 @@ func (m *CreateInvitationRequest) validate(all bool) error {
 		}
 	}
 
-	switch m.Invitee.(type) {
-
+	oneofInviteePresent := false
+	switch v := m.Invitee.(type) {
 	case *CreateInvitationRequest_Email:
+		if v == nil {
+			err := CreateInvitationRequestValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 
 		if l := utf8.RuneCountInString(m.GetEmail()); l < 5 || l > 255 {
 			err := CreateInvitationRequestValidationError{
@@ -5833,9 +5978,22 @@ func (m *CreateInvitationRequest) validate(all bool) error {
 		}
 
 	case *CreateInvitationRequest_Mobile:
+		if v == nil {
+			err := CreateInvitationRequestValidationError{
+				field:  "Invitee",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofInviteePresent = true
 		// no validation rules for Mobile
-
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofInviteePresent {
 		err := CreateInvitationRequestValidationError{
 			field:  "Invitee",
 			reason: "value is required",
@@ -5844,7 +6002,6 @@ func (m *CreateInvitationRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -6103,9 +6260,20 @@ func (m *CheckInvitationStateRequest) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Identifier.(type) {
-
+	oneofIdentifierPresent := false
+	switch v := m.Identifier.(type) {
 	case *CheckInvitationStateRequest_ReferenceId:
+		if v == nil {
+			err := CheckInvitationStateRequestValidationError{
+				field:  "Identifier",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofIdentifierPresent = true
 
 		if l := utf8.RuneCountInString(m.GetReferenceId()); l < 10 || l > 100 {
 			err := CheckInvitationStateRequestValidationError{
@@ -6130,6 +6298,17 @@ func (m *CheckInvitationStateRequest) validate(all bool) error {
 		}
 
 	case *CheckInvitationStateRequest_InvitationToken:
+		if v == nil {
+			err := CheckInvitationStateRequestValidationError{
+				field:  "Identifier",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofIdentifierPresent = true
 
 		if l := utf8.RuneCountInString(m.GetInvitationToken()); l < 10 || l > 2048 {
 			err := CheckInvitationStateRequestValidationError{
@@ -6143,6 +6322,9 @@ func (m *CheckInvitationStateRequest) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofIdentifierPresent {
 		err := CheckInvitationStateRequestValidationError{
 			field:  "Identifier",
 			reason: "value is required",
@@ -6151,7 +6333,6 @@ func (m *CheckInvitationStateRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
@@ -7493,9 +7674,20 @@ func (m *CreateConsentVerifierRequest) validate(all bool) error {
 
 	}
 
-	switch m.Result.(type) {
-
+	oneofResultPresent := false
+	switch v := m.Result.(type) {
 	case *CreateConsentVerifierRequest_Approval:
+		if v == nil {
+			err := CreateConsentVerifierRequestValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetApproval()).(type) {
@@ -7527,6 +7719,17 @@ func (m *CreateConsentVerifierRequest) validate(all bool) error {
 		}
 
 	case *CreateConsentVerifierRequest_Denial:
+		if v == nil {
+			err := CreateConsentVerifierRequestValidationError{
+				field:  "Result",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofResultPresent = true
 
 		if all {
 			switch v := interface{}(m.GetDenial()).(type) {
@@ -7558,6 +7761,9 @@ func (m *CreateConsentVerifierRequest) validate(all bool) error {
 		}
 
 	default:
+		_ = v // ensures v is used
+	}
+	if !oneofResultPresent {
 		err := CreateConsentVerifierRequestValidationError{
 			field:  "Result",
 			reason: "value is required",
@@ -7566,7 +7772,6 @@ func (m *CreateConsentVerifierRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {

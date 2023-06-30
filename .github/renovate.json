@@ -5,8 +5,13 @@
     ":disableDependencyDashboard"
   ],
   "semanticCommits": "enabled",
+  "enabledManagers": [
+    "github-actions",
+    "gomod"
+  ],
   "postUpdateOptions": [
     "gomodTidy",
+    "gomodUpdateImportPaths",
     "gomodNoMassage"
   ],
   "commitMessageAction": "update",

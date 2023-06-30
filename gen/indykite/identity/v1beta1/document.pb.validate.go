@@ -361,12 +361,30 @@ func (m *Precondition) validate(all bool) error {
 
 	var errors []error
 
-	switch m.ConditionType.(type) {
-
+	switch v := m.ConditionType.(type) {
 	case *Precondition_Exists:
+		if v == nil {
+			err := PreconditionValidationError{
+				field:  "ConditionType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Exists
-
 	case *Precondition_UpdateTime:
+		if v == nil {
+			err := PreconditionValidationError{
+				field:  "ConditionType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetUpdateTime()).(type) {
@@ -397,6 +415,8 @@ func (m *Precondition) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -589,9 +609,18 @@ func (m *Write) validate(all bool) error {
 		}
 	}
 
-	switch m.Operation.(type) {
-
+	switch v := m.Operation.(type) {
 	case *Write_Update:
+		if v == nil {
+			err := WriteValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetUpdate()).(type) {
@@ -623,9 +652,28 @@ func (m *Write) validate(all bool) error {
 		}
 
 	case *Write_Delete:
+		if v == nil {
+			err := WriteValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 		// no validation rules for Delete
-
 	case *Write_Transform:
+		if v == nil {
+			err := WriteValidationError{
+				field:  "Operation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetTransform()).(type) {
@@ -656,6 +704,8 @@ func (m *Write) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -1026,9 +1076,18 @@ func (m *DocumentTransform_FieldTransform) validate(all bool) error {
 
 	// no validation rules for FieldPath
 
-	switch m.TransformType.(type) {
-
+	switch v := m.TransformType.(type) {
 	case *DocumentTransform_FieldTransform_AppendMissingElements:
+		if v == nil {
+			err := DocumentTransform_FieldTransformValidationError{
+				field:  "TransformType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetAppendMissingElements()).(type) {
@@ -1060,6 +1119,16 @@ func (m *DocumentTransform_FieldTransform) validate(all bool) error {
 		}
 
 	case *DocumentTransform_FieldTransform_RemoveAllFromArray:
+		if v == nil {
+			err := DocumentTransform_FieldTransformValidationError{
+				field:  "TransformType",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetRemoveAllFromArray()).(type) {
@@ -1090,6 +1159,8 @@ func (m *DocumentTransform_FieldTransform) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {

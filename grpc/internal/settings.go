@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2023 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
-	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"go.opencensus.io/plugin/ocgrpc"
 	grpcotel "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"golang.org/x/oauth2"
@@ -183,11 +182,9 @@ func addInterceptors(opts []grpc.DialOption, settings *DialSettings) []grpc.Dial
 		grpc.WithStatsHandler(&ocgrpc.ClientHandler{}),
 		grpc.WithChainStreamInterceptor(
 			grpcotel.StreamClientInterceptor(),
-			grpc_prometheus.StreamClientInterceptor,
 			retry.StreamClientInterceptor(retOpts...)),
 		grpc.WithChainUnaryInterceptor(
 			grpcotel.UnaryClientInterceptor(),
-			grpc_prometheus.UnaryClientInterceptor,
 			retry.UnaryClientInterceptor(retOpts...),
 		))
 }

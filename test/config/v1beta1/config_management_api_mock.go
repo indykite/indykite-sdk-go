@@ -633,6 +633,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationSpace(arg0, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplicationSpace), varargs...)
 }
 
+// ReadApplicationSpaceConfig mocks base method.
+func (m *MockConfigManagementAPIClient) ReadApplicationSpaceConfig(arg0 context.Context, arg1 *configv1beta1.ReadApplicationSpaceConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadApplicationSpaceConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ReadApplicationSpaceConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.ReadApplicationSpaceConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadApplicationSpaceConfig indicates an expected call of ReadApplicationSpaceConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationSpaceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplicationSpaceConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplicationSpaceConfig), varargs...)
+}
+
 // ReadConfigNode mocks base method.
 func (m *MockConfigManagementAPIClient) ReadConfigNode(arg0 context.Context, arg1 *configv1beta1.ReadConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
@@ -671,6 +691,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) ReadCustomer(arg0, arg1 int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCustomer", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadCustomer), varargs...)
+}
+
+// ReadCustomerConfig mocks base method.
+func (m *MockConfigManagementAPIClient) ReadCustomerConfig(arg0 context.Context, arg1 *configv1beta1.ReadCustomerConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadCustomerConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ReadCustomerConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.ReadCustomerConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadCustomerConfig indicates an expected call of ReadCustomerConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadCustomerConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCustomerConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadCustomerConfig), varargs...)
 }
 
 // ReadOAuth2Application mocks base method.
@@ -771,6 +811,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) ReadTenant(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadTenant", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadTenant), varargs...)
+}
+
+// ReadTenantConfig mocks base method.
+func (m *MockConfigManagementAPIClient) ReadTenantConfig(arg0 context.Context, arg1 *configv1beta1.ReadTenantConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadTenantConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ReadTenantConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.ReadTenantConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadTenantConfig indicates an expected call of ReadTenantConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadTenantConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadTenantConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadTenantConfig), varargs...)
 }
 
 // RegisterApplicationAgentCredential mocks base method.
@@ -893,6 +953,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationSpace(arg0
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateApplicationSpace), varargs...)
 }
 
+// UpdateApplicationSpaceConfig mocks base method.
+func (m *MockConfigManagementAPIClient) UpdateApplicationSpaceConfig(arg0 context.Context, arg1 *configv1beta1.UpdateApplicationSpaceConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateApplicationSpaceConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateApplicationSpaceConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.UpdateApplicationSpaceConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateApplicationSpaceConfig indicates an expected call of UpdateApplicationSpaceConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationSpaceConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplicationSpaceConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateApplicationSpaceConfig), varargs...)
+}
+
 // UpdateConfigNode mocks base method.
 func (m *MockConfigManagementAPIClient) UpdateConfigNode(arg0 context.Context, arg1 *configv1beta1.UpdateConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
@@ -911,6 +991,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) UpdateConfigNode(arg0, arg1
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateConfigNode", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateConfigNode), varargs...)
+}
+
+// UpdateCustomerConfig mocks base method.
+func (m *MockConfigManagementAPIClient) UpdateCustomerConfig(arg0 context.Context, arg1 *configv1beta1.UpdateCustomerConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateCustomerConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateCustomerConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.UpdateCustomerConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateCustomerConfig indicates an expected call of UpdateCustomerConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateCustomerConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCustomerConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateCustomerConfig), varargs...)
 }
 
 // UpdateOAuth2Application mocks base method.
@@ -991,6 +1091,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) UpdateTenant(arg0, arg1 int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTenant", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateTenant), varargs...)
+}
+
+// UpdateTenantConfig mocks base method.
+func (m *MockConfigManagementAPIClient) UpdateTenantConfig(arg0 context.Context, arg1 *configv1beta1.UpdateTenantConfigRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateTenantConfigResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateTenantConfig", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.UpdateTenantConfigResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateTenantConfig indicates an expected call of UpdateTenantConfig.
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateTenantConfig(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTenantConfig", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateTenantConfig), varargs...)
 }
 
 // MockConfigManagementAPI_ListApplicationSpacesClient is a mock of ConfigManagementAPI_ListApplicationSpacesClient interface.

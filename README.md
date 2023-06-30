@@ -4,13 +4,6 @@
 </a>
 </div>
 
-## Documentation
-[IndyKite documentation](https://docs.indykite.com)
-
-## Terminology
-
-[IndyKite glossary](https://docs.indykite.com/docs/resources/glossary)
-
 # IndyKite Client Libraries for Go
 
 IndyKite is a cloud identity platform built to secure and manage
@@ -100,6 +93,14 @@ Conditionally optional parameters:
       ```shell
       setex INDYKITE_APPLICATION_CREDENTIALS_FILE "C:\Users\xx\Documents\configuration.json"
       ```
+
+## Documentation
+
+[IndyKite documentation](https://docs.indykite.com)
+
+## Terminology
+
+[IndyKite glossary](https://docs.indykite.com/docs/resources/glossary)
 
 ## SDK Development
 

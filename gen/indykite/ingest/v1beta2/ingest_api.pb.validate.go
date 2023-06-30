@@ -232,9 +232,18 @@ func (m *StreamRecordsResponse) validate(all bool) error {
 		}
 	}
 
-	switch m.Error.(type) {
-
+	switch v := m.Error.(type) {
 	case *StreamRecordsResponse_RecordError:
+		if v == nil {
+			err := StreamRecordsResponseValidationError{
+				field:  "Error",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetRecordError()).(type) {
@@ -266,6 +275,16 @@ func (m *StreamRecordsResponse) validate(all bool) error {
 		}
 
 	case *StreamRecordsResponse_StatusError:
+		if v == nil {
+			err := StreamRecordsResponseValidationError{
+				field:  "Error",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetStatusError()).(type) {
@@ -296,6 +315,8 @@ func (m *StreamRecordsResponse) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
@@ -573,9 +594,18 @@ func (m *IngestRecordResponse) validate(all bool) error {
 		}
 	}
 
-	switch m.Error.(type) {
-
+	switch v := m.Error.(type) {
 	case *IngestRecordResponse_RecordError:
+		if v == nil {
+			err := IngestRecordResponseValidationError{
+				field:  "Error",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetRecordError()).(type) {
@@ -607,6 +637,16 @@ func (m *IngestRecordResponse) validate(all bool) error {
 		}
 
 	case *IngestRecordResponse_StatusError:
+		if v == nil {
+			err := IngestRecordResponseValidationError{
+				field:  "Error",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetStatusError()).(type) {
@@ -637,6 +677,8 @@ func (m *IngestRecordResponse) validate(all bool) error {
 			}
 		}
 
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {
