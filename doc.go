@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// nolint:lll
 //go:generate mockgen -copyright_file ./doc/LICENSE -package identity -source ./gen/indykite/identity/v1beta2/identity_management_api_grpc.pb.go -destination ./test/identity/v1beta2/identity_management_api_mock.go
 //go:generate mockgen -copyright_file ./doc/LICENSE -package config -destination ./test/config/v1beta1/config_management_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1 ConfigManagementAPIClient,ConfigManagementAPI_ListApplicationSpacesClient,ConfigManagementAPI_ListApplicationsClient,ConfigManagementAPI_ListTenantsClient,ConfigManagementAPI_ListApplicationAgentsClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package ingest -destination ./test/ingest/v1beta2/ingest_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2 IngestAPIClient,IngestAPI_StreamRecordsClient

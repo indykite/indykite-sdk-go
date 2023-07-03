@@ -229,7 +229,7 @@ var _ = Describe("Ingest", func() {
 		mockStreamClient.EXPECT().CloseSend()
 
 		responses, err := client.StreamRecords(records)
-		Expect(err).To(BeNil())
+		Expect(err).To(Succeed())
 		dataTypes := []ingestpb.Change_DataType{
 			ingestpb.Change_DATA_TYPE_RELATION,
 			ingestpb.Change_DATA_TYPE_RESOURCE,

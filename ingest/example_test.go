@@ -65,8 +65,7 @@ func ExampleClient_StreamRecords() {
 
 	err = client.OpenStreamClient(ctx)
 	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to open stream %v", err)
+		log.Fatalf("failed to open stream %v", err) //nolint:gocritic
 	}
 
 	for _, record := range []*ingestv2pb.Record{record1, record2} {
@@ -103,8 +102,7 @@ func ExampleClient_IngestRecord() {
 
 	response, err := client.IngestRecord(context.Background(), record1)
 	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,

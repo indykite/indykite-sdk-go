@@ -82,7 +82,6 @@ func NewWithCause(code codes.Code, err error, msg string, args ...interface{}) e
 		if err == nil {
 			return nil
 		}
-		code = codes.Unknown
 	} else if code > codes.Unauthenticated {
 		return &ClientError{
 			code:  codes.Internal,
@@ -110,7 +109,7 @@ func IsServiceError(err error) bool {
 	if se, ok := err.(interface {
 		Code() codes.Code
 	}); ok {
-		// nolint:exhaustive
+		//nolint:exhaustive
 		switch se.Code() {
 		case codes.Unknown,
 			codes.DeadlineExceeded,

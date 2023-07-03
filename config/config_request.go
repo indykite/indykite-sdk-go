@@ -26,7 +26,6 @@ import (
 
 type (
 	// NodeRequest is a request builder.
-	// nolint:golint
 	NodeRequest struct {
 		create *configpb.CreateConfigNodeRequest
 		read   *configpb.ReadConfigNodeRequest

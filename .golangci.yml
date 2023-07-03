@@ -8,32 +8,43 @@ linters:
         - ineffassign
         - staticcheck
         - stylecheck
-        - typecheck
         - unused
 
         # Extra
         - asciicheck
         - bidichk
         - contextcheck
+        - dogsled
         - durationcheck
         - dupword
+        - errchkjson
         - exhaustive
+        - forbidigo
         - gci
+        - ginkgolinter
+        - gocheckcompilerdirectives
         - gocritic
         - godot
         # - goerr113 # As this is public SDK, would be nice to follow new error patterns
         - gofmt
         - goheader
         - gosec
+        - gosmopolitan
+        - grouper
         - lll
         - loggercheck
+        - misspell
         - nakedret
+        - nolintlint
         - prealloc
+        - reassign
         - revive
+        - tagalign
         - testpackage
         - unconvert
-        - unconvert
         - unparam
+        - usestdlibvars
+        - wastedassign
         - whitespace
 
 linters-settings:

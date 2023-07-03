@@ -40,7 +40,7 @@ func IsUUIDv4(key string, id []byte) error {
 // IsValidName checks if name is valid RFC1035 string.
 //
 // Value can have lowercase letters, digits, or hyphens. It must start with a lowercase letter
-// and end with a letter or number. The minimum lenght is 2 and the max is 254.
+// and end with a letter or number. The minimum length is 2 and the max is 254.
 func IsValidName(name string) error {
 	if !nameCheck.MatchString(name) {
 		return errors.NewInvalidArgumentError("name value must be valid RFC1035 string with length 2-254")
