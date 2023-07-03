@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/golang/mock/gomock"
 	"github.com/onsi/gomega"
 	"github.com/onsi/gomega/format"
 	"github.com/onsi/gomega/gstruct"
@@ -345,4 +346,28 @@ func valueMatcher(v interface{}) types.GomegaMatcher {
 	default:
 		return gomega.BeEquivalentTo(jv)
 	}
+}
+
+type matcherWrapper struct {
+	matcher types.GomegaMatcher
+	// This is used to save variable between calls to Matches and String in case of error
+	// to be able to print better messages on failure
+	actual interface{}
+}
+
+func WrapMatcher(matcher types.GomegaMatcher) gomock.Matcher {
+	return &matcherWrapper{matcher: matcher}
+}
+
+func (m *matcherWrapper) Matches(x interface{}) (ok bool) {
+	m.actual = x
+	var err error
+	if ok, err = m.matcher.Match(x); err != nil {
+		ok = false
+	}
+	return
+}
+
+func (m *matcherWrapper) String() string {
+	return fmt.Sprintf("Wrapped Gomega fail message: %s", m.matcher.FailureMessage(m.actual))
 }
