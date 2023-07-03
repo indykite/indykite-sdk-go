@@ -24,17 +24,17 @@ import (
 
 type (
 	CredentialsConfig struct {
-		BaseURL         string `json:"baseUrl,omitempty" yaml:"base_url,omitempty"`
-		ApplicationID   string `json:"applicationId,omitempty" yaml:"application_id,omitempty"`
-		AppSpaceID      string `json:"appSpaceId,omitempty" yaml:"app_space_id,omitempty"`
+		BaseURL         string `json:"baseUrl,omitempty"         yaml:"base_url,omitempty"`
+		ApplicationID   string `json:"applicationId,omitempty"   yaml:"application_id,omitempty"`
+		AppSpaceID      string `json:"appSpaceId,omitempty"      yaml:"app_space_id,omitempty"`
 		DefaultTenantID string `json:"defaultTenantId,omitempty" yaml:"default_tenant_id,omitempty"`
 
-		AppAgentID            string          `json:"appAgentId,omitempty" yaml:"app_agent_id,omitempty"`
-		ServiceAccountID      string          `json:"serviceAccountId,omitempty" yaml:"service_account_id,omitempty"`
-		Endpoint              string          `json:"endpoint,omitempty" yaml:"endpoint,omitempty"`
-		PrivateKeyPKCS8Base64 string          `json:"privateKeyPKCS8Base64,omitempty" yaml:"private_key_pkcs8_base64,omitempty"` // nolint:lll
-		PrivateKeyPKCS8       string          `json:"privateKeyPKCS8,omitempty" yaml:"private_key_pkcs8,omitempty"`
-		PrivateKeyJWK         json.RawMessage `json:"privateKeyJWK,omitempty" yaml:"private_key_jwk,omitempty"`
+		AppAgentID            string          `json:"appAgentId,omitempty"            yaml:"app_agent_id,omitempty"`
+		ServiceAccountID      string          `json:"serviceAccountId,omitempty"      yaml:"service_account_id,omitempty"` //nolint:lll
+		Endpoint              string          `json:"endpoint,omitempty"              yaml:"endpoint,omitempty"`
+		PrivateKeyPKCS8Base64 string          `json:"privateKeyPKCS8Base64,omitempty" yaml:"private_key_pkcs8_base64,omitempty"` //nolint:lll
+		PrivateKeyPKCS8       string          `json:"privateKeyPKCS8,omitempty"       yaml:"private_key_pkcs8,omitempty"`        //nolint:lll
+		PrivateKeyJWK         json.RawMessage `json:"privateKeyJWK,omitempty"         yaml:"private_key_jwk,omitempty"`
 	}
 
 	CredentialsLoader func(ctx context.Context) (*CredentialsConfig, error)

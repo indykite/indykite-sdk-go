@@ -16,6 +16,14 @@ lint:
 	@echo "==> Checking source code against linters..."
 	golangci-lint run --timeout 2m0s ./...
 
+lint_fix:
+	@echo "==> Fixing source code against linters..."
+	@golangci-lint run --fix --timeout 2m0s ./...
+
+fieldalignment:
+	@echo "==> Analyzer structs and rearranged to use less memory with fieldalignment..."
+	fieldalignment -fix -test=false ./...
+
 download:
 	@echo Download go.mod dependencies
 	@go mod download

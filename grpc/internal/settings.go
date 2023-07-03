@@ -43,20 +43,21 @@ const (
 )
 
 // DialSettings holds information needed to establish a connection with a service.
-// nolint:govet
+//
+//nolint:govet
 type DialSettings struct {
-	GRPCConnPoolSize   int
 	GRPCConn           *grpc.ClientConn
 	RetryOpts          []retry.CallOption
 	GRPCDialOpts       []grpc.DialOption
 	TLSConfig          *tls.Config
-	Insecure           bool
 	TokenSource        oauth2.TokenSource
 	CredentialsLoaders []config.CredentialsLoader
 	Endpoint           string
 	//
-	UserAgent string
-	TraceName string
+	UserAgent        string
+	TraceName        string
+	GRPCConnPoolSize int
+	Insecure         bool
 
 	TelemetryDisabled bool
 	// True if the credential is for configuration service.

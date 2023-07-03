@@ -64,8 +64,7 @@ func ExampleClient_IntrospectToken() {
 	token := "JWT TOKEN HERE"
 	tenant, err := client.IntrospectToken(context.Background(), token, retry.WithMax(2))
 	if err != nil {
-		// nolint:gocritic
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,

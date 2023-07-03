@@ -37,8 +37,7 @@ var _ = Describe("Test creating gRPC connection from setting", func() {
 		Expect(err).To(Succeed())
 
 		s := google_grpc.NewServer()
-		// nolint
-		go s.Serve(l)
+		go func() { _ = s.Serve(l) }()
 
 		server, listener = s, l
 	})

@@ -166,7 +166,7 @@ func (matcher *EqualProtoMatcher) GomegaString() string {
 
 func (matcher *EqualProtoMatcher) Match(actual interface{}) (success bool, err error) {
 	if actual == nil && matcher.Expected == nil {
-		// nolint
+		//nolint:lll
 		return false, fmt.Errorf("refusing to compare <nil> to <nil>.\nBe explicit and use BeNil() instead.  This is to avoid mistakes where both sides of an assertion are erroneously uninitialized")
 	}
 
@@ -237,8 +237,8 @@ type EqualAnyProtoMatcher struct {
 
 func (matcher *EqualAnyProtoMatcher) Match(actual interface{}) (success bool, err error) {
 	if actual == nil && matcher.Expected == nil {
-		// nolint
-		return false, fmt.Errorf("refusing to compare <nil> to <nil>.\nBe explicit and use BeNil() instead.  This is to avoid mistakes where both sides of an assertion are erroneously uninitialized.")
+		//nolint:lll
+		return false, fmt.Errorf("refusing to compare <nil> to <nil>.\nBe explicit and use BeNil() instead.  This is to avoid mistakes where both sides of an assertion are erroneously uninitialized")
 	}
 
 	a, ok := actual.(*anypb.Any)

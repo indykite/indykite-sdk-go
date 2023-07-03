@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// nolint:testpackage
+//nolint:testpackage
 package grpc
 
 import (
@@ -75,8 +75,7 @@ func mockServer() (*grpc.Server, net.Listener) {
 		grpc.UnaryInterceptor(GinkgoUnaryInterceptor),
 		grpc.StreamInterceptor(GinkgoStreamInterceptor),
 	)
-	// nolint
-	go gRPCServer.Serve(listener)
+	go func() { _ = gRPCServer.Serve(listener) }()
 
 	return gRPCServer, listener
 }
