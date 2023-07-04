@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.14.0](https://github.com/indykite/indykite-sdk-go/compare/v0.13.1...v0.14.0) (2023-07-04)
+
+
+### Features
+
+* add container configurations ([b39f4c1](https://github.com/indykite/indykite-sdk-go/commit/b39f4c1f9568d8f9131b96d330a43facd84f1ffd))
+
+
+### Styles
+
+* improve linter rules - ENG-1273 ([30a268a](https://github.com/indykite/indykite-sdk-go/commit/30a268ab5d0398d94f54f90ea80fb987905ef756))
+
+
+### Miscellaneous Chores
+
+* **deps:** update buf.build plugin ([c6771cf](https://github.com/indykite/indykite-sdk-go/commit/c6771cf8764672f8bc3bbcf1f3b46de39882c6b9))
+* **deps:** update everything ([f2fc496](https://github.com/indykite/indykite-sdk-go/commit/f2fc496fc1ec517a87a7cb81892530072fc40d70))
+* update dependencies ([9d5ec4f](https://github.com/indykite/indykite-sdk-go/commit/9d5ec4ff15889f28a3e17d1e8f3f9df47bb65fd8))
+
 ### [0.13.1](https://github.com/indykite/indykite-sdk-go/compare/v0.13.0...v0.13.1) (2023-06-15)
 
 
