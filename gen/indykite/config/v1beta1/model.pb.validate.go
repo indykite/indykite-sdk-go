@@ -1160,17 +1160,6 @@ func (m *ApplicationSpaceConfig) validate(all bool) error {
 		}
 	}
 
-	if m.GetUsernamePolicy() == nil {
-		err := ApplicationSpaceConfigValidationError{
-			field:  "UsernamePolicy",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if all {
 		switch v := interface{}(m.GetUsernamePolicy()).(type) {
 		case interface{ ValidateAll() error }:
