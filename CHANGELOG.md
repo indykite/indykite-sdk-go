@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.14.2](https://github.com/indykite/indykite-sdk-go/compare/v0.14.1...v0.14.2) (2023-07-11)
+
+
+### Miscellaneous Chores
+
+* fix invalid dependency compatibility of tools ([b302938](https://github.com/indykite/indykite-sdk-go/commit/b30293862e4d698dd763c4ca9710fcc05491cfd3))
+
 ### [0.14.1](https://github.com/indykite/indykite-sdk-go/compare/v0.14.0...v0.14.1) (2023-07-11)
 
 

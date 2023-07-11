@@ -17,4 +17,4 @@ Package ingest implements the IndyKite Ingest Service API Client.
 */
 package ingest
 
-const versionClient = "v0.14.1" // x-release-please-version
+const versionClient = "v0.14.2" // x-release-please-version
