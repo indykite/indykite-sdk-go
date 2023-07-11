@@ -41,7 +41,9 @@ cover: test
 	@echo "==> generate test coverage..."
 	go tool cover -html=coverage.out
 
-upgrade:
+upgrade: upgrade_deps generate-proto
+
+upgrade_deps:
 	@echo "==> Upgrading Go"
 	@GO111MODULE=on go get -u all && go mod tidy
 	@echo "==> Upgrading pre-commit"
