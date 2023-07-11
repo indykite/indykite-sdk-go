@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.14.1](https://github.com/indykite/indykite-sdk-go/compare/v0.14.0...v0.14.1) (2023-07-11)
+
+
+### Miscellaneous Chores
+
+* update deps and proto definitions ([f57a1f2](https://github.com/indykite/indykite-sdk-go/commit/f57a1f2d76dddcebc7d536a69f8bae75d6e4b457))
+
 ## [0.14.0](https://github.com/indykite/indykite-sdk-go/compare/v0.13.1...v0.14.0) (2023-07-04)
 
 
