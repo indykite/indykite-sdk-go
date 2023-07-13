@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.14.3](https://github.com/indykite/indykite-sdk-go/compare/v0.14.2...v0.14.3) (2023-07-13)
+
+
+### Bug Fixes
+
+* add missing bookmark helpers to NodeRequest ([5b37265](https://github.com/indykite/indykite-sdk-go/commit/5b3726537fe71dcac48501ca42a1fc08cba72b3e))
+
 ### [0.14.2](https://github.com/indykite/indykite-sdk-go/compare/v0.14.1...v0.14.2) (2023-07-11)
 
 
