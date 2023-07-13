@@ -104,10 +104,13 @@ func (x *NodeRequest) ForLocation(id string) *NodeRequest {
 	return x
 }
 
-// WithPreCondition sets the expected etag to check before modify.
+// WithPreCondition sets the expected etag to check before modify or delete.
 func (x *NodeRequest) WithPreCondition(etag string) *NodeRequest {
-	if x.update != nil {
+	switch {
+	case x.update != nil:
 		x.update.Etag = x.optionalString(etag)
+	case x.delete != nil:
+		x.delete.Etag = x.optionalString(etag)
 	}
 	return x
 }
@@ -140,6 +143,22 @@ func (x *NodeRequest) WithDescription(v string) *NodeRequest {
 		x.create.Description = x.optionalString(v)
 	case x.update != nil:
 		x.update.Description = x.optionalString(v)
+	}
+	return x
+}
+
+// WithBookmarks adds received bookmarks from previous requests.
+// Overwriting previous value if calling multiple times.
+func (x *NodeRequest) WithBookmarks(bookmarks []string) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Bookmarks = bookmarks
+	case x.read != nil:
+		x.read.Bookmarks = bookmarks
+	case x.update != nil:
+		x.update.Bookmarks = bookmarks
+	case x.delete != nil:
+		x.delete.Bookmarks = bookmarks
 	}
 	return x
 }
