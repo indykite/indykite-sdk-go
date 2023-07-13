@@ -8,6 +8,7 @@ linters:
         - ineffassign
         - staticcheck
         - stylecheck
+        - typecheck # Not in the linter list, but keep it https://golangci-lint.run/usage/faq/#why-do-you-have-typecheck-errors
         - unused
 
         # Extra
