@@ -3,7 +3,7 @@ module github.com/indykite/indykite-sdk-go
 go 1.20
 
 require (
-	github.com/bufbuild/buf v1.23.1
+	github.com/bufbuild/buf v1.25.0
 	github.com/daixiang0/gci v0.10.1
 	github.com/envoyproxy/protoc-gen-validate v1.0.2
 	github.com/ghodss/yaml v1.0.0
@@ -17,16 +17,16 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/multiformats/go-base36 v0.2.0
 	github.com/onsi/ginkgo/v2 v2.11.0
-	github.com/onsi/gomega v1.27.8
+	github.com/onsi/gomega v1.27.9
 	github.com/pborman/uuid v1.2.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
 	go.opencensus.io v0.24.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.42.0
 	golang.org/x/oauth2 v0.10.0
-	google.golang.org/genproto v0.0.0-20230711160842-782d3b101e98
-	google.golang.org/genproto/googleapis/api v0.0.0-20230711160842-782d3b101e98
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98
+	google.golang.org/genproto v0.0.0-20230720185612-659f7aaaa771
+	google.golang.org/genproto/googleapis/api v0.0.0-20230720185612-659f7aaaa771
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230720185612-659f7aaaa771
 	google.golang.org/grpc v1.56.2
 	google.golang.org/protobuf v1.31.0
 )
@@ -75,7 +75,7 @@ require (
 	github.com/docker/cli v24.0.4+incompatible // indirect
 	github.com/docker/distribution v2.8.2+incompatible // indirect
 	github.com/docker/docker v24.0.4+incompatible // indirect
-	github.com/docker/docker-credential-helpers v0.7.0 // indirect
+	github.com/docker/docker-credential-helpers v0.8.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/esimonov/ifshort v1.0.4 // indirect
@@ -86,7 +86,7 @@ require (
 	github.com/firefart/nonamedreturns v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/fzipp/gocyclo v0.6.0 // indirect
-	github.com/go-chi/chi/v5 v5.0.8 // indirect
+	github.com/go-chi/chi/v5 v5.0.10 // indirect
 	github.com/go-critic/go-critic v0.8.1 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -215,7 +215,7 @@ require (
 	github.com/t-yuki/gocover-cobertura v0.0.0-20180217150009-aaee18c8195c // indirect
 	github.com/tdakkota/asciicheck v0.2.0 // indirect
 	github.com/tetafro/godot v1.4.11 // indirect
-	github.com/tetratelabs/wazero v1.2.1 // indirect
+	github.com/tetratelabs/wazero v1.3.0 // indirect
 	github.com/timakin/bodyclose v0.0.0-20230421092635-574207250966 // indirect
 	github.com/timonwong/loggercheck v0.9.4 // indirect
 	github.com/tomarrell/wrapcheck/v2 v2.8.1 // indirect
@@ -238,7 +238,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/exp v0.0.0-20230711153332-06a737ee72cb // indirect
+	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20230711153332-06a737ee72cb // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.12.0 // indirect
