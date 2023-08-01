@@ -18,6 +18,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -30,8 +31,9 @@ import (
 
 type (
 	jwtAccessTokenSource struct {
-		template jwt.Token
-		signer   jwk.Key
+		template      jwt.Token
+		signer        jwk.Key
+		tokenLifetime time.Duration
 	}
 )
 
@@ -41,7 +43,7 @@ func CreateTokenSourceFromPrivateKey(privateKeyJWK interface{}, clientID string)
 		return nil, err
 	}
 
-	return JWTokenSource(privateKeyJWKBytes, false, clientID)
+	return JWTokenSource(privateKeyJWKBytes, false, clientID, 0)
 }
 
 func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSource, error) {
@@ -55,19 +57,28 @@ func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSourc
 		return nil, errors.New("missing client ID, AppAgentID or ServiceAccountID must be specified")
 	}
 
-	var err error
+	var (
+		tokenLifetime time.Duration
+		err           error
+	)
+	if credentials.TokenLifetime != "" {
+		tokenLifetime, err = time.ParseDuration(credentials.TokenLifetime)
+		if err != nil {
+			return nil, fmt.Errorf("unable to parse 'tokenLifetime': %w", err)
+		}
+	}
 	switch {
 	case credentials.PrivateKeyJWK != nil:
-		return JWTokenSource(credentials.PrivateKeyJWK, false, clientID)
+		return JWTokenSource(credentials.PrivateKeyJWK, false, clientID, tokenLifetime)
 	case credentials.PrivateKeyPKCS8Base64 != "":
 		var raw []byte
 		raw, err = base64.StdEncoding.DecodeString(credentials.PrivateKeyPKCS8Base64)
 		if err != nil {
 			return nil, err
 		}
-		return JWTokenSource(raw, true, clientID)
+		return JWTokenSource(raw, true, clientID, tokenLifetime)
 	case credentials.PrivateKeyPKCS8 != "":
-		return JWTokenSource([]byte(credentials.PrivateKeyPKCS8), true, clientID)
+		return JWTokenSource([]byte(credentials.PrivateKeyPKCS8), true, clientID, tokenLifetime)
 	default:
 		return nil, errors.New("unable to find secret credential")
 	}
@@ -86,7 +97,8 @@ func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
 	return privateKeyJWKBytes, nil
 }
 
-func JWTokenSource(secretKey []byte, pem bool, clientID string) (oauth2.TokenSource, error) {
+func JWTokenSource(secretKey []byte, pem bool, clientID string,
+	tokenLifetime time.Duration) (oauth2.TokenSource, error) {
 	var (
 		key jwk.Key
 		err error
@@ -121,16 +133,22 @@ func JWTokenSource(secretKey []byte, pem bool, clientID string) (oauth2.TokenSou
 	_ = t.Set(jwt.IssuerKey, clientID)
 	_ = t.Set(jwt.SubjectKey, clientID)
 
+	// Don't let it be smaller than 2 min because token will be issued in every 1 minute by default.
+	if tokenLifetime < 2*time.Minute || tokenLifetime > 24*time.Hour {
+		tokenLifetime = time.Hour
+	}
+
 	ts := &jwtAccessTokenSource{
-		template: t,
-		signer:   key,
+		template:      t,
+		signer:        key,
+		tokenLifetime: tokenLifetime,
 	}
 	return oauth2.ReuseTokenSource(nil, ts), nil
 }
 
 func (ts *jwtAccessTokenSource) Token() (*oauth2.Token, error) {
 	iat := time.Now()
-	exp := iat.Add(time.Hour)
+	exp := iat.Add(ts.tokenLifetime)
 
 	token, err := ts.template.Clone()
 	if err != nil {
@@ -145,5 +163,6 @@ func (ts *jwtAccessTokenSource) Token() (*oauth2.Token, error) {
 	if err != nil {
 		return nil, err
 	}
+	// Exp shell not be less than 2 min!
 	return &oauth2.Token{TokenType: "Bearer", Expiry: exp.Add(-time.Minute), AccessToken: string(signed)}, nil
 }

@@ -34,6 +34,7 @@ type (
 		Endpoint              string          `json:"endpoint,omitempty"              yaml:"endpoint,omitempty"`
 		PrivateKeyPKCS8Base64 string          `json:"privateKeyPKCS8Base64,omitempty" yaml:"private_key_pkcs8_base64,omitempty"` //nolint:lll
 		PrivateKeyPKCS8       string          `json:"privateKeyPKCS8,omitempty"       yaml:"private_key_pkcs8,omitempty"`        //nolint:lll
+		TokenLifetime         string          `json:"tokenLifetime,omitempty"         yaml:"token_lifetime,omitempty"`
 		PrivateKeyJWK         json.RawMessage `json:"privateKeyJWK,omitempty"         yaml:"private_key_jwk,omitempty"`
 	}
 
