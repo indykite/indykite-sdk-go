@@ -67,7 +67,7 @@ It will have to be valid with: https://pkg.go.dev/time#ParseDuration.
 
 Examples: 30m, 1.5h, 2h45m
 
-Example in the json file: 
+Example in the json file:
 ```json
 {
  ...

@@ -6071,6 +6071,8 @@ func (m *OAuth2ApplicationConfig) validate(all bool) error {
 
 	}
 
+	// no validation rules for Trusted
+
 	if len(errors) > 0 {
 		return OAuth2ApplicationConfigMultiError(errors)
 	}
@@ -7013,6 +7015,8 @@ func (m *OAuth2ProviderConfig) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for Trusted
+
 	if len(errors) > 0 {
 		return OAuth2ProviderConfigMultiError(errors)
 	}
@@ -7550,35 +7554,6 @@ func (m *AuthFlowConfig) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetSetDefault()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, AuthFlowConfigValidationError{
-					field:  "SetDefault",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, AuthFlowConfigValidationError{
-					field:  "SetDefault",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetSetDefault()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return AuthFlowConfigValidationError{
-				field:  "SetDefault",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
 	}
 
 	// no validation rules for Default
@@ -8340,35 +8315,6 @@ func (m *EmailServiceConfig) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return EmailServiceConfigValidationError{
 				field:  "DefaultFromAddress",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetSetDefault()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "SetDefault",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, EmailServiceConfigValidationError{
-					field:  "SetDefault",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetSetDefault()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return EmailServiceConfigValidationError{
-				field:  "SetDefault",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
