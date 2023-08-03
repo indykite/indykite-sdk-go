@@ -51,6 +51,7 @@ upgrade_deps:
 	@echo "Please, upgrade workflows manually"
 
 generate-proto:
+	@echo "==> Generate Proto messages"
 	@buf generate buf.build/indykite/indykiteapis
 	@go generate
 	@make fmt gci
