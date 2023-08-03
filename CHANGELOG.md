@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://github.com/indykite/indykite-sdk-go/compare/v0.14.3...v0.15.0) (2023-08-03)
+
+
+### Features
+
+* add service account credentials methods ([3adfda3](https://github.com/indykite/indykite-sdk-go/commit/3adfda31626079150d137d11870e37c123c2958d))
+* add token lifetime - eng-1477 ([3578554](https://github.com/indykite/indykite-sdk-go/commit/3578554311bca8a8652e5958647184da21e134bc))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([cb53a4d](https://github.com/indykite/indykite-sdk-go/commit/cb53a4db7bd6d8728059978c64560f0ffc0c8815))
+* **deps:** upgrade everything ([d2fb362](https://github.com/indykite/indykite-sdk-go/commit/d2fb36251fe8807175e2363995354242b18fecc1))
+
 ### [0.14.3](https://github.com/indykite/indykite-sdk-go/compare/v0.14.2...v0.14.3) (2023-07-13)
 
 
