@@ -20,6 +20,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
@@ -93,6 +94,21 @@ var _ = Describe("Container Configuration", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("ReadError", func() {
+			req := &configpb.ReadCustomerConfigRequest{
+				Id:        "gid:like-real-customer-gid",
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.ReadCustomerConfigResponse{}
+			mockClient.EXPECT().
+				ReadCustomerConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.ReadCustomerConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
+		})
+
 		DescribeTable("Request error during Update",
 			func(req *configpb.UpdateCustomerConfigRequest, causeMatcher, msgMatcher, codeMatcher OmegaMatcher) {
 				resp, err := configClient.UpdateCustomerConfig(ctx, req)
@@ -138,6 +154,26 @@ var _ = Describe("Container Configuration", func() {
 			resp, err := configClient.UpdateCustomerConfig(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateError", func() {
+			req := &configpb.UpdateCustomerConfigRequest{
+				Id:   "gid:like-real-customer-gid",
+				Etag: wrapperspb.String("etag-value"),
+				Config: &configpb.CustomerConfig{
+					DefaultAuthFlowId:     "gid:id-of-authflow-created-under-customer",
+					DefaultEmailServiceId: "gid:id-of-email-service-provider",
+				},
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.UpdateCustomerConfigResponse{}
+			mockClient.EXPECT().
+				UpdateCustomerConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.UpdateCustomerConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
 		})
 	})
 
@@ -188,6 +224,21 @@ var _ = Describe("Container Configuration", func() {
 			resp, err := configClient.ReadApplicationSpaceConfig(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadError", func() {
+			req := &configpb.ReadApplicationSpaceConfigRequest{
+				Id:        "gid:like-real-ApplicationSpace-gid",
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.ReadApplicationSpaceConfigResponse{}
+			mockClient.EXPECT().
+				ReadApplicationSpaceConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.ReadApplicationSpaceConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
 		})
 
 		DescribeTable("Request error during Update",
@@ -243,6 +294,33 @@ var _ = Describe("Container Configuration", func() {
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
 		})
+
+		It("UpdateError", func() {
+			req := &configpb.UpdateApplicationSpaceConfigRequest{
+				Id:   "gid:like-real-ApplicationSpace-gid",
+				Etag: wrapperspb.String("etag-value"),
+				Config: &configpb.ApplicationSpaceConfig{
+					DefaultAuthFlowId:     "gid:id-of-authflow-created-under-ApplicationSpace",
+					DefaultEmailServiceId: "gid:id-of-email-service-provider",
+					DefaultTenantId:       "gid:id-of-tenant-under-this-app-space",
+					UsernamePolicy: &configpb.UsernamePolicy{
+						AllowedUsernameFormats: []string{"email"},
+						ValidEmail:             true,
+						VerifyEmail:            true,
+						AllowedEmailDomains:    []string{"gmail.com"},
+					},
+				},
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.UpdateApplicationSpaceConfigResponse{}
+			mockClient.EXPECT().
+				UpdateApplicationSpaceConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.UpdateApplicationSpaceConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
+		})
 	})
 
 	Describe("Tenant Configuration", func() {
@@ -285,6 +363,21 @@ var _ = Describe("Container Configuration", func() {
 			resp, err := configClient.ReadTenantConfig(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadError", func() {
+			req := &configpb.ReadTenantConfigRequest{
+				Id:        "gid:like-real-Tenant-gid",
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.ReadTenantConfigResponse{}
+			mockClient.EXPECT().
+				ReadTenantConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.ReadTenantConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
 		})
 
 		DescribeTable("Request error during Update",
@@ -332,6 +425,26 @@ var _ = Describe("Container Configuration", func() {
 			resp, err := configClient.UpdateTenantConfig(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateError", func() {
+			req := &configpb.UpdateTenantConfigRequest{
+				Id:   "gid:like-real-Tenant-gid",
+				Etag: wrapperspb.String("etag-value"),
+				Config: &configpb.TenantConfig{
+					DefaultAuthFlowId:     "gid:id-of-authflow-created-under-Tenant",
+					DefaultEmailServiceId: "gid:id-of-email-service-provider",
+				},
+				Bookmarks: []string{"something-like-bookmark-which-is-long-enough"},
+			}
+			beResp := &configpb.UpdateTenantConfigResponse{}
+			mockClient.EXPECT().
+				UpdateTenantConfig(gomock.Any(), test.WrapMatcher(test.EqualProto(req)), gomock.Any()).
+				Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+			resp, err := configClient.UpdateTenantConfig(ctx, req)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
 		})
 	})
 

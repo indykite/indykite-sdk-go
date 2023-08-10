@@ -20,6 +20,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/indykite/indykite-sdk-go/config"
@@ -115,6 +116,35 @@ var _ = Describe("Customer", func() {
 						CreateTime:  timestamppb.Now(),
 					},
 				},
+			),
+		)
+
+		DescribeTable("ReadError",
+			func(req *configpb.ReadCustomerRequest, beResp *configpb.ReadCustomerResponse) {
+				mockClient.EXPECT().
+					ReadCustomer(
+						gomock.Any(),
+						test.WrapMatcher(test.EqualProto(req)),
+						gomock.Any(),
+					).Return(beResp, status.Error(codes.InvalidArgument, "status error"))
+
+				resp, err := configClient.ReadCustomer(ctx, req)
+				Expect(err).ToNot(Succeed())
+				Expect(resp).To(BeNil())
+			},
+			Entry(
+				"ReadId",
+				&configpb.ReadCustomerRequest{
+					Identifier: &configpb.ReadCustomerRequest_Id{Id: "gid:like-real-customer-id"},
+				},
+				&configpb.ReadCustomerResponse{},
+			),
+			Entry(
+				"ReadName",
+				&configpb.ReadCustomerRequest{
+					Identifier: &configpb.ReadCustomerRequest_Name{Name: "like-real-customer-name"},
+				},
+				&configpb.ReadCustomerResponse{},
 			),
 		)
 	})
