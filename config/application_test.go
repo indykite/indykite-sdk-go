@@ -35,7 +35,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Tenant", func() {
+var _ = Describe("Application", func() {
 	var (
 		ctx          context.Context
 		mockCtrl     *gomock.Controller
@@ -53,9 +53,9 @@ var _ = Describe("Tenant", func() {
 		Ω(err).To(Succeed())
 	})
 
-	Describe("Tenant", func() {
+	Describe("Application", func() {
 		It("Nil request", func() {
-			resp, err := configClient.ReadTenant(ctx, nil)
+			resp, err := configClient.ReadApplication(ctx, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
 
@@ -68,100 +68,103 @@ var _ = Describe("Tenant", func() {
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
-			req := &configpb.ReadTenantRequest{
-				Identifier: &configpb.ReadTenantRequest_Id{Id: "gid:like"},
+			req := &configpb.ReadApplicationRequest{
+				Identifier: &configpb.ReadApplicationRequest_Id{Id: "gid:like"},
 			}
-			resp, err := configClient.ReadTenant(ctx, req)
+			resp, err := configClient.ReadApplication(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
+
 		})
 
 		DescribeTable("ReadSuccess",
-			func(req *configpb.ReadTenantRequest, beResp *configpb.ReadTenantResponse) {
+			func(req *configpb.ReadApplicationRequest, beResp *configpb.ReadApplicationResponse) {
 				mockClient.EXPECT().
-					ReadTenant(
+					ReadApplication(
 						gomock.Any(),
 						test.WrapMatcher(test.EqualProto(req)),
 						gomock.Any(),
 					).Return(beResp, nil)
 
-				resp, err := configClient.ReadTenant(ctx, req)
+				resp, err := configClient.ReadApplication(ctx, req)
 				Expect(err).To(Succeed())
 				Expect(resp).To(test.EqualProto(beResp))
 			},
 			Entry(
 				"ReadId",
-				&configpb.ReadTenantRequest{
-					Identifier: &configpb.ReadTenantRequest_Id{Id: "gid:like-real-tenant-id"},
+				&configpb.ReadApplicationRequest{
+					Identifier: &configpb.ReadApplicationRequest_Id{Id: "gid:like-real-application-id"},
 				},
-				&configpb.ReadTenantResponse{
-					Tenant: &configpb.Tenant{
-						Id:          "gid:like-real-tenant-id",
-						Name:        "like-real-tenant-name",
-						DisplayName: "Like Real Tenant Name",
+				&configpb.ReadApplicationResponse{
+					Application: &configpb.Application{
+						Id:          "gid:like-real-application-id",
+						Name:        "like-real-application-name",
+						DisplayName: "Like Real Application Name",
 						CreatedBy:   "creator",
 						CreateTime:  timestamppb.Now(),
+						AppSpaceId:  "gid:like-real-app-space-id",
 					},
 				},
 			),
 			Entry(
 				"ReadName",
-				&configpb.ReadTenantRequest{
-					Identifier: &configpb.ReadTenantRequest_Name{Name: &configpb.UniqueNameIdentifier{
+				&configpb.ReadApplicationRequest{
+					Identifier: &configpb.ReadApplicationRequest_Name{Name: &configpb.UniqueNameIdentifier{
 						Location: "gid:like-real-app-space-id",
-						Name:     "like-real-tenant-name",
+						Name:     "like-real-application-name",
 					},
 					},
 				},
-				&configpb.ReadTenantResponse{
-					Tenant: &configpb.Tenant{
-						Id:          "gid:like-real-tenant-id",
-						Name:        "like-real-tenant-name",
-						DisplayName: "Like Real Tenant Name",
+				&configpb.ReadApplicationResponse{
+					Application: &configpb.Application{
+						Id:          "gid:like-real-application-id",
+						Name:        "like-real-application-name",
+						DisplayName: "Like Real Application Name",
 						CreatedBy:   "creator",
 						CreateTime:  timestamppb.Now(),
+						AppSpaceId:  "gid:like-real-app-space-id",
 					},
 				},
 			),
 		)
 
 		DescribeTable("ReadError",
-			func(req *configpb.ReadTenantRequest, beResp *configpb.ReadTenantResponse) {
+			func(req *configpb.ReadApplicationRequest, beResp *configpb.ReadApplicationResponse) {
 				mockClient.EXPECT().
-					ReadTenant(
+					ReadApplication(
 						gomock.Any(),
 						test.WrapMatcher(test.EqualProto(req)),
 						gomock.Any(),
 					).Return(beResp, status.Error(codes.InvalidArgument, "status error"))
 
-				resp, err := configClient.ReadTenant(ctx, req)
+				resp, err := configClient.ReadApplication(ctx, req)
 				Expect(err).ToNot(Succeed())
 				Expect(resp).To(BeNil())
 			},
 			Entry(
 				"ReadId",
-				&configpb.ReadTenantRequest{
-					Identifier: &configpb.ReadTenantRequest_Id{Id: "gid:like-real-tenant-id"},
+				&configpb.ReadApplicationRequest{
+					Identifier: &configpb.ReadApplicationRequest_Id{Id: "gid:like-real-application-id"},
 				},
-				&configpb.ReadTenantResponse{},
+				&configpb.ReadApplicationResponse{},
 			),
 			Entry(
 				"ReadName",
-				&configpb.ReadTenantRequest{
-					Identifier: &configpb.ReadTenantRequest_Name{Name: &configpb.UniqueNameIdentifier{
+				&configpb.ReadApplicationRequest{
+					Identifier: &configpb.ReadApplicationRequest_Name{Name: &configpb.UniqueNameIdentifier{
 						Location: "gid:like-real-app-space-id",
-						Name:     "like-real-tenant-name",
+						Name:     "like-real-application-name",
 					},
 					},
 				},
-				&configpb.ReadTenantResponse{},
+				&configpb.ReadApplicationResponse{},
 			),
 		)
 	})
 
-	Describe("TenantCreate", func() {
+	Describe("ApplicationCreate", func() {
 		It("Nil request", func() {
-			resp, err := configClient.CreateTenant(ctx, nil)
+			resp, err := configClient.CreateApplication(ctx, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
 
@@ -174,67 +177,68 @@ var _ = Describe("Tenant", func() {
 		})
 
 		It("Create", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
-			req := &configpb.CreateTenantRequest{
-				IssuerId:    "gid:like-real-issuer-id",
-				Name:        "like-real-tenant-name",
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
+			req := &configpb.CreateApplicationRequest{
+				AppSpaceId:  "gid:like-real-app-space-id",
+				Name:        "like-real-application-name",
 				DisplayName: displayNamePb,
 			}
-			beResp := &configpb.CreateTenantResponse{
-				Id:         "gid:like-real-tenant-id",
+			beResp := &configpb.CreateApplicationResponse{
+				Id:         "gid:like-real-application-id",
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
 				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
-			mockClient.EXPECT().CreateTenant(
+			mockClient.EXPECT().CreateApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, nil)
 
-			resp, err := configClient.CreateTenant(ctx, req)
+			resp, err := configClient.CreateApplication(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("CreateNonValid", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
-			req := &configpb.CreateTenantRequest{
-				IssuerId:    "error-issuer-id",
-				Name:        "like-real-tenant-name",
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
+			req := &configpb.CreateApplicationRequest{
+				AppSpaceId:  "error-app-space-id",
+				Name:        "like-real-application-name",
 				DisplayName: displayNamePb,
 			}
 
-			resp, err := configClient.CreateTenant(ctx, req)
+			resp, err := configClient.CreateApplication(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
 		})
 
 		It("CreateError", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
-			req := &configpb.CreateTenantRequest{
-				IssuerId:    "gid:like-real-issuer-id",
-				Name:        "like-real-tenant-name",
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
+			req := &configpb.CreateApplicationRequest{
+				AppSpaceId:  "gid:like-real-app-space-id",
+				Name:        "like-real-application-name",
 				DisplayName: displayNamePb,
 			}
-			beResp := &configpb.CreateTenantResponse{}
+			beResp := &configpb.CreateApplicationResponse{}
 
-			mockClient.EXPECT().CreateTenant(
+			mockClient.EXPECT().CreateApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, status.Error(codes.InvalidArgument, "status error"))
 
-			resp, err := configClient.CreateTenant(ctx, req)
+			resp, err := configClient.CreateApplication(ctx, req)
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
 		})
 	})
-	Describe("TenantUpdate", func() {
+
+	Describe("ApplicationUpdate", func() {
 		It("Nil request", func() {
-			resp, err := configClient.UpdateTenant(ctx, nil)
+			resp, err := configClient.UpdateApplication(ctx, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
 
@@ -247,70 +251,70 @@ var _ = Describe("Tenant", func() {
 		})
 
 		It("Update", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.UpdateTenantRequest{
-				Id:          "gid:like-real-tenant-id",
+			req := &configpb.UpdateApplicationRequest{
+				Id:          "gid:like-real-application-id",
 				Etag:        etagPb,
 				DisplayName: displayNamePb,
 			}
-			beResp := &configpb.UpdateTenantResponse{
-				Id:         "gid:like-real-tenant-id",
+			beResp := &configpb.UpdateApplicationResponse{
+				Id:         "gid:like-real-application-id",
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
 				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
-			mockClient.EXPECT().UpdateTenant(
+			mockClient.EXPECT().UpdateApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, nil)
 
-			resp, err := configClient.UpdateTenant(ctx, req)
+			resp, err := configClient.UpdateApplication(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("UpdateNonValid", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.UpdateTenantRequest{
-				Id:          "non-valid-tenant-id",
+			req := &configpb.UpdateApplicationRequest{
+				Id:          "wrong-id",
 				Etag:        etagPb,
 				DisplayName: displayNamePb,
 			}
-			resp, err := configClient.UpdateTenant(ctx, req)
+			resp, err := configClient.UpdateApplication(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
 		})
 
 		It("UpdateError", func() {
-			displayNamePb := &wrapperspb.StringValue{Value: "Like real Tenant Name"}
+			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.UpdateTenantRequest{
-				Id:          "gid:like-real-tenant-id",
+			req := &configpb.UpdateApplicationRequest{
+				Id:          "gid:like-real-application-id",
 				Etag:        etagPb,
 				DisplayName: displayNamePb,
 			}
-			beResp := &configpb.UpdateTenantResponse{}
+			beResp := &configpb.UpdateApplicationResponse{}
 
-			mockClient.EXPECT().UpdateTenant(
+			mockClient.EXPECT().UpdateApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, status.Error(codes.InvalidArgument, "status error"))
 
-			resp, err := configClient.UpdateTenant(ctx, req)
+			resp, err := configClient.UpdateApplication(ctx, req)
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
 		})
-
 	})
-	Describe("TenantList", func() {
+
+	Describe("ApplicationList", func() {
 		It("Nil request", func() {
-			resp, err := configClient.ListTenants(ctx, nil)
+			resp, err := configClient.ListApplications(ctx, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
 
@@ -323,30 +327,31 @@ var _ = Describe("Tenant", func() {
 		})
 
 		It("MatchName", func() {
-			mockResponseClient := configmock.NewMockConfigManagementAPI_ListTenantsClient(mockCtrl)
-			mockListTenantsRequest := configpb.ListTenantsRequest{
+			mockResponseClient := configmock.NewMockConfigManagementAPI_ListApplicationsClient(mockCtrl)
+			mockListApplicationsRequest := configpb.ListApplicationsRequest{
 				AppSpaceId: "gid:like-real-app-space-id",
-				Match:      []string{"like-real-tenant-name"},
+				Match:      []string{"like-real-application-name"},
 			}
 
-			mockClient.EXPECT().ListTenants(
+			mockClient.EXPECT().ListApplications(
 				gomock.Any(),
-				gomock.Eq(&mockListTenantsRequest),
+				gomock.Eq(&mockListApplicationsRequest),
 				gomock.Any(),
 			).Return(mockResponseClient, nil)
 
-			stream, err := configClient.ListTenants(context.Background(), &mockListTenantsRequest)
+			stream, err := configClient.ListApplications(context.Background(), &mockListApplicationsRequest)
 			Ω(stream).ToNot(BeNil())
 			Ω(err).To(Succeed())
 
-			mockResp := &configpb.ListTenantsResponse{
-				Tenant: &configpb.Tenant{
-					Id:          "gid:like-tenant-id",
-					Name:        "like-real-tenant-name",
-					DisplayName: "Like Real Tenant Name",
+			mockResp := &configpb.ListApplicationsResponse{
+				Application: &configpb.Application{
+					Id:          "gid:like-real-application-id",
+					Name:        "like-real-application-name",
+					DisplayName: "Like Real Application Name",
 					CreatedBy:   "creator",
 					CreateTime:  timestamppb.Now(),
 					Etag:        "123qwert",
+					AppSpaceId:  "gid:like-real-app-space-id",
 				},
 			}
 
@@ -364,23 +369,23 @@ var _ = Describe("Tenant", func() {
 
 		})
 
-		DescribeTable("ListNonValid",
-			func(mockListTenantsRequest *configpb.ListTenantsRequest, message string) {
-				resp, err := configClient.ListTenants(context.Background(), mockListTenantsRequest)
+		DescribeTable("ListError",
+			func(mockListApplicationsRequest *configpb.ListApplicationsRequest, message string) {
+				resp, err := configClient.ListApplications(context.Background(), mockListApplicationsRequest)
 				Ω(resp).To(BeNil())
 				Ω(err).To(MatchError(ContainSubstring(message)))
 			},
 			Entry(
-				"ApplicationSpace error",
-				&configpb.ListTenantsRequest{
+				"AppSpace error",
+				&configpb.ListApplicationsRequest{
 					AppSpaceId: "app-space-id",
-					Match:      []string{"like-real-tenant-name"},
+					Match:      []string{"like-real-application-name"},
 				},
 				"Id: value length must be between 22",
 			),
 			Entry(
 				"Match error",
-				&configpb.ListTenantsRequest{
+				&configpb.ListApplicationsRequest{
 					AppSpaceId: "gid:like-real-app-space-id",
 					Match:      []string{},
 				},
@@ -389,27 +394,28 @@ var _ = Describe("Tenant", func() {
 		)
 
 		It("MatchNameError", func() {
-			mockResponseClient := configmock.NewMockConfigManagementAPI_ListTenantsClient(mockCtrl)
-			mockListTenantsRequest := configpb.ListTenantsRequest{
+			mockResponseClient := configmock.NewMockConfigManagementAPI_ListApplicationsClient(mockCtrl)
+			mockListApplicationsRequest := configpb.ListApplicationsRequest{
 				AppSpaceId: "gid:like-real-app-space-id",
-				Match:      []string{"like-real-tenant-name"},
+				Match:      []string{"like-real-application-name"},
 			}
 
-			mockClient.EXPECT().ListTenants(
+			mockClient.EXPECT().ListApplications(
 				gomock.Any(),
-				gomock.Eq(&mockListTenantsRequest),
+				gomock.Eq(&mockListApplicationsRequest),
 				gomock.Any(),
 			).Return(mockResponseClient, status.Error(codes.InvalidArgument, "status error"))
 
-			stream, err := configClient.ListTenants(context.Background(), &mockListTenantsRequest)
+			stream, err := configClient.ListApplications(context.Background(), &mockListApplicationsRequest)
 			Expect(err).ToNot(Succeed())
 			Expect(stream).To(BeNil())
 		})
+
 	})
 
-	Describe("TenantDelete", func() {
+	Describe("ApplicationDelete", func() {
 		It("Nil request", func() {
-			resp, err := configClient.DeleteTenant(ctx, nil)
+			resp, err := configClient.DeleteApplication(ctx, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
 
@@ -423,11 +429,11 @@ var _ = Describe("Tenant", func() {
 
 		It("should return an length error in the response", func() {
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.DeleteTenantRequest{
+			req := &configpb.DeleteApplicationRequest{
 				Id:   "like-real",
 				Etag: etagPb,
 			}
-			resp, err := configClient.DeleteTenant(ctx, req)
+			resp, err := configClient.DeleteApplication(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
 
@@ -435,40 +441,40 @@ var _ = Describe("Tenant", func() {
 
 		It("Delete", func() {
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.DeleteTenantRequest{
-				Id:   "gid:like-real-tenant-id",
+			req := &configpb.DeleteApplicationRequest{
+				Id:   "gid:like-real-application-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteTenantResponse{
+			beResp := &configpb.DeleteApplicationResponse{
 				Bookmark: "something-like-bookmark-which-is-long-enough",
 			}
 
-			mockClient.EXPECT().DeleteTenant(
+			mockClient.EXPECT().DeleteApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, nil)
 
-			resp, err := configClient.DeleteTenant(ctx, req)
+			resp, err := configClient.DeleteApplication(ctx, req)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("DeleteError", func() {
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
-			req := &configpb.DeleteTenantRequest{
-				Id:   "gid:like-real-tenant-id",
+			req := &configpb.DeleteApplicationRequest{
+				Id:   "gid:like-real-application-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteTenantResponse{}
+			beResp := &configpb.DeleteApplicationResponse{}
 
-			mockClient.EXPECT().DeleteTenant(
+			mockClient.EXPECT().DeleteApplication(
 				gomock.Any(),
 				test.WrapMatcher(test.EqualProto(req)),
 				gomock.Any(),
 			).Return(beResp, status.Error(codes.InvalidArgument, "status error"))
 
-			resp, err := configClient.DeleteTenant(ctx, req)
+			resp, err := configClient.DeleteApplication(ctx, req)
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
 		})
