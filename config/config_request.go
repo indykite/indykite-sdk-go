@@ -248,6 +248,46 @@ func (x *NodeRequest) WithKnowledgeGraphSchemaConfig(v *configpb.KnowledgeGraphS
 	return x
 }
 
+func (x *NodeRequest) WithWebauthnProviderConfig(v *configpb.WebAuthnProviderConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_WebauthnProviderConfig{
+				WebauthnProviderConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_WebauthnProviderConfig{
+				WebauthnProviderConfig: v,
+			}
+		}
+	}
+	return x
+}
+
+func (x *NodeRequest) WithReadidProviderConfig(v *configpb.ReadIDProviderConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_ReadidProviderConfig{
+				ReadidProviderConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_ReadidProviderConfig{
+				ReadidProviderConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) optionalString(v string) *wrapperspb.StringValue {
 	return wrapperspb.String(strings.TrimSpace(v))
 }
