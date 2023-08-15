@@ -18,8 +18,6 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/pborman/uuid"
-
 	"github.com/indykite/indykite-sdk-go/errors"
 )
 
@@ -28,14 +26,6 @@ const (
 )
 
 var nameCheck = regexp.MustCompile(fmt.Sprintf(rfc1035NameTemplate, 0, 252))
-
-// IsUUIDv4 checks if id is valid RFC4122 varian UUID.
-func IsUUIDv4(key string, id []byte) error {
-	if uuid.UUID(id).Variant() != uuid.RFC4122 {
-		return errors.NewInvalidArgumentError("expected UUID RFC4122 variant")
-	}
-	return nil
-}
 
 // IsValidName checks if name is valid RFC1035 string.
 //
@@ -46,14 +36,4 @@ func IsValidName(name string) error {
 		return errors.NewInvalidArgumentError("name value must be valid RFC1035 string with length 2-254")
 	}
 	return nil
-}
-
-// ContainsLabel check if string array contains given node label.
-func ContainsLabel(arr []string, searchFor string) bool {
-	for _, v := range arr {
-		if searchFor == v {
-			return true
-		}
-	}
-	return false
 }
