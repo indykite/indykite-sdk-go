@@ -24,13 +24,15 @@ fieldalignment:
 	@echo "==> Analyzer structs and rearranged to use less memory with fieldalignment..."
 	fieldalignment -fix -test=false ./...
 
-download:
-	@echo Download go.mod dependencies
-	@go mod download
-
-install-tools: download
-	@echo Installing tools from tools.go
-	@go install $$(go list -f '{{range .Imports}}{{.}} {{end}}' tools.go)
+install-tools:
+	@echo Installing tools
+	@go install github.com/bufbuild/buf/cmd/buf@latest
+	@go install github.com/daixiang0/gci@latest
+	@go install github.com/golang/mock/mockgen@latest
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.1
+	@go install github.com/onsi/ginkgo/v2/ginkgo@latest
+	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+	@echo Installation completed
 
 test:
 	go test -v -cpu 4 -covermode=count -coverpkg github.com/indykite/indykite-sdk-go/... -coverprofile=coverage.out.tmp ./...

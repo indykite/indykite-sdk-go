@@ -15,13 +15,13 @@ jobs:
             - name: Set up Go
               uses: actions/setup-go@v4
               with:
-                  go-version: ^1.20
+                  go-version-file: go.mod
 
             - name: Run GolangCI-Lint Scanner
               uses: golangci/golangci-lint-action@v3
               with:
                   # Required: the version of golangci-lint is required and must be specified without patch version.
-                  version: v1.53
+                  version: v1.54.1
 
                   # Optional: working directory, useful for monorepos
                   # working-directory: ./...
