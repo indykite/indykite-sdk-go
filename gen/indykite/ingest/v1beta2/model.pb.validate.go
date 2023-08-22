@@ -834,30 +834,26 @@ func (m *DigitalTwin) validate(all bool) error {
 
 	}
 
-	if m.GetTenantId() != "" {
-
-		if l := utf8.RuneCountInString(m.GetTenantId()); l < 22 || l > 254 {
-			err := DigitalTwinValidationError{
-				field:  "TenantId",
-				reason: "value length must be between 22 and 254 runes, inclusive",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	if l := utf8.RuneCountInString(m.GetTenantId()); l < 22 || l > 254 {
+		err := DigitalTwinValidationError{
+			field:  "TenantId",
+			reason: "value length must be between 22 and 254 runes, inclusive",
 		}
-
-		if !_DigitalTwin_TenantId_Pattern.MatchString(m.GetTenantId()) {
-			err := DigitalTwinValidationError{
-				field:  "TenantId",
-				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
+	}
 
+	if !_DigitalTwin_TenantId_Pattern.MatchString(m.GetTenantId()) {
+		err := DigitalTwinValidationError{
+			field:  "TenantId",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(m.GetIdentityProperties()) > 10 {

@@ -288,6 +288,26 @@ func (x *NodeRequest) WithReadidProviderConfig(v *configpb.ReadIDProviderConfig)
 	return x
 }
 
+func (x *NodeRequest) WithAuditSinkConfig(v *configpb.AuditSinkConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_AuditSinkConfig{
+				AuditSinkConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_AuditSinkConfig{
+				AuditSinkConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) optionalString(v string) *wrapperspb.StringValue {
 	return wrapperspb.String(strings.TrimSpace(v))
 }

@@ -10473,6 +10473,8 @@ func (m *RegisterServiceAccountCredentialResponse) validate(all bool) error {
 
 	// no validation rules for Bookmark
 
+	// no validation rules for DisplayName
+
 	if len(errors) > 0 {
 		return RegisterServiceAccountCredentialResponseMultiError(errors)
 	}
@@ -13903,6 +13905,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetAuthFlowConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "AuthFlowConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -13944,6 +13957,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 		oneofConfigPresent = true
+
+		if m.GetEmailServiceConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "EmailServiceConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetEmailServiceConfig()).(type) {
@@ -13987,6 +14011,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetSmsServiceConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "SmsServiceConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetSmsServiceConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -14016,6 +14051,59 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *CreateConfigNodeRequest_AuditSinkConfig:
+		if v == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetAuditSinkConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "AuditSinkConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetAuditSinkConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "AuditSinkConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "AuditSinkConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAuditSinkConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "AuditSinkConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *CreateConfigNodeRequest_Oauth2ClientConfig:
 		if v == nil {
 			err := CreateConfigNodeRequestValidationError{
@@ -14028,6 +14116,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 		oneofConfigPresent = true
+
+		if m.GetOauth2ClientConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "Oauth2ClientConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetOauth2ClientConfig()).(type) {
@@ -14071,6 +14170,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetPasswordProviderConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "PasswordProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -14112,6 +14222,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 		oneofConfigPresent = true
+
+		if m.GetWebauthnProviderConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "WebauthnProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetWebauthnProviderConfig()).(type) {
@@ -14155,6 +14276,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetAuthenteqProviderConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "AuthenteqProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthenteqProviderConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -14196,6 +14328,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 		oneofConfigPresent = true
+
+		if m.GetSafrProviderConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "SafrProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetSafrProviderConfig()).(type) {
@@ -14239,6 +14382,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetAuthorizationPolicyConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "AuthorizationPolicyConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -14281,6 +14435,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
+		if m.GetKnowledgeGraphSchemaConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "KnowledgeGraphSchemaConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -14322,6 +14487,17 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 		oneofConfigPresent = true
+
+		if m.GetReadidProviderConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "ReadidProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(m.GetReadidProviderConfig()).(type) {
@@ -14739,6 +14915,8 @@ func (m *ReadConfigNodeRequest) validate(all bool) error {
 
 	}
 
+	// no validation rules for Version
+
 	if len(errors) > 0 {
 		return ReadConfigNodeRequestMultiError(errors)
 	}
@@ -15105,6 +15283,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetAuthFlowConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "AuthFlowConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15139,6 +15328,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
 				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetEmailServiceConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "EmailServiceConfig",
+				reason: "value is required",
 			}
 			if !all {
 				return err
@@ -15187,6 +15387,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetSmsServiceConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "SmsServiceConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetSmsServiceConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15216,11 +15427,74 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *UpdateConfigNodeRequest_AuditSinkConfig:
+		if v == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetAuditSinkConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "AuditSinkConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetAuditSinkConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "AuditSinkConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "AuditSinkConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAuditSinkConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "AuditSinkConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *UpdateConfigNodeRequest_Oauth2ClientConfig:
 		if v == nil {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
 				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetOauth2ClientConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "Oauth2ClientConfig",
+				reason: "value is required",
 			}
 			if !all {
 				return err
@@ -15269,6 +15543,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetPasswordProviderConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "PasswordProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15303,6 +15588,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
 				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetWebauthnProviderConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "WebauthnProviderConfig",
+				reason: "value is required",
 			}
 			if !all {
 				return err
@@ -15351,6 +15647,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetAuthenteqProviderConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "AuthenteqProviderConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthenteqProviderConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15385,6 +15692,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
 				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetSafrProviderConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "SafrProviderConfig",
+				reason: "value is required",
 			}
 			if !all {
 				return err
@@ -15433,6 +15751,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetAuthorizationPolicyConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "AuthorizationPolicyConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetAuthorizationPolicyConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15474,6 +15803,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if m.GetKnowledgeGraphSchemaConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "KnowledgeGraphSchemaConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 		if all {
 			switch v := interface{}(m.GetKnowledgeGraphSchemaConfig()).(type) {
 			case interface{ ValidateAll() error }:
@@ -15508,6 +15848,17 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
 				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetReadidProviderConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "ReadidProviderConfig",
+				reason: "value is required",
 			}
 			if !all {
 				return err
