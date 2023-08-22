@@ -1762,7 +1762,7 @@ type CreateInvitationRequest struct {
 	// TenantId specify under which tenant the user is invited
 	TenantId string `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
 	// ReferenceId is unique external reference identifier to correlate the lifecycle events with.
-	// Must be unique withing the whole application
+	// Must be unique within the whole application
 	ReferenceId string `protobuf:"bytes,2,opt,name=reference_id,json=referenceId,proto3" json:"reference_id,omitempty"`
 	// InviteAtTime can be empty to send invitation immediately.
 	// Or can specify time in the future to postpone sending invitation message.
