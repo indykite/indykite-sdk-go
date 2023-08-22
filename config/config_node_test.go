@@ -524,7 +524,7 @@ var _ = Describe("ConfigNode", func() {
 					digitalTwinId: String!
 					tenantId: String!
 					kind: DigitalTwinKind!
-					tags: [String!]!	
+					tags: [String!]!
 				}
 			`
 			configuration := &configpb.KnowledgeGraphSchemaConfig{
@@ -952,7 +952,7 @@ var _ = Describe("ConfigNode", func() {
 					digitalTwinId: String!
 					tenantId: String!
 					kind: DigitalTwinKind!
-					tags: [String!]!	
+					tags: [String!]!
 				}
 			`
 			configuration := &configpb.KnowledgeGraphSchemaConfig{

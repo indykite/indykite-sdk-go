@@ -26,7 +26,7 @@ or request one from your point of contact at IndyKite.
 
 ## Requirements
 
-- Go version 1.20 or later
+- Go version 1.21 or later
 - An AppSpace, App, AppAgent, and AppAgent credentials for all APIs except for Config API
 - Service account credentials for Config API
 
