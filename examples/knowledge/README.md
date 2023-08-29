@@ -1,4 +1,4 @@
-# Ingest Client
+# Identity Knowledge API Client
 
 ## Environment
 

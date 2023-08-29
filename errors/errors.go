@@ -98,7 +98,7 @@ func NewWithCause(code codes.Code, err error, msg string, args ...interface{}) e
 		}
 	}
 	return &ClientError{
-		code:  codes.InvalidArgument,
+		code:  code,
 		msg:   msg,
 		cause: err,
 	}
