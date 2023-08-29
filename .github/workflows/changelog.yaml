@@ -39,4 +39,5 @@ jobs:
                       identity/doc.go
                       ingest/doc.go
                       authorization/doc.go
+                      knowledge/doc.go
                   token: ${{ secrets.INDYKITE_PAT }}

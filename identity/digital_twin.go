@@ -161,6 +161,7 @@ func (c *Client) getDigitalTwinWithProperties(ctx context.Context,
 }
 
 // GetDigitalTwin receive all properties for given digital twin.
+// Deprecated: Use the equivalent function in the knowledge package.
 func (c *Client) GetDigitalTwin(ctx context.Context,
 	digitalTwin *identitypb.DigitalTwin,
 	properties []*identitypb.PropertyMask,
@@ -172,6 +173,7 @@ func (c *Client) GetDigitalTwin(ctx context.Context,
 }
 
 // GetDigitalTwinByToken receive all properties for digital twin.
+// Deprecated: Use the equivalent function in the knowledge package.
 func (c *Client) GetDigitalTwinByToken(ctx context.Context,
 	token string,
 	properties []*identitypb.PropertyMask,
