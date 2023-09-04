@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/indykite/indykite-sdk-go/compare/v0.15.0...v0.16.0) (2023-09-04)
+
+
+### Features
+
+* implements audit sink CRUD operations ([cfe23ad](https://github.com/indykite/indykite-sdk-go/commit/cfe23ad812662c7528b686d932dc272e7d234292))
+
+
+### Miscellaneous Chores
+
+* upgrade dependencies ([aedc4e8](https://github.com/indykite/indykite-sdk-go/commit/aedc4e8552ce8447c9907a4dcee53f56639b31d8))
+
 ## [0.15.0](https://github.com/indykite/indykite-sdk-go/compare/v0.14.3...v0.15.0) (2023-08-03)
 
 
