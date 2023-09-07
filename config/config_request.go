@@ -27,10 +27,11 @@ import (
 type (
 	// NodeRequest is a request builder.
 	NodeRequest struct {
-		create *configpb.CreateConfigNodeRequest
-		read   *configpb.ReadConfigNodeRequest
-		update *configpb.UpdateConfigNodeRequest
-		delete *configpb.DeleteConfigNodeRequest
+		create       *configpb.CreateConfigNodeRequest
+		read         *configpb.ReadConfigNodeRequest
+		update       *configpb.UpdateConfigNodeRequest
+		delete       *configpb.DeleteConfigNodeRequest
+		listVersions *configpb.ListConfigNodeVersionsRequest
 	}
 )
 
@@ -44,6 +45,8 @@ func (x *NodeRequest) String() string {
 		return fmt.Sprintf("Update %s configuration", x.update.Id)
 	case x.delete != nil:
 		return fmt.Sprintf("Delete %s configuration", x.delete.Id)
+	case x.listVersions != nil:
+		return fmt.Sprintf("ListVersions of %s configuration", x.listVersions.Id)
 	default:
 		return "Invalid empty request"
 	}
@@ -92,6 +95,14 @@ func NewUpdate(id string) (*NodeRequest, error) {
 func NewDelete(id string) (*NodeRequest, error) {
 	return &NodeRequest{
 		delete: &configpb.DeleteConfigNodeRequest{
+			Id: id,
+		},
+	}, nil
+}
+
+func NewListVersions(id string) (*NodeRequest, error) {
+	return &NodeRequest{
+		listVersions: &configpb.ListConfigNodeVersionsRequest{
 			Id: id,
 		},
 	}, nil
@@ -308,6 +319,13 @@ func (x *NodeRequest) WithAuditSinkConfig(v *configpb.AuditSinkConfig) *NodeRequ
 	return x
 }
 
+func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
+	if x.read != nil {
+		x.read.Version = version
+	}
+	return x
+}
+
 func (x *NodeRequest) optionalString(v string) *wrapperspb.StringValue {
 	return wrapperspb.String(strings.TrimSpace(v))
 }
@@ -328,6 +346,10 @@ func (x *NodeRequest) validate() error {
 		}
 	case x.delete != nil:
 		if err := x.delete.Validate(); err != nil {
+			return err
+		}
+	case x.listVersions != nil:
+		if err := x.listVersions.Validate(); err != nil {
 			return err
 		}
 	default:

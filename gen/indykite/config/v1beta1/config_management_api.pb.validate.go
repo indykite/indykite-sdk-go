@@ -16386,6 +16386,270 @@ var _DeleteConfigNodeRequest_Etag_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]{8
 
 var _DeleteConfigNodeRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
 
+// Validate checks the field values on ListConfigNodeVersionsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListConfigNodeVersionsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListConfigNodeVersionsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListConfigNodeVersionsRequestMultiError, or nil if none found.
+func (m *ListConfigNodeVersionsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListConfigNodeVersionsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetId()); l < 22 || l > 254 {
+		err := ListConfigNodeVersionsRequestValidationError{
+			field:  "Id",
+			reason: "value length must be between 22 and 254 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_ListConfigNodeVersionsRequest_Id_Pattern.MatchString(m.GetId()) {
+		err := ListConfigNodeVersionsRequestValidationError{
+			field:  "Id",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ListConfigNodeVersionsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListConfigNodeVersionsRequestMultiError is an error wrapping multiple
+// validation errors returned by ListConfigNodeVersionsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type ListConfigNodeVersionsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListConfigNodeVersionsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListConfigNodeVersionsRequestMultiError) AllErrors() []error { return m }
+
+// ListConfigNodeVersionsRequestValidationError is the validation error
+// returned by ListConfigNodeVersionsRequest.Validate if the designated
+// constraints aren't met.
+type ListConfigNodeVersionsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListConfigNodeVersionsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListConfigNodeVersionsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListConfigNodeVersionsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListConfigNodeVersionsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListConfigNodeVersionsRequestValidationError) ErrorName() string {
+	return "ListConfigNodeVersionsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListConfigNodeVersionsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListConfigNodeVersionsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListConfigNodeVersionsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListConfigNodeVersionsRequestValidationError{}
+
+var _ListConfigNodeVersionsRequest_Id_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+// Validate checks the field values on ListConfigNodeVersionsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListConfigNodeVersionsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListConfigNodeVersionsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// ListConfigNodeVersionsResponseMultiError, or nil if none found.
+func (m *ListConfigNodeVersionsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListConfigNodeVersionsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetConfigNodes() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListConfigNodeVersionsResponseValidationError{
+						field:  fmt.Sprintf("ConfigNodes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListConfigNodeVersionsResponseValidationError{
+						field:  fmt.Sprintf("ConfigNodes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListConfigNodeVersionsResponseValidationError{
+					field:  fmt.Sprintf("ConfigNodes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListConfigNodeVersionsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListConfigNodeVersionsResponseMultiError is an error wrapping multiple
+// validation errors returned by ListConfigNodeVersionsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type ListConfigNodeVersionsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListConfigNodeVersionsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListConfigNodeVersionsResponseMultiError) AllErrors() []error { return m }
+
+// ListConfigNodeVersionsResponseValidationError is the validation error
+// returned by ListConfigNodeVersionsResponse.Validate if the designated
+// constraints aren't met.
+type ListConfigNodeVersionsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListConfigNodeVersionsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListConfigNodeVersionsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListConfigNodeVersionsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListConfigNodeVersionsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListConfigNodeVersionsResponseValidationError) ErrorName() string {
+	return "ListConfigNodeVersionsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListConfigNodeVersionsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListConfigNodeVersionsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListConfigNodeVersionsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListConfigNodeVersionsResponseValidationError{}
+
 // Validate checks the field values on DeleteConfigNodeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

@@ -120,6 +120,51 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("ReadSuccessAuthorizationPolicy", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
+			configNodeRequest.WithVersion(int64(0))
+			jsonInput := `{
+				"person1": 10,
+				"person2": 20,
+				"person3": 20
+			}`
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					TenantId:    "gid:like-real-tenant-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_AuthorizationPolicyConfig{
+						AuthorizationPolicyConfig: &configpb.AuthorizationPolicyConfig{
+							Policy: jsonInput,
+							Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+							Tags:   []string{},
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("ReadSuccessOAuth2Client", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -1124,6 +1169,92 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(Not(BeNil()))
 			Expect(err).To(Succeed())
 			Expect(configNodeRequest).To(ContainSubstring("Delete gid:like-real-config-node-id configuration"))
+		})
+	})
+
+	Describe("ListConfigNodeVersions", func() {
+		It("Nil request", func() {
+			resp, err := configClient.ListConfigNodeVersions(ctx, nil)
+			Expect(err).To(HaveOccurred())
+			Expect(resp).To(BeNil())
+
+			var clientErr *sdkerrors.ClientError
+			Expect(errors.As(err, &clientErr)).To(BeTrue(), "is client error")
+			Expect(clientErr.Unwrap()).To(Succeed())
+			Expect(clientErr.Message()).To(Equal("invalid nil or not read request"))
+			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
+
+		})
+
+		It("Wrong id should return a validation error in the response", func() {
+			configNodeRequest, err := config.NewListVersions("gid:like")
+			Ω(err).To(Succeed())
+			resp, err := configClient.ListConfigNodeVersions(ctx, configNodeRequest)
+			Expect(resp).To(BeNil())
+			Expect(err).To(MatchError(ContainSubstring("empty request")))
+
+		})
+
+		It("ListVersionsSuccess", func() {
+			configNodeRequest, err := config.NewListVersions("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			Expect(configNodeRequest).ToNot(BeNil())
+			mockResp := &configpb.ListConfigNodeVersionsResponse{
+				ConfigNodes: []*configpb.ConfigNode{
+					{
+						Id:          "gid:like-real-config-node-id",
+						Name:        "like-real-config-node-name",
+						DisplayName: "Like Real Config-Node Name",
+						CreatedBy:   "creator",
+						CreateTime:  timestamppb.Now(),
+						CustomerId:  "gid:like-real-customer-id",
+						AppSpaceId:  "gid:like-real-app-space-id",
+						TenantId:    "gid:like-real-tenant-id",
+						Etag:        "123qwe",
+						Version:     0,
+						Config: &configpb.ConfigNode_AuthorizationPolicyConfig{
+							AuthorizationPolicyConfig: &configpb.AuthorizationPolicyConfig{
+								Policy: `{"person1": 10,"person2": 20,"person3": 20}`,
+								Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+								Tags:   []string{},
+							},
+						},
+					},
+					{
+						Id:          "gid:like-real-config-node-id",
+						Name:        "like-real-config-node-name",
+						DisplayName: "Like Real Config-Node Name",
+						CreatedBy:   "creator",
+						CreateTime:  timestamppb.Now(),
+						CustomerId:  "gid:like-real-customer-id",
+						AppSpaceId:  "gid:like-real-app-space-id",
+						TenantId:    "gid:like-real-tenant-id",
+						Etag:        "123qwe",
+						Version:     1,
+						Config: &configpb.ConfigNode_AuthorizationPolicyConfig{
+							AuthorizationPolicyConfig: &configpb.AuthorizationPolicyConfig{
+								Policy: `{"person1": 11,"person2": 22,"person33": 20}`,
+								Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+								Tags:   []string{},
+							},
+						},
+					},
+				},
+			}
+
+			mockClient.EXPECT().
+				ListConfigNodeVersions(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(mockResp, status.Error(codes.InvalidArgument, "status error")).AnyTimes()
+
+			resp, err := configClient.ListConfigNodeVersions(ctx, configNodeRequest)
+			Expect(err).ToNot(Succeed())
+			Expect(resp).To(BeNil())
+
 		})
 	})
 

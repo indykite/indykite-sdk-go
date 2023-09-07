@@ -207,7 +207,7 @@ func (m *IdentityKnowledgeResponse) validate(all bool) error {
 
 	var errors []error
 
-	for idx, item := range m.GetNodes() {
+	for idx, item := range m.GetPaths() {
 		_, _ = idx, item
 
 		if all {
@@ -215,7 +215,7 @@ func (m *IdentityKnowledgeResponse) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, IdentityKnowledgeResponseValidationError{
-						field:  fmt.Sprintf("Nodes[%v]", idx),
+						field:  fmt.Sprintf("Paths[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -223,7 +223,7 @@ func (m *IdentityKnowledgeResponse) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, IdentityKnowledgeResponseValidationError{
-						field:  fmt.Sprintf("Nodes[%v]", idx),
+						field:  fmt.Sprintf("Paths[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -232,41 +232,7 @@ func (m *IdentityKnowledgeResponse) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return IdentityKnowledgeResponseValidationError{
-					field:  fmt.Sprintf("Nodes[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	for idx, item := range m.GetRelationships() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, IdentityKnowledgeResponseValidationError{
-						field:  fmt.Sprintf("Relationships[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, IdentityKnowledgeResponseValidationError{
-						field:  fmt.Sprintf("Relationships[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return IdentityKnowledgeResponseValidationError{
-					field:  fmt.Sprintf("Relationships[%v]", idx),
+					field:  fmt.Sprintf("Paths[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}

@@ -97,3 +97,22 @@ func (c *Client) DeleteConfigNode(ctx context.Context, req *NodeRequest, opts ..
 	}
 	return resp, nil
 }
+
+func (c *Client) ListConfigNodeVersions(ctx context.Context, req *NodeRequest, opts ...grpc.CallOption) (
+	*configpb.ListConfigNodeVersionsResponse, error) {
+	if req == nil || req.listVersions == nil {
+		return nil, errors.NewInvalidArgumentError("invalid nil or not read request")
+	}
+
+	if err := req.validate(); err != nil {
+		return nil, err
+	}
+
+	ctx = insertMetadata(ctx, c.xMetadata)
+	resp, err := c.client.ListConfigNodeVersions(ctx, req.listVersions, opts...)
+
+	if s := errors.FromError(err); s != nil {
+		return nil, s
+	}
+	return resp, nil
+}
