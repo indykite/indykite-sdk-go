@@ -3840,6 +3840,8 @@ func (m *ConfigNode) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Version
+
 	oneofConfigPresent := false
 	switch v := m.Config.(type) {
 	case *ConfigNode_AuthFlowConfig:
@@ -7177,8 +7179,6 @@ func (m *OAuth2ProviderConfig) validate(all bool) error {
 
 		}
 	}
-
-	// no validation rules for Trusted
 
 	if len(errors) > 0 {
 		return OAuth2ProviderConfigMultiError(errors)

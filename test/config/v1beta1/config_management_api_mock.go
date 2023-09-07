@@ -513,6 +513,26 @@ func (mr *MockConfigManagementAPIClientMockRecorder) ListApplications(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplications", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListApplications), varargs...)
 }
 
+// ListConfigNodeVersions mocks base method.
+func (m *MockConfigManagementAPIClient) ListConfigNodeVersions(arg0 context.Context, arg1 *configv1beta1.ListConfigNodeVersionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.ListConfigNodeVersionsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConfigNodeVersions", varargs...)
+	ret0, _ := ret[0].(*configv1beta1.ListConfigNodeVersionsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConfigNodeVersions indicates an expected call of ListConfigNodeVersions.
+func (mr *MockConfigManagementAPIClientMockRecorder) ListConfigNodeVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigNodeVersions", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListConfigNodeVersions), varargs...)
+}
+
 // ListPermissions mocks base method.
 func (m *MockConfigManagementAPIClient) ListPermissions(arg0 context.Context, arg1 *configv1beta1.ListPermissionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.ListPermissionsResponse, error) {
 	m.ctrl.T.Helper()

@@ -75,6 +75,7 @@ const (
 	ConfigManagementAPI_ReadConfigNode_FullMethodName                     = "/indykite.config.v1beta1.ConfigManagementAPI/ReadConfigNode"
 	ConfigManagementAPI_UpdateConfigNode_FullMethodName                   = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateConfigNode"
 	ConfigManagementAPI_DeleteConfigNode_FullMethodName                   = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteConfigNode"
+	ConfigManagementAPI_ListConfigNodeVersions_FullMethodName             = "/indykite.config.v1beta1.ConfigManagementAPI/ListConfigNodeVersions"
 	ConfigManagementAPI_CreateOAuth2Provider_FullMethodName               = "/indykite.config.v1beta1.ConfigManagementAPI/CreateOAuth2Provider"
 	ConfigManagementAPI_ReadOAuth2Provider_FullMethodName                 = "/indykite.config.v1beta1.ConfigManagementAPI/ReadOAuth2Provider"
 	ConfigManagementAPI_UpdateOAuth2Provider_FullMethodName               = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateOAuth2Provider"
@@ -186,6 +187,8 @@ type ConfigManagementAPIClient interface {
 	UpdateConfigNode(ctx context.Context, in *UpdateConfigNodeRequest, opts ...grpc.CallOption) (*UpdateConfigNodeResponse, error)
 	// DeleteConfigNode by ID with optional etag, to prevent deleting configuration object currently changed by others.
 	DeleteConfigNode(ctx context.Context, in *DeleteConfigNodeRequest, opts ...grpc.CallOption) (*DeleteConfigNodeResponse, error)
+	// ListConfigNodeVersions list previous versions of a given ConfigNode.
+	ListConfigNodeVersions(ctx context.Context, in *ListConfigNodeVersionsRequest, opts ...grpc.CallOption) (*ListConfigNodeVersionsResponse, error)
 	// CreateOAuth2Provider under given Application Space.
 	CreateOAuth2Provider(ctx context.Context, in *CreateOAuth2ProviderRequest, opts ...grpc.CallOption) (*CreateOAuth2ProviderResponse, error)
 	// ReadOAuth2Provider by ID and returns all attributes and configuration.
@@ -681,6 +684,15 @@ func (c *configManagementAPIClient) DeleteConfigNode(ctx context.Context, in *De
 	return out, nil
 }
 
+func (c *configManagementAPIClient) ListConfigNodeVersions(ctx context.Context, in *ListConfigNodeVersionsRequest, opts ...grpc.CallOption) (*ListConfigNodeVersionsResponse, error) {
+	out := new(ListConfigNodeVersionsResponse)
+	err := c.cc.Invoke(ctx, ConfigManagementAPI_ListConfigNodeVersions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *configManagementAPIClient) CreateOAuth2Provider(ctx context.Context, in *CreateOAuth2ProviderRequest, opts ...grpc.CallOption) (*CreateOAuth2ProviderResponse, error) {
 	out := new(CreateOAuth2ProviderResponse)
 	err := c.cc.Invoke(ctx, ConfigManagementAPI_CreateOAuth2Provider_FullMethodName, in, out, opts...)
@@ -886,6 +898,8 @@ type ConfigManagementAPIServer interface {
 	UpdateConfigNode(context.Context, *UpdateConfigNodeRequest) (*UpdateConfigNodeResponse, error)
 	// DeleteConfigNode by ID with optional etag, to prevent deleting configuration object currently changed by others.
 	DeleteConfigNode(context.Context, *DeleteConfigNodeRequest) (*DeleteConfigNodeResponse, error)
+	// ListConfigNodeVersions list previous versions of a given ConfigNode.
+	ListConfigNodeVersions(context.Context, *ListConfigNodeVersionsRequest) (*ListConfigNodeVersionsResponse, error)
 	// CreateOAuth2Provider under given Application Space.
 	CreateOAuth2Provider(context.Context, *CreateOAuth2ProviderRequest) (*CreateOAuth2ProviderResponse, error)
 	// ReadOAuth2Provider by ID and returns all attributes and configuration.
@@ -1038,6 +1052,9 @@ func (UnimplementedConfigManagementAPIServer) UpdateConfigNode(context.Context, 
 }
 func (UnimplementedConfigManagementAPIServer) DeleteConfigNode(context.Context, *DeleteConfigNodeRequest) (*DeleteConfigNodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteConfigNode not implemented")
+}
+func (UnimplementedConfigManagementAPIServer) ListConfigNodeVersions(context.Context, *ListConfigNodeVersionsRequest) (*ListConfigNodeVersionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListConfigNodeVersions not implemented")
 }
 func (UnimplementedConfigManagementAPIServer) CreateOAuth2Provider(context.Context, *CreateOAuth2ProviderRequest) (*CreateOAuth2ProviderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOAuth2Provider not implemented")
@@ -1837,6 +1854,24 @@ func _ConfigManagementAPI_DeleteConfigNode_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConfigManagementAPI_ListConfigNodeVersions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListConfigNodeVersionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConfigManagementAPIServer).ListConfigNodeVersions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConfigManagementAPI_ListConfigNodeVersions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConfigManagementAPIServer).ListConfigNodeVersions(ctx, req.(*ListConfigNodeVersionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ConfigManagementAPI_CreateOAuth2Provider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateOAuth2ProviderRequest)
 	if err := dec(in); err != nil {
@@ -2207,6 +2242,10 @@ var ConfigManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteConfigNode",
 			Handler:    _ConfigManagementAPI_DeleteConfigNode_Handler,
+		},
+		{
+			MethodName: "ListConfigNodeVersions",
+			Handler:    _ConfigManagementAPI_ListConfigNodeVersions_Handler,
 		},
 		{
 			MethodName: "CreateOAuth2Provider",
