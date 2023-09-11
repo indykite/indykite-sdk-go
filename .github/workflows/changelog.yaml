@@ -19,7 +19,24 @@ jobs:
             released: ${{ steps.release-please.outputs.release_created }}
         steps:
             - id: release-please
-              uses: maprokes/release-please-action@main
+              uses: GoogleCloudPlatform/release-please-action@v3
               with:
+                  # All configuration must be specified here, until https://github.com/google-github-actions/release-please-action/issues/798 is fixed.
+                  changelog-types: |
+                    [
+                        { "type": "feat", "section": "Features", "hidden": false },
+                        { "type": "feature", "section": "Features", "hidden": false },
+                        { "type": "fix", "section": "Bug Fixes", "hidden": false },
+                        { "type": "perf", "section": "Performance Improvements", "hidden": false },
+                        { "type": "revert", "section": "Reverts", "hidden": false },
+                        { "type": "style", "section": "Styles", "hidden": false },
+                        { "type": "chore", "section": "Miscellaneous Chores", "hidden": false }
+                    ]
                   package-name: indykite-sdk-go
+                  release-type: go
+                  extra-files: |
+                    "config/doc.go"
+                    "identity/doc.go"
+                    "ingest/doc.go"
+                    "authorization/doc.go"
                   token: ${{ secrets.INDYKITE_PAT }}
