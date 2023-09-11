@@ -6,14 +6,14 @@ jobs:
     commitlint:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: wagoid/commitlint-github-action@v5
 
     strict-commitlint:
         name: Strict commit lint
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: wagoid/commitlint-github-action@v5
               with:
                   failOnWarnings: true
