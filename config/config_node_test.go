@@ -1191,7 +1191,7 @@ var _ = Describe("ConfigNode", func() {
 			Ω(err).To(Succeed())
 			resp, err := configClient.ListConfigNodeVersions(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("empty request")))
+			Expect(err).To(MatchError(ContainSubstring("value length must be between 22 and 254 runes, inclusive")))
 
 		})
 
