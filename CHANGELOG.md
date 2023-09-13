@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.16.0](https://github.com/indykite/indykite-sdk-go/compare/v0.15.0...v0.16.0) (2023-09-13)
+
+
+### Features
+
+* add authz versioning ([e21bebf](https://github.com/indykite/indykite-sdk-go/commit/e21bebf3c376a832a67dc19153cc058a18a43c71))
+* implements audit sink CRUD operations ([cfe23ad](https://github.com/indykite/indykite-sdk-go/commit/cfe23ad812662c7528b686d932dc272e7d234292))
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v4 ([5b82085](https://github.com/indykite/indykite-sdk-go/commit/5b820853d745332775fffad3bd28373978b72c70))
+* **deps:** update everything ([e280b20](https://github.com/indykite/indykite-sdk-go/commit/e280b20c8a95427162c3692c5c5ea154036e7f96))
+* upgrade dependencies ([aedc4e8](https://github.com/indykite/indykite-sdk-go/commit/aedc4e8552ce8447c9907a4dcee53f56639b31d8))
+
 ## [0.15.0](https://github.com/indykite/indykite-sdk-go/compare/v0.14.3...v0.15.0) (2023-08-03)
 
 
