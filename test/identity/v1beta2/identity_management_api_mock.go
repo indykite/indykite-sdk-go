@@ -675,7 +675,7 @@ func (mr *MockIdentityManagementAPI_ListConsentsClientMockRecorder) Recv() *gomo
 }
 
 // RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_ListConsentsClient) RecvMsg(m interface{}) error {
+func (m_2 *MockIdentityManagementAPI_ListConsentsClient) RecvMsg(m any) error {
 	m_2.ctrl.T.Helper()
 	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
 	ret0, _ := ret[0].(error)
@@ -689,7 +689,7 @@ func (mr *MockIdentityManagementAPI_ListConsentsClientMockRecorder) RecvMsg(m in
 }
 
 // SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_ListConsentsClient) SendMsg(m interface{}) error {
+func (m_2 *MockIdentityManagementAPI_ListConsentsClient) SendMsg(m any) error {
 	m_2.ctrl.T.Helper()
 	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
 	ret0, _ := ret[0].(error)
@@ -1216,7 +1216,7 @@ func (mr *MockIdentityManagementAPI_ListConsentsServerMockRecorder) Context() *g
 }
 
 // RecvMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_ListConsentsServer) RecvMsg(m interface{}) error {
+func (m_2 *MockIdentityManagementAPI_ListConsentsServer) RecvMsg(m any) error {
 	m_2.ctrl.T.Helper()
 	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
 	ret0, _ := ret[0].(error)
@@ -1258,7 +1258,7 @@ func (mr *MockIdentityManagementAPI_ListConsentsServerMockRecorder) SendHeader(a
 }
 
 // SendMsg mocks base method.
-func (m_2 *MockIdentityManagementAPI_ListConsentsServer) SendMsg(m interface{}) error {
+func (m_2 *MockIdentityManagementAPI_ListConsentsServer) SendMsg(m any) error {
 	m_2.ctrl.T.Helper()
 	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
 	ret0, _ := ret[0].(error)
