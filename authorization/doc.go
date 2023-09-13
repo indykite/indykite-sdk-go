@@ -15,4 +15,4 @@
 // Package authorization implements the IndyKite Authorization Service API Client.
 package authorization
 
-const versionClient = "v0.15.0" // x-release-please-version
+const versionClient = "v0.16.0" // x-release-please-version
