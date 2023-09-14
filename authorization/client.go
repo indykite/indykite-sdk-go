@@ -56,6 +56,17 @@ func NewClient(ctx context.Context, opts ...api.ClientOption) (*Client, error) {
 	return c, nil
 }
 
+// NewTestClient creates a new Authorization gRPC Client.
+func NewTestClient(_ context.Context, client authorizationpb.AuthorizationAPIClient) (*Client, error) {
+	c := &Client{
+		xMetadata: metadata.Pairs("x-jarvis-client",
+			fmt.Sprintf("client/%s grpc/%s", versionClient, grpc.Version)),
+		client:       client,
+		closeHandler: func() error { return nil },
+	}
+	return c, nil
+}
+
 // NewClientFromGRPCClient creates a new Authorization API gRPC client from an existing gRPC client.
 func NewClientFromGRPCClient(client authorizationpb.AuthorizationAPIClient) (*Client, error) {
 	c := &Client{
