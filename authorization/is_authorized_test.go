@@ -27,7 +27,6 @@ import (
 	"github.com/indykite/indykite-sdk-go/authorization"
 	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
-	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 	objectpb "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 	"github.com/indykite/indykite-sdk-go/test"
 	authorizationmock "github.com/indykite/indykite-sdk-go/test/authorization/v1beta1"
@@ -77,7 +76,7 @@ var _ = Describe("IsAuthorized", func() {
 
 		var err error
 		authorizationClient, err = authorization.NewTestClient(ctx, mockClient)
-		Ω(err).To(Succeed())
+		Expect(err).To(Succeed())
 	})
 
 	Describe("IsAuthorized", func() {
@@ -108,14 +107,9 @@ var _ = Describe("IsAuthorized", func() {
 		It("Wrong DT should return a validation error in the response", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{
-								DigitalTwin: &identitypb.DigitalTwin{
-									Id:       "gid:like",
-									TenantId: "gid:like",
-								},
-							},
+					Subject: &authorizationpb.Subject_DigitalTwinId{
+						DigitalTwinId: &authorizationpb.DigitalTwin{
+							Id: "gid:like",
 						},
 					},
 				},
@@ -132,14 +126,9 @@ var _ = Describe("IsAuthorized", func() {
 		It("IsAuthorizedDT", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{
-								DigitalTwin: &identitypb.DigitalTwin{
-									Id:       "gid:like-real-digital_twin-id-at-least-27",
-									TenantId: "gid:like-real-tenant-id-at-least-27",
-								},
-							},
+					Subject: &authorizationpb.Subject_DigitalTwinId{
+						DigitalTwinId: &authorizationpb.DigitalTwin{
+							Id: "gid:like-real-digital_twin-id-at-least-27-char",
 						},
 					},
 				},
@@ -163,15 +152,10 @@ var _ = Describe("IsAuthorized", func() {
 		It("IsAuthorizedProperty", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{
-								PropertyFilter: &identitypb.PropertyFilter{
-									Type:     "email_for_example",
-									Value:    objectpb.String("test@example.com"),
-									TenantId: "gid:like-real-tenant-id-at-least-27",
-								},
-							},
+					Subject: &authorizationpb.Subject_DigitalTwinProperty{
+						DigitalTwinProperty: &authorizationpb.Property{
+							Type:  "email_for_example",
+							Value: objectpb.String("test@example.com"),
 						},
 					},
 				},
@@ -189,10 +173,9 @@ var _ = Describe("IsAuthorized", func() {
 
 			resp, err := authorizationClient.IsAuthorizedByProperty(
 				ctx,
-				&identitypb.PropertyFilter{
-					Type:     "email_for_example",
-					Value:    objectpb.String("test@example.com"),
-					TenantId: "gid:like-real-tenant-id-at-least-27",
+				&authorizationpb.Property{
+					Type:  "email_for_example",
+					Value: objectpb.String("test@example.com"),
 				},
 				resourceExample,
 				inputParam,
@@ -205,12 +188,8 @@ var _ = Describe("IsAuthorized", func() {
 		It("IsAuthorizedToken", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_AccessToken{
-								AccessToken: tokenGood,
-							},
-						},
+					Subject: &authorizationpb.Subject_IndykiteAccessToken{
+						IndykiteAccessToken: tokenGood,
 					},
 				},
 				Resources:   resourceExample,
@@ -239,12 +218,8 @@ var _ = Describe("IsAuthorized", func() {
 		It("IsAuthorizedTokenWrongFormat", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_AccessToken{
-								AccessToken: tokenBad,
-							},
-						},
+					Subject: &authorizationpb.Subject_IndykiteAccessToken{
+						IndykiteAccessToken: tokenBad,
 					},
 				},
 				Resources:   resourceExample,
@@ -259,19 +234,15 @@ var _ = Describe("IsAuthorized", func() {
 		It("Invalid status", func() {
 			req := &authorizationpb.IsAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-						DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-							Filter: &identitypb.DigitalTwinIdentifier_AccessToken{
-								AccessToken: tokenGood,
-							},
-						},
+					Subject: &authorizationpb.Subject_IndykiteAccessToken{
+						IndykiteAccessToken: tokenGood,
 					},
 				},
 				Resources:   resourceExample,
 				InputParams: inputParam,
 				PolicyTags:  policyTags,
 			}
-			statusErr := status.New(codes.InvalidArgument, "something wrong").Err()
+			statusErr := status.New(codes.AlreadyExists, "something wrong").Err()
 			mockClient.EXPECT().
 				IsAuthorized(gomock.Any(), req).
 				Return(nil, statusErr)

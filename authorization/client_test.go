@@ -42,12 +42,9 @@ var _ = Describe("IsAuthorized", func() {
 		It("New", func() {
 			var err error
 			authorizationClient, err = authorization.NewTestClient(context.Background(), mockClient)
-			Ω(err).To(Succeed())
+			Expect(err).To(Succeed())
 			Expect(authorizationClient).To(Not(BeNil()))
-
-			if authorizationClient != nil {
-				Expect(authorizationClient.Close()).To(Succeed())
-			}
+			Expect(authorizationClient.Close()).To(Succeed())
 		})
 
 	})

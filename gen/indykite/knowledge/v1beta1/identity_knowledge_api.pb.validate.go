@@ -101,6 +101,52 @@ func (m *IdentityKnowledgeRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	{
+		sorted_keys := make([]string, len(m.GetInputParams()))
+		i := 0
+		for key := range m.GetInputParams() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetInputParams()[key]
+			_ = val
+
+			// no validation rules for InputParams[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, IdentityKnowledgeRequestValidationError{
+							field:  fmt.Sprintf("InputParams[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, IdentityKnowledgeRequestValidationError{
+							field:  fmt.Sprintf("InputParams[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return IdentityKnowledgeRequestValidationError{
+						field:  fmt.Sprintf("InputParams[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return IdentityKnowledgeRequestMultiError(errors)
 	}

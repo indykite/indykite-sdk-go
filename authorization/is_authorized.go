@@ -21,13 +21,12 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/errors"
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
-	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // IsAuthorized checks if DigitalTwin can perform actions on resources.
 func (c *Client) IsAuthorized(
 	ctx context.Context,
-	digitalTwin *identitypb.DigitalTwin,
+	digitalTwinID *authorizationpb.DigitalTwin,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	inputParams map[string]*authorizationpb.InputParam,
 	policyTags []string,
@@ -35,11 +34,8 @@ func (c *Client) IsAuthorized(
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
-				},
-			},
+			Subject: &authorizationpb.Subject_DigitalTwinId{
+				DigitalTwinId: digitalTwinID},
 		},
 		Resources:   resources,
 		InputParams: inputParams,
@@ -59,11 +55,8 @@ func (c *Client) IsAuthorizedByToken(
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_AccessToken{AccessToken: token},
-				},
-			},
+			Subject: &authorizationpb.Subject_IndykiteAccessToken{
+				IndykiteAccessToken: token},
 		},
 		Resources:   resources,
 		InputParams: inputParams,
@@ -75,7 +68,7 @@ func (c *Client) IsAuthorizedByToken(
 // can perform actions on resources.
 func (c *Client) IsAuthorizedByProperty(
 	ctx context.Context,
-	propertyFilter *identitypb.PropertyFilter,
+	property *authorizationpb.Property,
 	resources []*authorizationpb.IsAuthorizedRequest_Resource,
 	inputParams map[string]*authorizationpb.InputParam,
 	policyTags []string,
@@ -83,11 +76,8 @@ func (c *Client) IsAuthorizedByProperty(
 ) (*authorizationpb.IsAuthorizedResponse, error) {
 	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{PropertyFilter: propertyFilter},
-				},
-			},
+			Subject: &authorizationpb.Subject_DigitalTwinProperty{
+				DigitalTwinProperty: property},
 		},
 		Resources:   resources,
 		InputParams: inputParams,
@@ -104,11 +94,9 @@ func (c *Client) IsAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call IsAuthorized client endpoint")
 	}
 
-	if sub, ok := req.GetSubject().Subject.(*authorizationpb.Subject_DigitalTwinIdentifier); ok {
-		if filter, ok := sub.DigitalTwinIdentifier.Filter.(*identitypb.DigitalTwinIdentifier_AccessToken); ok {
-			if err := verifyTokenFormat(filter.AccessToken); err != nil {
-				return nil, err
-			}
+	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_IndykiteAccessToken); ok {
+		if err := verifyTokenFormat(subject.IndykiteAccessToken); err != nil {
+			return nil, err
 		}
 	}
 

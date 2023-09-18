@@ -1137,10 +1137,10 @@ func (m *Resource) validate(all bool) error {
 
 	}
 
-	if len(m.GetProperties()) > 10 {
+	if len(m.GetProperties()) > 50 {
 		err := ResourceValidationError{
 			field:  "Properties",
-			reason: "value must contain no more than 10 item(s)",
+			reason: "value must contain no more than 50 item(s)",
 		}
 		if !all {
 			return err
@@ -1836,10 +1836,10 @@ func (m *Relation) validate(all bool) error {
 		}
 	}
 
-	if len(m.GetProperties()) > 10 {
+	if len(m.GetProperties()) > 50 {
 		err := RelationValidationError{
 			field:  "Properties",
-			reason: "value must contain no more than 10 item(s)",
+			reason: "value must contain no more than 50 item(s)",
 		}
 		if !all {
 			return err

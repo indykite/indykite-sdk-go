@@ -21,14 +21,13 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/errors"
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
-	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 )
 
 // WhatAuthorized returns a list of resources and allowed actions for provided resource types for
 // subject, identified by DigitalTwinIdentifier, can access.
 func (c *Client) WhatAuthorized(
 	ctx context.Context,
-	digitalTwin *identitypb.DigitalTwin,
+	digitalTwinID *authorizationpb.DigitalTwin,
 	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
 	inputParams map[string]*authorizationpb.InputParam,
 	policyTags []string,
@@ -36,11 +35,8 @@ func (c *Client) WhatAuthorized(
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_DigitalTwin{DigitalTwin: digitalTwin},
-				},
-			},
+			Subject: &authorizationpb.Subject_DigitalTwinId{
+				DigitalTwinId: digitalTwinID},
 		},
 		ResourceTypes: resourceTypes,
 		InputParams:   inputParams,
@@ -60,11 +56,8 @@ func (c *Client) WhatAuthorizedByToken(
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_AccessToken{AccessToken: token},
-				},
-			},
+			Subject: &authorizationpb.Subject_IndykiteAccessToken{
+				IndykiteAccessToken: token},
 		},
 		ResourceTypes: resourceTypes,
 		InputParams:   inputParams,
@@ -76,7 +69,7 @@ func (c *Client) WhatAuthorizedByToken(
 // subject, identified by property filter, can access.
 func (c *Client) WhatAuthorizedByProperty(
 	ctx context.Context,
-	propertyFilter *identitypb.PropertyFilter,
+	property *authorizationpb.Property,
 	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
 	inputParams map[string]*authorizationpb.InputParam,
 	policyTags []string,
@@ -84,10 +77,8 @@ func (c *Client) WhatAuthorizedByProperty(
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_DigitalTwinIdentifier{
-				DigitalTwinIdentifier: &identitypb.DigitalTwinIdentifier{
-					Filter: &identitypb.DigitalTwinIdentifier_PropertyFilter{PropertyFilter: propertyFilter},
-				}},
+			Subject: &authorizationpb.Subject_DigitalTwinProperty{
+				DigitalTwinProperty: property},
 		},
 		ResourceTypes: resourceTypes,
 		InputParams:   inputParams,
@@ -106,11 +97,9 @@ func (c *Client) WhatAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call WhatAuthorized client endpoint")
 	}
 
-	if sub, ok := req.GetSubject().Subject.(*authorizationpb.Subject_DigitalTwinIdentifier); ok {
-		if filter, ok := sub.DigitalTwinIdentifier.Filter.(*identitypb.DigitalTwinIdentifier_AccessToken); ok {
-			if err := verifyTokenFormat(filter.AccessToken); err != nil {
-				return nil, err
-			}
+	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_IndykiteAccessToken); ok {
+		if err := verifyTokenFormat(subject.IndykiteAccessToken); err != nil {
+			return nil, err
 		}
 	}
 
