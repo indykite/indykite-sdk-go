@@ -19,6 +19,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 	homedir "github.com/mitchellh/go-homedir"
@@ -32,9 +33,10 @@ import (
 )
 
 var (
-	cfgFile string
-	client  *ingest.Client
-	jsonp   = protojson.MarshalOptions{
+	cfgFile     string
+	client      *ingest.Client
+	retryClient *ingest.RetryClient
+	jsonp       = protojson.MarshalOptions{
 		Multiline:       true,
 		EmitUnpopulated: true,
 	}
@@ -109,6 +111,17 @@ func initConfig() {
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Ingest Client: %v", err))
+	}
+	retryClient, err = ingest.NewRetryClient(context.Background(),
+		&ingest.RetryPolicy{
+			MaxAttempts:       4,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 2,
+		},
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+	)
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite Ingest RetryClient: %v", err))
 	}
 }
 
