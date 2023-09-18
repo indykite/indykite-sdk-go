@@ -16,6 +16,7 @@ package ingest
 
 import (
 	"context"
+	"io"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -82,10 +83,10 @@ func (c *Client) SendRecord(record *ingestpb.Record) error {
 	}
 
 	err := c.stream.Send(req)
-	if err != nil {
-		return errors.FromError(err)
+	if err == nil || err == io.EOF {
+		return err
 	}
-	return nil
+	return errors.FromError(err)
 }
 
 // ReceiveResponse returns the next response available on the stream.
@@ -95,10 +96,10 @@ func (c *Client) ReceiveResponse() (*ingestpb.StreamRecordsResponse, error) {
 	}
 
 	resp, err := c.stream.Recv()
-	if err != nil {
-		return nil, errors.FromError(err)
+	if err == nil || err == io.EOF {
+		return resp, err
 	}
-	return resp, nil
+	return nil, errors.FromError(err)
 }
 
 // CloseStream closes the gRPC stream.

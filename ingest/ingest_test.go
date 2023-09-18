@@ -16,6 +16,7 @@ package ingest_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -279,5 +280,152 @@ var _ = Describe("Ingest", func() {
 
 		err = client.CloseStream()
 		Expect(err).To(MatchError(ContainSubstring("the stream has already been closed")))
+	})
+})
+
+var _ = Describe("Retry client", func() {
+	It("StreamRecords", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+		mockStreamClient := ingestm.NewMockIngestAPI_StreamRecordsClient(mockCtrl)
+
+		client, err := ingest.NewTestRetryClient(mockClient, &ingest.RetryPolicy{
+			MaxAttempts:       4,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 2,
+		})
+		Expect(err).To(Succeed())
+
+		records := []*ingestpb.Record{
+			record1, record2,
+		}
+
+		mockClient.EXPECT().StreamRecords(gomock.Any()).Return(mockStreamClient, nil)
+		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record1}).Return(nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "1",
+			RecordIndex: 0,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+				},
+			}}}, nil)
+		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
+		mockStreamClient.EXPECT().Recv().Return(&ingestpb.StreamRecordsResponse{
+			RecordId:    "2",
+			RecordIndex: 1,
+			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
+				{
+					Id:       "gid:...",
+					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+				},
+			}}}, nil)
+		mockStreamClient.EXPECT().CloseSend()
+
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+		defer cancel()
+
+		err = client.OpenStreamClient(ctx)
+		Expect(err).To(Succeed())
+		dataTypes := []ingestpb.Change_DataType{
+			ingestpb.Change_DATA_TYPE_RELATION,
+			ingestpb.Change_DATA_TYPE_RESOURCE,
+		}
+		for i, record := range records {
+			var resp *ingestpb.StreamRecordsResponse
+			err = client.SendRecord(record)
+			Expect(err).To(Succeed())
+			resp, err = client.ReceiveResponse()
+			Expect(err).To(Succeed())
+			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
+				"RecordIndex": Equal(uint32(i)),
+				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
+					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id":       Not(BeEmpty()),
+						"DataType": Equal(dataTypes[i]),
+					}))),
+				})),
+			})))
+		}
+		err = client.CloseStream()
+		Expect(err).To(Succeed())
+	})
+	It("StreamRecords send before open", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+
+		client, err := ingest.NewTestRetryClient(mockClient, &ingest.RetryPolicy{
+			MaxAttempts:       4,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 2,
+		})
+		Expect(err).To(Succeed())
+
+		err = client.SendRecord(record1)
+		Expect(err).To(MatchError(ContainSubstring("a stream must be opened first")))
+	})
+	It("StreamRecords receive before open", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+
+		client, err := ingest.NewTestRetryClient(mockClient, &ingest.RetryPolicy{
+			MaxAttempts:       4,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 2,
+		})
+		Expect(err).To(Succeed())
+
+		_, err = client.ReceiveResponse()
+		Expect(err).To(MatchError(ContainSubstring("a stream must be opened first")))
+	})
+	It("StreamRecords close before open", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+
+		client, err := ingest.NewTestRetryClient(mockClient, &ingest.RetryPolicy{
+			MaxAttempts:       4,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 2,
+		})
+		Expect(err).To(Succeed())
+
+		err = client.CloseStream()
+		Expect(err).To(MatchError(ContainSubstring("the stream has already been closed")))
+	})
+	It("StreamRecords retry connection", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+		mockStreamClient := ingestm.NewMockIngestAPI_StreamRecordsClient(mockCtrl)
+
+		client, err := ingest.NewTestRetryClient(mockClient, &ingest.RetryPolicy{
+			MaxAttempts:       2,
+			InitialBackoff:    1 * time.Second,
+			BackoffMultiplier: 1,
+		})
+		Expect(err).To(Succeed())
+
+		mockClient.EXPECT().StreamRecords(gomock.Any()).Times(3).Return(mockStreamClient, nil)
+		mockStreamClient.EXPECT().
+			Send(&ingestpb.StreamRecordsRequest{Record: record1}).
+			Times(3).
+			Return(errors.New("something went wrong"))
+		mockStreamClient.EXPECT().Recv().AnyTimes().Return(nil, errors.New("something went wrong"))
+		mockStreamClient.EXPECT().CloseSend()
+
+		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+		defer cancel()
+
+		err = client.OpenStreamClient(ctx)
+		Expect(err).To(Succeed())
+
+		go func() {
+			err = client.SendRecord(record1)
+			Expect(err).To(MatchError(ContainSubstring("something went wrong")))
+		}()
+
+		_, err = client.ReceiveResponse()
+		Expect(err).To(MatchError(ContainSubstring("unable to reconnect to server")))
 	})
 })
