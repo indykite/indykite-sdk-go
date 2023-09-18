@@ -81,7 +81,7 @@ var _ = Describe("WhoAuthorized", func() {
 
 		var err error
 		authorizationClient, err = authorization.NewTestClient(ctx, mockClient)
-		Ω(err).To(Succeed())
+		Expect(err).To(Succeed())
 	})
 
 	Describe("WhoAuthorized", func() {

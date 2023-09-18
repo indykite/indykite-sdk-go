@@ -111,6 +111,136 @@ func (m *Subject) validate(all bool) error {
 			}
 		}
 
+	case *Subject_DigitalTwinId:
+		if v == nil {
+			err := SubjectValidationError{
+				field:  "Subject",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofSubjectPresent = true
+
+		if m.GetDigitalTwinId() == nil {
+			err := SubjectValidationError{
+				field:  "DigitalTwinId",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDigitalTwinId()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "DigitalTwinId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "DigitalTwinId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDigitalTwinId()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SubjectValidationError{
+					field:  "DigitalTwinId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *Subject_DigitalTwinProperty:
+		if v == nil {
+			err := SubjectValidationError{
+				field:  "Subject",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofSubjectPresent = true
+
+		if m.GetDigitalTwinProperty() == nil {
+			err := SubjectValidationError{
+				field:  "DigitalTwinProperty",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetDigitalTwinProperty()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "DigitalTwinProperty",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "DigitalTwinProperty",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDigitalTwinProperty()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SubjectValidationError{
+					field:  "DigitalTwinProperty",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *Subject_IndykiteAccessToken:
+		if v == nil {
+			err := SubjectValidationError{
+				field:  "Subject",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofSubjectPresent = true
+
+		if utf8.RuneCountInString(m.GetIndykiteAccessToken()) < 20 {
+			err := SubjectValidationError{
+				field:  "IndykiteAccessToken",
+				reason: "value length must be at least 20 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -201,6 +331,279 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SubjectValidationError{}
+
+// Validate checks the field values on DigitalTwin with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DigitalTwin) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DigitalTwin with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DigitalTwinMultiError, or
+// nil if none found.
+func (m *DigitalTwin) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DigitalTwin) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetId()); l < 27 || l > 100 {
+		err := DigitalTwinValidationError{
+			field:  "Id",
+			reason: "value length must be between 27 and 100 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_DigitalTwin_Id_Pattern.MatchString(m.GetId()) {
+		err := DigitalTwinValidationError{
+			field:  "Id",
+			reason: "value does not match regex pattern \"^gid:[A-Za-z0-9-_]{27,100}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return DigitalTwinMultiError(errors)
+	}
+
+	return nil
+}
+
+// DigitalTwinMultiError is an error wrapping multiple validation errors
+// returned by DigitalTwin.ValidateAll() if the designated constraints aren't met.
+type DigitalTwinMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DigitalTwinMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DigitalTwinMultiError) AllErrors() []error { return m }
+
+// DigitalTwinValidationError is the validation error returned by
+// DigitalTwin.Validate if the designated constraints aren't met.
+type DigitalTwinValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DigitalTwinValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DigitalTwinValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DigitalTwinValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DigitalTwinValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DigitalTwinValidationError) ErrorName() string { return "DigitalTwinValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DigitalTwinValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDigitalTwin.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DigitalTwinValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DigitalTwinValidationError{}
+
+var _DigitalTwin_Id_Pattern = regexp.MustCompile("^gid:[A-Za-z0-9-_]{27,100}$")
+
+// Validate checks the field values on Property with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Property) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Property with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PropertyMultiError, or nil
+// if none found.
+func (m *Property) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Property) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetType()); l < 2 || l > 20 {
+		err := PropertyValidationError{
+			field:  "Type",
+			reason: "value length must be between 2 and 20 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetValue() == nil {
+		err := PropertyValidationError{
+			field:  "Value",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetValue()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, PropertyValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, PropertyValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetValue()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PropertyValidationError{
+				field:  "Value",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return PropertyMultiError(errors)
+	}
+
+	return nil
+}
+
+// PropertyMultiError is an error wrapping multiple validation errors returned
+// by Property.ValidateAll() if the designated constraints aren't met.
+type PropertyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PropertyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PropertyMultiError) AllErrors() []error { return m }
+
+// PropertyValidationError is the validation error returned by
+// Property.Validate if the designated constraints aren't met.
+type PropertyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PropertyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PropertyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PropertyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PropertyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PropertyValidationError) ErrorName() string { return "PropertyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PropertyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProperty.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PropertyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PropertyValidationError{}
 
 // Validate checks the field values on InputParam with the rules defined in the
 // proto definition for this message. If any rules are violated, the first

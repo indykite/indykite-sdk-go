@@ -23,7 +23,6 @@ import (
 	"github.com/spf13/cobra"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
-	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
 
@@ -73,15 +72,12 @@ var withDigitalTwinCmd = &cobra.Command{
 	Short: "Is Authorized by digital twin",
 	Long:  "Check if a digital twin is authorized to perform action based on digital twin id",
 	Run: func(cmd *cobra.Command, args []string) {
-		var digitalTwinID, tenantID string
+		var digitalTwinID string
 		fmt.Print("Enter digital_twin_id: ")
 		fmt.Scanln(&digitalTwinID)
-		fmt.Print("Enter tenant_id: ")
-		fmt.Scanln(&tenantID)
 
-		digitalTwin := &identitypb.DigitalTwin{
-			Id:       digitalTwinID,
-			TenantId: tenantID,
+		digitalTwin := &authorizationpb.DigitalTwin{
+			Id: digitalTwinID,
 		}
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
@@ -131,14 +127,14 @@ var withPropertyCmd = &cobra.Command{
 		inputParams := map[string]*authorizationpb.InputParam{}
 		var policyTags []string
 
-		propertyFilter := &identitypb.PropertyFilter{
+		property := &authorizationpb.Property{
 			Type:  propertyType,
 			Value: objects.String(propertyValue),
 		}
 
 		resp, err := client.IsAuthorizedByProperty(
 			context.Background(),
-			propertyFilter,
+			property,
 			resources,
 			inputParams,
 			policyTags,

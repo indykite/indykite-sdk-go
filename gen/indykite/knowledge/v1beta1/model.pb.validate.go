@@ -623,3 +623,181 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PropertyValidationError{}
+
+// Validate checks the field values on InputParam with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *InputParam) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InputParam with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in InputParamMultiError, or
+// nil if none found.
+func (m *InputParam) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InputParam) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	oneofValuePresent := false
+	switch v := m.Value.(type) {
+	case *InputParam_StringValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+
+		if l := utf8.RuneCountInString(m.GetStringValue()); l < 1 || l > 50 {
+			err := InputParamValidationError{
+				field:  "StringValue",
+				reason: "value length must be between 1 and 50 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	case *InputParam_BoolValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+		// no validation rules for BoolValue
+	case *InputParam_IntegerValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+		// no validation rules for IntegerValue
+	case *InputParam_DoubleValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+		// no validation rules for DoubleValue
+	default:
+		_ = v // ensures v is used
+	}
+	if !oneofValuePresent {
+		err := InputParamValidationError{
+			field:  "Value",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return InputParamMultiError(errors)
+	}
+
+	return nil
+}
+
+// InputParamMultiError is an error wrapping multiple validation errors
+// returned by InputParam.ValidateAll() if the designated constraints aren't met.
+type InputParamMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InputParamMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InputParamMultiError) AllErrors() []error { return m }
+
+// InputParamValidationError is the validation error returned by
+// InputParam.Validate if the designated constraints aren't met.
+type InputParamValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InputParamValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InputParamValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InputParamValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InputParamValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InputParamValidationError) ErrorName() string { return "InputParamValidationError" }
+
+// Error satisfies the builtin error interface
+func (e InputParamValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInputParam.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InputParamValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InputParamValidationError{}
