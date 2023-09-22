@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.17.0](https://github.com/indykite/indykite-sdk-go/compare/v0.16.0...v0.17.0) (2023-09-22)
+
+
+### Features
+
+* add authorization tests ([d30fd43](https://github.com/indykite/indykite-sdk-go/commit/d30fd43feb9cfa0039b40d4743b2a10f5ebe251f))
+* add retry stream client ([35541e3](https://github.com/indykite/indykite-sdk-go/commit/35541e3e1f19c6f5e50131341505669c9255f407))
+* implement ikg query api ([edbba15](https://github.com/indykite/indykite-sdk-go/commit/edbba15cbde467a64521818cd312db62b86b9013))
+* update authz subject ([4278189](https://github.com/indykite/indykite-sdk-go/commit/4278189d1ad03eb816e5abae197370eaa4ac68cc))
+
 ## [0.16.0](https://github.com/indykite/indykite-sdk-go/compare/v0.15.0...v0.16.0) (2023-09-13)
 
 
