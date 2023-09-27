@@ -19754,7 +19754,7 @@ func (m *AssignPermissionsRequest) validate(all bool) error {
 	if _, ok := _AssignPermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := AssignPermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer]",
+			reason: "value must be in list [all_editor all_viewer customer_viewer]",
 		}
 		if !all {
 			return err
@@ -19916,8 +19916,9 @@ var _ interface {
 var _AssignPermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _AssignPermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor": {},
-	"all_viewer": {},
+	"all_editor":      {},
+	"all_viewer":      {},
+	"customer_viewer": {},
 }
 
 var _AssignPermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
@@ -20079,7 +20080,7 @@ func (m *RevokePermissionsRequest) validate(all bool) error {
 	if _, ok := _RevokePermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := RevokePermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer]",
+			reason: "value must be in list [all_editor all_viewer customer_viewer]",
 		}
 		if !all {
 			return err
@@ -20241,8 +20242,9 @@ var _ interface {
 var _RevokePermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _RevokePermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor": {},
-	"all_viewer": {},
+	"all_editor":      {},
+	"all_viewer":      {},
+	"customer_viewer": {},
 }
 
 var _RevokePermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
