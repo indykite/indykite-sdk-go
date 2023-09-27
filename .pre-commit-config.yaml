@@ -48,11 +48,12 @@ repos:
 #      hooks:
 #          - id: shell-lint
 
-    - repo: https://github.com/jumanjihouse/pre-commit-hooks.git
-      rev: 2.1.6 # Do not update to 3.0.0 unless macOS comes with Ruby 2.7
-      hooks:
-          - id: markdownlint
-            exclude: ^(CHANGELOG|responsible_disclosure).md$
+#     No one is fixing it anyway
+#    - repo: https://github.com/jumanjihouse/pre-commit-hooks.git
+#      rev: 2.1.6 # Do not update to 3.0.0 unless macOS comes with Ruby 2.7
+#      hooks:
+#          - id: markdownlint
+#            exclude: ^(CHANGELOG|responsible_disclosure).md$
 
     - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
       rev: v9.5.0
