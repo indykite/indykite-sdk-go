@@ -363,8 +363,6 @@ func (m *Relationship) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for ExternalId
-
 	// no validation rules for Type
 
 	// no validation rules for Source
