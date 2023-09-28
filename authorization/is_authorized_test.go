@@ -42,7 +42,7 @@ var _ = Describe("IsAuthorized", func() {
 		mockClient          *authorizationmock.MockAuthorizationAPIClient
 		authorizationClient *authorization.Client
 		resourceExample     = []*authorizationpb.IsAuthorizedRequest_Resource{
-			{Id: "external_id_value", Type: "Asset", Actions: []string{"ACTION1", "ACTION2"}},
+			{ExternalId: "external_id_value", Type: "Asset", Actions: []string{"ACTION1", "ACTION2"}},
 		}
 		inputParam = map[string]*authorizationpb.InputParam{
 			"Color": {Value: &authorizationpb.InputParam_StringValue{StringValue: "red"}},

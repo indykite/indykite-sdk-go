@@ -41,7 +41,7 @@ var _ = Describe("WhoAuthorized", func() {
 		mockClient          *authorizationmock.MockAuthorizationAPIClient
 		authorizationClient *authorization.Client
 		resourceExample     = []*authorizationpb.WhoAuthorizedRequest_Resource{
-			{Id: "external_id_value", Type: "Asset", Actions: []string{"ACTION1", "ACTION2"}},
+			{ExternalId: "external_id_value", Type: "Asset", Actions: []string{"ACTION1", "ACTION2"}},
 		}
 		inputParam = map[string]*authorizationpb.InputParam{
 			"Color": {Value: &authorizationpb.InputParam_StringValue{StringValue: "red"}},
@@ -110,7 +110,7 @@ var _ = Describe("WhoAuthorized", func() {
 
 			resp, err := authorizationClient.WhoAuthorized(ctx, req)
 			Expect(resp).To(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("invalid WhoAuthorizedRequest_Resource.Id")))
+			Expect(err).To(MatchError(ContainSubstring("invalid WhoAuthorizedRequest_Resource.ExternalId")))
 
 		})
 

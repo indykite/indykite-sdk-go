@@ -1490,9 +1490,9 @@ func (m *IsAuthorizedRequest_Resource) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetId()); l < 2 || l > 50 {
+	if l := utf8.RuneCountInString(m.GetExternalId()); l < 2 || l > 50 {
 		err := IsAuthorizedRequest_ResourceValidationError{
-			field:  "Id",
+			field:  "ExternalId",
 			reason: "value length must be between 2 and 50 runes, inclusive",
 		}
 		if !all {
@@ -2639,9 +2639,9 @@ func (m *WhoAuthorizedRequest_Resource) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetId()); l < 2 || l > 50 {
+	if l := utf8.RuneCountInString(m.GetExternalId()); l < 2 || l > 50 {
 		err := WhoAuthorizedRequest_ResourceValidationError{
-			field:  "Id",
+			field:  "ExternalId",
 			reason: "value length must be between 2 and 50 runes, inclusive",
 		}
 		if !all {
