@@ -74,9 +74,8 @@ var _ = Describe("Identity Knowledge API", func() {
 					},
 					Relationships: []*knowledgepb.Relationship{
 						{
-							Id:         "gid:xxx",
-							ExternalId: "999",
-							Type:       "SERVICES",
+							Id:   "gid:xxx",
+							Type: "SERVICES",
 						},
 					},
 				},
@@ -95,7 +94,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				}))),
 				"Relationships": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 					"Id":         Equal("gid:xxx"),
-					"ExternalId": Equal("999"),
 					"Type":       Equal("SERVICES"),
 					"Properties": HaveLen(0),
 				}))),
