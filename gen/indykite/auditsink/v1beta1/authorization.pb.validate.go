@@ -1930,7 +1930,7 @@ func (m *IsAuthorized_Request_Resource) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
+	// no validation rules for ExternalId
 
 	// no validation rules for Type
 
@@ -3691,7 +3691,7 @@ func (m *WhoAuthorized_Request_Resource) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
+	// no validation rules for ExternalId
 
 	// no validation rules for Type
 
