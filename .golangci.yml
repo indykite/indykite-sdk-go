@@ -1,4 +1,5 @@
 ---
+# All rules here were written in the time of GolangCI lint v1.54.1
 linters:
     enable:
         # By Default
@@ -12,14 +13,20 @@ linters:
         - unused
 
         # Extra
+        - asasalint
         - asciicheck
         - bidichk
+        - bodyclose
+        - containedctx
         - contextcheck
         - dogsled
-        - durationcheck
         - dupword
+        - durationcheck
         - errchkjson
+        - errname
+        - errorlint
         - exhaustive
+        - exportloopref
         - forbidigo
         - gci
         - ginkgolinter
@@ -34,10 +41,18 @@ linters:
         - grouper
         - lll
         - loggercheck
+        - makezero
+        - mirror
         - misspell
         - nakedret
+        - nestif
+        - nilerr
+        - noctx
         - nolintlint
+        - nonamedreturns
+        - nosprintfhostport
         - prealloc
+        - predeclared
         - reassign
         - revive
         - tagalign
@@ -52,6 +67,7 @@ linters-settings:
     lll:
         line-length: 120
         tab-width: 4
+
     gci:
         # Keep in sync with GNUMakefile
         sections:
@@ -60,23 +76,32 @@ linters-settings:
             - prefix(github.com/indykite/indykite-sdk-go)
             - blank
             - dot
+
+    staticcheck:
+        checks: [all]
+
+    stylecheck:
+        checks: [all]
+
     govet:
         check-shadowing: true
-        # This enable is on top of the defaults, it does not override everything
-        enable:
-            - fieldalignment
-    staticcheck:
-        go: '1.21'
-        checks: [all]
-    stylecheck:
-        go: '1.21'
-        checks: [all]
+        enable-all: true
+
+    gocritic:
+        enabled-tags:
+            - diagnostic
+            - style
+            - performance
+            - experimental
+            - opinionated
+        disabled-checks:
+            - whyNoLint # Is checked by nolintlint with excluding lll much easier
 
     goheader:
         values:
             regexp:
                 # As long we decide which format of YEAR in copyright we want, add this hack
-                our_year: 202[0-3]
+                our_year: 202[0-3] # Just change to 202[2-3] or other when changed
         template: |-
             Copyright (c) {{OUR_YEAR}} IndyKite
 
@@ -95,6 +120,11 @@ linters-settings:
     nakedret:
         max-func-lines: 8 # Counting also declaration, not just body
 
+    nolintlint:
+        allow-no-explanation: [lll]
+        require-explanation: true
+        require-specific: true
+
     exhaustive:
         check:
             - switch
@@ -110,48 +140,85 @@ linters-settings:
             - name: context-as-argument
             - name: context-keys-type
             - name: dot-imports
+            - name: empty-block
+            - name: error-naming
             - name: error-return
             - name: error-strings
-            - name: error-naming
+            - name: errorf
             - name: exported
-            - name: if-return
             - name: increment-decrement
-            - name: var-naming
-            - name: var-declaration
+            - name: indent-error-flow
             - name: package-comments
             - name: range
             - name: receiver-naming
+            - name: redefines-builtin-id
+            - name: superfluous-else
             - name: time-naming
             - name: unexported-return
-            - name: indent-error-flow
-            - name: errorf
+            - name: unreachable-code
+            - name: unused-parameter
+            - name: var-declaration
+            - name: var-naming
 
             # Extra ones
+            - name: atomic
+            - name: bare-return
+            - name: bool-literal-in-expr
+            - name: comment-spacings
             - name: confusing-naming
             - name: confusing-results
+            - name: constant-logical-expr
+            - name: datarace
+            - name: deep-exit
+            - name: defer
+            - name: duplicated-imports
             - name: early-return
-            - name: empty-block
             - name: empty-lines
             - name: get-return
+            - name: identical-branches
+            - name: if-return
+            # - name: import-alias-naming # GolangCI doesn't implement latest rules of Revive, enable later
+            - name: import-shadowing
+            - name: modifies-parameter
             - name: modifies-value-receiver
             - name: nested-structs
-            - name: redefines-builtin-id
+            - name: optimize-operands-order
+            - name: range-val-address
+            - name: range-val-in-closure
+            # - name: redundant-import-alias  # GolangCI doesn't implement latest rules of Revive, enable later
             - name: string-of-int
-            - name: superfluous-else
+            - name: struct-tag
+            - name: time-equal
+            # - name: unchecked-type-assertion # GolangCI doesn't implement latest rules of Revive, enable later
+            - name: unconditional-recursion
+            - name: unexported-naming
+            - name: unhandled-error  # It is OK not to check errors from some specific cases
+              arguments:
+                  - fmt.Println
             - name: unnecessary-stmt
+            - name: unused-receiver
+            - name: use-any
+            - name: useless-break
+            - name: waitgroup-by-value
+
+    usestdlibvars:
+        default-rpc-path: true
+        os-dev-null: true
+        sql-isolation-level: true
 
 issues:
     exclude-use-default: false # Some rules are excluded by GolangCI Linter by default, this one will prevent that
     max-issues-per-linter: 0
     max-same-issues: 0
-
     exclude-rules:
         - linters:
               - revive
           text: exported .* should have comment .*or be unexported # TODO fix this for proper documentation
         - linters:
               - revive
-          text: 'empty-lines:' # Ignore one-liners - false positive, fix from revive is coming
-        - linters:
-              - contextcheck
-          text: verifyTokenFormat->.*parseBytes # False positive, context is internal in JWT, not in our control
+              - gocritic
+          text: 'deep-exit: calls to log.Fatalf|exitAfterDefer: log.Fatalf will exit'
+          path: .*_test.go
+        # - linters:
+        #       - contextcheck
+        #   text: verifyTokenFormat->.*parseBytes # False positive, context is internal in JWT, not in our control

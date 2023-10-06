@@ -35,7 +35,7 @@ type RetryPolicy struct {
 
 type RetryClient struct {
 	*Client
-	clientContext       context.Context
+	clientContext       context.Context //nolint:containedctx // we need client context here
 	retryPolicy         *RetryPolicy
 	isUnableToReconnect bool
 }
@@ -57,9 +57,6 @@ func NewRetryClient(ctx context.Context, retryPolicy *RetryPolicy, opts ...api.C
 // NewTestRetryClient creates a new test Ingest API gRPC Client with retry functionality.
 func NewTestRetryClient(client ingestpb.IngestAPIClient, retryPolicy *RetryPolicy) (*RetryClient, error) {
 	c, err := NewTestClient(client)
-	if err != nil {
-		return nil, err
-	}
 	if err != nil {
 		return nil, err
 	}

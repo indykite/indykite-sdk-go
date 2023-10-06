@@ -58,7 +58,7 @@ func MatchErrorCode(errorCode codes.Code) types.GomegaMatcher {
 //
 // Error must be google.golang.org/grpc/status.Error
 // It is an error for err to be nil or an object that does not implement the Error interface.
-func MatchStatusError(errorCode codes.Code, msg interface{}) types.GomegaMatcher {
+func MatchStatusError(errorCode codes.Code, msg any) types.GomegaMatcher {
 	switch m := msg.(type) {
 	case string:
 		return &MatchSDKStatusErrorMatcher{
@@ -85,7 +85,7 @@ func MatchStatusError(errorCode codes.Code, msg interface{}) types.GomegaMatcher
 	}
 }
 
-func (matcher *MatchSDKStatusErrorMatcher) Match(actual interface{}) (success bool, err error) {
+func (matcher *MatchSDKStatusErrorMatcher) Match(actual any) (bool, error) {
 	sdkError, ok := actual.(*errors.StatusError)
 	if !ok {
 		return false, fmt.Errorf("expected a SDK *errors.StatusError, got %T", actual)
@@ -94,19 +94,19 @@ func (matcher *MatchSDKStatusErrorMatcher) Match(actual interface{}) (success bo
 	if matcher.message == nil {
 		return s.Code() == matcher.Expected, nil
 	}
-	return matcher.message.Match(map[string]interface{}{
+	return matcher.message.Match(map[string]any{
 		"Code":    s.Code(),
 		"Message": s.Message(),
 		"Details": s.Details(),
 	})
 }
-func (matcher *MatchSDKStatusErrorMatcher) FailureMessage(actual interface{}) (message string) {
+func (matcher *MatchSDKStatusErrorMatcher) FailureMessage(actual any) string {
 	if matcher.message == nil {
 		return format.Message(status.Code(actual.(error)), "to match error", matcher.Expected)
 	}
 	return matcher.message.FailureMessage(actual)
 }
-func (matcher *MatchSDKStatusErrorMatcher) NegatedFailureMessage(actual interface{}) (message string) {
+func (matcher *MatchSDKStatusErrorMatcher) NegatedFailureMessage(actual any) string {
 	if matcher.message == nil {
 		return format.Message(status.Code(actual.(error)), "not to match error", matcher.Expected)
 	}
@@ -124,7 +124,7 @@ func MatchProtoMessage(message proto.Message) types.GomegaMatcher {
 	}
 }
 
-func (matcher *MatchProtoMessageMatcher) Match(actual interface{}) (success bool, err error) {
+func (matcher *MatchProtoMessageMatcher) Match(actual any) (bool, error) {
 	eq := &matchers.EqualMatcher{
 		Expected: matcher.Expected,
 	}
@@ -139,10 +139,10 @@ func (matcher *MatchProtoMessageMatcher) Match(actual interface{}) (success bool
 
 	return proto.Equal(e, matcher.Expected), nil
 }
-func (matcher *MatchProtoMessageMatcher) FailureMessage(actual interface{}) (message string) {
+func (matcher *MatchProtoMessageMatcher) FailureMessage(actual any) string {
 	return format.Message(actual, "to equal", matcher.Expected)
 }
-func (matcher *MatchProtoMessageMatcher) NegatedFailureMessage(actual interface{}) (message string) {
+func (matcher *MatchProtoMessageMatcher) NegatedFailureMessage(actual any) string {
 	return format.Message(actual, "not to equal", matcher.Expected)
 }
 
@@ -165,12 +165,12 @@ func (matcher *EqualProtoMatcher) GomegaString() string {
 	return string(ex)
 }
 
-func (matcher *EqualProtoMatcher) Match(actual interface{}) (success bool, err error) {
+func (matcher *EqualProtoMatcher) Match(actual any) (bool, error) {
 	if actual == nil && matcher.Expected == nil {
 		//nolint:lll
 		return false, fmt.Errorf("refusing to compare <nil> to <nil>.\nBe explicit and use BeNil() instead.  This is to avoid mistakes where both sides of an assertion are erroneously uninitialized")
 	}
-
+	var err error
 	if a, ok := actual.(*anypb.Any); ok {
 		var pa proto.Message
 		pa, err = a.UnmarshalNew()
@@ -187,7 +187,7 @@ func (matcher *EqualProtoMatcher) Match(actual interface{}) (success bool, err e
 	return proto.Equal(pa, matcher.Expected), nil
 }
 
-func (matcher *EqualProtoMatcher) FailureMessage(actual interface{}) (message string) {
+func (matcher *EqualProtoMatcher) FailureMessage(actual any) string {
 	actualMessage, actualOK := actual.(proto.Message)
 	if actualOK {
 		op := protojson.MarshalOptions{AllowPartial: true}
@@ -205,7 +205,7 @@ func (matcher *EqualProtoMatcher) FailureMessage(actual interface{}) (message st
 	return format.Message(actual, "to equal", matcher.Expected)
 }
 
-func (matcher *EqualProtoMatcher) NegatedFailureMessage(actual interface{}) (message string) {
+func (matcher *EqualProtoMatcher) NegatedFailureMessage(actual any) string {
 	actualMessage, actualOK := actual.(proto.Message)
 	if actualOK {
 		op := protojson.MarshalOptions{AllowPartial: true}
@@ -236,7 +236,7 @@ type EqualAnyProtoMatcher struct {
 	actual   proto.Message
 }
 
-func (matcher *EqualAnyProtoMatcher) Match(actual interface{}) (success bool, err error) {
+func (matcher *EqualAnyProtoMatcher) Match(actual any) (bool, error) {
 	if actual == nil && matcher.Expected == nil {
 		//nolint:lll
 		return false, fmt.Errorf("refusing to compare <nil> to <nil>.\nBe explicit and use BeNil() instead.  This is to avoid mistakes where both sides of an assertion are erroneously uninitialized")
@@ -246,7 +246,7 @@ func (matcher *EqualAnyProtoMatcher) Match(actual interface{}) (success bool, er
 	if !ok {
 		return false, fmt.Errorf("expected a proto.Message.  Got:\n%s", format.Object(actual, 1))
 	}
-
+	var err error
 	matcher.actual, err = a.UnmarshalNew()
 	if err != nil {
 		return false, err
@@ -254,7 +254,7 @@ func (matcher *EqualAnyProtoMatcher) Match(actual interface{}) (success bool, er
 	return proto.Equal(matcher.actual, matcher.Expected), nil
 }
 
-func (matcher *EqualAnyProtoMatcher) FailureMessage(interface{}) (message string) {
+func (matcher *EqualAnyProtoMatcher) FailureMessage(any) string {
 	// This function does not display if the type is different!!
 	op := protojson.MarshalOptions{AllowPartial: true}
 	ac, _ := op.Marshal(matcher.actual)
@@ -262,7 +262,7 @@ func (matcher *EqualAnyProtoMatcher) FailureMessage(interface{}) (message string
 	return format.MessageWithDiff(string(ac), "to equal", string(ex))
 }
 
-func (matcher *EqualAnyProtoMatcher) NegatedFailureMessage(interface{}) (message string) {
+func (matcher *EqualAnyProtoMatcher) NegatedFailureMessage(any) string {
 	// This function does not display if the type is different!!
 	op := protojson.MarshalOptions{AllowPartial: true}
 	ac, _ := op.Marshal(matcher.actual)
@@ -275,9 +275,9 @@ type MatchJSONMatcher struct {
 }
 
 // MatchJSON uses the expected value to build a value matcher.
-func MatchJSON(expected interface{}) types.GomegaMatcher {
+func MatchJSON(expected any) types.GomegaMatcher {
 	var (
-		m   interface{}
+		m   any
 		err error
 	)
 	switch v := expected.(type) {
@@ -300,8 +300,9 @@ func MatchJSON(expected interface{}) types.GomegaMatcher {
 	return &MatchJSONMatcher{GomegaMatcher: valueMatcher(m)}
 }
 
-func (matcher *MatchJSONMatcher) Match(actual interface{}) (success bool, err error) {
-	var aval interface{}
+func (matcher *MatchJSONMatcher) Match(actual any) (bool, error) {
+	var aval any
+	var err error
 	switch v := actual.(type) {
 	case string:
 		err = json.Unmarshal([]byte(v), &aval)
@@ -320,7 +321,7 @@ func (matcher *MatchJSONMatcher) Match(actual interface{}) (success bool, err er
 	return matcher.GomegaMatcher.Match(aval)
 }
 
-func valueMatcher(v interface{}) types.GomegaMatcher {
+func valueMatcher(v any) types.GomegaMatcher {
 	switch jv := v.(type) {
 	case nil:
 		return gomega.BeNil()
@@ -329,13 +330,13 @@ func valueMatcher(v interface{}) types.GomegaMatcher {
 			return gomega.BeTrue()
 		}
 		return gomega.BeFalse()
-	case map[string]interface{}:
-		keys := map[interface{}]types.GomegaMatcher{}
+	case map[string]any:
+		keys := map[any]types.GomegaMatcher{}
 		for k, mv := range jv {
 			keys[k] = valueMatcher(mv)
 		}
 		return gstruct.MatchAllKeys(keys)
-	case []interface{}:
+	case []any:
 		m := &matchers.ConsistOfMatcher{}
 		for _, sv := range jv {
 			m.Elements = append(m.Elements, valueMatcher(sv))
@@ -352,20 +353,20 @@ type matcherWrapper struct {
 	matcher types.GomegaMatcher
 	// This is used to save variable between calls to Matches and String in case of error
 	// to be able to print better messages on failure
-	actual interface{}
+	actual any
 }
 
 func WrapMatcher(matcher types.GomegaMatcher) gomock.Matcher {
 	return &matcherWrapper{matcher: matcher}
 }
 
-func (m *matcherWrapper) Matches(x interface{}) (ok bool) {
+func (m *matcherWrapper) Matches(x any) bool {
 	m.actual = x
-	var err error
-	if ok, err = m.matcher.Match(x); err != nil {
+	ok, err := m.matcher.Match(x)
+	if err != nil {
 		ok = false
 	}
-	return
+	return ok
 }
 
 func (m *matcherWrapper) String() string {

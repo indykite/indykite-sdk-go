@@ -124,7 +124,7 @@ func WithTelemetryDisabled() ClientOption {
 
 type withTelemetryDisabled struct{}
 
-func (w withTelemetryDisabled) Apply(o *internal.DialSettings) {
+func (withTelemetryDisabled) Apply(o *internal.DialSettings) {
 	o.TelemetryDisabled = true
 }
 

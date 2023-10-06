@@ -33,9 +33,7 @@ func ExampleNewClient_default() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to create a new Ingest Client.
@@ -45,9 +43,7 @@ func ExampleNewClient_options() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to use the Ingest Client to stream multiple records.
@@ -65,7 +61,7 @@ func ExampleClient_StreamRecords() {
 
 	err = client.OpenStreamClient(ctx)
 	if err != nil {
-		log.Fatalf("failed to open stream %v", err) //nolint:gocritic
+		log.Fatalf("failed to open stream %v", err)
 	}
 
 	for _, record := range []*ingestv2pb.Record{record1, record2} {
@@ -102,7 +98,7 @@ func ExampleClient_IngestRecord() {
 
 	response, err := client.IngestRecord(context.Background(), record1)
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,

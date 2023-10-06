@@ -46,6 +46,5 @@ var _ = Describe("IsAuthorized", func() {
 			Expect(authorizationClient).To(Not(BeNil()))
 			Expect(authorizationClient.Close()).To(Succeed())
 		})
-
 	})
 })

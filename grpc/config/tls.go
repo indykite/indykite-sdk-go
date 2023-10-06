@@ -94,14 +94,13 @@ func getBaseTLSConfig() *tls.Config {
 }
 
 // DefaultServerTLSConfig setting https://wiki.mozilla.org/Security/Server_Side_TLS
-func DefaultServerTLSConfig(serverKeyPair *tls.Certificate) (serverConfig *tls.Config) {
-	serverConfig = getBaseTLSConfig()
+func DefaultServerTLSConfig(serverKeyPair *tls.Certificate) *tls.Config {
+	serverConfig := getBaseTLSConfig()
 	serverConfig.Certificates = append(serverConfig.Certificates, *serverKeyPair)
-	return
+	return serverConfig
 }
 
 // ClientTLSConfig returns TLS Config for client.
-func ClientTLSConfig() (clientTLSConf *tls.Config, err error) {
-	clientTLSConf = getBaseTLSConfig()
-	return
+func ClientTLSConfig() (*tls.Config, error) {
+	return getBaseTLSConfig(), nil
 }

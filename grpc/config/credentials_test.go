@@ -45,7 +45,7 @@ var _ = Describe("UnmarshalCredentialConfig", func() {
 			data, err := os.ReadFile(filePath)
 			Expect(err).To(Succeed())
 			// Quickly parse JSON to avoid hardcoded values
-			jsonData := make(map[string]interface{})
+			jsonData := make(map[string]any)
 			err = json.Unmarshal(data, &jsonData)
 			Expect(err).To(Succeed())
 

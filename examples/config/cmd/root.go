@@ -113,7 +113,7 @@ func initConfig() {
 	}
 }
 
-func er(msg interface{}) {
+func er(msg any) {
 	_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", msg)
 	os.Exit(1)
 }

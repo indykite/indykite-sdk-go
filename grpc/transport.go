@@ -87,7 +87,7 @@ func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.Cred
 	for i := 0; i < poolSize; i++ {
 		conn, err = grpc.DialContext(ctx, o.Endpoint, dop...)
 		if err != nil {
-			defer func() { _ = pool.Close() }()
+			defer func() { _ = pool.Close() }() //nolint:revive,gocritic // If this happen, loop is exited
 			return nil, nil, err
 		}
 		pool.conns = append(pool.conns, conn)

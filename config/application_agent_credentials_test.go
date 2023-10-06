@@ -63,7 +63,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -73,7 +72,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			resp, err := configClient.ReadApplicationAgentCredential(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("Read", func() {
@@ -134,7 +132,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Register", func() {
@@ -203,7 +200,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("should return an length error in the response", func() {
@@ -215,7 +211,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			resp, err := configClient.DeleteApplicationAgentCredential(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("Delete", func() {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//nolint:testpackage
+//nolint:testpackage // We are not able to name that grpc_test for now. Needs bigger refactor.
 package grpc
 
 import (
@@ -81,13 +81,13 @@ func mockServer() (*grpc.Server, net.Listener) {
 }
 
 func GinkgoUnaryInterceptor(ctx context.Context,
-	req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	req any, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 	defer GinkgoRecover()
 	return handler(ctx, req)
 }
 
 func GinkgoStreamInterceptor(
-	srv interface{}, ss grpc.ServerStream, _ *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	srv any, ss grpc.ServerStream, _ *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	defer GinkgoRecover()
 	return handler(srv, ss)
 }

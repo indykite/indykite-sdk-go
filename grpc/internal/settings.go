@@ -44,7 +44,7 @@ const (
 
 // DialSettings holds information needed to establish a connection with a service.
 //
-//nolint:govet
+//nolint:govet // TODO Align fields
 type DialSettings struct {
 	GRPCConn           *grpc.ClientConn
 	RetryOpts          []retry.CallOption
@@ -78,15 +78,13 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 			break
 		}
 	}
+	//nolint:nestif // Needs bigger refactor
 	if ds.credentials != nil {
-		if ds.ServiceAccount {
-			if ds.credentials.ServiceAccountID == "" {
-				return nil, nil, errors.New("empty serviceAccountId")
-			}
-		} else {
-			if ds.credentials.AppAgentID == "" {
-				return nil, nil, errors.New("empty appAgentId")
-			}
+		if ds.ServiceAccount && ds.credentials.ServiceAccountID == "" {
+			return nil, nil, errors.New("empty serviceAccountId")
+		}
+		if !ds.ServiceAccount && ds.credentials.AppAgentID == "" {
+			return nil, nil, errors.New("empty appAgentId")
 		}
 
 		var err error
@@ -169,7 +167,7 @@ func addInterceptors(opts []grpc.DialOption, settings *DialSettings) []grpc.Dial
 		retOpts = []retry.CallOption{
 			retry.WithBackoff(retry.BackoffLinear(100 * time.Millisecond)),
 			// retry.WithBackoff(retry.BackoffExponential(100 * time.Millisecond)),
-			retry.WithCodes(codes.ResourceExhausted /*codes.Internal,*/, codes.Unavailable),
+			retry.WithCodes(codes.ResourceExhausted, codes.Unavailable),
 			retry.WithMax(12),
 		}
 	}

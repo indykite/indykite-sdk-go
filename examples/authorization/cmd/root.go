@@ -100,7 +100,6 @@ func initConfig() {
 	err := viper.ReadInConfig()
 	if err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
-
 	}
 
 	client, err = authorization.NewClient(context.Background(),
@@ -112,7 +111,7 @@ func initConfig() {
 	}
 }
 
-func er(msg interface{}) {
+func er(msg any) {
 	_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", msg)
 	os.Exit(1)
 }

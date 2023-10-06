@@ -39,14 +39,14 @@ var _ = Describe("CreateTokenSourceFromPrivateKey", func() {
 
 	DescribeTable(
 		"validate JSON correctly create tokenSource",
-		func(privateKeyJWK interface{}) {
+		func(privateKeyJWK any) {
 			resp, err := CreateTokenSourceFromPrivateKey(privateKeyJWK, IntTestAppAgentID.String())
 			Expect(resp).To(Not(BeNil()))
 			Expect(err).To(Succeed())
 		},
 		//nolint:lll
 		Entry("valid string key", "{\"kty\":\"EC\",\"d\":\"2to-_wtohfn2PAgHr3RHQbhDf8g9zy6ndr05ZS-hS8s\",\"use\":\"sig\",\"crv\":\"P-256\",\"kid\":\"vDUXHBZcRw1KyFPyB0EI2XLBzyP9iGyfvaSX3MNtUlk\",\"x\":\"Cn2tSCxcQYVKuexBTzqRShvrJG8eQeZUq0ISIp9wXSA\",\"y\":\"DVSlYTLzns37LmjdscBA8q5ko1N8CZ-ETwviAJ78vW4\",\"alg\":\"ES256\"}"),
-		Entry("valid map key", map[string]interface{}{
+		Entry("valid map key", map[string]any{
 			"kty": "EC",
 			"d":   "2to-_wtohfn2PAgHr3RHQbhDf8g9zy6ndr05ZS-hS8s",
 			"use": "sig",

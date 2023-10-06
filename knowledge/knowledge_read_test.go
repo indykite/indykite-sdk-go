@@ -99,7 +99,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				}))),
 			}))),
 		})))
-
 	})
 
 	Context("GetDigitalTwinByID", func() {
@@ -152,7 +151,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				"Type":       Equal("Person"),
 				"Properties": HaveLen(1),
 			})))
-
 		})
 
 		It("return 0 nodes - success", func() {
@@ -295,7 +293,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				"Type":       Equal("Person"),
 				"Properties": HaveLen(1),
 			})))
-
 		})
 
 		It("return 0 nodes - success", func() {
@@ -435,7 +432,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				"ExternalId": Equal("0000"),
 				"Type":       Equal("Store"),
 			})))
-
 		})
 
 		It("return 0 nodes - success", func() {
@@ -561,7 +557,6 @@ var _ = Describe("Identity Knowledge API", func() {
 				"ExternalId": Equal("0000"),
 				"Type":       Equal("Store"),
 			})))
-
 		})
 
 		It("return 0 nodes - success", func() {
@@ -769,7 +764,6 @@ var _ = Describe("Identity Knowledge API", func() {
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(1))
 		})
-
 	})
 
 	Context("List by property", func() {
@@ -956,7 +950,5 @@ var _ = Describe("Identity Knowledge API", func() {
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(1))
 		})
-
 	})
-
 })

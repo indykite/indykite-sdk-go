@@ -79,7 +79,7 @@ func (x *Property) GetAnyValue(msg proto.Message) error {
 	return errors.New("invalid AnyPB value")
 }
 
-func (x *Property) GetMapValue() (val map[string]interface{}, err error) {
+func (x *Property) GetMapValue() (map[string]any, error) {
 	if val, ok := x.Value.(*Property_ObjectValue); ok {
 		if mapVal, ok := val.ObjectValue.GetValue().(*objects.Value_MapValue); ok {
 			return objects.ToMap(mapVal.MapValue.Fields)
@@ -104,7 +104,7 @@ func (PropertyBatchOperations) validateValue(value isProperty_Value, enableNil b
 			return errors.New("object value must be specified")
 		}
 	case *Property_ReferenceValue:
-		if len(propertyValue.ReferenceValue) == 0 {
+		if propertyValue.ReferenceValue == "" {
 			return errors.New("reference value must be specified")
 		}
 	default:
@@ -142,17 +142,18 @@ func (x PropertyBatchOperations) Validate() error {
 // PreValidate checks the PropertyBatchOperations values. All public calls are considered non-trusted.
 //
 // It checks if the operations represent a valid collection of property updates.
-func (x PropertyBatchOperations) PreValidate() ([]string, []string, error) {
+//
+//nolint:nonamedreturns // It is named here for better readability
+func (x PropertyBatchOperations) PreValidate() (replaced, removed []string, _ error) {
 	if len(x) == 0 {
 		return nil, nil, errors.New("empty batch operation")
 	}
 
 	// This logic cannot be really tight to internal property logic, because PreValidate is used also in public part
-	var replaced, removed []string
 	for i, v := range x {
 		err := v.Validate()
 		if err != nil {
-			return nil, nil, fmt.Errorf("invalid operation at index %d: %v", i, err)
+			return nil, nil, fmt.Errorf("invalid operation at index %d: %w", i, err)
 		}
 		switch bo := v.Operation.(type) {
 		case *PropertyBatchOperation_Add:

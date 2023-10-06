@@ -16,12 +16,13 @@ package ingest
 
 import (
 	"context"
+	"errors"
 	"io"
 	"time"
 
 	"google.golang.org/grpc/codes"
 
-	"github.com/indykite/indykite-sdk-go/errors"
+	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
@@ -35,7 +36,7 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 
 	stream, err := c.client.StreamRecords(ctx)
 	if err != nil {
-		return nil, errors.FromError(err)
+		return nil, sdkerrors.FromError(err)
 	}
 
 	responses := make([]*ingestpb.StreamRecordsResponse, len(records))
@@ -46,18 +47,18 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 
 		err = stream.Send(req)
 		if err != nil {
-			return nil, errors.FromError(err)
+			return nil, sdkerrors.FromError(err)
 		}
 		var resp *ingestpb.StreamRecordsResponse
 		resp, err = stream.Recv()
 		if err != nil {
-			return nil, errors.FromError(err)
+			return nil, sdkerrors.FromError(err)
 		}
 		responses[i] = resp
 	}
 	err = stream.CloseSend()
 	if err != nil {
-		return nil, errors.FromError(err)
+		return nil, sdkerrors.FromError(err)
 	}
 	return responses, nil
 }
@@ -66,7 +67,7 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 func (c *Client) OpenStreamClient(ctx context.Context) error {
 	stream, err := c.client.StreamRecords(ctx)
 	if err != nil {
-		return errors.FromError(err)
+		return sdkerrors.FromError(err)
 	}
 	c.stream = stream
 	return nil
@@ -75,7 +76,7 @@ func (c *Client) OpenStreamClient(ctx context.Context) error {
 // SendRecord sends a record on the opened stream.
 func (c *Client) SendRecord(record *ingestpb.Record) error {
 	if c.stream == nil {
-		return errors.New(codes.FailedPrecondition, "a stream must be opened first")
+		return sdkerrors.New(codes.FailedPrecondition, "a stream must be opened first")
 	}
 
 	req := &ingestpb.StreamRecordsRequest{
@@ -83,34 +84,34 @@ func (c *Client) SendRecord(record *ingestpb.Record) error {
 	}
 
 	err := c.stream.Send(req)
-	if err == nil || err == io.EOF {
+	if err == nil || errors.Is(err, io.EOF) {
 		return err
 	}
-	return errors.FromError(err)
+	return sdkerrors.FromError(err)
 }
 
 // ReceiveResponse returns the next response available on the stream.
 func (c *Client) ReceiveResponse() (*ingestpb.StreamRecordsResponse, error) {
 	if c.stream == nil {
-		return nil, errors.New(codes.FailedPrecondition, "a stream must be opened first")
+		return nil, sdkerrors.New(codes.FailedPrecondition, "a stream must be opened first")
 	}
 
 	resp, err := c.stream.Recv()
-	if err == nil || err == io.EOF {
+	if err == nil || errors.Is(err, io.EOF) {
 		return resp, err
 	}
-	return nil, errors.FromError(err)
+	return nil, sdkerrors.FromError(err)
 }
 
 // CloseStream closes the gRPC stream.
 func (c *Client) CloseStream() error {
 	if c.stream == nil {
-		return errors.New(codes.FailedPrecondition, "the stream has already been closed")
+		return sdkerrors.New(codes.FailedPrecondition, "the stream has already been closed")
 	}
 
 	err := c.stream.CloseSend()
 	if err != nil {
-		return errors.FromError(err)
+		return sdkerrors.FromError(err)
 	}
 	return nil
 }

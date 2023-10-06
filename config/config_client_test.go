@@ -51,6 +51,5 @@ var _ = Describe("ConfigNode", func() {
 				Expect(configClient.Close()).To(Succeed())
 			}
 		})
-
 	})
 })

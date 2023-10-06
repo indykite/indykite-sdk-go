@@ -101,7 +101,6 @@ func (m *Document) validate(all bool) error {
 					}
 				}
 			}
-
 		}
 	}
 
@@ -396,7 +395,6 @@ func (m *Precondition) validate(all bool) error {
 				}
 			}
 		}
-
 	}
 
 	if len(errors) > 0 {
@@ -557,7 +555,6 @@ func (m *Write) validate(all bool) error {
 				}
 			}
 		}
-
 	}
 
 	if all {
@@ -655,7 +652,6 @@ func (m *Write) validate(all bool) error {
 				}
 			}
 		}
-
 	}
 
 	if len(errors) > 0 {
@@ -918,7 +914,6 @@ func (m *DocumentTransform) validate(all bool) error {
 				}
 			}
 		}
-
 	}
 
 	if len(errors) > 0 {
@@ -1089,7 +1084,6 @@ func (m *DocumentTransform_FieldTransform) validate(all bool) error {
 				}
 			}
 		}
-
 	}
 
 	if len(errors) > 0 {
