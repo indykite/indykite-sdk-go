@@ -88,11 +88,9 @@ var _ = Describe("WhatAuthorized", func() {
 			var clientErr *sdkerrors.ClientError
 			Expect(errors.As(err, &clientErr)).To(BeTrue(), "is client error")
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Nil token", func() {
-
 			resp, err := authorizationClient.WhatAuthorizedByToken(ctx, "", nil, nil, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(resp).To(BeNil())
@@ -101,7 +99,6 @@ var _ = Describe("WhatAuthorized", func() {
 			Expect(errors.As(err, &clientErr)).To(BeTrue(), "is client error")
 			Expect(clientErr.Message()).To(ContainSubstring("unable to call WhatAuthorized client endpoint"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong DT should return a validation error in the response", func() {
@@ -120,7 +117,6 @@ var _ = Describe("WhatAuthorized", func() {
 			Expect(err).To(MatchError(ContainSubstring(
 				"invalid DigitalTwin.Id: value length must be between 27 and 100 runes",
 			)))
-
 		})
 
 		It("WhatAuthorizedDT", func() {

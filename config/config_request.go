@@ -127,7 +127,7 @@ func (x *NodeRequest) WithPreCondition(etag string) *NodeRequest {
 }
 
 // EmptyDisplayName removes the current displayName value.
-func (x *NodeRequest) EmptyDisplayName(v string) *NodeRequest {
+func (x *NodeRequest) EmptyDisplayName() *NodeRequest {
 	return x.WithDisplayName("")
 }
 
@@ -143,7 +143,7 @@ func (x *NodeRequest) WithDisplayName(v string) *NodeRequest {
 }
 
 // EmptyDescription removes the current description value.
-func (x *NodeRequest) EmptyDescription(v string) *NodeRequest {
+func (x *NodeRequest) EmptyDescription() *NodeRequest {
 	return x.WithDescription("")
 }
 
@@ -326,7 +326,7 @@ func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
 	return x
 }
 
-func (x *NodeRequest) optionalString(v string) *wrapperspb.StringValue {
+func (*NodeRequest) optionalString(v string) *wrapperspb.StringValue {
 	return wrapperspb.String(strings.TrimSpace(v))
 }
 

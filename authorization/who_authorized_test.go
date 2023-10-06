@@ -98,7 +98,6 @@ var _ = Describe("WhoAuthorized", func() {
 			var clientErr *sdkerrors.ClientError
 			Expect(errors.As(err, &clientErr)).To(BeTrue(), "is client error")
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong resource should return a validation error in the response", func() {
@@ -111,7 +110,6 @@ var _ = Describe("WhoAuthorized", func() {
 			resp, err := authorizationClient.WhoAuthorized(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("invalid WhoAuthorizedRequest_Resource.ExternalId")))
-
 		})
 
 		It("WhoAuthorized", func() {

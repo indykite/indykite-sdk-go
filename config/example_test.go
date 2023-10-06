@@ -28,9 +28,7 @@ func ExampleNewClient_default() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to create a new Config Client.
@@ -40,7 +38,5 @@ func ExampleNewClient_options() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }

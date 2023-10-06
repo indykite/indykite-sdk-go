@@ -53,7 +53,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 			data, err := os.ReadFile(filePath)
 			Expect(err).To(Succeed())
 			// Quickly parse JSON to avoid hardcoded values
-			jsonData := make(map[string]interface{})
+			jsonData := make(map[string]any)
 			err = json.Unmarshal(data, &jsonData)
 			Expect(err).To(Succeed())
 
@@ -83,7 +83,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		data, err = yaml.YAMLToJSON(data)
 		Expect(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
-		jsonData := make(map[string]interface{})
+		jsonData := make(map[string]any)
 		err = json.Unmarshal(data, &jsonData)
 		Expect(err).To(Succeed())
 
@@ -109,7 +109,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		data, err := os.ReadFile("testdata/valid_jwt_as_map.json")
 		Expect(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
-		jsonData := make(map[string]interface{})
+		jsonData := make(map[string]any)
 		err = json.Unmarshal(data, &jsonData)
 		Expect(err).To(Succeed())
 
@@ -172,7 +172,7 @@ var _ = Describe("Test JSON and YAML to JSON credentials", func() {
 		data, err := os.ReadFile("testdata/valid_jwt_service.json")
 		Ω(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
-		var jsonData map[string]interface{}
+		var jsonData map[string]any
 		err = json.Unmarshal(data, &jsonData)
 		Ω(err).To(Succeed())
 

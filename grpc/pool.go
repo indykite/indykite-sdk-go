@@ -59,7 +59,7 @@ func (p *singleConnPool) Conn() *grpc.ClientConn {
 	return p.ClientConn
 }
 
-func (p *singleConnPool) Num() int {
+func (*singleConnPool) Num() int {
 	return 1
 }
 
@@ -79,7 +79,7 @@ func (p *roundRobinConnPool) Conn() *grpc.ClientConn {
 }
 
 func (p *roundRobinConnPool) Close() error {
-	var errs multiError
+	var errs multiErrors
 	for _, conn := range p.conns {
 		if err := conn.Close(); err != nil {
 			errs = append(errs, err)
@@ -92,7 +92,7 @@ func (p *roundRobinConnPool) Close() error {
 }
 
 func (p *roundRobinConnPool) Invoke(ctx context.Context,
-	method string, args interface{}, reply interface{}, opts ...grpc.CallOption) error {
+	method string, args any, reply any, opts ...grpc.CallOption) error {
 	return p.Conn().Invoke(ctx, method, args, reply, opts...)
 }
 
@@ -101,14 +101,14 @@ func (p *roundRobinConnPool) NewStream(ctx context.Context,
 	return p.Conn().NewStream(ctx, desc, method, opts...)
 }
 
-// multiError represents errors from multiple conns in the group.
+// multiErrors represents errors from multiple conns in the group.
 //
 // TODO: figure out how and whether this is useful to export. End users should
 // not be depending on the transport/grpc package directly, so there might need
 // to be some service-specific multi-error type.
-type multiError []error
+type multiErrors []error
 
-func (m multiError) Error() string {
+func (m multiErrors) Error() string {
 	s, n := "", 0
 	for _, e := range m {
 		if e != nil {

@@ -447,5 +447,4 @@ var _ = Describe("Container Configuration", func() {
 			Expect(resp).To(BeNil())
 		})
 	})
-
 })

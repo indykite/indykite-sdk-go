@@ -80,10 +80,10 @@ var queryKnowledgeAPI = &cobra.Command{
 		}
 
 		var body bytes.Buffer
-		json.NewEncoder(&body).Encode(map[string]interface{}{
+		json.NewEncoder(&body).Encode(map[string]any{
 			"operationName": "Tests",
 			"query":         "query Tests {  tests {    testField  }}",
-			"variables":     map[string]interface{}{},
+			"variables":     map[string]any{},
 		})
 
 		knowledgeAPIUrl := fmt.Sprintf("%s/knowledge/%s", cfg.BaseURL, cfg.AppSpaceID)

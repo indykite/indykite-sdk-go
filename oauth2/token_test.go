@@ -28,14 +28,13 @@ import (
 )
 
 var _ = Describe("Bearer token", func() {
-
 	BeforeEach(func() {
 		// Prepare test data
 		// #nosec: G304: Potential file inclusion via variable
 		data, err := os.ReadFile("../grpc/testdata/valid_jwt_as_string.json")
 		Expect(err).To(Succeed())
 		// Quickly parse JSON to avoid hardcoded values
-		jsonData := make(map[string]interface{})
+		jsonData := make(map[string]any)
 		err = json.Unmarshal(data, &jsonData)
 		Expect(err).To(Succeed())
 

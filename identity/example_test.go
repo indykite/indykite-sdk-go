@@ -32,9 +32,7 @@ func ExampleNewClient_default() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to create a new Identity Client.
@@ -44,9 +42,7 @@ func ExampleNewClient_options() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates the use of a identity client to introspect the
@@ -64,7 +60,7 @@ func ExampleClient_IntrospectToken() {
 	token := "JWT TOKEN HERE"
 	tenant, err := client.IntrospectToken(context.Background(), token, retry.WithMax(2))
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -88,7 +84,7 @@ func ExampleClient_CreateEmailInvitation() {
 		"696e6479-6b69-4465-8000-030100000002",
 		"my-reference",
 		time.Now().AddDate(0, 0, 7), time.Now(),
-		map[string]interface{}{
+		map[string]any{
 			"lang": "en",
 		})
 	if err != nil {

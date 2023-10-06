@@ -75,6 +75,7 @@ func (c *Client) VerifyDigitalTwinEmail(ctx context.Context,
 func (c *Client) IntrospectToken(ctx context.Context,
 	token string, opts ...grpc.CallOption) (*identitypb.TokenIntrospectResponse, error) {
 	if err := verifyTokenFormat(token); err != nil {
+		//nolint:nilerr // If there is error, we want to ignore error and just return false here
 		return &identitypb.TokenIntrospectResponse{Active: false}, nil
 	}
 

@@ -51,7 +51,7 @@ func (err *ClientError) Unwrap() error {
 	return err.cause
 }
 
-func (err *ClientError) As(out interface{}) bool {
+func (err *ClientError) As(out any) bool {
 	switch t := out.(type) {
 	case *ClientError:
 		*t = *err
@@ -62,22 +62,22 @@ func (err *ClientError) As(out interface{}) bool {
 }
 
 // NewInvalidArgumentError returns a new ClientError represents an InvalidArgument.
-func NewInvalidArgumentError(msg string, args ...interface{}) error {
+func NewInvalidArgumentError(msg string, args ...any) error {
 	return New(codes.InvalidArgument, msg, args...)
 }
 
 // NewInvalidArgumentErrorWithCause returns a new ClientError represents an InvalidArgument.
-func NewInvalidArgumentErrorWithCause(cause error, msg string, args ...interface{}) error {
+func NewInvalidArgumentErrorWithCause(cause error, msg string, args ...any) error {
 	return NewWithCause(codes.InvalidArgument, cause, msg, args...)
 }
 
 // New returns a new ClientError with code and formatted message.
-func New(code codes.Code, msg string, args ...interface{}) error {
+func New(code codes.Code, msg string, args ...any) error {
 	return NewWithCause(code, nil, msg, args...)
 }
 
 // NewWithCause returns a new ClientError with code and formatted message.
-func NewWithCause(code codes.Code, err error, msg string, args ...interface{}) error {
+func NewWithCause(code codes.Code, err error, msg string, args ...any) error {
 	if code == codes.OK {
 		if err == nil {
 			return nil
@@ -106,10 +106,11 @@ func NewWithCause(code codes.Code, err error, msg string, args ...interface{}) e
 
 // IsServiceError checks if the Error code represents a service call error.
 func IsServiceError(err error) bool {
+	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
 	if se, ok := err.(interface {
 		Code() codes.Code
 	}); ok {
-		//nolint:exhaustive
+		//nolint:exhaustive // No need to use default, because last statement will handle all
 		switch se.Code() {
 		case codes.Unknown,
 			codes.DeadlineExceeded,
@@ -138,12 +139,15 @@ func FromError(err error) *StatusError {
 	if err == nil {
 		return nil
 	}
+	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
 	if s, ok := err.(*StatusError); ok {
 		return s
 	}
+	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
 	if s, ok := err.(*ClientError); ok {
 		return &StatusError{grpcStatus: status.New(s.code, s.msg), origin: s.cause}
 	}
+	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
 	if se, ok := err.(interface {
 		GRPCStatus() *status.Status
 	}); ok {
@@ -153,7 +157,7 @@ func FromError(err error) *StatusError {
 }
 
 // NewGRPCError unwrap original GRPC status and wraps into GRPCErrorWrapper for easier access.
-func NewGRPCError(entryErr interface{}) *StatusError {
+func NewGRPCError(entryErr any) *StatusError {
 	if entryErr == nil {
 		return nil
 	}
@@ -200,7 +204,7 @@ func (err *StatusError) Status() *status.Status {
 }
 
 // WithPrefix set prefix which will be printed in when Error is called.
-func (err *StatusError) WithPrefix(prefix string) *StatusError {
+func (err *StatusError) WithPrefix(_ string) *StatusError {
 	return err
 }
 

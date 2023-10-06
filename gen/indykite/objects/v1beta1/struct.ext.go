@@ -66,16 +66,16 @@ func Any(v proto.Message) (*Value, error) {
 	return &Value{Value: &Value_AnyValue{AnyValue: a}}, nil
 }
 
-func ToValue(v interface{}) (*Value, error) {
+func ToValue(v any) (*Value, error) {
 	val, _, err := toProtoValue(reflect.ValueOf(v))
 	return val, err
 }
 
-func FromValue(v *Value) (interface{}, error) {
+func FromValue(v *Value) (any, error) {
 	return createFromProtoValue(v)
 }
 
-func ToMapValue(in map[string]interface{}) (map[string]*Value, error) {
+func ToMapValue(in map[string]any) (map[string]*Value, error) {
 	if in == nil {
 		return nil, nil
 	}
@@ -93,11 +93,11 @@ func ToMapValue(in map[string]interface{}) (map[string]*Value, error) {
 	return out, nil
 }
 
-func ToMap(fields map[string]*Value) (map[string]interface{}, error) {
+func ToMap(fields map[string]*Value) (map[string]any, error) {
 	if fields == nil {
 		return nil, nil
 	}
-	ret := make(map[string]interface{}, len(fields))
+	ret := make(map[string]any, len(fields))
 	for k, v := range fields {
 		r, err := createFromProtoValue(v)
 		if err != nil {
@@ -108,7 +108,7 @@ func ToMap(fields map[string]*Value) (map[string]interface{}, error) {
 	return ret, nil
 }
 
-func createFromProtoValue(v *Value) (interface{}, error) {
+func createFromProtoValue(v *Value) (any, error) {
 	if v == nil || v.Value == nil {
 		return nil, nil
 	}
@@ -138,7 +138,7 @@ func createFromProtoValue(v *Value) (interface{}, error) {
 			return nil, nil
 		}
 		values := v.ArrayValue.Values
-		ret := make([]interface{}, len(values))
+		ret := make([]any, len(values))
 		for i, v := range values {
 			r, err := createFromProtoValue(v)
 			if err != nil {
@@ -152,7 +152,7 @@ func createFromProtoValue(v *Value) (interface{}, error) {
 			return nil, nil
 		}
 		fields := v.MapValue.Fields
-		ret := make(map[string]interface{}, len(fields))
+		ret := make(map[string]any, len(fields))
 		for k, v := range fields {
 			r, err := createFromProtoValue(v)
 			if err != nil {
@@ -167,14 +167,14 @@ func createFromProtoValue(v *Value) (interface{}, error) {
 		}
 		typeURL := v.AnyValue.GetTypeUrl()
 		value := v.AnyValue.GetValue()
-		ret := map[string]interface{}{"typeUrl": typeURL, "value": value}
+		ret := map[string]any{"typeUrl": typeURL, "value": value}
 		return ret, nil
 	default:
 		return nil, fmt.Errorf("unknown value type %T", v)
 	}
 }
 
-func toProtoValue(v reflect.Value) (pbv *Value, sawTransform bool, err error) {
+func toProtoValue(v reflect.Value) (*Value, bool, error) {
 	if !v.IsValid() {
 		return nullValue, false, nil
 	}
@@ -298,26 +298,26 @@ func (x *ArrayValue) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOf(nil)
 }
 
-func (x *ArrayValue) Set(i int, value protoreflect.Value) {
+func (*ArrayValue) Set(int, protoreflect.Value) {
 	panic("implement me")
 }
 
-func (x *ArrayValue) Append(value protoreflect.Value) {
+func (*ArrayValue) Append(protoreflect.Value) {
 	panic("implement me")
 }
 
-func (x *ArrayValue) AppendMutable() protoreflect.Value {
+func (*ArrayValue) AppendMutable() protoreflect.Value {
 	panic("implement me")
 }
 
-func (x *ArrayValue) Truncate(i int) {
+func (*ArrayValue) Truncate(int) {
 	panic("implement me")
 }
 
-func (x *ArrayValue) NewElement() protoreflect.Value {
+func (*ArrayValue) NewElement() protoreflect.Value {
 	panic("implement me")
 }
 
-func (x *ArrayValue) IsValid() bool {
+func (*ArrayValue) IsValid() bool {
 	return true
 }

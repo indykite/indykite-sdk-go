@@ -61,7 +61,6 @@ var _ = Describe("Service Account Credentials", func() {
 		Expect(clientErr.Unwrap()).To(Succeed())
 		Expect(clientErr.Message()).To(Equal("invalid nil request"))
 		Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 	})
 
 	It("Register", func() {
@@ -123,7 +122,6 @@ var _ = Describe("Service Account Credentials", func() {
 		Expect(clientErr.Unwrap()).To(Succeed())
 		Expect(clientErr.Message()).To(Equal("invalid nil request"))
 		Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 	})
 
 	It("Read", func() {
@@ -155,7 +153,6 @@ var _ = Describe("Service Account Credentials", func() {
 		resp, err := configClient.ReadServiceAccountCredential(ctx, req)
 		Expect(resp).To(BeNil())
 		Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 	})
 
 	It("ReadError", func() {
@@ -186,7 +183,6 @@ var _ = Describe("Service Account Credentials", func() {
 		Expect(clientErr.Unwrap()).To(Succeed())
 		Expect(clientErr.Message()).To(Equal("invalid nil request"))
 		Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 	})
 
 	It("Delete", func() {
@@ -217,7 +213,6 @@ var _ = Describe("Service Account Credentials", func() {
 		resp, err := configClient.DeleteServiceAccountCredential(ctx, req)
 		Expect(resp).To(BeNil())
 		Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 	})
 
 	It("Delete", func() {

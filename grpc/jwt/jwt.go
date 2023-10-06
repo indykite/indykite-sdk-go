@@ -37,7 +37,7 @@ type (
 	}
 )
 
-func CreateTokenSourceFromPrivateKey(privateKeyJWK interface{}, clientID string) (oauth2.TokenSource, error) {
+func CreateTokenSourceFromPrivateKey(privateKeyJWK any, clientID string) (oauth2.TokenSource, error) {
 	privateKeyJWKBytes, err := interfaceToBytes(privateKeyJWK)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSourc
 	}
 }
 
-func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
+func interfaceToBytes(privateKeyJWK any) ([]byte, error) {
 	if stringValue, ok := privateKeyJWK.(string); ok {
 		return []byte(stringValue), nil
 	}
@@ -97,30 +97,29 @@ func interfaceToBytes(privateKeyJWK interface{}) ([]byte, error) {
 	return privateKeyJWKBytes, nil
 }
 
-func JWTokenSource(secretKey []byte, pem bool, clientID string,
-	tokenLifetime time.Duration) (oauth2.TokenSource, error) {
-	var (
-		key jwk.Key
-		err error
-	)
+func parseKey(secretKey []byte, pem bool) (jwk.Key, error) {
 	if pem {
-		key, err = jwk.ParseKey(secretKey, jwk.WithPEM(pem))
-	} else {
-		if secretKey[0] == '"' {
-			var raw string
-			err = json.Unmarshal(secretKey, &raw)
-			if err != nil {
-				return nil, err
-			}
-			key, err = jwk.ParseKey([]byte(raw))
-		} else {
-			key, err = jwk.ParseKey(secretKey)
-		}
+		return jwk.ParseKey(secretKey, jwk.WithPEM(pem))
 	}
+
+	if secretKey[0] != '"' {
+		return jwk.ParseKey(secretKey)
+	}
+
+	var raw string
+	err := json.Unmarshal(secretKey, &raw)
 	if err != nil {
 		return nil, err
 	}
+	return jwk.ParseKey([]byte(raw))
+}
 
+func JWTokenSource(secretKey []byte, pem bool, clientID string,
+	tokenLifetime time.Duration) (oauth2.TokenSource, error) {
+	key, err := parseKey(secretKey, pem)
+	if err != nil {
+		return nil, err
+	}
 	// Remove user defined kid and generate new one same way as we do on BE
 	// This is micro-optimization on client-side.
 	_ = key.Remove(jwk.KeyIDKey)

@@ -60,7 +60,6 @@ var whatWithTokenCmd = &cobra.Command{
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}
 		fmt.Println(jsonp.Format(resp))
-
 	},
 }
 
@@ -98,7 +97,6 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}
 		fmt.Println(jsonp.Format(resp))
-
 	},
 }
 
@@ -138,7 +136,6 @@ var whatWithPropertyCmd = &cobra.Command{
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}
 		fmt.Println(jsonp.Format(resp))
-
 	},
 }
 

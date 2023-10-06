@@ -76,7 +76,6 @@ var enrichTokenCmd = &cobra.Command{
 		}
 
 		fmt.Println("successfully enriched token and session")
-
 	},
 }
 

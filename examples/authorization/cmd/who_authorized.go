@@ -53,7 +53,6 @@ var whoAuthorizedCmd = &cobra.Command{
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}
 		fmt.Println(jsonp.Format(resp))
-
 	},
 }
 

@@ -96,7 +96,7 @@ func (c *Client) CancelInvitation(ctx context.Context, referenceID string, opts 
 // CreateEmailInvitation receive all properties for digital twin.
 func (c *Client) CreateEmailInvitation(ctx context.Context,
 	invitee string, tenantID string, referenceID string,
-	expireTime, inviteAtTime time.Time, messageAttributes map[string]interface{},
+	expireTime, inviteAtTime time.Time, messageAttributes map[string]any,
 	opts ...grpc.CallOption) error {
 	var request = &identitypb.CreateInvitationRequest{
 		ReferenceId: referenceID,

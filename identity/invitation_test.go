@@ -59,7 +59,7 @@ var _ = Describe("Invitation", func() {
 			"gid:AAAAA2luZHlraURlgAADDwAAAAE",
 			"my-reference",
 			now.AddDate(0, 0, 7), now,
-			map[string]interface{}{
+			map[string]any{
 				"lang": "en",
 			})
 		Ω(err).To(Succeed())

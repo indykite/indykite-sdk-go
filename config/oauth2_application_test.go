@@ -63,7 +63,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -71,7 +70,6 @@ var _ = Describe("OAuth2Application", func() {
 			resp, err := configClient.ReadOAuth2Application(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("ReadSuccess", func() {
@@ -157,7 +155,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Create", func() {
@@ -258,7 +255,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
 		})
-
 	})
 
 	Describe("OAuth2ApplicationUpdate", func() {
@@ -272,7 +268,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Update", func() {
@@ -376,7 +371,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
 		})
-
 	})
 
 	Describe("OAuth2ApplicationDelete", func() {
@@ -390,7 +384,6 @@ var _ = Describe("OAuth2Application", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("should return an length error in the response", func() {
@@ -402,7 +395,6 @@ var _ = Describe("OAuth2Application", func() {
 			resp, err := configClient.DeleteOAuth2Application(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("Delete", func() {

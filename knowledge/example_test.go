@@ -33,9 +33,7 @@ func ExampleNewClient_default() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to create a new Identity Knowledge Client.
@@ -45,9 +43,7 @@ func ExampleNewClient_options() {
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
 	}
-	defer func() {
-		_ = client.Close()
-	}()
+	_ = client.Close()
 }
 
 // This example demonstrates how to use the Identity Knowledge Client to do a READ query.
@@ -70,7 +66,7 @@ func ExampleClient_Read() {
 
 	response, err := client.Read(context.Background(), path, conditions, params)
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -90,7 +86,7 @@ func ExampleClient_GetDigitalTwinByID() {
 
 	response, err := client.GetDigitalTwinByID(context.Background(), "gid:AAAAAmluZHlraURlgAABDwAAAAA")
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -110,7 +106,7 @@ func ExampleClient_GetResourceByID() {
 
 	response, err := client.GetResourceByID(context.Background(), "gid:AAAAAmluZHlraURlgAABDwAAAAA")
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -134,7 +130,7 @@ func ExampleClient_GetDigitalTwinByIdentifier() {
 		Type:       "Person",
 	})
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -158,7 +154,7 @@ func ExampleClient_GetResourceByIdentifier() {
 		Type:       "Store",
 	})
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -187,7 +183,7 @@ func ExampleClient_ListDigitalTwinsByProperty() {
 	},
 	)
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -218,7 +214,7 @@ func ExampleClient_ListResourcesByProperty() {
 	},
 	)
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -240,7 +236,7 @@ func ExampleClient_ListResources() {
 
 	response, err := client.ListResources(context.Background())
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -262,7 +258,7 @@ func ExampleClient_ListDigitalTwins() {
 
 	response, err := client.ListDigitalTwins(context.Background())
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -284,7 +280,7 @@ func ExampleClient_ListNodes() {
 
 	response, err := client.ListNodes(context.Background(), "Person")
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,
@@ -314,7 +310,7 @@ func ExampleClient_ListNodesByProperty() {
 				Value: &objects.Value_StringValue{
 					StringValue: "test@test.com"}}})
 	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err) //nolint:gocritic
+		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
 	json := protojson.MarshalOptions{
 		Multiline: true,

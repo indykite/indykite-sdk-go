@@ -31,7 +31,7 @@ import (
 
 var _ = Describe("Objects", func() {
 	DescribeTable("SendVerificationEmailActivity - Verify attributes",
-		func(fields map[string]*objects.Value, expect map[string]interface{}) {
+		func(fields map[string]*objects.Value, expect map[string]any) {
 			result, err := objects.ToMap(fields)
 
 			Expect(err).To(Succeed())
@@ -45,7 +45,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": objects.String("String"),
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": "String",
 			},
 		),
@@ -53,7 +53,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": objects.Int64(-64),
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": int64(-64),
 			},
 		),
@@ -61,7 +61,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_UnsignedIntegerValue{UnsignedIntegerValue: 64}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": uint64(64),
 			},
 		),
@@ -69,7 +69,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": objects.Bool(true),
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": true,
 			},
 		),
@@ -77,7 +77,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": objects.Float64(6.4),
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": 6.4,
 			},
 		),
@@ -86,7 +86,7 @@ var _ = Describe("Objects", func() {
 				"Key": {Value: &objects.Value_ValueTime{
 					ValueTime: timestamppb.New(time.Date(2020, 8, 8, 8, 8, 8, 8, time.UTC))}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": timestamppb.New(
 					time.Date(2020, 8, 8, 8, 8, 8, 8, time.UTC)).AsTime().UTC().Format(time.RFC3339),
 			},
@@ -96,7 +96,7 @@ var _ = Describe("Objects", func() {
 				"Key": {Value: &objects.Value_DurationValue{
 					DurationValue: durationpb.New(time.Duration(10) * time.Second)}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": durationpb.New(time.Duration(10) * time.Second).AsDuration().String(),
 			},
 		),
@@ -104,7 +104,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_BytesValue{BytesValue: []byte("somefunnyjokeaboutdinosaurs")}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": []byte("somefunnyjokeaboutdinosaurs"),
 			},
 		),
@@ -113,7 +113,7 @@ var _ = Describe("Objects", func() {
 				"Key": {Value: &objects.Value_GeoPointValue{
 					GeoPointValue: &latlng.LatLng{Latitude: 64, Longitude: 64.03}}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": fmt.Sprintf("POINT (%v %v)", 64, 64.03),
 			},
 		),
@@ -121,7 +121,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": objects.Null(),
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),
@@ -129,7 +129,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": nil,
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),
@@ -142,8 +142,8 @@ var _ = Describe("Objects", func() {
 					nil,
 				}}}},
 			},
-			map[string]interface{}{
-				"Key": []interface{}{
+			map[string]any{
+				"Key": []any{
 					"item1",
 					int64(2),
 					nil,
@@ -156,7 +156,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_ArrayValue{ArrayValue: nil}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),
@@ -164,8 +164,8 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_ArrayValue{ArrayValue: &objects.ArrayValue{Values: nil}}},
 			},
-			map[string]interface{}{
-				"Key": []interface{}{},
+			map[string]any{
+				"Key": []any{},
 			},
 		),
 		Entry("Map",
@@ -177,8 +177,8 @@ var _ = Describe("Objects", func() {
 					"item4": nil,
 				}}}},
 			},
-			map[string]interface{}{
-				"Key": map[string]interface{}{
+			map[string]any{
+				"Key": map[string]any{
 					"item1": "item1",
 					"item2": int64(2),
 					"item3": nil,
@@ -190,7 +190,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_MapValue{MapValue: nil}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),
@@ -198,8 +198,8 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_MapValue{MapValue: &objects.MapValue{Fields: nil}}},
 			},
-			map[string]interface{}{
-				"Key": map[string]interface{}{},
+			map[string]any{
+				"Key": map[string]any{},
 			},
 		),
 		Entry("Any",
@@ -209,8 +209,8 @@ var _ = Describe("Objects", func() {
 					Value:   []byte("somefunnyjokeaboutdinosaurs"),
 				}}},
 			},
-			map[string]interface{}{
-				"Key": map[string]interface{}{
+			map[string]any{
+				"Key": map[string]any{
 					"typeUrl": "TypeUrl",
 					"value":   []byte("somefunnyjokeaboutdinosaurs"),
 				},
@@ -220,7 +220,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: nil},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),
@@ -228,7 +228,7 @@ var _ = Describe("Objects", func() {
 			map[string]*objects.Value{
 				"Key": {Value: &objects.Value_AnyValue{AnyValue: nil}},
 			},
-			map[string]interface{}{
+			map[string]any{
 				"Key": nil,
 			},
 		),

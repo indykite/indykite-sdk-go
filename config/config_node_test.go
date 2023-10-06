@@ -65,7 +65,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not read request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -74,7 +73,6 @@ var _ = Describe("ConfigNode", func() {
 			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("ReadSuccessReadId", func() {
@@ -231,7 +229,6 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("ReadString", func() {
-
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			resp := configNodeRequest.String()
 
@@ -257,7 +254,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(configNodeRequest.String()).To(Not(BeNil()))
 			Expect(configNodeRequest.String()).To(ContainSubstring("Invalid empty request"))
 		})
-
 	})
 
 	Describe("ConfigNodeCreate", func() {
@@ -271,7 +267,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not create request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("CreateReadId", func() {
@@ -628,17 +623,14 @@ var _ = Describe("ConfigNode", func() {
 			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("SubmitterSecret: value length must be at least 36 runes")))
-
 		})
 
 		It("CreateNonValidName", func() {
-
 			configNodeRequest, err := config.NewCreate("1234")
 			Expect(err).ToNot(Succeed())
 			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("invalid nil or not create request")))
-
 		})
 
 		It("CreateError", func() {
@@ -681,7 +673,6 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("CreateString", func() {
-
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
 			Ω(err).To(Succeed())
 			configNodeRequest.ForLocation("gid:like-real-customer-id")
@@ -705,7 +696,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not update request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("UpdateReadId", func() {
@@ -721,9 +711,9 @@ var _ = Describe("ConfigNode", func() {
 			}
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.EmptyDescription("Description")
+			configNodeRequest.EmptyDescription()
 			configNodeRequest.WithDescription("Description")
 			configNodeRequest.WithPreCondition("qwert1234")
 			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
@@ -767,7 +757,7 @@ var _ = Describe("ConfigNode", func() {
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithOAuth2ClientConfig(configuration)
 
@@ -811,7 +801,7 @@ var _ = Describe("ConfigNode", func() {
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithWebauthnProviderConfig(configuration)
 
@@ -871,7 +861,7 @@ var _ = Describe("ConfigNode", func() {
 			}
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithEmailNotificationConfig(configuration)
 
@@ -914,7 +904,7 @@ var _ = Describe("ConfigNode", func() {
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithAuthFlowConfig(configuration)
 
@@ -959,7 +949,7 @@ var _ = Describe("ConfigNode", func() {
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithAuthorizationPolicyConfig(configuration)
 
@@ -1006,7 +996,7 @@ var _ = Describe("ConfigNode", func() {
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName("Like real ConfigNode Name")
+			configNodeRequest.EmptyDisplayName()
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
 			configNodeRequest.WithKnowledgeGraphSchemaConfig(configuration)
 
@@ -1082,7 +1072,6 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("UpdateString", func() {
-
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
 			configNodeRequest.ForLocation("gid:like-real-customer-id")
@@ -1093,7 +1082,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(err).To(Succeed())
 			Expect(configNodeRequest).To(ContainSubstring("Update gid:like-real-config-node-id configuration"))
 		})
-
 	})
 
 	Describe("ConfigNodeDelete", func() {
@@ -1107,7 +1095,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not delete request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -1116,7 +1103,6 @@ var _ = Describe("ConfigNode", func() {
 			resp, err := configClient.DeleteConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("Delete", func() {
@@ -1162,7 +1148,6 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("DeleteString", func() {
-
 			configNodeRequest, err := config.NewDelete("gid:like-real-config-node-id")
 			resp := configNodeRequest.String()
 
@@ -1183,7 +1168,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not read request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -1192,7 +1176,6 @@ var _ = Describe("ConfigNode", func() {
 			resp, err := configClient.ListConfigNodeVersions(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("value length must be between 22 and 254 runes, inclusive")))
-
 		})
 
 		It("ListVersionsSuccess", func() {
@@ -1254,8 +1237,6 @@ var _ = Describe("ConfigNode", func() {
 			resp, err := configClient.ListConfigNodeVersions(ctx, configNodeRequest)
 			Expect(err).ToNot(Succeed())
 			Expect(resp).To(BeNil())
-
 		})
 	})
-
 })

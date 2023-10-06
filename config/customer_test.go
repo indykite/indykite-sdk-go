@@ -62,7 +62,6 @@ var _ = Describe("Customer", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {

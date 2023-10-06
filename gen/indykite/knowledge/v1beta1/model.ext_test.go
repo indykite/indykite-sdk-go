@@ -24,7 +24,6 @@ import (
 )
 
 var _ = Describe("Node test", func() {
-
 	testNode := &knowledgev1beta1.Node{
 		Properties: []*knowledgev1beta1.Property{
 			{
@@ -57,5 +56,4 @@ var _ = Describe("Node test", func() {
 		Expect(ok).To(BeFalse())
 		Expect(v).To(BeNil())
 	})
-
 })

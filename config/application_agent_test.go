@@ -64,7 +64,6 @@ var _ = Describe("ApplicationAgent", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -74,7 +73,6 @@ var _ = Describe("ApplicationAgent", func() {
 			resp, err := configClient.ReadApplicationAgent(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		DescribeTable("ReadSuccess",
@@ -173,7 +171,6 @@ var _ = Describe("ApplicationAgent", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Create", func() {
@@ -247,7 +244,6 @@ var _ = Describe("ApplicationAgent", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Update", func() {
@@ -323,7 +319,6 @@ var _ = Describe("ApplicationAgent", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("MatchName", func() {
@@ -366,7 +361,6 @@ var _ = Describe("ApplicationAgent", func() {
 			resp, err = stream.Recv()
 			Ω(err).To(Equal(io.EOF))
 			Ω(resp).To(BeNil())
-
 		})
 
 		It("MatchNameError", func() {
@@ -410,7 +404,6 @@ var _ = Describe("ApplicationAgent", func() {
 				"Match: value must contain at least 1 item",
 			),
 		)
-
 	})
 
 	Describe("ApplicationAgentDelete", func() {
@@ -424,7 +417,6 @@ var _ = Describe("ApplicationAgent", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-
 		})
 
 		It("Wrong id should return a validation error in the response", func() {
@@ -436,7 +428,6 @@ var _ = Describe("ApplicationAgent", func() {
 			resp, err := configClient.DeleteApplicationAgent(ctx, req)
 			Expect(resp).To(BeNil())
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
-
 		})
 
 		It("Delete", func() {
