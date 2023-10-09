@@ -18,7 +18,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"

@@ -17,7 +17,7 @@ package config_test
 import (
 	"context"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 
 	"github.com/indykite/indykite-sdk-go/config"
 	configmock "github.com/indykite/indykite-sdk-go/test/config/v1beta1"

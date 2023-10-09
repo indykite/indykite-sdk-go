@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
