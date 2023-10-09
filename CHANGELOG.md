@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.17.1](https://github.com/indykite/indykite-sdk-go/compare/v0.17.0...v0.17.1) (2023-10-09)
+
+
+### Bug Fixes
+
+* rename id to externalId ([a097751](https://github.com/indykite/indykite-sdk-go/commit/a09775149535b7e714ae773903eb878b3de7c95e))
+
+
+### Miscellaneous Chores
+
+* **deps:** replace mock with uber fork and upgrade ([e74cb83](https://github.com/indykite/indykite-sdk-go/commit/e74cb834fe8f3f3a0d96a05ca1d5c3a13e836d10))
+* **deps:** upgrade everything ([f87ccc9](https://github.com/indykite/indykite-sdk-go/commit/f87ccc9e149b3bd9b7024b5b7743c2684b1646da))
+
 ## [0.17.0](https://github.com/indykite/indykite-sdk-go/compare/v0.16.0...v0.17.0) (2023-09-22)
 
 
