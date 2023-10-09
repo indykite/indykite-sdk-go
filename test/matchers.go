@@ -18,12 +18,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/golang/mock/gomock"
 	"github.com/onsi/gomega"
 	"github.com/onsi/gomega/format"
 	"github.com/onsi/gomega/gstruct"
 	"github.com/onsi/gomega/matchers"
 	"github.com/onsi/gomega/types"
+	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"

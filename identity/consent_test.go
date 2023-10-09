@@ -17,7 +17,7 @@ package identity_test
 import (
 	"context"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 

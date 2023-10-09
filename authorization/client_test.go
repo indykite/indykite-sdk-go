@@ -17,7 +17,7 @@ package authorization_test
 import (
 	"context"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 
 	"github.com/indykite/indykite-sdk-go/authorization"
 	authorizationmock "github.com/indykite/indykite-sdk-go/test/authorization/v1beta1"

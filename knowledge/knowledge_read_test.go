@@ -17,7 +17,7 @@ package knowledge_test
 import (
 	"context"
 
-	"github.com/golang/mock/gomock"
+	"go.uber.org/mock/gomock"
 
 	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
