@@ -1,5 +1,6 @@
 module.exports = {
   extends: ["@commitlint/config-conventional"],
+  defaultIgnores: false,
   rules: {
     //   0 - Disabled, 1 - Warning, 2 - Error
     "body-max-line-length": [2, "always", 72],

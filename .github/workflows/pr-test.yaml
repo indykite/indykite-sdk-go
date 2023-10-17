@@ -12,6 +12,12 @@ on:
 concurrency:
     group: pr-${{ github.ref }}
     cancel-in-progress: true
+
+env:
+    INDYKITE_APPLICATION_CREDENTIALS: ${{ secrets.APP_AGENT_CREDENTIALS }}
+    INDYKITE_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
+    TENANT_ID: ${{ secrets.TENANT_ID }}
+
 jobs:
     test:
         name: Test
