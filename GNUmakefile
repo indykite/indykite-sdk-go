@@ -14,11 +14,11 @@ gci:
 
 lint:
 	@echo "==> Checking source code against linters..."
-	golangci-lint run --timeout 2m0s ./...
+	golangci-lint run --timeout 3m0s ./...
 
 lint_fix:
 	@echo "==> Fixing source code against linters..."
-	@golangci-lint run --fix --timeout 2m0s ./...
+	@golangci-lint run --fix --timeout 3m0s ./...
 
 fieldalignment:
 	@echo "==> Analyzer structs and rearranged to use less memory with fieldalignment..."

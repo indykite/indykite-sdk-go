@@ -8,10 +8,8 @@ require (
 	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.3.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
-	github.com/leodido/go-urn v1.2.4
 	github.com/lestrrat-go/jwx/v2 v2.0.13
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/multiformats/go-base36 v0.2.0
 	github.com/onsi/ginkgo/v2 v2.12.1
 	github.com/onsi/gomega v1.28.0
 	github.com/pborman/uuid v1.2.1
