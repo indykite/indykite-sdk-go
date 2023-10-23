@@ -22,52 +22,7 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/errors"
 	identitypb "github.com/indykite/indykite-sdk-go/gen/indykite/identity/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
-
-// StartEmailVerification function initiates the flow where Indykite systems sends a
-// notification to DigitalTwin with a link to verify the control over
-// the notification channel (email only for now).
-//
-// This is a protected operation and it can be accessed only with valid agent credentials!
-func (c *Client) StartEmailVerification(ctx context.Context, digitalTwin *identitypb.DigitalTwin, email string,
-	attributes *objects.MapValue, opts ...grpc.CallOption) error {
-	req := &identitypb.StartDigitalTwinEmailVerificationRequest{
-		DigitalTwin: digitalTwin,
-		Email:       email,
-		Attributes:  attributes,
-	}
-	if err := req.Validate(); err != nil {
-		return errors.NewInvalidArgumentErrorWithCause(err, "unable to call StartEmailVerification")
-	}
-
-	ctx = insertMetadata(ctx, c.xMetadata)
-	_, err := c.client.StartDigitalTwinEmailVerification(ctx, req, opts...)
-
-	return errors.FromError(err)
-}
-
-// VerifyDigitalTwinEmail function confirms to IndyKite system that the message from
-// StartDigitalTwinEmailVerification function was sent and user visited the link.
-//
-// This is a protected operation and it can be accessed only with valid agent credentials!
-func (c *Client) VerifyDigitalTwinEmail(ctx context.Context,
-	token string, opts ...grpc.CallOption) (*identitypb.DigitalTwin, error) {
-	req := &identitypb.VerifyDigitalTwinEmailRequest{
-		Token: token,
-	}
-	if err := req.Validate(); err != nil {
-		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call VerifyDigitalTwinEmail")
-	}
-
-	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.VerifyDigitalTwinEmail(ctx, req, opts...)
-
-	if s := errors.FromError(err); s != nil {
-		return nil, s
-	}
-	return resp.GetDigitalTwin(), nil
-}
 
 // IntrospectToken function validates the token and returns information about it.
 //
@@ -90,56 +45,6 @@ func (c *Client) IntrospectToken(ctx context.Context,
 	default:
 		return nil, s
 	}
-}
-
-// ChangeMyPassword change password of DigitalTwin from bearer token.
-func (c *Client) ChangeMyPassword(ctx context.Context,
-	token string,
-	newPassword string,
-	opts ...grpc.CallOption,
-) error {
-	if err := verifyTokenFormat(token); err != nil {
-		return err
-	}
-	if len(newPassword) <= 4 {
-		return errors.NewInvalidArgumentError("password is too short")
-	}
-
-	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.ChangePassword(ctx, &identitypb.ChangePasswordRequest{
-		Uid:      &identitypb.ChangePasswordRequest_Token{Token: token},
-		Password: newPassword,
-	}, opts...)
-
-	if s := errors.FromError(err); s != nil {
-		return s
-	}
-	if resp.Error != nil {
-		return errors.NewInvalidArgumentError(resp.Error.Code)
-	}
-	return nil
-}
-
-// ChangePasswordOfDigitalTwin change password of passed DigitalTwin.
-func (c *Client) ChangePasswordOfDigitalTwin(ctx context.Context,
-	digitalTwin *identitypb.DigitalTwin,
-	newPassword string,
-	opts ...grpc.CallOption,
-) (*identitypb.ChangePasswordResponse, error) {
-	if len(newPassword) <= 4 {
-		return nil, errors.NewInvalidArgumentError("password is too short")
-	}
-
-	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.ChangePassword(ctx, &identitypb.ChangePasswordRequest{
-		Uid:      &identitypb.ChangePasswordRequest_DigitalTwin{DigitalTwin: digitalTwin},
-		Password: newPassword,
-	}, opts...)
-
-	if s := errors.FromError(err); s != nil {
-		return nil, s
-	}
-	return resp, nil
 }
 
 func (c *Client) getDigitalTwinWithProperties(ctx context.Context,
