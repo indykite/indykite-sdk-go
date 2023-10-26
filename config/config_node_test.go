@@ -75,49 +75,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(err).To(MatchError(ContainSubstring("Id: value length must be between 22")))
 		})
 
-		It("ReadSuccessReadId", func() {
-			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
-			beResp := &configpb.ReadConfigNodeResponse{
-				ConfigNode: &configpb.ConfigNode{
-					Id:          "gid:like-real-config-node-id",
-					Name:        "like-real-config-node-name",
-					DisplayName: "Like Real Config-Node Name",
-					CreatedBy:   "creator",
-					CreateTime:  timestamppb.Now(),
-					CustomerId:  "gid:like-real-customer-id",
-					AppSpaceId:  "gid:like-real-app-space-id",
-					TenantId:    "gid:like-real-tenant-id",
-					Etag:        "123qwe",
-					Config: &configpb.ConfigNode_ReadidProviderConfig{
-						ReadidProviderConfig: &configpb.ReadIDProviderConfig{
-							SubmitterSecret:   "submitter-secret-12345678901234567890",
-							ManagerSecret:     "manager-secret-123456789012345678901234",
-							SubmitterPassword: "submitter-password",
-							HostAddress:       "<https://saas-preprod.readid.com>",
-							PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-								"Propertymap": {Expression: "property", Enabled: true},
-							},
-							UniquePropertyName: "uniquepropertyname",
-						},
-					},
-				},
-			}
-			mockClient.EXPECT().
-				ReadConfigNode(
-					gomock.Any(),
-					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-						"Id": Equal("gid:like-real-config-node-id"),
-					}))),
-					gomock.Any(),
-				).Return(beResp, nil)
-
-			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("ReadSuccessAuthorizationPolicy", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -211,7 +168,7 @@ var _ = Describe("ConfigNode", func() {
 					Id:     "gid:like-real-config-node-id",
 					Name:   "like-real-config-node-name",
 					Etag:   "123qwe",
-					Config: &configpb.ConfigNode_ReadidProviderConfig{},
+					Config: &configpb.ConfigNode_AuthFlowConfig{},
 				},
 			}
 			mockClient.EXPECT().
@@ -267,54 +224,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not create request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-		})
-
-		It("CreateReadId", func() {
-			configuration := &configpb.ReadIDProviderConfig{
-				SubmitterSecret:   "submitter-secret-12345678901234567890",
-				ManagerSecret:     "manager-secret-123456789012345678901234",
-				SubmitterPassword: "submitter-password",
-				HostAddress:       "<https://saas-preprod.readid.com>",
-				PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-					"Propertymap": {Expression: "property", Enabled: true},
-				},
-				UniquePropertyName: "uniquepropertyname",
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithDescription("Description ConfigNode")
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
-			configNodeRequest.WithReadidProviderConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ReadidProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SubmitterSecret": Equal("submitter-secret-12345678901234567890"),
-							"ManagerSecret":   Equal("manager-secret-123456789012345678901234"),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("CreateOAuth2Client", func() {
@@ -605,24 +514,22 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("CreateNonValid", func() {
-			configuration := &configpb.ReadIDProviderConfig{
-				SubmitterSecret:   "submitter-secret",
-				ManagerSecret:     "manager-secret-123456789012345678901234",
-				SubmitterPassword: "submitter-password",
-				HostAddress:       "<https://saas-preprod.readid.com>",
-				PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-					"Propertymap": {Expression: "property", Enabled: true},
-				},
-				UniquePropertyName: "uniquepropertyname",
+			configuration := &configpb.OAuth2ClientConfig{
+				ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
+				ClientId:      "client-id-123456789012345678901234",
+				ClientSecret:  "sec",
+				DefaultScopes: []string{"openid", "profile", "email"},
+				AllowedScopes: []string{"openid", "profile", "email"},
 			}
+
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
 			Ω(err).To(Succeed())
 			configNodeRequest.ForLocation("gid:like-real-customer-id")
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithReadidProviderConfig(configuration)
+			configNodeRequest.WithOAuth2ClientConfig(configuration)
 			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("SubmitterSecret: value length must be at least 36 runes")))
+			Expect(err).To(MatchError(ContainSubstring("ClientSecret: value length must be at least 8 runes")))
 		})
 
 		It("CreateNonValidName", func() {
@@ -634,21 +541,21 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("CreateError", func() {
-			configuration := &configpb.ReadIDProviderConfig{
-				SubmitterSecret:   "submitter-secret-12345678901234567890",
-				ManagerSecret:     "manager-secret-123456789012345678901234",
-				SubmitterPassword: "submitter-password",
-				HostAddress:       "<https://saas-preprod.readid.com>",
-				PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-					"Propertymap": {Expression: "property", Enabled: true},
-				},
-				UniquePropertyName: "uniquepropertyname",
+			jsonInput := `{
+				"person1": 10,
+				"person2": 20,
+				"person3": 20
+			}`
+			configuration := &configpb.AuthorizationPolicyConfig{
+				Policy: jsonInput,
+				Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+				Tags:   []string{},
 			}
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
 			Ω(err).To(Succeed())
 			configNodeRequest.ForLocation("gid:like-real-customer-id")
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithReadidProviderConfig(configuration)
+			configNodeRequest.WithAuthorizationPolicyConfig(configuration)
 
 			beResp := &configpb.CreateConfigNodeResponse{}
 
@@ -658,9 +565,9 @@ var _ = Describe("ConfigNode", func() {
 					"Name":     Equal("like-real-config-node-name"),
 					"Location": Equal("gid:like-real-customer-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ReadidProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SubmitterSecret": Equal("submitter-secret-12345678901234567890"),
-							"ManagerSecret":   Equal("manager-secret-123456789012345678901234"),
+						"AuthorizationPolicyConfig": PointTo(MatchFields(IgnoreExtras, Fields{
+							"Policy": Equal(jsonInput),
+							"Status": Equal(configpb.AuthorizationPolicyConfig_STATUS_ACTIVE),
 						})),
 					})),
 				}))),
@@ -696,54 +603,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not update request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-		})
-
-		It("UpdateReadId", func() {
-			configuration := &configpb.ReadIDProviderConfig{
-				SubmitterSecret:   "submitter-secret-12345678901234567890",
-				ManagerSecret:     "manager-secret-123456789012345678901234",
-				SubmitterPassword: "submitter-password",
-				HostAddress:       "<https://saas-preprod.readid.com>",
-				PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-					"Propertymap": {Expression: "property", Enabled: true},
-				},
-				UniquePropertyName: "uniquepropertyname",
-			}
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.EmptyDescription()
-			configNodeRequest.WithDescription("Description")
-			configNodeRequest.WithPreCondition("qwert1234")
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
-			configNodeRequest.WithReadidProviderConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ReadidProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SubmitterSecret": Equal("submitter-secret-12345678901234567890"),
-							"ManagerSecret":   Equal("manager-secret-123456789012345678901234"),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("UpdateOAuth2Client", func() {
@@ -1035,20 +894,20 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("UpdateError", func() {
-			configuration := &configpb.ReadIDProviderConfig{
-				SubmitterSecret:   "submitter-secret-12345678901234567890",
-				ManagerSecret:     "manager-secret-123456789012345678901234",
-				SubmitterPassword: "submitter-password",
-				HostAddress:       "<https://saas-preprod.readid.com>",
-				PropertyMap: map[string]*configpb.ReadIDProviderConfig_Property{
-					"Propertymap": {Expression: "property", Enabled: true},
-				},
-				UniquePropertyName: "uniquepropertyname",
+			jsonInput := `{
+				"person1": 10,
+				"person2": 20,
+				"person3": 20
+			}`
+			configuration := &configpb.AuthorizationPolicyConfig{
+				Policy: jsonInput,
+				Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+				Tags:   []string{},
 			}
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithReadidProviderConfig(configuration)
+			configNodeRequest.WithAuthorizationPolicyConfig(configuration)
 
 			beResp := &configpb.UpdateConfigNodeResponse{}
 
@@ -1057,9 +916,9 @@ var _ = Describe("ConfigNode", func() {
 				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
 					"Id": Equal("gid:like-real-config-node-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ReadidProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SubmitterSecret": Equal("submitter-secret-12345678901234567890"),
-							"ManagerSecret":   Equal("manager-secret-123456789012345678901234"),
+						"AuthorizationPolicyConfig": PointTo(MatchFields(IgnoreExtras, Fields{
+							"Policy": Equal(jsonInput),
+							"Status": Equal(configpb.AuthorizationPolicyConfig_STATUS_ACTIVE),
 						})),
 					})),
 				}))),
