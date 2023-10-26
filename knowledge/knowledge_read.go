@@ -16,13 +16,18 @@ package knowledge
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"strings"
 
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
 	"github.com/indykite/indykite-sdk-go/errors"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
 )
@@ -253,6 +258,56 @@ func parseMultipleNodesFromPaths(paths []*knowledgepb.Path) ([]*knowledgepb.Node
 		nodes[i] = p.GetNodes()[0]
 	}
 	return nodes, nil
+}
+
+func GenerateRandomString(length int) string {
+	b := make([]byte, length)
+	_, err := rand.Read(b)
+	if err != nil {
+		panic(err)
+	}
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+// NodesRecordsWithTypeNode is a helper function that get all nodes of specific type either DigitalTwin
+// or Resource and transform them into records.
+func (c *Client) NodesRecordsWithTypeNode(
+	ctx context.Context,
+	nodeType string,
+	opts ...grpc.CallOption,
+) ([]*ingestpb.Record, error) {
+	ctx = insertMetadata(ctx, c.xMetadata)
+	path := fmt.Sprintf("(:%s)", nodeType)
+	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
+		Path:      path,
+		Operation: knowledgepb.Operation_OPERATION_READ,
+	}, opts...)
+	if err != nil {
+		return nil, err
+	}
+	nodes, err := parseMultipleNodesFromPaths(resp.GetPaths())
+	if err != nil {
+		return nil, err
+	}
+	records := []*ingestpb.Record{}
+	for _, node := range nodes {
+		caser := cases.Title(language.English)
+		record := &ingestpb.Record{
+			Id: GenerateRandomString(12),
+			Operation: &ingestpb.Record_Delete{
+				Delete: &ingestpb.DeleteData{
+					Data: &ingestpb.DeleteData_Node{
+						Node: &ingestpb.NodeMatch{
+							ExternalId: node.ExternalId,
+							Type:       caser.String(node.Type),
+						},
+					},
+				},
+			}, // lint:file-ignore U1000 Ignore report
+		}
+		records = append(records, record)
+	}
+	return records, nil
 }
 
 // Identifier is the combination of ExternalID and Type

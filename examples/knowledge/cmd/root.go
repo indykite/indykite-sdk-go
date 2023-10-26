@@ -28,13 +28,15 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/ingest"
 	"github.com/indykite/indykite-sdk-go/knowledge"
 )
 
 var (
-	cfgFile string
-	client  *knowledge.Client
-	jsonp   = protojson.MarshalOptions{
+	cfgFile      string
+	client       *knowledge.Client
+	clientIngest *ingest.Client
+	jsonp        = protojson.MarshalOptions{
 		Multiline:       true,
 		EmitUnpopulated: true,
 	}
@@ -57,6 +59,9 @@ func Execute() {
 	defer func() {
 		if client != nil {
 			_ = client.Close()
+		}
+		if clientIngest != nil {
+			_ = clientIngest.Close()
 		}
 	}()
 }
@@ -99,6 +104,13 @@ func initConfig() {
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Identity Knowledge Client: %v", err))
+	}
+	clientIngest, err = ingest.NewClient(context.Background(),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithRetryOptions(retry.Disable()),
+	)
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite Ingest Client: %v", err))
 	}
 }
 
