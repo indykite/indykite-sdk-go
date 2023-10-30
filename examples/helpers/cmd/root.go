@@ -28,12 +28,14 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/helpers"
+	"github.com/indykite/indykite-sdk-go/ingest"
 	"github.com/indykite/indykite-sdk-go/knowledge"
 )
 
 var (
 	cfgFile string
-	client  *knowledge.Client
+	client  helpers.Client
 	jsonp   = protojson.MarshalOptions{
 		Multiline:       true,
 		EmitUnpopulated: true,
@@ -54,11 +56,6 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	defer func() {
-		if client != nil {
-			_ = client.Close()
-		}
-	}()
 }
 
 func init() {
@@ -93,12 +90,19 @@ func initConfig() {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
 
-	client, err = knowledge.NewClient(context.Background(),
+	client.ClientKnowledge, err = knowledge.NewClient(context.Background(),
 		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
 		grpc.WithRetryOptions(retry.Disable()),
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Identity Knowledge Client: %v", err))
+	}
+	client.ClientIngest, err = ingest.NewClient(context.Background(),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithRetryOptions(retry.Disable()),
+	)
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite Ingest Client: %v", err))
 	}
 }
 

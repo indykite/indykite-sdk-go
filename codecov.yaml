@@ -9,3 +9,10 @@ coverage:
             default:
                 target: 50%
                 threshold: 40%
+ignore:
+    - examples
+    - gen
+    - errors
+    - helpers
+    - doc
+    - test

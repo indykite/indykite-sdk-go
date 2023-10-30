@@ -764,36 +764,6 @@ var _ = Describe("Identity Knowledge API", func() {
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(1))
 		})
-
-		It("NodesRecordsWithTypeNode - success", func() {
-			mockCtrl := gomock.NewController(GinkgoT())
-			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
-
-			client, err := knowledge.NewTestClient(mockClient)
-			Ω(err).To(Succeed())
-
-			p := "(:Person)"
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation: knowledgepb.Operation_OPERATION_READ,
-				Path:      p,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
-					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-							},
-						},
-					},
-				},
-			}, nil)
-
-			records, err := client.NodesRecordsWithTypeNode(context.Background(), "Person")
-			Expect(err).To(Succeed())
-			Expect(records).To(HaveLen(1))
-		})
 	})
 
 	Context("List by property", func() {

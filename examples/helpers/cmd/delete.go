@@ -28,23 +28,18 @@ var deleteCmd = &cobra.Command{
 	Long:  `Delete nodes in the IndyKite Knowledge API`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		records, err := client.NodesRecordsWithTypeNode(context.Background(), "DigitalTwin")
+		responses, err := client.DeleteNodesWithTypeNode(context.Background(), "DigitalTwin")
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Println("DigitalTwin: " + err.Error())
 		}
-		records2, err := client.NodesRecordsWithTypeNode(context.Background(), "Resource")
+		responses2, err := client.DeleteNodesWithTypeNode(context.Background(), "Resource")
 		if err != nil {
-			fmt.Println(err.Error())
+			fmt.Println("Resource: " + err.Error())
 		}
-		if len(records2) > 0 {
-			records = append(records, records2...)
+		if len(responses2) > 0 {
+			responses = append(responses, responses2...)
 		}
-		fmt.Println(records)
-		resp, err := clientIngest.StreamRecords(records)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		for _, response := range resp {
+		for _, response := range responses {
 			fmt.Println(jsonp.Format(response))
 		}
 	},
