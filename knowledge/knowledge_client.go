@@ -79,7 +79,6 @@ func insertMetadata(ctx context.Context, mds ...metadata.MD) context.Context {
 	}
 	return metadata.NewOutgoingContext(ctx, out)
 }
-
 func defaultClientOptions() []api.ClientOption {
 	return []api.ClientOption{
 		api.WithGRPCDialOption(grpc.WithDisableServiceConfig()),

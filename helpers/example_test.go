@@ -1,4 +1,4 @@
-// Copyright (c) 2023 IndyKite
+// Copyright (c) 2022 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,3 @@
 // limitations under the License.
 
 package helpers_test
-
-import (
-	"testing"
-
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
-)
-
-func TestIdentityKnowledge(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Helpers Suite")
-}

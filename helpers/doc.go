@@ -13,6 +13,6 @@
 // limitations under the License.
 
 /*
-Package helpers implements the helpers using different API Clients.
+Package helpers implements the helpers.
 */
 package helpers

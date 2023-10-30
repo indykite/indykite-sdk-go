@@ -16,8 +16,6 @@ package knowledge
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
 	"strings"
 
@@ -255,15 +253,6 @@ func parseMultipleNodesFromPaths(paths []*knowledgepb.Path) ([]*knowledgepb.Node
 		nodes[i] = p.GetNodes()[0]
 	}
 	return nodes, nil
-}
-
-func GenerateRandomString(length int) string {
-	b := make([]byte, length)
-	_, err := rand.Read(b)
-	if err != nil {
-		panic(err)
-	}
-	return base64.StdEncoding.EncodeToString(b)
 }
 
 // Identifier is the combination of ExternalID and Type
