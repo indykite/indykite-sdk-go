@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.18.0](https://github.com/indykite/indykite-sdk-go/compare/v0.17.1...v0.18.0) (2023-11-06)
+
+
+### Features
+
+* add delete all KG nodes example ([e66b82d](https://github.com/indykite/indykite-sdk-go/commit/e66b82d543fa99996e60726f876faf18df77b701))
+* add optional id field to digital twin ingest ([c79c0be](https://github.com/indykite/indykite-sdk-go/commit/c79c0be4cb4f2114a13a13cbd14a0af0a3cf4d12))
+* remove outdated identity methods ([5ee2989](https://github.com/indykite/indykite-sdk-go/commit/5ee2989b37852e68009ac8e10b8a1ee6635bfed0))
+* remove readid config node ([8585643](https://github.com/indykite/indykite-sdk-go/commit/85856434d659be2b2db9b578b88b33bbea1611f6))
+
+
+### Styles
+
+* improve linter rules ([6ed985d](https://github.com/indykite/indykite-sdk-go/commit/6ed985d1daccad936ebe7d0c92e74dc56455a935))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([8954808](https://github.com/indykite/indykite-sdk-go/commit/8954808124a488d2fc4b4ca99023ef2a9b941e61))
+
 ## [0.17.1](https://github.com/indykite/indykite-sdk-go/compare/v0.17.0...v0.17.1) (2023-10-09)
 
 
