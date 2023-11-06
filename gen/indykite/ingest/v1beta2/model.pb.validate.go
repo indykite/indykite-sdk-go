@@ -946,6 +946,32 @@ func (m *DigitalTwin) validate(all bool) error {
 
 	}
 
+	if m.GetId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetId()); l < 22 || l > 256 {
+			err := DigitalTwinValidationError{
+				field:  "Id",
+				reason: "value length must be between 22 and 256 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !strings.HasPrefix(m.GetId(), "gid:") {
+			err := DigitalTwinValidationError{
+				field:  "Id",
+				reason: "value does not have prefix \"gid:\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return DigitalTwinMultiError(errors)
 	}
