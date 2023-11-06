@@ -223,7 +223,8 @@ var _ = Describe("Ingestion", func() {
 				recordb,
 				retry.WithMax(2),
 			)
-			Expect(err).To(MatchError(ContainSubstring("server was unable to complete the request")))
+			Expect(err).To(MatchError(ContainSubstring(
+				"a Digital Twin node with this id, externalId and type already exists")))
 			Expect(resp2).To(BeNil())
 
 			delRecord := integration.DeleteRecord(externalID, "Individual")
