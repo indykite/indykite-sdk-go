@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.19.0](https://github.com/indykite/indykite-sdk-go/compare/v0.18.0...v0.19.0) (2023-11-21)
+
+
+### Features
+
+* add build tags to integration tests ([1844072](https://github.com/indykite/indykite-sdk-go/commit/1844072685048959e82f3f5fd00cac1f756217bd))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([dbfc56c](https://github.com/indykite/indykite-sdk-go/commit/dbfc56c50556ce500763b3725cf8e5d58c46c642))
+
 ## [0.18.0](https://github.com/indykite/indykite-sdk-go/compare/v0.17.1...v0.18.0) (2023-11-06)
 
 
