@@ -6,27 +6,27 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.2
 	github.com/ghodss/yaml v1.0.0
 	github.com/golang/protobuf v1.5.3
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.4.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
-	github.com/lestrrat-go/jwx/v2 v2.0.14
+	github.com/lestrrat-go/jwx/v2 v2.0.17
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.13.0
-	github.com/onsi/gomega v1.28.0
+	github.com/onsi/ginkgo/v2 v2.13.1
+	github.com/onsi/gomega v1.30.0
 	github.com/pborman/uuid v1.2.1
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
 	go.uber.org/mock v0.3.0
-	golang.org/x/oauth2 v0.13.0
+	golang.org/x/oauth2 v0.14.0
 	golang.org/x/text v0.14.0
-	google.golang.org/genproto v0.0.0-20231016165738-49dd2c1f3d0b
-	google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b
+	google.golang.org/genproto v0.0.0-20231120223509-83a465c0220f
+	google.golang.org/genproto/googleapis/api v0.0.0-20231120223509-83a465c0220f
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
 )
 
 require (
-	cloud.google.com/go/compute v1.23.1 // indirect
+	cloud.google.com/go/compute v1.23.3 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.2.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -65,7 +65,7 @@ require (
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/net v0.18.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect
-	golang.org/x/tools v0.13.0 // indirect
+	golang.org/x/tools v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
