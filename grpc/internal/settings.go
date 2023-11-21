@@ -25,8 +25,7 @@ import (
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
-	"go.opencensus.io/plugin/ocgrpc"
-	grpcotel "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -160,16 +159,26 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 }
 
 func addInterceptors(opts []grpc.DialOption, settings *DialSettings) []grpc.DialOption {
-	var retOpts []retry.CallOption
+	var (
+		retOpts []retry.CallOption
+		si      []grpc.StreamClientInterceptor
+		ui      []grpc.UnaryClientInterceptor
+	)
+
 	if len(settings.RetryOpts) > 0 {
 		retOpts = settings.RetryOpts
+		si = append(si, retry.StreamClientInterceptor(settings.RetryOpts...))
+		ui = append(ui, retry.UnaryClientInterceptor(settings.RetryOpts...))
 	} else {
+		// disable by default - each call can enable if needed
 		retOpts = []retry.CallOption{
 			retry.WithBackoff(retry.BackoffLinear(100 * time.Millisecond)),
 			// retry.WithBackoff(retry.BackoffExponential(100 * time.Millisecond)),
 			retry.WithCodes(codes.ResourceExhausted, codes.Unavailable),
 			retry.WithMax(12),
 		}
+		si = append(si, retry.StreamClientInterceptor())
+		ui = append(ui, retry.UnaryClientInterceptor())
 	}
 
 	if settings.TelemetryDisabled {
@@ -177,13 +186,9 @@ func addInterceptors(opts []grpc.DialOption, settings *DialSettings) []grpc.Dial
 			grpc.WithChainStreamInterceptor(retry.StreamClientInterceptor(retOpts...)),
 			grpc.WithChainUnaryInterceptor(retry.UnaryClientInterceptor(retOpts...)))
 	}
+
 	return append(opts,
-		grpc.WithStatsHandler(&ocgrpc.ClientHandler{}),
-		grpc.WithChainStreamInterceptor(
-			grpcotel.StreamClientInterceptor(),
-			retry.StreamClientInterceptor(retOpts...)),
-		grpc.WithChainUnaryInterceptor(
-			grpcotel.UnaryClientInterceptor(),
-			retry.UnaryClientInterceptor(retOpts...),
-		))
+		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
+		grpc.WithChainStreamInterceptor(si...),
+		grpc.WithChainUnaryInterceptor(ui...))
 }
