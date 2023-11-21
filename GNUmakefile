@@ -39,6 +39,9 @@ test:
 	cat coverage.out.tmp | grep -v "pb.go\|pb.validate.go\|generated.go\|indykite-sdk-go/test/\|main.go\|indykite-sdk-go/examples/" > coverage.out
 	rm coverage.out.tmp
 
+integration:
+	go clean -testcache && go test --tags=integration ./...
+
 cover: test
 	@echo "==> generate test coverage..."
 	go tool cover -html=coverage.out
