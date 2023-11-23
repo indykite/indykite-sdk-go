@@ -20,7 +20,7 @@ env:
 
 jobs:
     test:
-        name: Test
+        name: Unit Test
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
@@ -31,7 +31,7 @@ jobs:
               with:
                   go-version-file: go.mod
 
-            - name: Run Unit tests.
+            - name: Run Unit tests
               run: |
                   make test
             - name: Upload coverage to Codecov
@@ -42,6 +42,20 @@ jobs:
                   # Notify us when failed, so devs are not waiting for Codecov report when it will never come.
                   # Because Codecov report is required to be able to merge, we have to run again the whole test anyway.
                   fail_ci_if_error: true
-            - name: Run Integration tests.
+
+    integration-test:
+        if: github.event.pull_request && github.event.pull_request.draft == false
+        name: Integration Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version-file: go.mod
+
+            - name: Run Integration tests
               run: |
                   make integration
