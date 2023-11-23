@@ -18,7 +18,8 @@ import (
 	"encoding/json"
 	"os"
 
-	. "github.com/indykite/indykite-sdk-go/grpc/config"
+	"github.com/indykite/indykite-sdk-go/grpc/config"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gstruct"
@@ -26,13 +27,13 @@ import (
 
 var _ = Describe("UnmarshalCredentialConfig", func() {
 	It("Empty input returns nils without errors", func() {
-		config, err := UnmarshalCredentialConfig([]byte(""))
+		config, err := config.UnmarshalCredentialConfig([]byte(""))
 		Expect(config).To(BeNil())
 		Expect(err).To(Succeed())
 	})
 
 	It("Invalid json", func() {
-		config, err := UnmarshalCredentialConfig([]byte("{invalid}"))
+		config, err := config.UnmarshalCredentialConfig([]byte("{invalid}"))
 		Expect(config).To(BeNil())
 		Expect(err).To(HaveOccurred())
 	})
@@ -49,7 +50,7 @@ var _ = Describe("UnmarshalCredentialConfig", func() {
 			err = json.Unmarshal(data, &jsonData)
 			Expect(err).To(Succeed())
 
-			config, err := UnmarshalCredentialConfig(data)
+			config, err := config.UnmarshalCredentialConfig(data)
 
 			Expect(err).To(Succeed())
 			Expect(config).To(PointTo(MatchFields(IgnoreExtras, Fields{

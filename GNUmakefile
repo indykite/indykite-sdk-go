@@ -29,7 +29,7 @@ install-tools:
 	@go install github.com/bufbuild/buf/cmd/buf@latest
 	@go install github.com/daixiang0/gci@latest
 	@go install go.uber.org/mock/mockgen@latest
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.1
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	@go install github.com/onsi/ginkgo/v2/ginkgo@latest
 	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
 	@echo Installation completed

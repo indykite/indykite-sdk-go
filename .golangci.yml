@@ -1,4 +1,8 @@
 ---
+run:
+    # GolangCI will not check files with build tags, unless specified here.
+    build-tags:
+        - integration
 # All rules here were written in the time of GolangCI lint v1.54.1
 linters:
     enable:
@@ -177,7 +181,9 @@ linters-settings:
             - name: get-return
             - name: identical-branches
             - name: if-return
-            # - name: import-alias-naming # GolangCI doesn't implement latest rules of Revive, enable later
+            - name: import-alias-naming
+              arguments:
+                  - ^([a-z][a-z0-9]{0,}|\.)$
             - name: import-shadowing
             - name: modifies-parameter
             - name: modifies-value-receiver
@@ -185,11 +191,11 @@ linters-settings:
             - name: optimize-operands-order
             - name: range-val-address
             - name: range-val-in-closure
-            # - name: redundant-import-alias  # GolangCI doesn't implement latest rules of Revive, enable later
+            - name: redundant-import-alias
             - name: string-of-int
             - name: struct-tag
             - name: time-equal
-            # - name: unchecked-type-assertion # GolangCI doesn't implement latest rules of Revive, enable later
+            - name: unchecked-type-assertion
             - name: unconditional-recursion
             - name: unexported-naming
             - name: unhandled-error  # It is OK not to check errors from some specific cases
@@ -214,11 +220,16 @@ issues:
         - linters:
               - revive
           text: exported .* should have comment .*or be unexported # TODO fix this for proper documentation
+
         - linters:
               - revive
               - gocritic
           text: 'deep-exit: calls to log.Fatalf|exitAfterDefer: log.Fatalf will exit'
           path: .*_test.go
-        # - linters:
-        #       - contextcheck
-        #   text: verifyTokenFormat->.*parseBytes # False positive, context is internal in JWT, not in our control
+
+        # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
+        - linters:
+              - revive
+          text: '^dot-imports:'
+          source: . "github.com/onsi/(gomega|ginkgo)(/.*)?"
+          path: .*_test.go

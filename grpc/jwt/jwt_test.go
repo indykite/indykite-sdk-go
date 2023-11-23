@@ -17,7 +17,8 @@ package jwt_test
 import (
 	"github.com/google/uuid"
 
-	. "github.com/indykite/indykite-sdk-go/grpc/jwt"
+	"github.com/indykite/indykite-sdk-go/grpc/jwt"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
@@ -31,7 +32,7 @@ var _ = Describe("CreateTokenSourceFromPrivateKey", func() {
 		appAgentID := IntTestAppAgentID
 
 		invalidPrivateKeyJWK := "invalid_key"
-		resp, err := CreateTokenSourceFromPrivateKey(invalidPrivateKeyJWK, appAgentID.String())
+		resp, err := jwt.CreateTokenSourceFromPrivateKey(invalidPrivateKeyJWK, appAgentID.String())
 
 		Expect(resp).To(BeNil())
 		Expect(err).To(MatchError(ContainSubstring("failed to unmarshal JSON into key hint")))
@@ -40,7 +41,7 @@ var _ = Describe("CreateTokenSourceFromPrivateKey", func() {
 	DescribeTable(
 		"validate JSON correctly create tokenSource",
 		func(privateKeyJWK any) {
-			resp, err := CreateTokenSourceFromPrivateKey(privateKeyJWK, IntTestAppAgentID.String())
+			resp, err := jwt.CreateTokenSourceFromPrivateKey(privateKeyJWK, IntTestAppAgentID.String())
 			Expect(resp).To(Not(BeNil()))
 			Expect(err).To(Succeed())
 		},
