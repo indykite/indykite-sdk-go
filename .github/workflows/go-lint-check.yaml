@@ -2,12 +2,13 @@
 name: Lint and Check
 on:
     pull_request:
-        types: [opened, synchronize, reopened]
+        types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
     golangci:
         name: lint
         runs-on: ubuntu-latest
+        if: github.event.pull_request.draft == false
         steps:
             - name: Checkout codebase
               uses: actions/checkout@v4
