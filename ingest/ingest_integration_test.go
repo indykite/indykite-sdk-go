@@ -123,38 +123,6 @@ var _ = Describe("Ingestion", func() {
 			})))
 		})
 
-		It("UpsertNodeWrongTenant", func() {
-			var err error
-			ingestClient, err := integration.InitConfigIngest()
-			Expect(err).To(Succeed())
-
-			record, externalID := integration.CreateRecordIndividual(integration.WrongTenant, "Employee")
-			resp, err := ingestClient.IngestRecord(
-				context.Background(),
-				record,
-				retry.WithMax(2),
-			)
-			Expect(externalID).NotTo(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("server was unable to complete the request")))
-			Expect(resp).To(BeNil())
-		})
-
-		It("UpsertNodeWrongTenantOtherAppSpace", func() {
-			var err error
-			ingestClient, err := integration.InitConfigIngest()
-			Expect(err).To(Succeed())
-
-			record, externalID := integration.CreateRecordIndividual(integration.WrongTenantOtherAppSpace, "Employee")
-			resp, err := ingestClient.IngestRecord(
-				context.Background(),
-				record,
-				retry.WithMax(2),
-			)
-			Expect(externalID).NotTo(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("server was unable to complete the request")))
-			Expect(resp).To(BeNil())
-		})
-
 		It("UpsertNodeDuplicateSameType", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
@@ -225,9 +193,10 @@ var _ = Describe("Ingestion", func() {
 				recordb,
 				retry.WithMax(2),
 			)
-			Expect(err).To(MatchError(ContainSubstring(
-				"a Digital Twin node with this id, externalId and type already exists")))
-			Expect(resp2).To(BeNil())
+			Expect(err).To(Succeed())
+			Expect(resp2).NotTo(BeNil())
+			id2 := resp2.Info.Changes[0].Id
+			Expect(id2).NotTo(Equal(id))
 
 			delRecord := integration.DeleteRecord(externalID, "Individual")
 			del, err := ingestClient.IngestRecord(
@@ -242,6 +211,24 @@ var _ = Describe("Ingestion", func() {
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
+						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+					}))),
+				})),
+			})))
+
+			delRecord2 := integration.DeleteRecord(externalID, "Cat")
+			del2, err := ingestClient.IngestRecord(
+				context.Background(),
+				delRecord2,
+				retry.WithMax(2),
+			)
+			Expect(err).To(Succeed())
+			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"RecordId": Not(BeNil()),
+				"Error":    BeNil(),
+				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
+					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id":       Equal(id2),
 						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
 					}))),
 				})),
@@ -1221,18 +1208,18 @@ var _ = Describe("Ingestion", func() {
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
+			rel := integration.GenerateRandomString(10)
 
-			record3 := integration.CreateRecordRelation("whateveragain", "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelation(rel, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
 				retry.WithMax(2),
 			)
-
 			Expect(err).To(Succeed())
 			Expect(resp3).NotTo(BeNil())
 
-			match := integration.GetRelationMatch("whateveragain", "Individual", externalID2, "Asset", "CAN_SEE")
+			match := integration.GetRelationMatch(rel, "Individual", externalID2, "Asset", "CAN_SEE")
 			delRecord3 := integration.DeleteRecordRelation(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),

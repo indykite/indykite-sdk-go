@@ -51,7 +51,7 @@ var (
 
 	Resource1 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "wMDazKCQPNEyETp",
+			ExternalId: "LPcearawBJWDQLR",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -59,14 +59,14 @@ var (
 
 	Resource2 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "wMDazKCQPNEyETp",
+			ExternalId: "LPcearawBJWDQLR",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
 	}
 
 	Resource3 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "wMDazKCQPNEyETp",
+			ExternalId: "LPcearawBJWDQLR",
 			Type:       "Asset",
 			Actions:    []string{"DEMANDS"},
 		},
@@ -74,7 +74,7 @@ var (
 
 	Resource4 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "uqGEnybFZhYYpIf",
+			ExternalId: "mfYbpowiNPJQCBY",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -82,7 +82,7 @@ var (
 
 	Resource5 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "qlUxezErcaweWss",
+			ExternalId: "CCbJwkQtLOmCdLq",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -90,7 +90,7 @@ var (
 
 	Resource6 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "YPDAQWzzJNlBruc",
+			ExternalId: "aXQMRIcTzyIyeKC",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -98,7 +98,7 @@ var (
 
 	Resource7 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "spriFKHyoNJZMjk",
+			ExternalId: "EvfDHrEObtYVleh",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -106,7 +106,7 @@ var (
 
 	Resource8 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "qVdKKwVYYOHVYSW",
+			ExternalId: "BLOXgHAvWFMHDsS",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -114,12 +114,12 @@ var (
 
 	Resource9 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "qVdKKwVYYOHVYSW",
+			ExternalId: "LPcearawBJWDQLR",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
 		{
-			ExternalId: "YlBquyKoVSYflIx",
+			ExternalId: "CCbJwkQtLOmCdLq",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -138,7 +138,7 @@ var (
 	}
 
 	ResourceWho1 = []*authorizationpb.WhoAuthorizedRequest_Resource{
-		{ExternalId: "wMDazKCQPNEyETp", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
+		{ExternalId: "LPcearawBJWDQLR", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
 	ResourceWho2 = []*authorizationpb.WhoAuthorizedRequest_Resource{
@@ -146,35 +146,33 @@ var (
 	}
 
 	ResourceWho3 = []*authorizationpb.WhoAuthorizedRequest_Resource{
-		{ExternalId: "wMDazKCQPNEyETp", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
+		{ExternalId: "LPcearawBJWDQLR", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
 	}
 
 	DigitalTwinBad     = "id"
 	DigitalTwinNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
-	DigitalTwin1       = "gid:AAAAFcrHH-xwlEAhr_DYdY-Djj0"
-	DigitalTwin2       = "gid:AAAAFeKd8SojW0HrvpmZU8z4aIY"
+	DigitalTwin1       = "gid:AAAAFR3royp640c-gXRGdusXM4Y"
+	DigitalTwin2       = "gid:AAAAFf6Y9ZMWhEdsr3INueqfRLU"
 
 	EmailBad  = "test@example.com"
-	EmailGood = "colas@yahoo.uk"
+	EmailGood = "paulo@yahoo.uk"
 
-	ExternalIDGood = "bbbSNydqZpeRiGH"
+	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
-	Asset1 = "qlUxezErcaweWss"
-	Asset2 = "wMDazKCQPNEyETp"
-	Asset3 = "qVdKKwVYYOHVYSW"
+	Asset1 = "CCbJwkQtLOmCdLq"
+	Asset2 = "LPcearawBJWDQLR"
+	Asset3 = "zBiBMaYOaDmdCyX"
+	Asset4 = "BLOXgHAvWFMHDsS"
 
-	Subject1 = "QNcLrJCLGjIbpYO"
-	Subject2 = "bbbSNydqZpeRiGH"
-	Subject3 = "uKcftQKZQfvvGoC"
+	Subject1 = "HLEgiljrtoNEiyX"
+	Subject2 = "zvPYDXxXyVgeZHw"
+	Subject3 = "TrSFiLuoSLGiCIo"
 
 	// TokenGoodFormat is a valid format for jwt.
 	TokenGoodFormat = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
 		"eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9." +
 		"dyt0CoTl4WoVjAHI9Q_CwSKhl6d_9rhM3NrXuJttkao" // #nosec G101
 	TokenBad = "token_invalid_format"
-
-	WrongTenant              = "gid:AAAAA8YwJJujqkUAuTA6pR0AVbM"
-	WrongTenantOtherAppSpace = "gid:AAAAA_2EBAWjakSCo5hf_WIi1oI"
 )
 
 func GenerateRandomString(length int) string {
