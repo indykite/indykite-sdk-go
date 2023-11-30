@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.19.1](https://github.com/indykite/indykite-sdk-go/compare/v0.19.0...v0.19.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* update tests after ikg modifications ([b2166a4](https://github.com/indykite/indykite-sdk-go/commit/b2166a4c1cc9d8d439d1bcff80730901a84261f0))
+
+
+### Styles
+
+* fix and upgrade linter ([3a1bbb5](https://github.com/indykite/indykite-sdk-go/commit/3a1bbb5545329f8335d4aea71dd8c249b69c85d0))
+
 ## [0.19.0](https://github.com/indykite/indykite-sdk-go/compare/v0.18.0...v0.19.0) (2023-11-21)
 
 
