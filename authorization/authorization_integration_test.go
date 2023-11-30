@@ -125,7 +125,7 @@ var _ = Describe("Authorized", func() {
 							resource1: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Actions": MatchAllKeys(Keys{
 									action1: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
+										"Allow": Equal(true),
 									})),
 								}),
 							})),
@@ -765,6 +765,9 @@ var _ = Describe("Authorized", func() {
 									"2": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset3),
 									})),
+									"3": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset4),
+									})),
 								}),
 							})),
 						}),
@@ -953,9 +956,6 @@ var _ = Describe("Authorized", func() {
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset2),
-									})),
-									"2": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
 									})),
 								}),
 							})),
