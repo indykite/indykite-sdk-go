@@ -15,4 +15,4 @@
 // Package config implement the Configuration Management Client.
 package config
 
-const versionClient = "v0.19.1" // x-release-please-version
+const versionClient = "v0.20.0" // x-release-please-version
