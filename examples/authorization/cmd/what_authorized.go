@@ -139,9 +139,46 @@ var whatWithPropertyCmd = &cobra.Command{
 	},
 }
 
+var whatWithExternalIDCmd = &cobra.Command{
+	Use:   "with_external_id",
+	Short: "What Authorized by external id",
+	Long:  "List resources based on provided type for a subject based on external id",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		var externalID authorizationpb.ExternalID
+		fmt.Print("Enter digital twin type: ")
+		fmt.Scanln(&(externalID.Type))
+		fmt.Print("Enter external id value: ")
+		fmt.Scanln(&(externalID.ExternalId))
+
+		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+			{Type: "TypeA", Actions: []string{"ACTION1", "ACTION2"}},
+			{Type: "TypeB", Actions: []string{"ACTION"}},
+		}
+
+		inputParams := map[string]*authorizationpb.InputParam{}
+		var policyTags []string
+
+		resp, err := client.WhatAuthorizedByExternalID(
+			cmd.Context(),
+			&externalID,
+			resourceTypes,
+			inputParams,
+			policyTags,
+			retry.WithMax(2),
+		)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(jsonp.Format(resp))
+		return nil
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(whatAuthorizedCmd)
 	whatAuthorizedCmd.AddCommand(whatWithTokenCmd)
 	whatAuthorizedCmd.AddCommand(whatWithDigitalTwinCmd)
 	whatAuthorizedCmd.AddCommand(whatWithPropertyCmd)
+	whatAuthorizedCmd.AddCommand(whatWithExternalIDCmd)
 }

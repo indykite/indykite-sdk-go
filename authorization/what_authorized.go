@@ -86,6 +86,28 @@ func (c *Client) WhatAuthorizedByProperty(
 	}, opts...)
 }
 
+// WhatAuthorizedByExternalID returns a list of resources and allowed actions for provided resource types for
+// subject, identified by external_id, can access.
+func (c *Client) WhatAuthorizedByExternalID(
+	ctx context.Context,
+	externalID *authorizationpb.ExternalID,
+	resourceTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+	inputParams map[string]*authorizationpb.InputParam,
+	policyTags []string,
+	opts ...grpc.CallOption,
+) (*authorizationpb.WhatAuthorizedResponse, error) {
+	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
+		Subject: &authorizationpb.Subject{
+			Subject: &authorizationpb.Subject_ExternalId{
+				ExternalId: externalID,
+			},
+		},
+		ResourceTypes: resourceTypes,
+		InputParams:   inputParams,
+		PolicyTags:    policyTags,
+	}, opts...)
+}
+
 // WhatAuthorizedWithRawRequest returns a list of resources and allowed actions for provided resource types for
 // subject can access.
 func (c *Client) WhatAuthorizedWithRawRequest(

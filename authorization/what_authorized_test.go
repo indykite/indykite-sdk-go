@@ -181,6 +181,40 @@ var _ = Describe("WhatAuthorized", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("WhatAuthorizedExternalID", func() {
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Person",
+				ExternalId: "576eb486-28f6-4756-95be-ba6da362b2a7",
+			}
+			req := &authorizationpb.WhatAuthorizedRequest{
+				Subject: &authorizationpb.Subject{
+					Subject: &authorizationpb.Subject_ExternalId{
+						ExternalId: externalID,
+					},
+				},
+				ResourceTypes: resourceTypeExample,
+				InputParams:   inputParam,
+				PolicyTags:    policyTags,
+			}
+			beResp := beResp
+			mockClient.EXPECT().
+				WhatAuthorized(
+					gomock.Any(),
+					test.WrapMatcher(test.EqualProto(req)),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := authorizationClient.WhatAuthorizedByExternalID(
+				ctx,
+				externalID,
+				resourceTypeExample,
+				inputParam,
+				policyTags,
+			)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("WhatAuthorizedToken", func() {
 			req := &authorizationpb.WhatAuthorizedRequest{
 				Subject: &authorizationpb.Subject{

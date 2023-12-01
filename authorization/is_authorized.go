@@ -85,6 +85,28 @@ func (c *Client) IsAuthorizedByProperty(
 	}, opts...)
 }
 
+// IsAuthorizedByExternalID checks if DigitalTwin, identified by external_id,
+// can perform actions on resources.
+func (c *Client) IsAuthorizedByExternalID(
+	ctx context.Context,
+	externalID *authorizationpb.ExternalID,
+	resources []*authorizationpb.IsAuthorizedRequest_Resource,
+	inputParams map[string]*authorizationpb.InputParam,
+	policyTags []string,
+	opts ...grpc.CallOption,
+) (*authorizationpb.IsAuthorizedResponse, error) {
+	return c.IsAuthorizedWithRawRequest(ctx, &authorizationpb.IsAuthorizedRequest{
+		Subject: &authorizationpb.Subject{
+			Subject: &authorizationpb.Subject_ExternalId{
+				ExternalId: externalID,
+			},
+		},
+		Resources:   resources,
+		InputParams: inputParams,
+		PolicyTags:  policyTags,
+	}, opts...)
+}
+
 func (c *Client) IsAuthorizedWithRawRequest(
 	ctx context.Context,
 	req *authorizationpb.IsAuthorizedRequest,

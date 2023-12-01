@@ -241,6 +241,59 @@ func (m *Subject) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+	case *Subject_ExternalId:
+		if v == nil {
+			err := SubjectValidationError{
+				field:  "Subject",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofSubjectPresent = true
+
+		if m.GetExternalId() == nil {
+			err := SubjectValidationError{
+				field:  "ExternalId",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetExternalId()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "ExternalId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SubjectValidationError{
+						field:  "ExternalId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetExternalId()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SubjectValidationError{
+					field:  "ExternalId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -604,6 +657,140 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PropertyValidationError{}
+
+// Validate checks the field values on ExternalID with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ExternalID) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExternalID with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ExternalIDMultiError, or
+// nil if none found.
+func (m *ExternalID) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExternalID) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetType()) > 64 {
+		err := ExternalIDValidationError{
+			field:  "Type",
+			reason: "value length must be at most 64 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_ExternalID_Type_Pattern.MatchString(m.GetType()) {
+		err := ExternalIDValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[a-zA-Z]*$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetExternalId()) < 1 {
+		err := ExternalIDValidationError{
+			field:  "ExternalId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ExternalIDMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExternalIDMultiError is an error wrapping multiple validation errors
+// returned by ExternalID.ValidateAll() if the designated constraints aren't met.
+type ExternalIDMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExternalIDMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExternalIDMultiError) AllErrors() []error { return m }
+
+// ExternalIDValidationError is the validation error returned by
+// ExternalID.Validate if the designated constraints aren't met.
+type ExternalIDValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExternalIDValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExternalIDValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExternalIDValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExternalIDValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExternalIDValidationError) ErrorName() string { return "ExternalIDValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ExternalIDValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExternalID.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExternalIDValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExternalIDValidationError{}
+
+var _ExternalID_Type_Pattern = regexp.MustCompile("^[a-zA-Z]*$")
 
 // Validate checks the field values on InputParam with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
