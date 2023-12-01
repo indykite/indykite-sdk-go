@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/indykite/indykite-sdk-go/compare/v0.19.1...v0.20.0) (2023-12-01)
+
+
+### Features
+
+* update authz subject ([89295cd](https://github.com/indykite/indykite-sdk-go/commit/89295cd9aa45530be8e6b913b72ace7bc51a8696))
+
 ## [0.19.1](https://github.com/indykite/indykite-sdk-go/compare/v0.19.0...v0.19.1) (2023-11-30)
 
 
