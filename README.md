@@ -20,6 +20,8 @@ Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK
 import "github.com/indykite/indykite-sdk-go"
 ```
 
+[Documentation](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)
+
 In order to access to the platform you must first obtain AppAgent credentials or Service account credentials.
 These credentials can be obtained either from the [Admin Console](https://console.indykite.id)
 or request one from your point of contact at IndyKite.
