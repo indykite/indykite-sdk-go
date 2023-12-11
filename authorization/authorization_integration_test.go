@@ -654,6 +654,102 @@ var _ = Describe("Authorized", func() {
 			})))
 		})
 
+		It("IsAuthorizedExternalID", func() {
+			var err error
+			authorizationClient, err := integration.InitConfigAuthorization()
+			Expect(err).To(Succeed())
+
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Individual",
+				ExternalId: integration.Subject1,
+			}
+
+			resources := integration.Resource1
+			inputParams := map[string]*authorizationpb.InputParam{}
+			var policyTags []string
+
+			resp, err := authorizationClient.IsAuthorizedByExternalID(
+				context.Background(),
+				externalID,
+				resources,
+				inputParams,
+				policyTags,
+				retry.WithMax(2),
+			)
+
+			Expect(err).To(Succeed())
+			Expect(resp).NotTo(BeNil())
+
+			decision := resources[0].Type
+			resource := resources[0].ExternalId
+			action := resources[0].Actions[0]
+
+			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"DecisionTime": Not(BeNil()),
+				"Decisions": MatchAllKeys(Keys{
+					decision: PointTo(MatchFields(IgnoreExtras, Fields{
+						"Resources": MatchAllKeys(Keys{
+							resource: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Actions": MatchAllKeys(Keys{
+									action: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Allow": Equal(true),
+									})),
+								}),
+							})),
+						}),
+					})),
+				}),
+			})))
+		})
+
+		It("IsAuthorizedExternalIDNotInDB", func() {
+			var err error
+			authorizationClient, err := integration.InitConfigAuthorization()
+			Expect(err).To(Succeed())
+
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Individual",
+				ExternalId: "anythingwrong",
+			}
+
+			resources := integration.Resource1
+			inputParams := map[string]*authorizationpb.InputParam{}
+			var policyTags []string
+
+			resp, err := authorizationClient.IsAuthorizedByExternalID(
+				context.Background(),
+				externalID,
+				resources,
+				inputParams,
+				policyTags,
+				retry.WithMax(2),
+			)
+
+			Expect(err).To(Succeed())
+			Expect(resp).NotTo(BeNil())
+
+			decision := resources[0].Type
+			resource := resources[0].ExternalId
+			action := resources[0].Actions[0]
+
+			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"DecisionTime": Not(BeNil()),
+				"Decisions": MatchAllKeys(Keys{
+					decision: PointTo(MatchFields(IgnoreExtras, Fields{
+						"Resources": MatchAllKeys(Keys{
+							resource: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Actions": MatchAllKeys(Keys{
+									action: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Allow": Equal(false),
+									})),
+								}),
+							})),
+						}),
+					})),
+				}),
+			})))
+		})
+
 		It("IsAuthorizedTokenNonValid", func() {
 			var err error
 			authorizationClient, err := integration.InitConfigAuthorization()
@@ -982,6 +1078,100 @@ var _ = Describe("Authorized", func() {
 			resp, err := authorizationClient.WhatAuthorizedByProperty(
 				context.Background(),
 				digitalTwinProperty,
+				resourcesTypes,
+				inputParams,
+				policyTags,
+				retry.WithMax(2),
+			)
+
+			Expect(err).To(Succeed())
+			Expect(resp).NotTo(BeNil())
+
+			decision := resourcesTypes[0].Type
+			action := resourcesTypes[0].Actions[0]
+
+			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"DecisionTime": Not(BeNil()),
+				"Decisions": MatchAllKeys(Keys{
+					decision: PointTo(MatchFields(IgnoreExtras, Fields{
+						"Actions": MatchAllKeys(Keys{
+							action: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": BeEmpty(),
+							})),
+						}),
+					})),
+				}),
+			})))
+		})
+
+		It("WhatAuthorizedExternalID", func() {
+			var err error
+
+			authorizationClient, err := integration.InitConfigAuthorization()
+			Expect(err).To(Succeed())
+
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Individual",
+				ExternalId: integration.Subject1,
+			}
+
+			resourcesTypes := integration.ResourceType1
+			inputParams := map[string]*authorizationpb.InputParam{}
+			var policyTags []string
+
+			resp, err := authorizationClient.WhatAuthorizedByExternalID(
+				context.Background(),
+				externalID,
+				resourcesTypes,
+				inputParams,
+				policyTags,
+				retry.WithMax(2),
+			)
+
+			Expect(err).To(Succeed())
+			Expect(resp).NotTo(BeNil())
+
+			decision := resourcesTypes[0].Type
+			action := resourcesTypes[0].Actions[0]
+
+			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"DecisionTime": Not(BeNil()),
+				"Decisions": MatchAllKeys(Keys{
+					decision: PointTo(MatchFields(IgnoreExtras, Fields{
+						"Actions": MatchAllKeys(Keys{
+							action: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
+									"0": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset1),
+									})),
+									"1": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset2),
+									})),
+								}),
+							})),
+						}),
+					})),
+				}),
+			})))
+		})
+
+		It("WhatAuthorizedExternalIDNotInDB", func() {
+			var err error
+			authorizationClient, err := integration.InitConfigAuthorization()
+			Expect(err).To(Succeed())
+
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Individual",
+				ExternalId: "SomethingWrong",
+			}
+
+			resourcesTypes := integration.ResourceType1
+			inputParams := map[string]*authorizationpb.InputParam{}
+			var policyTags []string
+
+			resp, err := authorizationClient.WhatAuthorizedByExternalID(
+				context.Background(),
+				externalID,
 				resourcesTypes,
 				inputParams,
 				policyTags,
