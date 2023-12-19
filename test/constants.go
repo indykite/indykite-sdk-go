@@ -184,7 +184,7 @@ func GenerateRandomString(length int) string {
 	return base64.StdEncoding.EncodeToString(b)
 }
 
-func CreateRecordIndividual(tenantID, //nolint:gocritic // nonamedreturns against unnamedResult
+func CreateRecordIndividual( //nolint:gocritic // nonamedreturns against unnamedResult
 	role string) (*ingestpb.Record, string) {
 	externalID := GenerateRandomString(10)
 	record := &ingestpb.Record{
@@ -197,8 +197,7 @@ func CreateRecordIndividual(tenantID, //nolint:gocritic // nonamedreturns agains
 							DigitalTwin: &ingestpb.DigitalTwin{
 								ExternalId: externalID,
 								Type:       "Individual",
-								TenantId:   tenantID,
-								IdentityProperties: []*ingestpb.IdentityProperty{
+								Properties: []*ingestpb.Property{
 									{
 										Key: "email",
 										Value: &objects.Value{
@@ -207,8 +206,6 @@ func CreateRecordIndividual(tenantID, //nolint:gocritic // nonamedreturns agains
 											},
 										},
 									},
-								},
-								Properties: []*ingestpb.Property{
 									{
 										Key: "first_name",
 										Value: &objects.Value{
@@ -244,7 +241,7 @@ func CreateRecordIndividual(tenantID, //nolint:gocritic // nonamedreturns agains
 	return record, externalID
 }
 
-func CreateRecordNoProp(externalID, tenantID, nodeType string) *ingestpb.Record {
+func CreateRecordNoProp(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Upsert{
@@ -255,7 +252,6 @@ func CreateRecordNoProp(externalID, tenantID, nodeType string) *ingestpb.Record 
 							DigitalTwin: &ingestpb.DigitalTwin{
 								ExternalId: externalID,
 								Type:       nodeType,
-								TenantId:   tenantID,
 							},
 						},
 					},

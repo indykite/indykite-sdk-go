@@ -18,7 +18,6 @@ package ingest_test
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
@@ -38,7 +37,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -83,7 +82,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -129,7 +128,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -140,7 +139,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			recordb := integration.CreateRecordNoProp(externalID, "Individual")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
@@ -176,7 +175,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -187,7 +186,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Cat")
+			recordb := integration.CreateRecordNoProp(externalID, "Cat")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
@@ -436,7 +435,7 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -543,7 +542,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -694,7 +693,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -816,7 +815,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -936,7 +935,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -1056,7 +1055,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -1168,7 +1167,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -1271,7 +1270,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -1364,7 +1363,7 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual(os.Getenv("TENANT_ID"), "Employee")
+			record, externalID := integration.CreateRecordIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
@@ -1513,9 +1512,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, os.Getenv("TENANT_ID"), "Individual")
+			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,
@@ -1587,9 +1586,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, os.Getenv("TENANT_ID"), "Individual")
+			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,
@@ -1652,9 +1651,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, os.Getenv("TENANT_ID"), "Individual")
+			record := integration.CreateRecordNoProp(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, os.Getenv("TENANT_ID"), "Individual")
+			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,

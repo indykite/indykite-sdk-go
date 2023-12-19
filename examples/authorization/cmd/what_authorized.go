@@ -68,11 +68,9 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 	Short: "What Authorized by digital twin",
 	Long:  "List resources based on provided type for a subject based on digital twin id",
 	Run: func(cmd *cobra.Command, args []string) {
-		var digitalTwinID, tenantID string
+		var digitalTwinID string
 		fmt.Print("Enter digital_twin_id: ")
 		fmt.Scanln(&digitalTwinID)
-		fmt.Print("Enter tenant_id: ")
-		fmt.Scanln(&tenantID)
 
 		digitalTwin := &authorizationpb.DigitalTwin{
 			Id: digitalTwinID,
