@@ -15,7 +15,7 @@ require (
 	github.com/pborman/uuid v1.2.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
-	go.uber.org/mock v0.3.0
+	go.uber.org/mock v0.4.0
 	golang.org/x/oauth2 v0.15.0
 	golang.org/x/text v0.14.0
 	google.golang.org/genproto v0.0.0-20231212172506-995d672761c0
