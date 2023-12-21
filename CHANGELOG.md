@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.21.0](https://github.com/indykite/indykite-sdk-go/compare/v0.20.0...v0.21.0) (2023-12-21)
+
+
+### Features
+
+* add worflow dispatch in actions ([e82e2d1](https://github.com/indykite/indykite-sdk-go/commit/e82e2d1bb426d7636299f66f18233165bb2a8c8c))
+* clean after identity deprecation ([4383dce](https://github.com/indykite/indykite-sdk-go/commit/4383dcef08dc8f1dec9198080971e5641d010929))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([59438e5](https://github.com/indykite/indykite-sdk-go/commit/59438e5368bdbd06223d4e211171e5e33d6c4f9c))
+* **deps:** update module go.uber.org/mock to v0.4.0 ([a0b2f34](https://github.com/indykite/indykite-sdk-go/commit/a0b2f340a323aaa1225e485f4d5007c1e56c1f92))
+
 ## [0.20.0](https://github.com/indykite/indykite-sdk-go/compare/v0.19.1...v0.20.0) (2023-12-01)
 
 
