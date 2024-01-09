@@ -105,7 +105,7 @@ linters-settings:
         values:
             regexp:
                 # As long we decide which format of YEAR in copyright we want, add this hack
-                our_year: 202[0-3] # Just change to 202[2-3] or other when changed
+                our_year: 202[0-4] # Just change to 202[2-3] or other when changed
         template: |-
             Copyright (c) {{OUR_YEAR}} IndyKite
 
