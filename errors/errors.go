@@ -16,6 +16,7 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 
 	"google.golang.org/grpc/codes"
@@ -106,10 +107,10 @@ func NewWithCause(code codes.Code, err error, msg string, args ...any) error {
 
 // IsServiceError checks if the Error code represents a service call error.
 func IsServiceError(err error) bool {
-	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
-	if se, ok := err.(interface {
+	var se interface {
 		Code() codes.Code
-	}); ok {
+	}
+	if errors.As(err, &se) {
 		//nolint:exhaustive // No need to use default, because last statement will handle all
 		switch se.Code() {
 		case codes.Unknown,
@@ -120,9 +121,19 @@ func IsServiceError(err error) bool {
 			codes.Internal,
 			codes.Unavailable,
 			codes.DataLoss:
-			// codes.Unauthenticated:
 			return true
 		}
+	}
+	return false
+}
+
+// IsNotFoundError checks if the Error code represents an NotFound error.
+func IsNotFoundError(err error) bool {
+	var se interface {
+		Code() codes.Code
+	}
+	if errors.As(err, &se) {
+		return se.Code() == codes.NotFound
 	}
 	return false
 }
