@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://github.com/indykite/indykite-sdk-go/compare/v0.21.0...v0.21.1) (2024-01-09)
+
+
+### Miscellaneous Chores
+
+* adds not found error support ([666d85b](https://github.com/indykite/indykite-sdk-go/commit/666d85b7c85ff5908b251ffd7eecb6fef3fdfa54))
+
 ## [0.21.0](https://github.com/indykite/indykite-sdk-go/compare/v0.20.0...v0.21.0) (2023-12-21)
 
 
