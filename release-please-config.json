@@ -1,0 +1,52 @@
+{
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features",
+      "hidden": false
+    },
+    {
+      "type": "feature",
+      "section": "Features",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes",
+      "hidden": false
+    },
+    {
+      "type": "perf",
+      "section": "Performance Improvements",
+      "hidden": false
+    },
+    {
+      "type": "revert",
+      "section": "Reverts",
+      "hidden": false
+    },
+    {
+      "type": "style",
+      "section": "Styles",
+      "hidden": false
+    },
+    {
+      "type": "chore",
+      "section": "Miscellaneous Chores",
+      "hidden": false
+    }
+  ],
+  "release-type": "go",
+  "packages": {
+    ".": {
+      "package-name": "indykite-sdk-go",
+      "extra-files": [
+        "config/doc.go",
+        "identity/doc.go",
+        "ingest/doc.go",
+        "authorization/doc.go",
+        "knowledge/doc.go"
+      ]
+    }
+  }
+}
