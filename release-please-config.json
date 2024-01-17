@@ -40,6 +40,7 @@
   "packages": {
     ".": {
       "package-name": "indykite-sdk-go",
+      "include-component-in-tag": false,
       "extra-files": [
         "config/doc.go",
         "identity/doc.go",
