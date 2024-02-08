@@ -21,4 +21,4 @@ jobs:
             - id: release-please
               uses: GoogleCloudPlatform/release-please-action@v4
               with:
-                  token: ${{ secrets.INDYKITE_PAT }}
+                  token: ${{ secrets.INDYKITEONE_PAT }}
