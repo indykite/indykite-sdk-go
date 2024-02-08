@@ -466,53 +466,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("CreateKnowledgeGraphSchema", func() {
-			schemaInput := `
-				type Person implements DigitalTwin {
-					externalId: String!
-					digitalTwinId: String!
-					tenantId: String!
-					kind: DigitalTwinKind!
-					tags: [String!]!
-				}
-			`
-			configuration := &configpb.KnowledgeGraphSchemaConfig{
-				Schema: schemaInput,
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithKnowledgeGraphSchemaConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"KnowledgeGraphSchemaConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"Schema": Equal(schemaInput),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("CreateNonValid", func() {
 			configuration := &configpb.OAuth2ClientConfig{
 				ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
@@ -828,52 +781,6 @@ var _ = Describe("ConfigNode", func() {
 						"AuthorizationPolicyConfig": PointTo(MatchFields(IgnoreExtras, Fields{
 							"Policy": Equal(jsonInput),
 							"Status": Equal(configpb.AuthorizationPolicyConfig_STATUS_ACTIVE),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateKnowledgeGraphSchema", func() {
-			schemaInput := `
-				type Person implements DigitalTwin {
-					externalId: String!
-					digitalTwinId: String!
-					tenantId: String!
-					kind: DigitalTwinKind!
-					tags: [String!]!
-				}
-			`
-			configuration := &configpb.KnowledgeGraphSchemaConfig{
-				Schema: schemaInput,
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithKnowledgeGraphSchemaConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"KnowledgeGraphSchemaConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"Schema": Equal(schemaInput),
 						})),
 					})),
 				}))),

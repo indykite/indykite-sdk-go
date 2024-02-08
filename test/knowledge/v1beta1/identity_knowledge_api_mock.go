@@ -20,6 +20,7 @@
 //
 //	mockgen -copyright_file ./doc/LICENSE -package knowledge -destination ./test/knowledge/v1beta1/identity_knowledge_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1 IdentityKnowledgeAPIClient
 //
+
 // Package knowledge is a generated GoMock package.
 package knowledge
 

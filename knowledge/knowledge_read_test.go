@@ -19,10 +19,11 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	"github.com/indykite/indykite-sdk-go/knowledge"
-	knowledgem "github.com/indykite/indykite-sdk-go/test/knowledge/v1beta1"
+	knowledgem "github.com/indykite/indykite-sdk-go/test/knowledge/v1beta2"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -37,71 +38,73 @@ var _ = Describe("Identity Knowledge API", func() {
 		client, err := knowledge.NewTestClient(mockClient)
 		Ω(err).To(Succeed())
 
-		p := "(:DigitalTwin)-[:SERVICES]->(n:Truck)"
-		c := "WHERE n.external_id = $external_id"
-		params := map[string]*knowledgepb.InputParam{
+		query := "MATCH (n:Person)-[r:CAN_SEE]->(a:Asset) WHERE n.external_id=$external_id AND n.type=$type"
+		params := map[string]*objects.Value{
 			"external_id": {
-				Value: &knowledgepb.InputParam_StringValue{StringValue: "1234"},
+				Type: &objects.Value_StringValue{StringValue: "1234"},
+			},
+			"type": {
+				Type: &objects.Value_StringValue{StringValue: "person"},
 			},
 		}
-		mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-			Operation:   knowledgepb.Operation_OPERATION_READ,
-			Path:        p,
-			Conditions:  c,
+		returns := []*knowledgepb.Return{
+			{
+				Variable: "n",
+			},
+		}
+
+		mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+			Query:       query,
 			InputParams: params,
-		}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-			Paths: []*knowledgepb.Path{
+			Returns:     returns,
+		}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+
+			Nodes: []*knowledgeobjects.Node{
 				{
-					Nodes: []*knowledgepb.Node{
+					Id:         "gid:abc",
+					ExternalId: "1010",
+					Type:       "Person",
+					Properties: []*knowledgeobjects.Property{
 						{
-							Id:         "gid:abc",
-							ExternalId: "1010",
-							Type:       "Person",
-							Properties: []*knowledgepb.Property{
-								{
-									Key: "abc",
-									Value: &objects.Value{
-										Value: &objects.Value_StringValue{StringValue: "something"},
-									},
-								},
+							Type: "abc",
+							Value: &objects.Value{
+								Type: &objects.Value_StringValue{StringValue: "something"},
 							},
 						},
-						{
-							Id:         "gid:cba",
-							ExternalId: "0101",
-							Type:       "Truck",
-						},
 					},
-					Relationships: []*knowledgepb.Relationship{
-						{
-							Id:   "gid:xxx",
-							Type: "SERVICES",
-						},
-					},
+				},
+				{
+					Id:         "gid:cba",
+					ExternalId: "0101",
+					Type:       "Truck",
+				},
+			},
+			Relationships: []*knowledgeobjects.Relationship{
+				{
+					Id:   "gid:xxx",
+					Type: "SERVICES",
 				},
 			},
 		}, nil)
 
-		resp, err := client.Read(context.Background(), p, c, params)
+		resp, err := client.IdentityKnowledgeRead(context.Background(), query, params, returns)
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"Paths": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-				"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id":         Equal("gid:abc"),
-					"ExternalId": Equal("1010"),
-					"Type":       Equal("Person"),
-					"Properties": HaveLen(1),
-				}))),
-				"Relationships": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id":         Equal("gid:xxx"),
-					"Type":       Equal("SERVICES"),
-					"Properties": HaveLen(0),
-				}))),
+			"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id":         Equal("gid:abc"),
+				"ExternalId": Equal("1010"),
+				"Type":       Equal("Person"),
+				"Properties": HaveLen(1),
+			}))),
+			"Relationships": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id":         Equal("gid:xxx"),
+				"Type":       Equal("SERVICES"),
+				"Properties": HaveLen(0),
 			}))),
 		})))
 	})
 
-	Context("GetDigitalTwinByID", func() {
+	Context("GetIdentityByID", func() {
 		It("returns 1 node - success", func() {
 			mockCtrl := gomock.NewController(GinkgoT())
 			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
@@ -109,33 +112,33 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:abc"},
+					Type: &objects.Value_StringValue{StringValue: "gid:abc"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
+						Properties: []*knowledgeobjects.Property{
 							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "abc",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{StringValue: "something"},
-										},
-									},
+								Type: "abc",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{StringValue: "something"},
 								},
 							},
 						},
@@ -143,7 +146,7 @@ var _ = Describe("Identity Knowledge API", func() {
 				},
 			}, nil)
 
-			node, err := client.GetDigitalTwinByID(context.Background(), "gid:abc")
+			node, err := client.GetIdentityByID(context.Background(), "gid:abc")
 			Expect(err).To(Succeed())
 			Expect(node).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":         Equal("gid:abc"),
@@ -160,23 +163,24 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:abc"},
+					Type: &objects.Value_StringValue{StringValue: "gid:abc"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{},
-			}, nil)
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{}, nil)
 
-			node, err := client.GetDigitalTwinByID(context.Background(), "gid:abc")
+			node, err := client.GetIdentityByID(context.Background(), "gid:abc")
 			Expect(err).To(MatchError(ContainSubstring("node not found")))
 			Expect(node).To(BeNil())
 		})
@@ -188,56 +192,51 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:abc"},
+					Type: &objects.Value_StringValue{StringValue: "gid:abc"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
+						Properties: []*knowledgeobjects.Property{
 							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "abc",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{StringValue: "something"},
-										},
-									},
+								Type: "abc",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{StringValue: "something"},
 								},
 							},
 						},
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:cba",
-								ExternalId: "0101",
-								Type:       "Person",
-							},
-						},
+						Id:         "gid:cba",
+						ExternalId: "0101",
+						Type:       "Person",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetDigitalTwinByID(context.Background(), "gid:abc")
+			node, err := client.GetIdentityByID(context.Background(), "gid:abc")
 			Expect(err).To(MatchError(ContainSubstring("unable to complete request")))
 			Expect(node).To(BeNil())
 		})
 	})
 
-	Context("GetDigitalTwinByIdentifier", func() {
+	Context("GetIdentityByIdentifier", func() {
 		It("returns 1 node - success", func() {
 			mockCtrl := gomock.NewController(GinkgoT())
 			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
@@ -245,36 +244,35 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "1010"},
+					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "person"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
+						Properties: []*knowledgeobjects.Property{
 							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "abc",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{StringValue: "something"},
-										},
-									},
+								Type: "abc",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{StringValue: "something"},
 								},
 							},
 						},
@@ -282,10 +280,11 @@ var _ = Describe("Identity Knowledge API", func() {
 				},
 			}, nil)
 
-			node, err := client.GetDigitalTwinByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetIdentityByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "1010",
 				Type:       "Person",
-			})
+			},
+			)
 			Expect(err).To(Succeed())
 			Expect(node).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":         Equal("gid:abc"),
@@ -302,26 +301,27 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "1010"},
+					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "person"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{},
-			}, nil)
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{}, nil)
 
-			node, err := client.GetDigitalTwinByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetIdentityByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "1010",
 				Type:       "Person",
 			})
@@ -336,53 +336,48 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:DigitalTwin) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "1010"},
+					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "person"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
+						Properties: []*knowledgeobjects.Property{
 							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "abc",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{StringValue: "something"},
-										},
-									},
+								Type: "abc",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{StringValue: "something"},
 								},
 							},
 						},
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:cba",
-								ExternalId: "0101",
-								Type:       "Person",
-							},
-						},
+						Id:         "gid:cba",
+						ExternalId: "0101",
+						Type:       "Person",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetDigitalTwinByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetIdentityByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "1010",
 				Type:       "Person",
 			})
@@ -391,7 +386,7 @@ var _ = Describe("Identity Knowledge API", func() {
 		})
 	})
 
-	Context("GetResourceByID", func() {
+	Context("GetNodeByID", func() {
 		It("returns 1 node - success", func() {
 			mockCtrl := gomock.NewController(GinkgoT())
 			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
@@ -399,33 +394,32 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:Resource)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:xyz"},
+					Type: &objects.Value_StringValue{StringValue: "gid:xyz"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xyz",
+						ExternalId: "0000",
+						Type:       "Store",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetResourceByID(context.Background(), "gid:xyz")
+			node, err := client.GetNodeByID(context.Background(), "gid:xyz", false)
 			Expect(err).To(Succeed())
 			Expect(node).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":         Equal("gid:xyz"),
@@ -441,23 +435,24 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:Resource)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:xyz"},
+					Type: &objects.Value_StringValue{StringValue: "gid:xyz"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{},
-			}, nil)
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{}, nil)
 
-			node, err := client.GetResourceByID(context.Background(), "gid:xyz")
+			node, err := client.GetNodeByID(context.Background(), "gid:xyz", false)
 			Expect(err).To(MatchError(ContainSubstring("node not found")))
 			Expect(node).To(BeNil())
 		})
@@ -469,48 +464,43 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:Resource)"
-			c := "WHERE n.id = $id"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.id=$id"
+			params := map[string]*objects.Value{
 				"id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "gid:xyz"},
+					Type: &objects.Value_StringValue{StringValue: "gid:xyz"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xyz",
+						ExternalId: "0000",
+						Type:       "Store",
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:cba",
-								ExternalId: "0101",
-								Type:       "Person",
-							},
-						},
+						Id:         "gid:cba",
+						ExternalId: "0101",
+						Type:       "Person",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetResourceByID(context.Background(), "gid:xyz")
+			node, err := client.GetNodeByID(context.Background(), "gid:xyz", false)
 			Expect(err).To(MatchError(ContainSubstring("unable to complete request")))
 			Expect(node).To(BeNil())
 		})
 	})
 
-	Context("GetResourceByIdentifier", func() {
+	Context("GetNodeByIdentifier", func() {
 		It("returns 1 node - success", func() {
 			mockCtrl := gomock.NewController(GinkgoT())
 			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
@@ -518,39 +508,39 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:Resource)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "0000"},
+					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "store"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xyz",
+						ExternalId: "0000",
+						Type:       "Store",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetResourceByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetNodeByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "0000",
 				Type:       "Store",
-			})
+			},
+				false)
 			Expect(err).To(Succeed())
 			Expect(node).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":         Equal("gid:xyz"),
@@ -566,29 +556,31 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(n:Resource)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "0000"},
+					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "store"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{},
-			}, nil)
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{}, nil)
 
-			node, err := client.GetResourceByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetNodeByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "0000",
 				Type:       "Store",
-			})
+			},
+				false)
 			Expect(err).To(MatchError(ContainSubstring("node not found")))
 			Expect(node).To(BeNil())
 		})
@@ -599,49 +591,45 @@ var _ = Describe("Identity Knowledge API", func() {
 
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
-
-			p := "(n:Resource)"
-			c := "WHERE n.external_id = $external_id AND n.type = $type"
-			params := map[string]*knowledgepb.InputParam{
+			query := "MATCH (n:Resource) WHERE n.external_id=$external_id AND n.type=$type"
+			params := map[string]*objects.Value{
 				"external_id": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "0000"},
+					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "store"},
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
 				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xyz",
+						ExternalId: "0000",
+						Type:       "Store",
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:cba",
-								ExternalId: "0101",
-								Type:       "Person",
-							},
-						},
+						Id:         "gid:cba",
+						ExternalId: "0101",
+						Type:       "Person",
 					},
 				},
 			}, nil)
 
-			node, err := client.GetResourceByIdentifier(context.Background(), &knowledge.Identifier{
+			node, err := client.GetNodeByIdentifier(context.Background(), &knowledge.Identifier{
 				ExternalID: "0000",
 				Type:       "Store",
-			})
+			},
+				false)
 			Expect(err).To(MatchError(ContainSubstring("unable to complete request")))
 			Expect(node).To(BeNil())
 		})
@@ -655,82 +643,75 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(:Resource)"
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation: knowledgepb.Operation_OPERATION_READ,
-				Path:      p,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+			query := "MATCH (n:Resource)"
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
+				InputParams: map[string]*objects.Value{},
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xyz",
+						ExternalId: "0000",
+						Type:       "Store",
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xxx",
-								ExternalId: "0001",
-								Type:       "Store",
-							},
-						},
+						Id:         "gid:xxx",
+						ExternalId: "0001",
+						Type:       "Store",
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:yyyy",
-								ExternalId: "0002",
-								Type:       "Product",
-							},
-						},
+						Id:         "gid:yyyy",
+						ExternalId: "0002",
+						Type:       "Product",
 					},
 				},
 			}, nil)
 
-			nodes, err := client.ListResources(context.Background())
+			nodes, err := client.ListNodes(context.Background(), "Resource")
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(3))
 		})
 
-		It("ListDigitalTwins - success", func() {
+		It("ListIdentities - success", func() {
 			mockCtrl := gomock.NewController(GinkgoT())
 			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
 
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(:DigitalTwin)"
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation: knowledgepb.Operation_OPERATION_READ,
-				Path:      p,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
+				},
+			}
+
+			query := "MATCH (n:DigitalTwin)"
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
+				InputParams: map[string]*objects.Value{},
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-							},
-						},
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
 					},
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:aaa",
-								ExternalId: "0101",
-								Type:       "Vehicle",
-							},
-						},
+						Id:         "gid:aaa",
+						ExternalId: "0101",
+						Type:       "Vehicle",
 					},
 				},
 			}, nil)
 
-			nodes, err := client.ListDigitalTwins(context.Background())
+			nodes, err := client.ListIdentities(context.Background())
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(2))
 		})
@@ -742,211 +723,27 @@ var _ = Describe("Identity Knowledge API", func() {
 			client, err := knowledge.NewTestClient(mockClient)
 			Ω(err).To(Succeed())
 
-			p := "(:Person)"
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation: knowledgepb.Operation_OPERATION_READ,
-				Path:      p,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
-					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-							},
-						},
-					},
-				},
-			}, nil)
-
-			nodes, err := client.ListNodes(context.Background(), "Person")
-			Expect(err).To(Succeed())
-			Expect(nodes).To(HaveLen(1))
-		})
-	})
-
-	Context("List by property", func() {
-		It("ListResourcesByProperty - success", func() {
-			mockCtrl := gomock.NewController(GinkgoT())
-			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
-
-			client, err := knowledge.NewTestClient(mockClient)
-			Ω(err).To(Succeed())
-
-			p := "(n:Resource)"
-			c := "WHERE n.location = $location"
-			params := map[string]*knowledgepb.InputParam{
-				"location": {
-					Value: &knowledgepb.InputParam_StringValue{StringValue: "Seattle"},
+			query := "MATCH (n:Resource)"
+			returns := []*knowledgepb.Return{
+				{
+					Variable: "n",
 				},
 			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
-				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
+			mockClient.EXPECT().IdentityKnowledgeRead(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeReadRequest{
+				Query:       query,
+				InputParams: map[string]*objects.Value{},
+				Returns:     returns,
+			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeReadResponse{
+				Nodes: []*knowledgeobjects.Node{
 					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:xyz",
-								ExternalId: "0000",
-								Type:       "Store",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "location",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: "Seattle",
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:koko",
-								ExternalId: "1090",
-								Type:       "Store",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "location",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: "Seattle",
-											},
-										},
-									},
-								},
-							},
-						},
+						Id:         "gid:abc",
+						ExternalId: "1010",
+						Type:       "Person",
 					},
 				},
 			}, nil)
 
-			nodes, err := client.ListResourcesByProperty(context.Background(), &knowledgepb.Property{
-				Key: "location",
-				Value: &objects.Value{
-					Value: &objects.Value_StringValue{
-						StringValue: "Seattle",
-					},
-				},
-			})
-			Expect(err).To(Succeed())
-			Expect(nodes).To(HaveLen(2))
-		})
-
-		It("ListDigitalTwinsByProperty - success", func() {
-			mockCtrl := gomock.NewController(GinkgoT())
-			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
-
-			client, err := knowledge.NewTestClient(mockClient)
-			Ω(err).To(Succeed())
-
-			p := "(n:DigitalTwin)"
-			c := "WHERE n.ssn = $ssn"
-			params := map[string]*knowledgepb.InputParam{
-				"ssn": {
-					Value: &knowledgepb.InputParam_IntegerValue{IntegerValue: 12345},
-				},
-			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
-				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
-					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "ssn",
-										Value: &objects.Value{
-											Value: &objects.Value_IntegerValue{
-												IntegerValue: 12345,
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}, nil)
-
-			nodes, err := client.ListDigitalTwinsByProperty(context.Background(), &knowledgepb.Property{
-				Key: "ssn",
-				Value: &objects.Value{
-					Value: &objects.Value_IntegerValue{
-						IntegerValue: 12345,
-					},
-				},
-			})
-			Expect(err).To(Succeed())
-			Expect(nodes).To(HaveLen(1))
-		})
-
-		It("ListNodesByProperty - success", func() {
-			mockCtrl := gomock.NewController(GinkgoT())
-			mockClient := knowledgem.NewMockIdentityKnowledgeAPIClient(mockCtrl)
-
-			client, err := knowledge.NewTestClient(mockClient)
-			Ω(err).To(Succeed())
-
-			p := "(n:Person)"
-			c := "WHERE n.ssn = $ssn"
-			params := map[string]*knowledgepb.InputParam{
-				"ssn": {
-					Value: &knowledgepb.InputParam_IntegerValue{IntegerValue: 12345},
-				},
-			}
-			mockClient.EXPECT().IdentityKnowledge(gomock.Any(), gomock.Eq(&knowledgepb.IdentityKnowledgeRequest{
-				Operation:   knowledgepb.Operation_OPERATION_READ,
-				Path:        p,
-				Conditions:  c,
-				InputParams: params,
-			}), gomock.Any()).Return(&knowledgepb.IdentityKnowledgeResponse{
-				Paths: []*knowledgepb.Path{
-					{
-						Nodes: []*knowledgepb.Node{
-							{
-								Id:         "gid:abc",
-								ExternalId: "1010",
-								Type:       "Person",
-								Properties: []*knowledgepb.Property{
-									{
-										Key: "ssn",
-										Value: &objects.Value{
-											Value: &objects.Value_IntegerValue{
-												IntegerValue: 12345,
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			}, nil)
-
-			nodes, err := client.ListNodesByProperty(context.Background(), "Person", &knowledgepb.Property{
-				Key: "ssn",
-				Value: &objects.Value{
-					Value: &objects.Value_IntegerValue{
-						IntegerValue: 12345,
-					},
-				},
-			})
+			nodes, err := client.ListNodes(context.Background(), "Resource")
 			Expect(err).To(Succeed())
 			Expect(nodes).To(HaveLen(1))
 		})
