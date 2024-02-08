@@ -239,26 +239,6 @@ func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPol
 	return x
 }
 
-func (x *NodeRequest) WithKnowledgeGraphSchemaConfig(v *configpb.KnowledgeGraphSchemaConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_KnowledgeGraphSchemaConfig{
-				KnowledgeGraphSchemaConfig: v,
-			}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_KnowledgeGraphSchemaConfig{
-				KnowledgeGraphSchemaConfig: v,
-			}
-		}
-	}
-	return x
-}
-
 func (x *NodeRequest) WithWebauthnProviderConfig(v *configpb.WebAuthnProviderConfig) *NodeRequest {
 	switch {
 	case x.create != nil:

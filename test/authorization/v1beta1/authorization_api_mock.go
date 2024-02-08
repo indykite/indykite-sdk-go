@@ -20,6 +20,7 @@
 //
 //	mockgen -copyright_file ./doc/LICENSE -package authorization -destination ./test/authorization/v1beta1/authorization_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1 AuthorizationAPIClient
 //
+
 // Package authorization is a generated GoMock package.
 package authorization
 

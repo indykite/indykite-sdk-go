@@ -25,23 +25,16 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// readCmd represents the command for making a read query with the Identity Knowledge API
-var readCmd = &cobra.Command{
-	Use:   "read",
-	Short: "Make a read query to the IndyKite Identity Knowledge API",
-	Long:  `Make a read query to the IndyKite Identity Knowledge API`,
+// listCmd represents the command for making a listNodes query with the Identity Knowledge API
+var listCmd = &cobra.Command{
+	Use:   "listNodes",
+	Short: "Make a list query to the IndyKite Identity Knowledge API",
+	Long:  `Make a list query to the IndyKite Identity Knowledge API`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		query := "MATCH (n:Person)-[r:CAN_SEE]->(a:Asset) WHERE n.external_id=$external_id AND n.type=$type"
-		params := map[string]*objects.Value{
-			"external_id": {
-				Type: &objects.Value_StringValue{StringValue: "1234"},
-			},
-			"type": {
-				Type: &objects.Value_StringValue{StringValue: "store"},
-			},
-		}
+		query := "MATCH (n:Resource)"
+		params := map[string]*objects.Value{}
 		returns := []*knowledgepb.Return{
 			{
 				Variable: "n",
@@ -57,5 +50,5 @@ var readCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(readCmd)
+	rootCmd.AddCommand(listCmd)
 }

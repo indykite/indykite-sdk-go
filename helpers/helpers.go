@@ -24,9 +24,9 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
 )
 
-// DeleteNodesWithTypeNode is a helper function that delete all nodes of specific type either DigitalTwin
+// DeleteNodes is a helper function that delete all nodes of specific type either Identities
 // or Resource and return array of StreamRecordsResponse.
-func (c *Client) DeleteNodesWithTypeNode(
+func (c *Client) DeleteNodes(
 	ctx context.Context,
 	nodeType string,
 ) ([]*ingestpb.StreamRecordsResponse,
