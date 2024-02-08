@@ -20,6 +20,7 @@
 //
 //	mockgen -copyright_file ./doc/LICENSE -package ingest -destination ./test/ingest/v1beta2/ingest_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2 IngestAPIClient,IngestAPI_StreamRecordsClient
 //
+
 // Package ingest is a generated GoMock package.
 package ingest
 

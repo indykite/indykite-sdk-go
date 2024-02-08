@@ -28,11 +28,11 @@ var deleteCmd = &cobra.Command{
 	Long:  `Delete nodes in the IndyKite Knowledge API`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		responses, err := client.DeleteNodesWithTypeNode(context.Background(), "DigitalTwin")
+		responses, err := client.DeleteNodes(context.Background(), "DigitalTwin")
 		if err != nil {
 			fmt.Println("DigitalTwin: " + err.Error())
 		}
-		responses2, err := client.DeleteNodesWithTypeNode(context.Background(), "Resource")
+		responses2, err := client.DeleteNodes(context.Background(), "Resource")
 		if err != nil {
 			fmt.Println("Resource: " + err.Error())
 		}

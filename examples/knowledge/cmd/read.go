@@ -21,7 +21,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
+	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
 // readCmd represents the command for making a read query with the Identity Knowledge API
@@ -32,15 +33,22 @@ var readCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		path := "(n:Person)-[:OWNS]->(s:Store)"
-		conditions := "WHERE n.external_id = $external_id"
-		params := map[string]*knowledgepb.InputParam{
+		query := "MATCH (n:Person)-[r:CAN_SEE]->(a:Asset) WHERE n.external_id=$external_id AND n.type=$type"
+		params := map[string]*objects.Value{
 			"external_id": {
-				Value: &knowledgepb.InputParam_StringValue{StringValue: "1234"},
+				Type: &objects.Value_StringValue{StringValue: "1234"},
+			},
+			"type": {
+				Type: &objects.Value_StringValue{StringValue: "store"},
+			},
+		}
+		returns := []*knowledgepb.Return{
+			{
+				Variable: "n",
 			},
 		}
 
-		resp, err := client.Read(context.Background(), path, conditions, params)
+		resp, err := client.IdentityKnowledgeRead(context.Background(), query, params, returns)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 		}

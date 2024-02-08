@@ -1,4 +1,4 @@
-// Copyright (c) 2023 IndyKite
+// Copyright (c) 2024 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,236 +23,244 @@ import (
 	"google.golang.org/grpc/codes"
 
 	"github.com/indykite/indykite-sdk-go/errors"
-	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// Read sends a READ operation to the Identity Knowledge API, with the desired path and optional conditions.
-func (c *Client) Read(
+// IdentityKnowledgeRead sends a READ operation to the Identity Knowledge API,
+// with the desired query, inputParams and returns.
+func (c *Client) IdentityKnowledgeRead(
 	ctx context.Context,
-	path string,
-	conditions string,
-	inputParams map[string]*knowledgepb.InputParam,
+	query string,
+	inputParams map[string]*objects.Value,
+	returns []*knowledgepb.Return,
 	opts ...grpc.CallOption,
-) (*knowledgepb.IdentityKnowledgeResponse, error) {
+) (*knowledgepb.IdentityKnowledgeReadResponse, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
-		Path:        path,
-		Conditions:  conditions,
+	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{
+		Query:       query,
 		InputParams: inputParams,
-		Operation:   knowledgepb.Operation_OPERATION_READ,
+		Returns:     returns,
 	}, opts...)
 	return resp, err
 }
 
-// GetDigitalTwinByID is a helper function that queries for a DigitalTwin node by its id.
-func (c *Client) GetDigitalTwinByID(
+// GetIdentityByID is a helper function that queries for a Identity node by its id.
+func (c *Client) GetIdentityByID(
 	ctx context.Context,
 	id string,
 	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
-	return c.getNodeByID(ctx, id, DigitalTwin, opts...)
+) (*knowledgeobjects.Node, error) {
+	return c.GetNodeByID(ctx, id, true, opts...)
 }
 
-// GetDigitalTwinByIdentifier is a helper function that queries for a DigitalTwin node
+// GetIdentityByIdentifier is a helper function that queries for a Identity node
 // by its externalID + type combination.
-func (c *Client) GetDigitalTwinByIdentifier(
+func (c *Client) GetIdentityByIdentifier(
 	ctx context.Context,
 	identifier *Identifier,
 	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
-	return c.getNodeByIdentifier(ctx, DigitalTwin, identifier, opts...)
+) (*knowledgeobjects.Node, error) {
+	return c.GetNodeByIdentifier(ctx, identifier, true, opts...)
 }
 
-// GetResourceByID is a helper function that queries for a Resource node by its id.
-func (c *Client) GetResourceByID(
-	ctx context.Context,
-	id string,
-	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
-	ctx = insertMetadata(ctx, c.xMetadata)
-	return c.getNodeByID(ctx, id, Resource, opts...)
-}
-
-// GetResourceByIdentifier is a helper function that queries for a Resource node
-// by its externalID + type combination.
-func (c *Client) GetResourceByIdentifier(
-	ctx context.Context,
-	identifier *Identifier,
-	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
-	ctx = insertMetadata(ctx, c.xMetadata)
-	return c.getNodeByIdentifier(ctx, Resource, identifier, opts...)
-}
-
-// ListDigitalTwinsByProperty is a helper function that lists all DigitalTwin nodes
+// ListIdentitiesByProperty is a helper function that lists all Identity nodes
 // that have the specified property.
-func (c *Client) ListDigitalTwinsByProperty(
+func (c *Client) ListIdentitiesByProperty(
 	ctx context.Context,
-	property *knowledgepb.Property,
-	opts ...grpc.CallOption) ([]*knowledgepb.Node, error) {
-	return c.ListNodesByProperty(ctx, DigitalTwin, property, opts...)
+	property *knowledgeobjects.Property,
+	opts ...grpc.CallOption) ([]*knowledgeobjects.Node, error) {
+	return c.ListNodesByProperty(ctx, property, true, opts...)
 }
 
-// ListResourcesByProperty is a helper function that lists all Resource nodes.
-// that have the specified property.
-func (c *Client) ListResourcesByProperty(
+// ListIdentities is a helper function that lists all Identity nodes.
+func (c *Client) ListIdentities(
 	ctx context.Context,
-	property *knowledgepb.Property,
-	opts ...grpc.CallOption) ([]*knowledgepb.Node, error) {
-	return c.ListNodesByProperty(ctx, Resource, property, opts...)
+	opts ...grpc.CallOption) ([]*knowledgeobjects.Node, error) {
+	return c.ListNodes(ctx, "DigitalTwin", opts...)
 }
 
-// ListDigitalTwins is a helper function that lists all DigitalTwin nodes.
-func (c *Client) ListDigitalTwins(
-	ctx context.Context,
-	opts ...grpc.CallOption) ([]*knowledgepb.Node, error) {
-	return c.ListNodes(ctx, DigitalTwin, opts...)
-}
-
-// ListResources is a helper function that lists all Resource nodes.
-// that have the specified property.
-func (c *Client) ListResources(
-	ctx context.Context,
-	opts ...grpc.CallOption) ([]*knowledgepb.Node, error) {
-	return c.ListNodes(ctx, Resource, opts...)
-}
-
-// ListNodes is a helper function that lists all nodes by type, regardless of whether they are DigitalTwins
-// or Resources. The nodeType argument should be in PascalCase.
+// ListNodes is a helper function that lists all nodes by given node type, regardless of whether they are Identities
+// or not.
 func (c *Client) ListNodes(
 	ctx context.Context,
 	nodeType string,
 	opts ...grpc.CallOption,
-) ([]*knowledgepb.Node, error) {
+) ([]*knowledgeobjects.Node, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	path := fmt.Sprintf("(:%s)", nodeType)
-	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
-		Path:      path,
-		Operation: knowledgepb.Operation_OPERATION_READ,
+	query := fmt.Sprintf("MATCH (n:%s)", nodeType)
+	params := map[string]*objects.Value{}
+	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{
+		Query:       query,
+		InputParams: params,
+		Returns: []*knowledgepb.Return{
+			{
+				Variable: "n",
+			},
+		},
 	}, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return parseMultipleNodesFromPaths(resp.GetPaths())
+	return resp.GetNodes(), nil
 }
 
 // ListNodesByProperty is a helper function that lists all nodes that have the specified type and property.
 func (c *Client) ListNodesByProperty(
 	ctx context.Context,
-	nodeType string,
-	property *knowledgepb.Property,
+	property *knowledgeobjects.Property,
+	isIdentity bool,
 	opts ...grpc.CallOption,
-) ([]*knowledgepb.Node, error) {
+) ([]*knowledgeobjects.Node, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	path := fmt.Sprintf("(n:%s)", nodeType)
-	conditions := fmt.Sprintf("WHERE n.%s = $%s", property.Key, property.Key)
-	params := make(map[string]*knowledgepb.InputParam)
-	switch property.Value.Value.(type) {
+	query := "MATCH (n:Resource)-[:HAS]->(p:Property)"
+	if isIdentity {
+		query = "MATCH (n:DigitalTwin)-[:HAS]->(p:Property)"
+	}
+	query = fmt.Sprintf(
+		"%s WHERE p.type='%s' and p.value=$%s",
+		query,
+		property.Type,
+		property.Type,
+	)
+
+	params := make(map[string]*objects.Value)
+	switch property.Value.Type.(type) {
 	case *objects.Value_IntegerValue:
-		params[property.Key] = &knowledgepb.InputParam{
-			Value: &knowledgepb.InputParam_IntegerValue{
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_IntegerValue{
 				IntegerValue: property.GetValue().GetIntegerValue()}}
 	case *objects.Value_StringValue:
-		params[property.Key] = &knowledgepb.InputParam{
-			Value: &knowledgepb.InputParam_StringValue{
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_StringValue{
 				StringValue: property.GetValue().GetStringValue()}}
+	case *objects.Value_BoolValue:
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_BoolValue{
+				BoolValue: property.GetValue().GetBoolValue()}}
+	case *objects.Value_DoubleValue:
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_DoubleValue{
+				DoubleValue: property.GetValue().GetDoubleValue()}}
+	case *objects.Value_TimeValue:
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_TimeValue{
+				TimeValue: property.GetValue().GetTimeValue()}}
+	case *objects.Value_DurationValue:
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_DurationValue{
+				DurationValue: property.GetValue().GetDurationValue()}}
+	case *objects.Value_ArrayValue:
+		params[property.Type] = &objects.Value{
+			Type: &objects.Value_ArrayValue{
+				ArrayValue: property.GetValue().GetArrayValue()}}
 	default:
-		return nil, errors.New(codes.InvalidArgument, "only string or integer properties can be used for queries")
+		return nil, errors.New(codes.InvalidArgument, "this type cannot be used for queries")
 	}
-	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
-		Path:        path,
-		Conditions:  conditions,
+	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{
+		Query:       query,
 		InputParams: params,
-		Operation:   knowledgepb.Operation_OPERATION_READ,
+		Returns: []*knowledgepb.Return{
+			{
+				Variable: "n",
+			},
+		},
 	}, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return parseMultipleNodesFromPaths(resp.GetPaths())
+	return resp.GetNodes(), nil
 }
 
-func (c *Client) getNodeByID(
+func (c *Client) GetNodeByID(
 	ctx context.Context,
 	id string,
-	nodeType string,
+	isIdentity bool,
 	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
+) (*knowledgeobjects.Node, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	path := fmt.Sprintf("(n:%s)", nodeType)
-	conditions := fmt.Sprintf("WHERE n.%s = $%s", ID, ID)
-	params := map[string]*knowledgepb.InputParam{
+	query := "MATCH (n:Resource)"
+	if isIdentity {
+		query = "MATCH (n:DigitalTwin)"
+	}
+	query = fmt.Sprintf(
+		"%s WHERE n.%s=$%s",
+		query,
+		ID,
+		ID,
+	)
+	params := map[string]*objects.Value{
 		ID: {
-			Value: &knowledgepb.InputParam_StringValue{StringValue: id},
+			Type: &objects.Value_StringValue{StringValue: id},
 		},
 	}
-	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
-		Path:        path,
-		Conditions:  conditions,
+	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{
+		Query:       query,
 		InputParams: params,
-		Operation:   knowledgepb.Operation_OPERATION_READ,
+		Returns: []*knowledgepb.Return{
+			{
+				Variable: "n",
+			},
+		},
 	}, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return parseSingleNodeFromPaths(resp.GetPaths())
+	return ParseSingleNodeFromNodes(resp.GetNodes())
 }
 
-func (c *Client) getNodeByIdentifier(ctx context.Context,
-	nodeType string,
+func (c *Client) GetNodeByIdentifier(ctx context.Context,
 	identifier *Identifier,
+	isIdentity bool,
 	opts ...grpc.CallOption,
-) (*knowledgepb.Node, error) {
+) (*knowledgeobjects.Node, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	path := fmt.Sprintf("(n:%s)", nodeType)
-	conditions := fmt.Sprintf(
-		"WHERE n.%s = $%s AND n.%s = $%s",
+	query := "MATCH (n:Resource)"
+	if isIdentity {
+		query = "MATCH (n:DigitalTwin)"
+	}
+	query = fmt.Sprintf(
+		"%s WHERE n.%s=$%s AND n.%s=$%s",
+		query,
 		ExternalID,
 		ExternalID,
 		Type,
 		Type,
 	)
-	params := map[string]*knowledgepb.InputParam{
+	params := map[string]*objects.Value{
 		ExternalID: {
-			Value: &knowledgepb.InputParam_StringValue{StringValue: identifier.ExternalID},
+			Type: &objects.Value_StringValue{StringValue: identifier.ExternalID},
 		},
 		Type: {
-			Value: &knowledgepb.InputParam_StringValue{StringValue: strings.ToLower(identifier.Type)},
+			Type: &objects.Value_StringValue{StringValue: strings.ToLower(identifier.Type)},
 		},
 	}
-	resp, err := c.client.IdentityKnowledge(ctx, &knowledgepb.IdentityKnowledgeRequest{
-		Path:        path,
-		Conditions:  conditions,
+	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{
+		Query:       query,
 		InputParams: params,
-		Operation:   knowledgepb.Operation_OPERATION_READ,
+		Returns: []*knowledgepb.Return{
+			{
+				Variable: "n",
+			},
+		},
 	}, opts...)
 	if err != nil {
 		return nil, err
 	}
-	return parseSingleNodeFromPaths(resp.GetPaths())
+	return ParseSingleNodeFromNodes(resp.GetNodes())
 }
 
-func parseSingleNodeFromPaths(paths []*knowledgepb.Path) (*knowledgepb.Node, error) {
-	switch len(paths) {
+func ParseSingleNodeFromNodes(nodes []*knowledgeobjects.Node) (*knowledgeobjects.Node, error) {
+	switch len(nodes) {
 	case 0:
 		return nil, errors.New(codes.NotFound, "node not found")
 	case 1:
-		return paths[0].GetNodes()[0], nil
+		return nodes[0], nil
 	default:
 		// if this happens, a uniqueness constraint in the DB has been violated, this should not happen
 		return nil, errors.New(codes.Internal, "unable to complete request")
 	}
-}
-
-func parseMultipleNodesFromPaths(paths []*knowledgepb.Path) ([]*knowledgepb.Node, error) {
-	if len(paths) == 0 {
-		return nil, errors.New(codes.NotFound, "no nodes found")
-	}
-	nodes := make([]*knowledgepb.Node, len(paths))
-	for i, p := range paths {
-		nodes[i] = p.GetNodes()[0]
-	}
-	return nodes, nil
 }
 
 // Identifier is the combination of ExternalID and Type
@@ -263,9 +271,7 @@ type Identifier struct {
 }
 
 const (
-	DigitalTwin = "DigitalTwin"
-	Resource    = "Resource"
-	ExternalID  = "external_id"
-	Type        = "type"
-	ID          = "id"
+	ExternalID = "external_id"
+	Type       = "type"
+	ID         = "id"
 )

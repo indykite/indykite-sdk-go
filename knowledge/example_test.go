@@ -21,8 +21,9 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta1"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	api "github.com/indykite/indykite-sdk-go/grpc"
 	"github.com/indykite/indykite-sdk-go/knowledge"
 )
@@ -46,8 +47,8 @@ func ExampleNewClient_options() {
 	_ = client.Close()
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to do a READ query.
-func ExampleClient_Read() {
+// This example demonstrates how to use the Identity Knowledge Client to do an IdentityKnowledgeRead query.
+func ExampleClient_IdentityKnowledgeRead() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
@@ -56,15 +57,19 @@ func ExampleClient_Read() {
 		_ = client.Close()
 	}()
 
-	path := "(n:Person)-[:HAS]->(s:Store)"
-	conditions := "WHERE n.external_id = $external_id"
-	params := map[string]*knowledgepb.InputParam{
+	query := "MATCH (n:Person)-[:HAS]->(s:Store) WHERE n.external_id = $external_id"
+	params := map[string]*objects.Value{
 		"external_id": {
-			Value: &knowledgepb.InputParam_StringValue{StringValue: "1234"},
+			Type: &objects.Value_StringValue{StringValue: "1234"},
+		},
+	}
+	returns := []*knowledgepb.Return{
+		{
+			Variable: "n",
 		},
 	}
 
-	response, err := client.Read(context.Background(), path, conditions, params)
+	response, err := client.IdentityKnowledgeRead(context.Background(), query, params, returns)
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
@@ -74,8 +79,8 @@ func ExampleClient_Read() {
 	fmt.Println(json.Format(response))
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to get a DigitalTwin by its id.
-func ExampleClient_GetDigitalTwinByID() {
+// This example demonstrates how to use the Identity Knowledge Client to get an Identity by its id.
+func ExampleClient_GetIdentityByID() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
@@ -84,7 +89,7 @@ func ExampleClient_GetDigitalTwinByID() {
 		_ = client.Close()
 	}()
 
-	response, err := client.GetDigitalTwinByID(context.Background(), "gid:AAAAAmluZHlraURlgAABDwAAAAA")
+	response, err := client.GetIdentityByID(context.Background(), "gid:AAAAAmluZHlraURlgAABDwAAAAA")
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
@@ -94,29 +99,9 @@ func ExampleClient_GetDigitalTwinByID() {
 	fmt.Println(json.Format(response))
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to get a Resource by its id.
-func ExampleClient_GetResourceByID() {
-	client, err := knowledge.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	response, err := client.GetResourceByID(context.Background(), "gid:AAAAAmluZHlraURlgAABDwAAAAA")
-	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	fmt.Println(json.Format(response))
-}
-
-// This example demonstrates how to use the Identity Knowledge Client to get a DigitalTwin
+// This example demonstrates how to use the Identity Knowledge Client to get an Identity
 // by its externalID + type combination.
-func ExampleClient_GetDigitalTwinByIdentifier() {
+func ExampleClient_GetIdentityByIdentifier() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
@@ -125,10 +110,12 @@ func ExampleClient_GetDigitalTwinByIdentifier() {
 		_ = client.Close()
 	}()
 
-	response, err := client.GetDigitalTwinByIdentifier(context.Background(), &knowledge.Identifier{
+	response, err := client.GetIdentityByIdentifier(context.Background(), &knowledge.Identifier{
 		ExternalID: "1234",
 		Type:       "Person",
-	})
+	},
+	)
+
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
@@ -138,33 +125,9 @@ func ExampleClient_GetDigitalTwinByIdentifier() {
 	fmt.Println(json.Format(response))
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to get a DigitalTwin
-// by its externalID + type combination.
-func ExampleClient_GetResourceByIdentifier() {
-	client, err := knowledge.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	response, err := client.GetResourceByIdentifier(context.Background(), &knowledge.Identifier{
-		ExternalID: "1337",
-		Type:       "Store",
-	})
-	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	fmt.Println(json.Format(response))
-}
-
-// This example demonstrates how to use the Identity Knowledge Client to list all DigitalTwins
+// This example demonstrates how to use the Identity Knowledge Client to list all Identities
 // that have a certain property.
-func ExampleClient_ListDigitalTwinsByProperty() {
+func ExampleClient_ListIdentitiesByProperty() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
@@ -173,10 +136,10 @@ func ExampleClient_ListDigitalTwinsByProperty() {
 		_ = client.Close()
 	}()
 
-	response, err := client.ListDigitalTwinsByProperty(context.Background(), &knowledgepb.Property{
-		Key: "email",
+	response, err := client.ListIdentitiesByProperty(context.Background(), &knowledgeobjects.Property{
+		Type: "email",
 		Value: &objects.Value{
-			Value: &objects.Value_StringValue{
+			Type: &objects.Value_StringValue{
 				StringValue: "test@test.com",
 			},
 		},
@@ -193,9 +156,8 @@ func ExampleClient_ListDigitalTwinsByProperty() {
 	}
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to list all Resources
-// that have a certain property.
-func ExampleClient_ListResourcesByProperty() {
+// This example demonstrates how to use the Identity Knowledge Client to list all Identities.
+func ExampleClient_ListIdentities() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
 		log.Fatalf("failed to create client %v", err)
@@ -204,15 +166,7 @@ func ExampleClient_ListResourcesByProperty() {
 		_ = client.Close()
 	}()
 
-	response, err := client.ListResourcesByProperty(context.Background(), &knowledgepb.Property{
-		Key: "email",
-		Value: &objects.Value{
-			Value: &objects.Value_StringValue{
-				StringValue: "test@test.com",
-			},
-		},
-	},
-	)
+	response, err := client.ListIdentities(context.Background())
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
@@ -224,51 +178,7 @@ func ExampleClient_ListResourcesByProperty() {
 	}
 }
 
-// This example demonstrates how to use the Identity Knowledge Client to list all Resources.
-func ExampleClient_ListResources() {
-	client, err := knowledge.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	response, err := client.ListResources(context.Background())
-	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	for _, n := range response {
-		fmt.Println(json.Format(n))
-	}
-}
-
-// This example demonstrates how to use the Identity Knowledge Client to list all DigitalTwins.
-func ExampleClient_ListDigitalTwins() {
-	client, err := knowledge.NewClient(context.Background())
-	if err != nil {
-		log.Fatalf("failed to create client %v", err)
-	}
-	defer func() {
-		_ = client.Close()
-	}()
-
-	response, err := client.ListDigitalTwins(context.Background())
-	if err != nil {
-		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
-	}
-	json := protojson.MarshalOptions{
-		Multiline: true,
-	}
-	for _, n := range response {
-		fmt.Println(json.Format(n))
-	}
-}
-
-// This example demonstrates how to use the Identity Knowledge Client to list all nodes with a certain type.
+// This example demonstrates how to use the Identity Knowledge Client to list all nodes.
 func ExampleClient_ListNodes() {
 	client, err := knowledge.NewClient(context.Background())
 	if err != nil {
@@ -278,7 +188,7 @@ func ExampleClient_ListNodes() {
 		_ = client.Close()
 	}()
 
-	response, err := client.ListNodes(context.Background(), "Person")
+	response, err := client.ListNodes(context.Background(), "Resource")
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
@@ -303,12 +213,15 @@ func ExampleClient_ListNodesByProperty() {
 
 	response, err := client.ListNodesByProperty(
 		context.Background(),
-		"Person",
-		&knowledgepb.Property{
-			Key: "email",
+		&knowledgeobjects.Property{
+			Type: "email",
 			Value: &objects.Value{
-				Value: &objects.Value_StringValue{
-					StringValue: "test@test.com"}}})
+				Type: &objects.Value_StringValue{
+					StringValue: "test@test.com",
+				},
+			},
+		},
+		false)
 	if err != nil {
 		log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
 	}
