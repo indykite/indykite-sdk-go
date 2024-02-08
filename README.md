@@ -37,7 +37,7 @@ or request one from your point of contact at IndyKite.
 ## Initial settings
 
 1. You need to have a configuration json file to be able to use the IndyKite Proto SDK. You can get it from your
-   Indykite contact or from Indykite console if you have access to it.
+   Indykite contact or from Indykite hub if you have access to it.
 
    Example configuration file:
 
