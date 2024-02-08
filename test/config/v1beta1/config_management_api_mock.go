@@ -20,6 +20,7 @@
 //
 //	mockgen -copyright_file ./doc/LICENSE -package config -destination ./test/config/v1beta1/config_management_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1 ConfigManagementAPIClient,ConfigManagementAPI_ListApplicationSpacesClient,ConfigManagementAPI_ListApplicationsClient,ConfigManagementAPI_ListTenantsClient,ConfigManagementAPI_ListApplicationAgentsClient
 //
+
 // Package config is a generated GoMock package.
 package config
 
@@ -435,26 +436,6 @@ func (mr *MockConfigManagementAPIClientMockRecorder) DeleteTenant(arg0, arg1 any
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTenant", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteTenant), varargs...)
-}
-
-// GetSchemaHelpers mocks base method.
-func (m *MockConfigManagementAPIClient) GetSchemaHelpers(arg0 context.Context, arg1 *configv1beta1.GetSchemaHelpersRequest, arg2 ...grpc.CallOption) (*configv1beta1.GetSchemaHelpersResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetSchemaHelpers", varargs...)
-	ret0, _ := ret[0].(*configv1beta1.GetSchemaHelpersResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetSchemaHelpers indicates an expected call of GetSchemaHelpers.
-func (mr *MockConfigManagementAPIClientMockRecorder) GetSchemaHelpers(arg0, arg1 any, arg2 ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSchemaHelpers", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).GetSchemaHelpers), varargs...)
 }
 
 // ListApplicationAgents mocks base method.

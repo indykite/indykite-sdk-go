@@ -20,6 +20,7 @@
 //
 //	mockgen -copyright_file ./doc/LICENSE -package identity -source ./gen/indykite/identity/v1beta2/identity_management_api_grpc.pb.go -destination ./test/identity/v1beta2/identity_management_api_mock.go
 //
+
 // Package identity is a generated GoMock package.
 package identity
 
