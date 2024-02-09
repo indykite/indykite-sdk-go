@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.22.0](https://github.com/indykite/indykite-sdk-go/compare/v0.21.1...v0.22.0) (2024-02-09)
+
+
+### Features
+
+* change value in changelog ([1255634](https://github.com/indykite/indykite-sdk-go/commit/125563492e0ab61c0a5838073770be4c803090f7))
+* implement knowledge and objects v1beta2 ([d87cdf1](https://github.com/indykite/indykite-sdk-go/commit/d87cdf1c067a1ff5168c0301525e07948a35036c))
+
+
+### Miscellaneous Chores
+
+* **deps:** update codecov/codecov-action action to v4 ([cb55c4c](https://github.com/indykite/indykite-sdk-go/commit/cb55c4c16938420edaede06293dbf293abd54f95))
+* **deps:** update everything ([ea3b16a](https://github.com/indykite/indykite-sdk-go/commit/ea3b16a6394ce687aa2434df2f69e1df5e9dbbb1))
+* **deps:** update everything ([5b84488](https://github.com/indykite/indykite-sdk-go/commit/5b844883348cddeb26cf28575041484ad69b0baf))
+
 ## [0.21.1](https://github.com/indykite/indykite-sdk-go/compare/v0.21.0...v0.21.1) (2024-01-09)
 
 
