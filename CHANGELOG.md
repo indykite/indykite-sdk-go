@@ -1,9 +1,9 @@
 # Changelog
 
-## [1.0.0](https://github.com/indykite/indykite-sdk-go/compare/v0.21.1...v1.0.0) (2024-02-09)
+## [0.22.0](https://github.com/indykite/indykite-sdk-go/compare/v0.21.1...v0.22.0) (2024-02-09)
 
 
-### ⚠ BREAKING CHANGES
+###
 
 * ENG-2778
 * ENG-2778
