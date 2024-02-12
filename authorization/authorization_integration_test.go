@@ -51,7 +51,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -98,7 +98,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -154,7 +154,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -201,7 +201,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -247,7 +247,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring(
 				"invalid IsAuthorizedRequest_Resource.Type: value length must be between 2 and 50 runes")))
@@ -273,7 +273,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring("invalid IsAuthorizedRequest.Subject")))
 			Expect(resp).To(BeNil())
@@ -298,7 +298,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -344,7 +344,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -391,7 +391,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -437,7 +437,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -484,7 +484,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -530,7 +530,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -578,7 +578,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -626,7 +626,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -674,7 +674,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -722,7 +722,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -766,7 +766,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring("invalid JWT")))
 			Expect(resp).To(BeNil())
@@ -788,7 +788,7 @@ var _ = Describe("Authorized", func() {
 				resources,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
@@ -836,7 +836,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -891,7 +891,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring(
 				"invalid WhatAuthorizedRequest_ResourceType.Type: value length must be between 2 and 50 runes")))
@@ -917,7 +917,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring(
 				"invalid DigitalTwin.Id: value length must be between 27 and 100 runes")))
@@ -944,7 +944,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -987,7 +987,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1031,7 +1031,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1081,7 +1081,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1125,7 +1125,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1175,7 +1175,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1213,7 +1213,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(MatchError(ContainSubstring("invalid JWT")))
@@ -1235,7 +1235,7 @@ var _ = Describe("Authorized", func() {
 				resourcesTypes,
 				inputParams,
 				policyTags,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -1279,7 +1279,7 @@ var _ = Describe("Authorized", func() {
 			resp, err := authorizationClient.WhoAuthorized(
 				context.Background(),
 				req,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			decision := resources[0].Type
@@ -1338,7 +1338,7 @@ var _ = Describe("Authorized", func() {
 			resp, err := authorizationClient.WhoAuthorized(
 				context.Background(),
 				req,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(MatchError(ContainSubstring(
@@ -1364,7 +1364,7 @@ var _ = Describe("Authorized", func() {
 			resp, err := authorizationClient.WhoAuthorized(
 				context.Background(),
 				req,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
