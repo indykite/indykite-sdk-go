@@ -177,8 +177,12 @@ type TokenIntrospectResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Active    bool               `protobuf:"varint,1,opt,name=active,proto3" json:"active,omitempty"`
-	TokenInfo *IdentityTokenInfo `protobuf:"bytes,2,opt,name=token_info,json=tokenInfo,proto3" json:"token_info,omitempty"`
+	Active bool `protobuf:"varint,1,opt,name=active,proto3" json:"active,omitempty"`
+	// Types that are assignable to TokenInfo:
+	//
+	//	*TokenIntrospectResponse_IdentityToken
+	//	*TokenIntrospectResponse_ThirdPartyIdentityToken
+	TokenInfo isTokenIntrospectResponse_TokenInfo `protobuf_oneof:"token_info"`
 }
 
 func (x *TokenIntrospectResponse) Reset() {
@@ -220,12 +224,42 @@ func (x *TokenIntrospectResponse) GetActive() bool {
 	return false
 }
 
-func (x *TokenIntrospectResponse) GetTokenInfo() *IdentityTokenInfo {
-	if x != nil {
-		return x.TokenInfo
+func (m *TokenIntrospectResponse) GetTokenInfo() isTokenIntrospectResponse_TokenInfo {
+	if m != nil {
+		return m.TokenInfo
 	}
 	return nil
 }
+
+func (x *TokenIntrospectResponse) GetIdentityToken() *IdentityTokenInfo {
+	if x, ok := x.GetTokenInfo().(*TokenIntrospectResponse_IdentityToken); ok {
+		return x.IdentityToken
+	}
+	return nil
+}
+
+func (x *TokenIntrospectResponse) GetThirdPartyIdentityToken() *ThirdPartyIdentityTokenInfo {
+	if x, ok := x.GetTokenInfo().(*TokenIntrospectResponse_ThirdPartyIdentityToken); ok {
+		return x.ThirdPartyIdentityToken
+	}
+	return nil
+}
+
+type isTokenIntrospectResponse_TokenInfo interface {
+	isTokenIntrospectResponse_TokenInfo()
+}
+
+type TokenIntrospectResponse_IdentityToken struct {
+	IdentityToken *IdentityTokenInfo `protobuf:"bytes,2,opt,name=identity_token,json=identityToken,proto3,oneof"`
+}
+
+type TokenIntrospectResponse_ThirdPartyIdentityToken struct {
+	ThirdPartyIdentityToken *ThirdPartyIdentityTokenInfo `protobuf:"bytes,3,opt,name=third_party_identity_token,json=thirdPartyIdentityToken,proto3,oneof"`
+}
+
+func (*TokenIntrospectResponse_IdentityToken) isTokenIntrospectResponse_TokenInfo() {}
+
+func (*TokenIntrospectResponse_ThirdPartyIdentityToken) isTokenIntrospectResponse_TokenInfo() {}
 
 type StartForgottenPasswordFlowRequest struct {
 	state         protoimpl.MessageState
@@ -3864,14 +3898,23 @@ var file_indykite_identity_v1beta2_identity_management_api_proto_rawDesc = []byt
 	0x1b, 0x0a, 0x09, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x08, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05,
 	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b,
-	0x65, 0x6e, 0x22, 0x7e, 0x0a, 0x17, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x49, 0x6e, 0x74, 0x72, 0x6f,
-	0x73, 0x70, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a,
-	0x06, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x61,
-	0x63, 0x74, 0x69, 0x76, 0x65, 0x12, 0x4b, 0x0a, 0x0a, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5f, 0x69,
-	0x6e, 0x66, 0x6f, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x69, 0x6e, 0x64, 0x79,
-	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31,
-	0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x54, 0x6f,
-	0x6b, 0x65, 0x6e, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x09, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x49, 0x6e,
+	0x65, 0x6e, 0x22, 0x8d, 0x02, 0x0a, 0x17, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x49, 0x6e, 0x74, 0x72,
+	0x6f, 0x73, 0x70, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16,
+	0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06,
+	0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x12, 0x55, 0x0a, 0x0e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c,
+	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69,
+	0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x49, 0x64, 0x65, 0x6e, 0x74,
+	0x69, 0x74, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x49, 0x6e, 0x66, 0x6f, 0x48, 0x00, 0x52, 0x0d,
+	0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x75, 0x0a,
+	0x1a, 0x74, 0x68, 0x69, 0x72, 0x64, 0x5f, 0x70, 0x61, 0x72, 0x74, 0x79, 0x5f, 0x69, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x36, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x69, 0x64, 0x65,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x54, 0x68,
+	0x69, 0x72, 0x64, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x49, 0x6e, 0x66, 0x6f, 0x48, 0x00, 0x52, 0x17, 0x74, 0x68, 0x69,
+	0x72, 0x64, 0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x54,
+	0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x0c, 0x0a, 0x0a, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5f, 0x69, 0x6e,
 	0x66, 0x6f, 0x22, 0x78, 0x0a, 0x21, 0x53, 0x74, 0x61, 0x72, 0x74, 0x46, 0x6f, 0x72, 0x67, 0x6f,
 	0x74, 0x74, 0x65, 0x6e, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x46, 0x6c, 0x6f, 0x77,
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x53, 0x0a, 0x0c, 0x64, 0x69, 0x67, 0x69, 0x74,
@@ -4809,138 +4852,140 @@ var file_indykite_identity_v1beta2_identity_management_api_proto_goTypes = []int
 	(*CreateCustomLoginTokenRequest)(nil),                // 59: indykite.identity.v1beta2.CreateCustomLoginTokenRequest
 	(*CreateCustomLoginTokenResponse)(nil),               // 60: indykite.identity.v1beta2.CreateCustomLoginTokenResponse
 	(*IdentityTokenInfo)(nil),                            // 61: indykite.identity.v1beta2.IdentityTokenInfo
-	(*DigitalTwin)(nil),                                  // 62: indykite.identity.v1beta2.DigitalTwin
-	(*v1beta1.MapValue)(nil),                             // 63: indykite.objects.v1beta1.MapValue
-	(*DigitalTwinIdentifier)(nil),                        // 64: indykite.identity.v1beta2.DigitalTwinIdentifier
-	(*PropertyMask)(nil),                                 // 65: indykite.identity.v1beta2.PropertyMask
-	(*DigitalEntity)(nil),                                // 66: indykite.identity.v1beta2.DigitalEntity
-	(*Property)(nil),                                     // 67: indykite.identity.v1beta2.Property
-	(DigitalTwinKind)(0),                                 // 68: indykite.identity.v1beta2.DigitalTwinKind
-	(*BatchOperationResult)(nil),                         // 69: indykite.identity.v1beta2.BatchOperationResult
-	(*PropertyBatchOperation)(nil),                       // 70: indykite.identity.v1beta2.PropertyBatchOperation
-	(*wrapperspb.BoolValue)(nil),                         // 71: google.protobuf.BoolValue
-	(*timestamppb.Timestamp)(nil),                        // 72: google.protobuf.Timestamp
-	(*Invitation)(nil),                                   // 73: indykite.identity.v1beta2.Invitation
-	(*OAuth2TokenResponse)(nil),                          // 74: indykite.identity.v1beta2.OAuth2TokenResponse
-	(*structpb.Struct)(nil),                              // 75: google.protobuf.Struct
-	(*ConsentReceipt)(nil),                               // 76: indykite.identity.v1beta2.ConsentReceipt
-	(*PropertyFilter)(nil),                               // 77: indykite.identity.v1beta2.PropertyFilter
-	(*CredentialReference)(nil),                          // 78: indykite.identity.v1beta2.CredentialReference
-	(*ImportDigitalTwinsRequest)(nil),                    // 79: indykite.identity.v1beta2.ImportDigitalTwinsRequest
-	(*ImportDigitalTwinsResponse)(nil),                   // 80: indykite.identity.v1beta2.ImportDigitalTwinsResponse
+	(*ThirdPartyIdentityTokenInfo)(nil),                  // 62: indykite.identity.v1beta2.ThirdPartyIdentityTokenInfo
+	(*DigitalTwin)(nil),                                  // 63: indykite.identity.v1beta2.DigitalTwin
+	(*v1beta1.MapValue)(nil),                             // 64: indykite.objects.v1beta1.MapValue
+	(*DigitalTwinIdentifier)(nil),                        // 65: indykite.identity.v1beta2.DigitalTwinIdentifier
+	(*PropertyMask)(nil),                                 // 66: indykite.identity.v1beta2.PropertyMask
+	(*DigitalEntity)(nil),                                // 67: indykite.identity.v1beta2.DigitalEntity
+	(*Property)(nil),                                     // 68: indykite.identity.v1beta2.Property
+	(DigitalTwinKind)(0),                                 // 69: indykite.identity.v1beta2.DigitalTwinKind
+	(*BatchOperationResult)(nil),                         // 70: indykite.identity.v1beta2.BatchOperationResult
+	(*PropertyBatchOperation)(nil),                       // 71: indykite.identity.v1beta2.PropertyBatchOperation
+	(*wrapperspb.BoolValue)(nil),                         // 72: google.protobuf.BoolValue
+	(*timestamppb.Timestamp)(nil),                        // 73: google.protobuf.Timestamp
+	(*Invitation)(nil),                                   // 74: indykite.identity.v1beta2.Invitation
+	(*OAuth2TokenResponse)(nil),                          // 75: indykite.identity.v1beta2.OAuth2TokenResponse
+	(*structpb.Struct)(nil),                              // 76: google.protobuf.Struct
+	(*ConsentReceipt)(nil),                               // 77: indykite.identity.v1beta2.ConsentReceipt
+	(*PropertyFilter)(nil),                               // 78: indykite.identity.v1beta2.PropertyFilter
+	(*CredentialReference)(nil),                          // 79: indykite.identity.v1beta2.CredentialReference
+	(*ImportDigitalTwinsRequest)(nil),                    // 80: indykite.identity.v1beta2.ImportDigitalTwinsRequest
+	(*ImportDigitalTwinsResponse)(nil),                   // 81: indykite.identity.v1beta2.ImportDigitalTwinsResponse
 }
 var file_indykite_identity_v1beta2_identity_management_api_proto_depIdxs = []int32{
-	61, // 0: indykite.identity.v1beta2.TokenIntrospectResponse.token_info:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
-	62, // 1: indykite.identity.v1beta2.StartForgottenPasswordFlowRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	62, // 2: indykite.identity.v1beta2.ChangePasswordRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	27, // 3: indykite.identity.v1beta2.ChangePasswordResponse.error:type_name -> indykite.identity.v1beta2.Error
-	62, // 4: indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	63, // 5: indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest.attributes:type_name -> indykite.objects.v1beta1.MapValue
-	62, // 6: indykite.identity.v1beta2.VerifyDigitalTwinEmailResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	64, // 7: indykite.identity.v1beta2.GetDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
-	65, // 8: indykite.identity.v1beta2.GetDigitalTwinRequest.properties:type_name -> indykite.identity.v1beta2.PropertyMask
-	66, // 9: indykite.identity.v1beta2.GetDigitalTwinResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalEntity
-	61, // 10: indykite.identity.v1beta2.GetDigitalTwinResponse.token_info:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
-	67, // 11: indykite.identity.v1beta2.ListDigitalTwinsRequest.properties:type_name -> indykite.identity.v1beta2.Property
-	66, // 12: indykite.identity.v1beta2.ListDigitalTwinsResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalEntity
-	68, // 13: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest.digital_twin_kind:type_name -> indykite.identity.v1beta2.DigitalTwinKind
-	67, // 14: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest.properties:type_name -> indykite.identity.v1beta2.Property
-	62, // 15: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	69, // 16: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse.results:type_name -> indykite.identity.v1beta2.BatchOperationResult
-	64, // 17: indykite.identity.v1beta2.PatchDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
-	70, // 18: indykite.identity.v1beta2.PatchDigitalTwinRequest.operations:type_name -> indykite.identity.v1beta2.PropertyBatchOperation
-	69, // 19: indykite.identity.v1beta2.PatchDigitalTwinResponse.result:type_name -> indykite.identity.v1beta2.BatchOperationResult
-	64, // 20: indykite.identity.v1beta2.DeleteDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
-	62, // 21: indykite.identity.v1beta2.DeleteDigitalTwinResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	62, // 22: indykite.identity.v1beta2.GetPasswordCredentialRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	71, // 23: indykite.identity.v1beta2.UpdatePasswordCredentialRequest.must_change:type_name -> google.protobuf.BoolValue
-	71, // 24: indykite.identity.v1beta2.UpdatePasswordCredentialRequest.locked:type_name -> google.protobuf.BoolValue
-	72, // 25: indykite.identity.v1beta2.CreateInvitationRequest.invite_at_time:type_name -> google.protobuf.Timestamp
-	72, // 26: indykite.identity.v1beta2.CreateInvitationRequest.expire_time:type_name -> google.protobuf.Timestamp
-	63, // 27: indykite.identity.v1beta2.CreateInvitationRequest.message_attributes:type_name -> indykite.objects.v1beta1.MapValue
-	73, // 28: indykite.identity.v1beta2.CheckInvitationStateResponse.invitation:type_name -> indykite.identity.v1beta2.Invitation
-	41, // 29: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.audiences:type_name -> indykite.identity.v1beta2.AudienceItem
-	40, // 30: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.scopes:type_name -> indykite.identity.v1beta2.ScopeItem
-	62, // 31: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	72, // 32: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.authenticated_at:type_name -> google.protobuf.Timestamp
-	72, // 33: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.requested_at:type_name -> google.protobuf.Timestamp
-	63, // 34: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.context:type_name -> indykite.objects.v1beta1.MapValue
-	44, // 35: indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest.approval:type_name -> indykite.identity.v1beta2.ConsentApproval
-	46, // 36: indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest.denial:type_name -> indykite.identity.v1beta2.DenialResponse
-	45, // 37: indykite.identity.v1beta2.ConsentApproval.session:type_name -> indykite.identity.v1beta2.ConsentRequestSessionData
-	63, // 38: indykite.identity.v1beta2.ConsentRequestSessionData.access_token:type_name -> indykite.objects.v1beta1.MapValue
-	63, // 39: indykite.identity.v1beta2.ConsentRequestSessionData.id_token:type_name -> indykite.objects.v1beta1.MapValue
-	63, // 40: indykite.identity.v1beta2.ConsentRequestSessionData.userinfo:type_name -> indykite.objects.v1beta1.MapValue
-	74, // 41: indykite.identity.v1beta2.GetAccessTokenResponse.token:type_name -> indykite.identity.v1beta2.OAuth2TokenResponse
-	61, // 42: indykite.identity.v1beta2.SessionIntrospectResponse.token_info:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
-	75, // 43: indykite.identity.v1beta2.EnrichTokenRequest.token_claims:type_name -> google.protobuf.Struct
-	75, // 44: indykite.identity.v1beta2.EnrichTokenRequest.session_claims:type_name -> google.protobuf.Struct
-	76, // 45: indykite.identity.v1beta2.ListConsentsResponse.consent_receipt:type_name -> indykite.identity.v1beta2.ConsentReceipt
-	62, // 46: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	77, // 47: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.property_filter:type_name -> indykite.identity.v1beta2.PropertyFilter
-	78, // 48: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.credential_reference:type_name -> indykite.identity.v1beta2.CredentialReference
-	75, // 49: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.token_claims:type_name -> google.protobuf.Struct
-	75, // 50: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.session_claims:type_name -> google.protobuf.Struct
-	62, // 51: indykite.identity.v1beta2.CreateCustomLoginTokenResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
-	1,  // 52: indykite.identity.v1beta2.IdentityManagementAPI.TokenIntrospect:input_type -> indykite.identity.v1beta2.TokenIntrospectRequest
-	3,  // 53: indykite.identity.v1beta2.IdentityManagementAPI.StartForgottenPasswordFlow:input_type -> indykite.identity.v1beta2.StartForgottenPasswordFlowRequest
-	5,  // 54: indykite.identity.v1beta2.IdentityManagementAPI.ChangePassword:input_type -> indykite.identity.v1beta2.ChangePasswordRequest
-	7,  // 55: indykite.identity.v1beta2.IdentityManagementAPI.StartDigitalTwinEmailVerification:input_type -> indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest
-	9,  // 56: indykite.identity.v1beta2.IdentityManagementAPI.VerifyDigitalTwinEmail:input_type -> indykite.identity.v1beta2.VerifyDigitalTwinEmailRequest
-	11, // 57: indykite.identity.v1beta2.IdentityManagementAPI.SelfServiceTerminateSession:input_type -> indykite.identity.v1beta2.SelfServiceTerminateSessionRequest
-	79, // 58: indykite.identity.v1beta2.IdentityManagementAPI.ImportDigitalTwins:input_type -> indykite.identity.v1beta2.ImportDigitalTwinsRequest
-	13, // 59: indykite.identity.v1beta2.IdentityManagementAPI.GetDigitalTwin:input_type -> indykite.identity.v1beta2.GetDigitalTwinRequest
-	15, // 60: indykite.identity.v1beta2.IdentityManagementAPI.ListDigitalTwins:input_type -> indykite.identity.v1beta2.ListDigitalTwinsRequest
-	17, // 61: indykite.identity.v1beta2.IdentityManagementAPI.RegisterDigitalTwinWithoutCredential:input_type -> indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest
-	19, // 62: indykite.identity.v1beta2.IdentityManagementAPI.PatchDigitalTwin:input_type -> indykite.identity.v1beta2.PatchDigitalTwinRequest
-	21, // 63: indykite.identity.v1beta2.IdentityManagementAPI.DeleteDigitalTwin:input_type -> indykite.identity.v1beta2.DeleteDigitalTwinRequest
-	38, // 64: indykite.identity.v1beta2.IdentityManagementAPI.CheckOAuth2ConsentChallenge:input_type -> indykite.identity.v1beta2.CheckOAuth2ConsentChallengeRequest
-	42, // 65: indykite.identity.v1beta2.IdentityManagementAPI.CreateOAuth2ConsentVerifier:input_type -> indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest
-	30, // 66: indykite.identity.v1beta2.IdentityManagementAPI.CreateInvitation:input_type -> indykite.identity.v1beta2.CreateInvitationRequest
-	32, // 67: indykite.identity.v1beta2.IdentityManagementAPI.CheckInvitationState:input_type -> indykite.identity.v1beta2.CheckInvitationStateRequest
-	34, // 68: indykite.identity.v1beta2.IdentityManagementAPI.ResendInvitation:input_type -> indykite.identity.v1beta2.ResendInvitationRequest
-	36, // 69: indykite.identity.v1beta2.IdentityManagementAPI.CancelInvitation:input_type -> indykite.identity.v1beta2.CancelInvitationRequest
-	51, // 70: indykite.identity.v1beta2.IdentityManagementAPI.EnrichToken:input_type -> indykite.identity.v1beta2.EnrichTokenRequest
-	53, // 71: indykite.identity.v1beta2.IdentityManagementAPI.CreateConsent:input_type -> indykite.identity.v1beta2.CreateConsentRequest
-	55, // 72: indykite.identity.v1beta2.IdentityManagementAPI.ListConsents:input_type -> indykite.identity.v1beta2.ListConsentsRequest
-	57, // 73: indykite.identity.v1beta2.IdentityManagementAPI.RevokeConsent:input_type -> indykite.identity.v1beta2.RevokeConsentRequest
-	23, // 74: indykite.identity.v1beta2.IdentityManagementAPI.GetPasswordCredential:input_type -> indykite.identity.v1beta2.GetPasswordCredentialRequest
-	25, // 75: indykite.identity.v1beta2.IdentityManagementAPI.UpdatePasswordCredential:input_type -> indykite.identity.v1beta2.UpdatePasswordCredentialRequest
-	47, // 76: indykite.identity.v1beta2.IdentityManagementAPI.GetAccessToken:input_type -> indykite.identity.v1beta2.GetAccessTokenRequest
-	49, // 77: indykite.identity.v1beta2.IdentityManagementAPI.SessionIntrospect:input_type -> indykite.identity.v1beta2.SessionIntrospectRequest
-	59, // 78: indykite.identity.v1beta2.IdentityManagementAPI.CreateCustomLoginToken:input_type -> indykite.identity.v1beta2.CreateCustomLoginTokenRequest
-	2,  // 79: indykite.identity.v1beta2.IdentityManagementAPI.TokenIntrospect:output_type -> indykite.identity.v1beta2.TokenIntrospectResponse
-	4,  // 80: indykite.identity.v1beta2.IdentityManagementAPI.StartForgottenPasswordFlow:output_type -> indykite.identity.v1beta2.StartForgottenPasswordFlowResponse
-	6,  // 81: indykite.identity.v1beta2.IdentityManagementAPI.ChangePassword:output_type -> indykite.identity.v1beta2.ChangePasswordResponse
-	8,  // 82: indykite.identity.v1beta2.IdentityManagementAPI.StartDigitalTwinEmailVerification:output_type -> indykite.identity.v1beta2.StartDigitalTwinEmailVerificationResponse
-	10, // 83: indykite.identity.v1beta2.IdentityManagementAPI.VerifyDigitalTwinEmail:output_type -> indykite.identity.v1beta2.VerifyDigitalTwinEmailResponse
-	12, // 84: indykite.identity.v1beta2.IdentityManagementAPI.SelfServiceTerminateSession:output_type -> indykite.identity.v1beta2.SelfServiceTerminateSessionResponse
-	80, // 85: indykite.identity.v1beta2.IdentityManagementAPI.ImportDigitalTwins:output_type -> indykite.identity.v1beta2.ImportDigitalTwinsResponse
-	14, // 86: indykite.identity.v1beta2.IdentityManagementAPI.GetDigitalTwin:output_type -> indykite.identity.v1beta2.GetDigitalTwinResponse
-	16, // 87: indykite.identity.v1beta2.IdentityManagementAPI.ListDigitalTwins:output_type -> indykite.identity.v1beta2.ListDigitalTwinsResponse
-	18, // 88: indykite.identity.v1beta2.IdentityManagementAPI.RegisterDigitalTwinWithoutCredential:output_type -> indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse
-	20, // 89: indykite.identity.v1beta2.IdentityManagementAPI.PatchDigitalTwin:output_type -> indykite.identity.v1beta2.PatchDigitalTwinResponse
-	22, // 90: indykite.identity.v1beta2.IdentityManagementAPI.DeleteDigitalTwin:output_type -> indykite.identity.v1beta2.DeleteDigitalTwinResponse
-	39, // 91: indykite.identity.v1beta2.IdentityManagementAPI.CheckOAuth2ConsentChallenge:output_type -> indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse
-	43, // 92: indykite.identity.v1beta2.IdentityManagementAPI.CreateOAuth2ConsentVerifier:output_type -> indykite.identity.v1beta2.CreateOAuth2ConsentVerifierResponse
-	31, // 93: indykite.identity.v1beta2.IdentityManagementAPI.CreateInvitation:output_type -> indykite.identity.v1beta2.CreateInvitationResponse
-	33, // 94: indykite.identity.v1beta2.IdentityManagementAPI.CheckInvitationState:output_type -> indykite.identity.v1beta2.CheckInvitationStateResponse
-	35, // 95: indykite.identity.v1beta2.IdentityManagementAPI.ResendInvitation:output_type -> indykite.identity.v1beta2.ResendInvitationResponse
-	37, // 96: indykite.identity.v1beta2.IdentityManagementAPI.CancelInvitation:output_type -> indykite.identity.v1beta2.CancelInvitationResponse
-	52, // 97: indykite.identity.v1beta2.IdentityManagementAPI.EnrichToken:output_type -> indykite.identity.v1beta2.EnrichTokenResponse
-	54, // 98: indykite.identity.v1beta2.IdentityManagementAPI.CreateConsent:output_type -> indykite.identity.v1beta2.CreateConsentResponse
-	56, // 99: indykite.identity.v1beta2.IdentityManagementAPI.ListConsents:output_type -> indykite.identity.v1beta2.ListConsentsResponse
-	58, // 100: indykite.identity.v1beta2.IdentityManagementAPI.RevokeConsent:output_type -> indykite.identity.v1beta2.RevokeConsentResponse
-	24, // 101: indykite.identity.v1beta2.IdentityManagementAPI.GetPasswordCredential:output_type -> indykite.identity.v1beta2.GetPasswordCredentialResponse
-	26, // 102: indykite.identity.v1beta2.IdentityManagementAPI.UpdatePasswordCredential:output_type -> indykite.identity.v1beta2.UpdatePasswordCredentialResponse
-	48, // 103: indykite.identity.v1beta2.IdentityManagementAPI.GetAccessToken:output_type -> indykite.identity.v1beta2.GetAccessTokenResponse
-	50, // 104: indykite.identity.v1beta2.IdentityManagementAPI.SessionIntrospect:output_type -> indykite.identity.v1beta2.SessionIntrospectResponse
-	60, // 105: indykite.identity.v1beta2.IdentityManagementAPI.CreateCustomLoginToken:output_type -> indykite.identity.v1beta2.CreateCustomLoginTokenResponse
-	79, // [79:106] is the sub-list for method output_type
-	52, // [52:79] is the sub-list for method input_type
-	52, // [52:52] is the sub-list for extension type_name
-	52, // [52:52] is the sub-list for extension extendee
-	0,  // [0:52] is the sub-list for field type_name
+	61, // 0: indykite.identity.v1beta2.TokenIntrospectResponse.identity_token:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
+	62, // 1: indykite.identity.v1beta2.TokenIntrospectResponse.third_party_identity_token:type_name -> indykite.identity.v1beta2.ThirdPartyIdentityTokenInfo
+	63, // 2: indykite.identity.v1beta2.StartForgottenPasswordFlowRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	63, // 3: indykite.identity.v1beta2.ChangePasswordRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	27, // 4: indykite.identity.v1beta2.ChangePasswordResponse.error:type_name -> indykite.identity.v1beta2.Error
+	63, // 5: indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	64, // 6: indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest.attributes:type_name -> indykite.objects.v1beta1.MapValue
+	63, // 7: indykite.identity.v1beta2.VerifyDigitalTwinEmailResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	65, // 8: indykite.identity.v1beta2.GetDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
+	66, // 9: indykite.identity.v1beta2.GetDigitalTwinRequest.properties:type_name -> indykite.identity.v1beta2.PropertyMask
+	67, // 10: indykite.identity.v1beta2.GetDigitalTwinResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalEntity
+	61, // 11: indykite.identity.v1beta2.GetDigitalTwinResponse.token_info:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
+	68, // 12: indykite.identity.v1beta2.ListDigitalTwinsRequest.properties:type_name -> indykite.identity.v1beta2.Property
+	67, // 13: indykite.identity.v1beta2.ListDigitalTwinsResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalEntity
+	69, // 14: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest.digital_twin_kind:type_name -> indykite.identity.v1beta2.DigitalTwinKind
+	68, // 15: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest.properties:type_name -> indykite.identity.v1beta2.Property
+	63, // 16: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	70, // 17: indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse.results:type_name -> indykite.identity.v1beta2.BatchOperationResult
+	65, // 18: indykite.identity.v1beta2.PatchDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
+	71, // 19: indykite.identity.v1beta2.PatchDigitalTwinRequest.operations:type_name -> indykite.identity.v1beta2.PropertyBatchOperation
+	70, // 20: indykite.identity.v1beta2.PatchDigitalTwinResponse.result:type_name -> indykite.identity.v1beta2.BatchOperationResult
+	65, // 21: indykite.identity.v1beta2.DeleteDigitalTwinRequest.id:type_name -> indykite.identity.v1beta2.DigitalTwinIdentifier
+	63, // 22: indykite.identity.v1beta2.DeleteDigitalTwinResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	63, // 23: indykite.identity.v1beta2.GetPasswordCredentialRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	72, // 24: indykite.identity.v1beta2.UpdatePasswordCredentialRequest.must_change:type_name -> google.protobuf.BoolValue
+	72, // 25: indykite.identity.v1beta2.UpdatePasswordCredentialRequest.locked:type_name -> google.protobuf.BoolValue
+	73, // 26: indykite.identity.v1beta2.CreateInvitationRequest.invite_at_time:type_name -> google.protobuf.Timestamp
+	73, // 27: indykite.identity.v1beta2.CreateInvitationRequest.expire_time:type_name -> google.protobuf.Timestamp
+	64, // 28: indykite.identity.v1beta2.CreateInvitationRequest.message_attributes:type_name -> indykite.objects.v1beta1.MapValue
+	74, // 29: indykite.identity.v1beta2.CheckInvitationStateResponse.invitation:type_name -> indykite.identity.v1beta2.Invitation
+	41, // 30: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.audiences:type_name -> indykite.identity.v1beta2.AudienceItem
+	40, // 31: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.scopes:type_name -> indykite.identity.v1beta2.ScopeItem
+	63, // 32: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	73, // 33: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.authenticated_at:type_name -> google.protobuf.Timestamp
+	73, // 34: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.requested_at:type_name -> google.protobuf.Timestamp
+	64, // 35: indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse.context:type_name -> indykite.objects.v1beta1.MapValue
+	44, // 36: indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest.approval:type_name -> indykite.identity.v1beta2.ConsentApproval
+	46, // 37: indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest.denial:type_name -> indykite.identity.v1beta2.DenialResponse
+	45, // 38: indykite.identity.v1beta2.ConsentApproval.session:type_name -> indykite.identity.v1beta2.ConsentRequestSessionData
+	64, // 39: indykite.identity.v1beta2.ConsentRequestSessionData.access_token:type_name -> indykite.objects.v1beta1.MapValue
+	64, // 40: indykite.identity.v1beta2.ConsentRequestSessionData.id_token:type_name -> indykite.objects.v1beta1.MapValue
+	64, // 41: indykite.identity.v1beta2.ConsentRequestSessionData.userinfo:type_name -> indykite.objects.v1beta1.MapValue
+	75, // 42: indykite.identity.v1beta2.GetAccessTokenResponse.token:type_name -> indykite.identity.v1beta2.OAuth2TokenResponse
+	61, // 43: indykite.identity.v1beta2.SessionIntrospectResponse.token_info:type_name -> indykite.identity.v1beta2.IdentityTokenInfo
+	76, // 44: indykite.identity.v1beta2.EnrichTokenRequest.token_claims:type_name -> google.protobuf.Struct
+	76, // 45: indykite.identity.v1beta2.EnrichTokenRequest.session_claims:type_name -> google.protobuf.Struct
+	77, // 46: indykite.identity.v1beta2.ListConsentsResponse.consent_receipt:type_name -> indykite.identity.v1beta2.ConsentReceipt
+	63, // 47: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	78, // 48: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.property_filter:type_name -> indykite.identity.v1beta2.PropertyFilter
+	79, // 49: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.credential_reference:type_name -> indykite.identity.v1beta2.CredentialReference
+	76, // 50: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.token_claims:type_name -> google.protobuf.Struct
+	76, // 51: indykite.identity.v1beta2.CreateCustomLoginTokenRequest.session_claims:type_name -> google.protobuf.Struct
+	63, // 52: indykite.identity.v1beta2.CreateCustomLoginTokenResponse.digital_twin:type_name -> indykite.identity.v1beta2.DigitalTwin
+	1,  // 53: indykite.identity.v1beta2.IdentityManagementAPI.TokenIntrospect:input_type -> indykite.identity.v1beta2.TokenIntrospectRequest
+	3,  // 54: indykite.identity.v1beta2.IdentityManagementAPI.StartForgottenPasswordFlow:input_type -> indykite.identity.v1beta2.StartForgottenPasswordFlowRequest
+	5,  // 55: indykite.identity.v1beta2.IdentityManagementAPI.ChangePassword:input_type -> indykite.identity.v1beta2.ChangePasswordRequest
+	7,  // 56: indykite.identity.v1beta2.IdentityManagementAPI.StartDigitalTwinEmailVerification:input_type -> indykite.identity.v1beta2.StartDigitalTwinEmailVerificationRequest
+	9,  // 57: indykite.identity.v1beta2.IdentityManagementAPI.VerifyDigitalTwinEmail:input_type -> indykite.identity.v1beta2.VerifyDigitalTwinEmailRequest
+	11, // 58: indykite.identity.v1beta2.IdentityManagementAPI.SelfServiceTerminateSession:input_type -> indykite.identity.v1beta2.SelfServiceTerminateSessionRequest
+	80, // 59: indykite.identity.v1beta2.IdentityManagementAPI.ImportDigitalTwins:input_type -> indykite.identity.v1beta2.ImportDigitalTwinsRequest
+	13, // 60: indykite.identity.v1beta2.IdentityManagementAPI.GetDigitalTwin:input_type -> indykite.identity.v1beta2.GetDigitalTwinRequest
+	15, // 61: indykite.identity.v1beta2.IdentityManagementAPI.ListDigitalTwins:input_type -> indykite.identity.v1beta2.ListDigitalTwinsRequest
+	17, // 62: indykite.identity.v1beta2.IdentityManagementAPI.RegisterDigitalTwinWithoutCredential:input_type -> indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialRequest
+	19, // 63: indykite.identity.v1beta2.IdentityManagementAPI.PatchDigitalTwin:input_type -> indykite.identity.v1beta2.PatchDigitalTwinRequest
+	21, // 64: indykite.identity.v1beta2.IdentityManagementAPI.DeleteDigitalTwin:input_type -> indykite.identity.v1beta2.DeleteDigitalTwinRequest
+	38, // 65: indykite.identity.v1beta2.IdentityManagementAPI.CheckOAuth2ConsentChallenge:input_type -> indykite.identity.v1beta2.CheckOAuth2ConsentChallengeRequest
+	42, // 66: indykite.identity.v1beta2.IdentityManagementAPI.CreateOAuth2ConsentVerifier:input_type -> indykite.identity.v1beta2.CreateOAuth2ConsentVerifierRequest
+	30, // 67: indykite.identity.v1beta2.IdentityManagementAPI.CreateInvitation:input_type -> indykite.identity.v1beta2.CreateInvitationRequest
+	32, // 68: indykite.identity.v1beta2.IdentityManagementAPI.CheckInvitationState:input_type -> indykite.identity.v1beta2.CheckInvitationStateRequest
+	34, // 69: indykite.identity.v1beta2.IdentityManagementAPI.ResendInvitation:input_type -> indykite.identity.v1beta2.ResendInvitationRequest
+	36, // 70: indykite.identity.v1beta2.IdentityManagementAPI.CancelInvitation:input_type -> indykite.identity.v1beta2.CancelInvitationRequest
+	51, // 71: indykite.identity.v1beta2.IdentityManagementAPI.EnrichToken:input_type -> indykite.identity.v1beta2.EnrichTokenRequest
+	53, // 72: indykite.identity.v1beta2.IdentityManagementAPI.CreateConsent:input_type -> indykite.identity.v1beta2.CreateConsentRequest
+	55, // 73: indykite.identity.v1beta2.IdentityManagementAPI.ListConsents:input_type -> indykite.identity.v1beta2.ListConsentsRequest
+	57, // 74: indykite.identity.v1beta2.IdentityManagementAPI.RevokeConsent:input_type -> indykite.identity.v1beta2.RevokeConsentRequest
+	23, // 75: indykite.identity.v1beta2.IdentityManagementAPI.GetPasswordCredential:input_type -> indykite.identity.v1beta2.GetPasswordCredentialRequest
+	25, // 76: indykite.identity.v1beta2.IdentityManagementAPI.UpdatePasswordCredential:input_type -> indykite.identity.v1beta2.UpdatePasswordCredentialRequest
+	47, // 77: indykite.identity.v1beta2.IdentityManagementAPI.GetAccessToken:input_type -> indykite.identity.v1beta2.GetAccessTokenRequest
+	49, // 78: indykite.identity.v1beta2.IdentityManagementAPI.SessionIntrospect:input_type -> indykite.identity.v1beta2.SessionIntrospectRequest
+	59, // 79: indykite.identity.v1beta2.IdentityManagementAPI.CreateCustomLoginToken:input_type -> indykite.identity.v1beta2.CreateCustomLoginTokenRequest
+	2,  // 80: indykite.identity.v1beta2.IdentityManagementAPI.TokenIntrospect:output_type -> indykite.identity.v1beta2.TokenIntrospectResponse
+	4,  // 81: indykite.identity.v1beta2.IdentityManagementAPI.StartForgottenPasswordFlow:output_type -> indykite.identity.v1beta2.StartForgottenPasswordFlowResponse
+	6,  // 82: indykite.identity.v1beta2.IdentityManagementAPI.ChangePassword:output_type -> indykite.identity.v1beta2.ChangePasswordResponse
+	8,  // 83: indykite.identity.v1beta2.IdentityManagementAPI.StartDigitalTwinEmailVerification:output_type -> indykite.identity.v1beta2.StartDigitalTwinEmailVerificationResponse
+	10, // 84: indykite.identity.v1beta2.IdentityManagementAPI.VerifyDigitalTwinEmail:output_type -> indykite.identity.v1beta2.VerifyDigitalTwinEmailResponse
+	12, // 85: indykite.identity.v1beta2.IdentityManagementAPI.SelfServiceTerminateSession:output_type -> indykite.identity.v1beta2.SelfServiceTerminateSessionResponse
+	81, // 86: indykite.identity.v1beta2.IdentityManagementAPI.ImportDigitalTwins:output_type -> indykite.identity.v1beta2.ImportDigitalTwinsResponse
+	14, // 87: indykite.identity.v1beta2.IdentityManagementAPI.GetDigitalTwin:output_type -> indykite.identity.v1beta2.GetDigitalTwinResponse
+	16, // 88: indykite.identity.v1beta2.IdentityManagementAPI.ListDigitalTwins:output_type -> indykite.identity.v1beta2.ListDigitalTwinsResponse
+	18, // 89: indykite.identity.v1beta2.IdentityManagementAPI.RegisterDigitalTwinWithoutCredential:output_type -> indykite.identity.v1beta2.RegisterDigitalTwinWithoutCredentialResponse
+	20, // 90: indykite.identity.v1beta2.IdentityManagementAPI.PatchDigitalTwin:output_type -> indykite.identity.v1beta2.PatchDigitalTwinResponse
+	22, // 91: indykite.identity.v1beta2.IdentityManagementAPI.DeleteDigitalTwin:output_type -> indykite.identity.v1beta2.DeleteDigitalTwinResponse
+	39, // 92: indykite.identity.v1beta2.IdentityManagementAPI.CheckOAuth2ConsentChallenge:output_type -> indykite.identity.v1beta2.CheckOAuth2ConsentChallengeResponse
+	43, // 93: indykite.identity.v1beta2.IdentityManagementAPI.CreateOAuth2ConsentVerifier:output_type -> indykite.identity.v1beta2.CreateOAuth2ConsentVerifierResponse
+	31, // 94: indykite.identity.v1beta2.IdentityManagementAPI.CreateInvitation:output_type -> indykite.identity.v1beta2.CreateInvitationResponse
+	33, // 95: indykite.identity.v1beta2.IdentityManagementAPI.CheckInvitationState:output_type -> indykite.identity.v1beta2.CheckInvitationStateResponse
+	35, // 96: indykite.identity.v1beta2.IdentityManagementAPI.ResendInvitation:output_type -> indykite.identity.v1beta2.ResendInvitationResponse
+	37, // 97: indykite.identity.v1beta2.IdentityManagementAPI.CancelInvitation:output_type -> indykite.identity.v1beta2.CancelInvitationResponse
+	52, // 98: indykite.identity.v1beta2.IdentityManagementAPI.EnrichToken:output_type -> indykite.identity.v1beta2.EnrichTokenResponse
+	54, // 99: indykite.identity.v1beta2.IdentityManagementAPI.CreateConsent:output_type -> indykite.identity.v1beta2.CreateConsentResponse
+	56, // 100: indykite.identity.v1beta2.IdentityManagementAPI.ListConsents:output_type -> indykite.identity.v1beta2.ListConsentsResponse
+	58, // 101: indykite.identity.v1beta2.IdentityManagementAPI.RevokeConsent:output_type -> indykite.identity.v1beta2.RevokeConsentResponse
+	24, // 102: indykite.identity.v1beta2.IdentityManagementAPI.GetPasswordCredential:output_type -> indykite.identity.v1beta2.GetPasswordCredentialResponse
+	26, // 103: indykite.identity.v1beta2.IdentityManagementAPI.UpdatePasswordCredential:output_type -> indykite.identity.v1beta2.UpdatePasswordCredentialResponse
+	48, // 104: indykite.identity.v1beta2.IdentityManagementAPI.GetAccessToken:output_type -> indykite.identity.v1beta2.GetAccessTokenResponse
+	50, // 105: indykite.identity.v1beta2.IdentityManagementAPI.SessionIntrospect:output_type -> indykite.identity.v1beta2.SessionIntrospectResponse
+	60, // 106: indykite.identity.v1beta2.IdentityManagementAPI.CreateCustomLoginToken:output_type -> indykite.identity.v1beta2.CreateCustomLoginTokenResponse
+	80, // [80:107] is the sub-list for method output_type
+	53, // [53:80] is the sub-list for method input_type
+	53, // [53:53] is the sub-list for extension type_name
+	53, // [53:53] is the sub-list for extension extendee
+	0,  // [0:53] is the sub-list for field type_name
 }
 
 func init() { file_indykite_identity_v1beta2_identity_management_api_proto_init() }
@@ -5673,6 +5718,10 @@ func file_indykite_identity_v1beta2_identity_management_api_proto_init() {
 				return nil
 			}
 		}
+	}
+	file_indykite_identity_v1beta2_identity_management_api_proto_msgTypes[1].OneofWrappers = []interface{}{
+		(*TokenIntrospectResponse_IdentityToken)(nil),
+		(*TokenIntrospectResponse_ThirdPartyIdentityToken)(nil),
 	}
 	file_indykite_identity_v1beta2_identity_management_api_proto_msgTypes[4].OneofWrappers = []interface{}{
 		(*ChangePasswordRequest_Token)(nil),

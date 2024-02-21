@@ -1813,6 +1813,279 @@ var _ interface {
 	ErrorName() string
 } = IdentityTokenInfoValidationError{}
 
+// Validate checks the field values on ThirdPartyIdentityTokenInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ThirdPartyIdentityTokenInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ThirdPartyIdentityTokenInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ThirdPartyIdentityTokenInfoMultiError, or nil if none found.
+func (m *ThirdPartyIdentityTokenInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ThirdPartyIdentityTokenInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for CustomerId
+
+	// no validation rules for AppSpaceId
+
+	if all {
+		switch v := interface{}(m.GetSubject()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "Subject",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubject()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ThirdPartyIdentityTokenInfoValidationError{
+				field:  "Subject",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetImpersonated()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "Impersonated",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "Impersonated",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetImpersonated()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ThirdPartyIdentityTokenInfoValidationError{
+				field:  "Impersonated",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for OriginalIssuer
+
+	// no validation rules for OriginalSubject
+
+	if all {
+		switch v := interface{}(m.GetIssueTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "IssueTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "IssueTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetIssueTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ThirdPartyIdentityTokenInfoValidationError{
+				field:  "IssueTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetExpireTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetExpireTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ThirdPartyIdentityTokenInfoValidationError{
+				field:  "ExpireTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	{
+		sorted_keys := make([]string, len(m.GetTokenClaims()))
+		i := 0
+		for key := range m.GetTokenClaims() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetTokenClaims()[key]
+			_ = val
+
+			// no validation rules for TokenClaims[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+							field:  fmt.Sprintf("TokenClaims[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, ThirdPartyIdentityTokenInfoValidationError{
+							field:  fmt.Sprintf("TokenClaims[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return ThirdPartyIdentityTokenInfoValidationError{
+						field:  fmt.Sprintf("TokenClaims[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return ThirdPartyIdentityTokenInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// ThirdPartyIdentityTokenInfoMultiError is an error wrapping multiple
+// validation errors returned by ThirdPartyIdentityTokenInfo.ValidateAll() if
+// the designated constraints aren't met.
+type ThirdPartyIdentityTokenInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ThirdPartyIdentityTokenInfoMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ThirdPartyIdentityTokenInfoMultiError) AllErrors() []error { return m }
+
+// ThirdPartyIdentityTokenInfoValidationError is the validation error returned
+// by ThirdPartyIdentityTokenInfo.Validate if the designated constraints
+// aren't met.
+type ThirdPartyIdentityTokenInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ThirdPartyIdentityTokenInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ThirdPartyIdentityTokenInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ThirdPartyIdentityTokenInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ThirdPartyIdentityTokenInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ThirdPartyIdentityTokenInfoValidationError) ErrorName() string {
+	return "ThirdPartyIdentityTokenInfoValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ThirdPartyIdentityTokenInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sThirdPartyIdentityTokenInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ThirdPartyIdentityTokenInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ThirdPartyIdentityTokenInfoValidationError{}
+
 // Validate checks the field values on ProviderInfo with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

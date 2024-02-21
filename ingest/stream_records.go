@@ -23,7 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 
 	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
 // StreamRecords is a helper that takes a slice of records and handles opening the stream, sending the records,

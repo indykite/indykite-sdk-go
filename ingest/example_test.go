@@ -22,7 +22,7 @@ import (
 
 	"google.golang.org/protobuf/encoding/protojson"
 
-	ingestv2pb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	api "github.com/indykite/indykite-sdk-go/grpc"
 	"github.com/indykite/indykite-sdk-go/ingest"
 )
@@ -64,7 +64,7 @@ func ExampleClient_StreamRecords() {
 		log.Fatalf("failed to open stream %v", err)
 	}
 
-	for _, record := range []*ingestv2pb.Record{record1, record2} {
+	for _, record := range []*ingestpb.Record{record1, record2} {
 		err = client.SendRecord(record)
 		if err != nil {
 			log.Fatalf("failed to send record on stream %v", err)

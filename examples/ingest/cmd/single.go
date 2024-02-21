@@ -21,8 +21,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
 // single represents the command for ingesting a single record
@@ -38,19 +39,15 @@ var singleCmd = &cobra.Command{
 			Operation: &ingestpb.Record_Upsert{
 				Upsert: &ingestpb.UpsertData{
 					Data: &ingestpb.UpsertData_Node{
-						Node: &ingestpb.Node{
-							Type: &ingestpb.Node_Resource{
-								Resource: &ingestpb.Resource{
-									ExternalId: "0001",
-									Type:       "Truck",
-									Properties: []*ingestpb.Property{
-										{
-											Key: "vin",
-											Value: &objects.Value{
-												Value: &objects.Value_IntegerValue{
-													IntegerValue: 1234,
-												},
-											},
+						Node: &knowledgeobjects.Node{
+							ExternalId: "0001",
+							Type:       "Truck",
+							Properties: []*knowledgeobjects.Property{
+								{
+									Type: "vin",
+									Value: &objects.Value{
+										Type: &objects.Value_IntegerValue{
+											IntegerValue: 1234,
 										},
 									},
 								},

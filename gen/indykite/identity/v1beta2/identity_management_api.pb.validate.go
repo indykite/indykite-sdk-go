@@ -165,33 +165,91 @@ func (m *TokenIntrospectResponse) validate(all bool) error {
 
 	// no validation rules for Active
 
-	if all {
-		switch v := interface{}(m.GetTokenInfo()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, TokenIntrospectResponseValidationError{
-					field:  "TokenInfo",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, TokenIntrospectResponseValidationError{
-					field:  "TokenInfo",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetTokenInfo()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return TokenIntrospectResponseValidationError{
+	switch v := m.TokenInfo.(type) {
+	case *TokenIntrospectResponse_IdentityToken:
+		if v == nil {
+			err := TokenIntrospectResponseValidationError{
 				field:  "TokenInfo",
-				reason: "embedded message failed validation",
-				cause:  err,
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetIdentityToken()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectResponseValidationError{
+						field:  "IdentityToken",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectResponseValidationError{
+						field:  "IdentityToken",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetIdentityToken()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectResponseValidationError{
+					field:  "IdentityToken",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
 			}
 		}
+
+	case *TokenIntrospectResponse_ThirdPartyIdentityToken:
+		if v == nil {
+			err := TokenIntrospectResponseValidationError{
+				field:  "TokenInfo",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetThirdPartyIdentityToken()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectResponseValidationError{
+						field:  "ThirdPartyIdentityToken",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectResponseValidationError{
+						field:  "ThirdPartyIdentityToken",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetThirdPartyIdentityToken()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectResponseValidationError{
+					field:  "ThirdPartyIdentityToken",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
 	}
 
 	if len(errors) > 0 {

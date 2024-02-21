@@ -22,10 +22,11 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	"github.com/indykite/indykite-sdk-go/ingest"
-	ingestm "github.com/indykite/indykite-sdk-go/test/ingest/v1beta2"
+	ingestm "github.com/indykite/indykite-sdk-go/test/ingest/v1beta3"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -37,24 +38,22 @@ var (
 		Id: "1",
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
-				Data: &ingestpb.UpsertData_Relation{
-					Relation: &ingestpb.Relation{
-						Match: &ingestpb.RelationMatch{
-							SourceMatch: &ingestpb.NodeMatch{
-								ExternalId: "0000",
-								Type:       "Employee",
-							},
-							TargetMatch: &ingestpb.NodeMatch{
-								ExternalId: "0001",
-								Type:       "Truck",
-							},
-							Type: "SERVICES",
+				Data: &ingestpb.UpsertData_Relationship{
+					Relationship: &ingestpb.Relationship{
+						Source: &ingestpb.NodeMatch{
+							ExternalId: "0000",
+							Type:       "Employee",
 						},
-						Properties: []*ingestpb.Property{
+						Target: &ingestpb.NodeMatch{
+							ExternalId: "0001",
+							Type:       "Truck",
+						},
+						Type: "SERVICES",
+						Properties: []*knowledgeobjects.Property{
 							{
-								Key: "since",
+								Type: "since",
 								Value: &objects.Value{
-									Value: &objects.Value_StringValue{
+									Type: &objects.Value_StringValue{
 										StringValue: "production",
 									},
 								},
@@ -71,19 +70,16 @@ var (
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
 				Data: &ingestpb.UpsertData_Node{
-					Node: &ingestpb.Node{
-						Type: &ingestpb.Node_Resource{
-							Resource: &ingestpb.Resource{
-								ExternalId: "0001",
-								Type:       "Truck",
-								Properties: []*ingestpb.Property{
-									{
-										Key: "vin",
-										Value: &objects.Value{
-											Value: &objects.Value_IntegerValue{
-												IntegerValue: 1234,
-											},
-										},
+					Node: &knowledgeobjects.Node{
+						ExternalId: "0001",
+						Type:       "Truck",
+						IsIdentity: false,
+						Properties: []*knowledgeobjects.Property{
+							{
+								Type: "vin",
+								Value: &objects.Value{
+									Type: &objects.Value_IntegerValue{
+										IntegerValue: 1234,
 									},
 								},
 							},
@@ -110,7 +106,7 @@ var _ = Describe("Ingest", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+					DataType: ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
 				},
 			}},
 		}, nil)
@@ -119,11 +115,10 @@ var _ = Describe("Ingest", func() {
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 			"RecordId": Equal("1"),
-			"Error":    BeNil(),
 			"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 					"Id":       Not(BeEmpty()),
-					"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+					"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 				}))),
 			})),
 		})))
@@ -149,7 +144,7 @@ var _ = Describe("Ingest", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+					DataType: ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
@@ -159,7 +154,7 @@ var _ = Describe("Ingest", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+					DataType: ingestpb.DataType_DATA_TYPE_NODE,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().CloseSend()
@@ -169,9 +164,9 @@ var _ = Describe("Ingest", func() {
 
 		err = client.OpenStreamClient(ctx)
 		Expect(err).To(Succeed())
-		dataTypes := []ingestpb.Change_DataType{
-			ingestpb.Change_DATA_TYPE_RELATION,
-			ingestpb.Change_DATA_TYPE_RESOURCE,
+		dataTypes := []ingestpb.DataType{
+			ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
+			ingestpb.DataType_DATA_TYPE_NODE,
 		}
 		for i, record := range records {
 			var resp *ingestpb.StreamRecordsResponse
@@ -214,7 +209,7 @@ var _ = Describe("Ingest", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+					DataType: ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
@@ -224,16 +219,16 @@ var _ = Describe("Ingest", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+					DataType: ingestpb.DataType_DATA_TYPE_NODE,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().CloseSend()
 
 		responses, err := client.StreamRecords(records)
 		Expect(err).To(Succeed())
-		dataTypes := []ingestpb.Change_DataType{
-			ingestpb.Change_DATA_TYPE_RELATION,
-			ingestpb.Change_DATA_TYPE_RESOURCE,
+		dataTypes := []ingestpb.DataType{
+			ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
+			ingestpb.DataType_DATA_TYPE_NODE,
 		}
 		for i, response := range responses {
 			Expect(response).To(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -308,7 +303,7 @@ var _ = Describe("Retry client", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RELATION,
+					DataType: ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().Send(&ingestpb.StreamRecordsRequest{Record: record2}).Return(nil)
@@ -318,7 +313,7 @@ var _ = Describe("Retry client", func() {
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
-					DataType: ingestpb.Change_DATA_TYPE_RESOURCE,
+					DataType: ingestpb.DataType_DATA_TYPE_NODE,
 				},
 			}}}, nil)
 		mockStreamClient.EXPECT().CloseSend()
@@ -328,9 +323,9 @@ var _ = Describe("Retry client", func() {
 
 		err = client.OpenStreamClient(ctx)
 		Expect(err).To(Succeed())
-		dataTypes := []ingestpb.Change_DataType{
-			ingestpb.Change_DATA_TYPE_RELATION,
-			ingestpb.Change_DATA_TYPE_RESOURCE,
+		dataTypes := []ingestpb.DataType{
+			ingestpb.DataType_DATA_TYPE_RELATIONSHIP,
+			ingestpb.DataType_DATA_TYPE_NODE,
 		}
 		for i, record := range records {
 			var resp *ingestpb.StreamRecordsResponse
