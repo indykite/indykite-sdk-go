@@ -21,8 +21,9 @@ import (
 	"github.com/google/uuid"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
 var (
@@ -184,7 +185,7 @@ func GenerateRandomString(length int) string {
 	return base64.StdEncoding.EncodeToString(b)
 }
 
-func CreateRecordIndividual( //nolint:gocritic // nonamedreturns against unnamedResult
+func CreateRecordNodeIndividual( //nolint:gocritic // nonamedreturns against unnamedResult
 	role string) (*ingestpb.Record, string) {
 	externalID := GenerateRandomString(10)
 	record := &ingestpb.Record{
@@ -192,43 +193,40 @@ func CreateRecordIndividual( //nolint:gocritic // nonamedreturns against unnamed
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
 				Data: &ingestpb.UpsertData_Node{
-					Node: &ingestpb.Node{
-						Type: &ingestpb.Node_DigitalTwin{
-							DigitalTwin: &ingestpb.DigitalTwin{
-								ExternalId: externalID,
-								Type:       "Individual",
-								Properties: []*ingestpb.Property{
-									{
-										Key: "email",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: GenerateRandomString(6) + "@yahoo.uk",
-											},
-										},
+					Node: &knowledgeobjects.Node{
+						ExternalId: externalID,
+						Type:       "Individual",
+						IsIdentity: true,
+						Properties: []*knowledgeobjects.Property{
+							{
+								Type: "email",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: GenerateRandomString(6) + "@yahoo.uk",
 									},
-									{
-										Key: "first_name",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: GenerateRandomString(6),
-											},
-										},
+								},
+							},
+							{
+								Type: "first_name",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: GenerateRandomString(6),
 									},
-									{
-										Key: "last_name",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: GenerateRandomString(6),
-											},
-										},
+								},
+							},
+							{
+								Type: "last_name",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: GenerateRandomString(6),
 									},
-									{
-										Key: "role",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: role,
-											},
-										},
+								},
+							},
+							{
+								Type: "role",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: role,
 									},
 								},
 							},
@@ -241,19 +239,16 @@ func CreateRecordIndividual( //nolint:gocritic // nonamedreturns against unnamed
 	return record, externalID
 }
 
-func CreateRecordNoProp(externalID, nodeType string) *ingestpb.Record {
+func CreateRecordNoProperty(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
 				Data: &ingestpb.UpsertData_Node{
-					Node: &ingestpb.Node{
-						Type: &ingestpb.Node_DigitalTwin{
-							DigitalTwin: &ingestpb.DigitalTwin{
-								ExternalId: externalID,
-								Type:       nodeType,
-							},
-						},
+					Node: &knowledgeobjects.Node{
+						ExternalId: externalID,
+						Type:       nodeType,
+						IsIdentity: true,
 					},
 				},
 			},
@@ -279,7 +274,7 @@ func DeleteRecord(externalID, nodeType string) *ingestpb.Record {
 	return record
 }
 
-func DeleteRecordProperty(externalID, nodeType, property string) *ingestpb.Record {
+func DeleteRecordWithProperty(externalID, nodeType, property string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Delete{
@@ -290,7 +285,7 @@ func DeleteRecordProperty(externalID, nodeType, property string) *ingestpb.Recor
 							ExternalId: externalID,
 							Type:       nodeType,
 						},
-						Key: property,
+						PropertyType: property,
 					},
 				},
 			},
@@ -299,58 +294,55 @@ func DeleteRecordProperty(externalID, nodeType, property string) *ingestpb.Recor
 	return record
 }
 
-func UpsertRecordAsset() (*ingestpb.Record, string) { //nolint:gocritic // nonamedreturns against unnamedResult
+func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // nonamedreturns against unnamedResult
 	externalID := GenerateRandomString(10)
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
 				Data: &ingestpb.UpsertData_Node{
-					Node: &ingestpb.Node{
-						Type: &ingestpb.Node_Resource{
-							Resource: &ingestpb.Resource{
-								ExternalId: externalID,
-								Type:       "Asset",
-								Properties: []*ingestpb.Property{
-									{
-										Key: "maker",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: GenerateRandomString(6),
-											},
-										},
+					Node: &knowledgeobjects.Node{
+						ExternalId: externalID,
+						Type:       "Asset",
+						IsIdentity: false,
+						Properties: []*knowledgeobjects.Property{
+							{
+								Type: "maker",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: GenerateRandomString(6),
 									},
-									{
-										Key: "vin",
-										Value: &objects.Value{
-											Value: &objects.Value_IntegerValue{
-												IntegerValue: 123456789,
-											},
-										},
+								},
+							},
+							{
+								Type: "vin",
+								Value: &objects.Value{
+									Type: &objects.Value_IntegerValue{
+										IntegerValue: 123456789,
 									},
-									{
-										Key: "colour",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: "Blue",
-											},
-										},
+								},
+							},
+							{
+								Type: "colour",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: "Blue",
 									},
-									{
-										Key: "asset",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: "T",
-											},
-										},
+								},
+							},
+							{
+								Type: "asset",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: "T",
 									},
-									{
-										Key: "status",
-										Value: &objects.Value{
-											Value: &objects.Value_StringValue{
-												StringValue: "Active",
-											},
-										},
+								},
+							},
+							{
+								Type: "status",
+								Value: &objects.Value{
+									Type: &objects.Value_StringValue{
+										StringValue: "Active",
 									},
 								},
 							},
@@ -363,19 +355,16 @@ func UpsertRecordAsset() (*ingestpb.Record, string) { //nolint:gocritic // nonam
 	return record, externalID
 }
 
-func CreateRecordResourceNoProp(externalID, nodeType string) *ingestpb.Record {
+func CreateRecordResourceNoProperty(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
 				Data: &ingestpb.UpsertData_Node{
-					Node: &ingestpb.Node{
-						Type: &ingestpb.Node_Resource{
-							Resource: &ingestpb.Resource{
-								ExternalId: externalID,
-								Type:       nodeType,
-							},
-						},
+					Node: &knowledgeobjects.Node{
+						ExternalId: externalID,
+						Type:       nodeType,
+						IsIdentity: false,
 					},
 				},
 			},
@@ -384,7 +373,7 @@ func CreateRecordResourceNoProp(externalID, nodeType string) *ingestpb.Record {
 	return record
 }
 
-func CreateRecordRelation(
+func CreateRecordRelationship(
 	sourceExternalID string,
 	sourceType string,
 	targetExternalID string,
@@ -394,24 +383,22 @@ func CreateRecordRelation(
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Upsert{
 			Upsert: &ingestpb.UpsertData{
-				Data: &ingestpb.UpsertData_Relation{
-					Relation: &ingestpb.Relation{
-						Match: &ingestpb.RelationMatch{
-							SourceMatch: &ingestpb.NodeMatch{
-								ExternalId: sourceExternalID,
-								Type:       sourceType,
-							},
-							TargetMatch: &ingestpb.NodeMatch{
-								ExternalId: targetExternalID,
-								Type:       targetType,
-							},
-							Type: relationType,
+				Data: &ingestpb.UpsertData_Relationship{
+					Relationship: &ingestpb.Relationship{
+						Source: &ingestpb.NodeMatch{
+							ExternalId: sourceExternalID,
+							Type:       sourceType,
 						},
-						Properties: []*ingestpb.Property{
+						Target: &ingestpb.NodeMatch{
+							ExternalId: targetExternalID,
+							Type:       targetType,
+						},
+						Type: relationType,
+						Properties: []*knowledgeobjects.Property{
 							{
-								Key: "property1",
+								Type: "property1",
 								Value: &objects.Value{
-									Value: &objects.Value_StringValue{
+									Type: &objects.Value_StringValue{
 										StringValue: "value1",
 									},
 								},
@@ -425,33 +412,33 @@ func CreateRecordRelation(
 	return record
 }
 
-func GetRelationMatch(
+func GetRelationship(
 	sourceExternalID string,
 	sourceType string,
 	targetExternalID string,
 	targetType string,
-	relationType string) *ingestpb.RelationMatch {
-	match := &ingestpb.RelationMatch{
-		SourceMatch: &ingestpb.NodeMatch{
+	relationType string) *ingestpb.Relationship {
+	relationship := &ingestpb.Relationship{
+		Source: &ingestpb.NodeMatch{
 			ExternalId: sourceExternalID,
 			Type:       sourceType,
 		},
-		TargetMatch: &ingestpb.NodeMatch{
+		Target: &ingestpb.NodeMatch{
 			ExternalId: targetExternalID,
 			Type:       targetType,
 		},
 		Type: relationType,
 	}
-	return match
+	return relationship
 }
 
-func DeleteRecordRelation(match *ingestpb.RelationMatch) *ingestpb.Record {
+func DeleteRecordRelationship(relationship *ingestpb.Relationship) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Delete{
 			Delete: &ingestpb.DeleteData{
-				Data: &ingestpb.DeleteData_Relation{
-					Relation: match,
+				Data: &ingestpb.DeleteData_Relationship{
+					Relationship: relationship,
 				},
 			},
 		},
@@ -459,15 +446,29 @@ func DeleteRecordRelation(match *ingestpb.RelationMatch) *ingestpb.Record {
 	return record
 }
 
-func DeleteRecordRelationProperty(match *ingestpb.RelationMatch, property string) *ingestpb.Record {
+func DeleteRecordRelationshipProperty(
+	sourceExternalID string,
+	sourceType string,
+	targetExternalID string,
+	targetType string,
+	typeRelation string,
+	propertyType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
 		Operation: &ingestpb.Record_Delete{
 			Delete: &ingestpb.DeleteData{
-				Data: &ingestpb.DeleteData_RelationProperty{
-					RelationProperty: &ingestpb.DeleteData_RelationPropertyMatch{
-						Match: match,
-						Key:   property,
+				Data: &ingestpb.DeleteData_RelationshipProperty{
+					RelationshipProperty: &ingestpb.DeleteData_RelationshipPropertyMatch{
+						Source: &ingestpb.NodeMatch{
+							ExternalId: sourceExternalID,
+							Type:       sourceType,
+						},
+						Target: &ingestpb.NodeMatch{
+							ExternalId: targetExternalID,
+							Type:       targetType,
+						},
+						Type:         typeRelation,
+						PropertyType: propertyType,
 					},
 				},
 			},

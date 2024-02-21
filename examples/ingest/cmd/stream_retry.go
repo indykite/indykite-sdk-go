@@ -21,8 +21,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
+	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
 // streamRetryCmd represents the command for streaming records with retry on disconnect
@@ -36,24 +37,22 @@ var streamRetryCmd = &cobra.Command{
 			Id: "1",
 			Operation: &ingestpb.Record_Upsert{
 				Upsert: &ingestpb.UpsertData{
-					Data: &ingestpb.UpsertData_Relation{
-						Relation: &ingestpb.Relation{
-							Match: &ingestpb.RelationMatch{
-								SourceMatch: &ingestpb.NodeMatch{
-									ExternalId: "0000",
-									Type:       "Employee",
-								},
-								TargetMatch: &ingestpb.NodeMatch{
-									ExternalId: "0001",
-									Type:       "Truck",
-								},
-								Type: "SERVICES",
+					Data: &ingestpb.UpsertData_Relationship{
+						Relationship: &ingestpb.Relationship{
+							Source: &ingestpb.NodeMatch{
+								ExternalId: "0000",
+								Type:       "Employee",
 							},
-							Properties: []*ingestpb.Property{
+							Target: &ingestpb.NodeMatch{
+								ExternalId: "0001",
+								Type:       "Truck",
+							},
+							Type: "SERVICES",
+							Properties: []*knowledgeobjects.Property{
 								{
-									Key: "since",
+									Type: "since",
 									Value: &objects.Value{
-										Value: &objects.Value_StringValue{
+										Type: &objects.Value_StringValue{
 											StringValue: "production",
 										},
 									},
@@ -70,19 +69,15 @@ var streamRetryCmd = &cobra.Command{
 			Operation: &ingestpb.Record_Upsert{
 				Upsert: &ingestpb.UpsertData{
 					Data: &ingestpb.UpsertData_Node{
-						Node: &ingestpb.Node{
-							Type: &ingestpb.Node_Resource{
-								Resource: &ingestpb.Resource{
-									ExternalId: "0001",
-									Type:       "Truck",
-									Properties: []*ingestpb.Property{
-										{
-											Key: "vin",
-											Value: &objects.Value{
-												Value: &objects.Value_IntegerValue{
-													IntegerValue: 1234,
-												},
-											},
+						Node: &knowledgeobjects.Node{
+							ExternalId: "0001",
+							Type:       "Truck",
+							Properties: []*knowledgeobjects.Property{
+								{
+									Type: "vin",
+									Value: &objects.Value{
+										Type: &objects.Value_IntegerValue{
+											IntegerValue: 1234,
 										},
 									},
 								},

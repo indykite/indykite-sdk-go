@@ -22,7 +22,7 @@ import (
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	integration "github.com/indykite/indykite-sdk-go/test"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -37,21 +37,20 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -61,16 +60,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -82,21 +80,20 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -107,16 +104,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -128,22 +124,22 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordNoProp(externalID, "Individual")
+			recordb := integration.CreateRecordNoProperty(externalID, "Individual")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).NotTo(BeNil())
@@ -154,16 +150,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -175,22 +170,22 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordNoProp(externalID, "Cat")
+			recordb := integration.CreateRecordNoProperty(externalID, "Cat")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).NotTo(BeNil())
@@ -201,16 +196,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -219,16 +213,15 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord2,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -239,21 +232,20 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.UpsertRecordAsset()
+			record, externalID := integration.UpsertRecordNodeAsset()
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -263,16 +255,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -284,21 +275,20 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordResourceNoProp(externalID, "Asset")
+			record := integration.CreateRecordResourceNoProperty(externalID, "Asset")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -308,16 +298,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -329,22 +318,22 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordResourceNoProp(externalID, "Asset")
+			record := integration.CreateRecordResourceNoProperty(externalID, "Asset")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordResourceNoProp(externalID, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).NotTo(BeNil())
@@ -353,11 +342,10 @@ var _ = Describe("Ingestion", func() {
 
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -366,16 +354,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -387,22 +374,22 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordResourceNoProp(externalID, "Asset")
+			record := integration.CreateRecordResourceNoProperty(externalID, "Asset")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordResourceNoProp(externalID, "Cat")
+			recordb := integration.CreateRecordResourceNoProperty(externalID, "Cat")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
@@ -414,16 +401,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -435,22 +421,22 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).NotTo(BeNil())
 			id := resp.Info.Changes[0].Id
 
-			recordb := integration.CreateRecordResourceNoProp(externalID, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).NotTo(BeNil())
@@ -461,16 +447,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -479,16 +464,15 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -500,11 +484,11 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordResourceNoProp(externalID, "Resource")
+			record := integration.CreateRecordResourceNoProperty(externalID, "Resource")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(externalID).NotTo(BeNil())
@@ -522,16 +506,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       BeEmpty(),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_INVALID),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -542,40 +525,38 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 
 			id := resp.Info.Changes[0].Id
-			delRecord3 := integration.DeleteRecordProperty(externalID, "Individual", "first_name")
+			delRecord3 := integration.DeleteRecordWithProperty(externalID, "Individual", "first_name")
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -584,16 +565,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -604,39 +584,37 @@ var _ = Describe("Ingestion", func() {
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.UpsertRecordAsset()
+			record, externalID := integration.UpsertRecordNodeAsset()
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 
-			delRecord3 := integration.DeleteRecordProperty(externalID, "Asset", "colour")
+			delRecord3 := integration.DeleteRecordWithProperty(externalID, "Asset", "colour")
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -646,16 +624,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -667,108 +644,103 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			delRecord3 := integration.DeleteRecordProperty(externalID, "Asset", "colour")
+			delRecord3 := integration.DeleteRecordWithProperty(externalID, "Asset", "colour")
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       BeEmpty(),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_INVALID),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 	})
 
-	Describe("IngestRelation", func() {
-		It("UpsertRelation", func() {
+	Describe("IngestRelationship", func() {
+		It("UpsertRelationship", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 
 			id := resp.Info.Changes[0].Id
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
 			id3 := resp3.Info.Changes[0].Id
 
-			match := integration.GetRelationMatch(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelation(match)
+			match := integration.GetRelationship(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
+			delRecord3 := integration.DeleteRecordRelationship(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id3),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
@@ -777,16 +749,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -795,100 +766,95 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationDeleteWrongSource", func() {
+		It("UpsertRelationshipDeleteWrongSource", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
 
-			match := integration.GetRelationMatch("whatever", "Individual", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelation(match)
+			match := integration.GetRelationship("whatever", "Individual", externalID2, "Asset", "CAN_SEE")
+			delRecord3 := integration.DeleteRecordRelationship(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
@@ -897,16 +863,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -915,100 +880,95 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationDeleteWrongSourceType", func() {
+		It("UpsertRelationshipDeleteWrongSourceType", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
 
-			match := integration.GetRelationMatch(externalID2, "Whatever", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelation(match)
+			match := integration.GetRelationship(externalID2, "Whatever", externalID2, "Asset", "CAN_SEE")
+			delRecord3 := integration.DeleteRecordRelationship(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
@@ -1017,16 +977,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1035,92 +994,88 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationWrongSourceType", func() {
+		It("UpsertRelationshipWrongSourceType", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Whatever", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(externalID, "Whatever", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
 
-			match := integration.GetRelationMatch(externalID, "Whatever", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelation(match)
+			match := integration.GetRelationship(externalID, "Whatever", externalID2, "Asset", "CAN_SEE")
+			delRecord3 := integration.DeleteRecordRelationship(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).NotTo(BeNil())
@@ -1129,16 +1084,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1147,83 +1101,80 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationWrongSource", func() {
+		It("UpsertRelationshipWrongSource", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 			rel := integration.GenerateRandomString(10)
 
-			record3 := integration.CreateRecordRelation(rel, "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(rel, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp3).NotTo(BeNil())
 
-			match := integration.GetRelationMatch(rel, "Individual", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelation(match)
+			match := integration.GetRelationship(rel, "Individual", externalID2, "Asset", "CAN_SEE")
+			delRecord3 := integration.DeleteRecordRelationship(match)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).NotTo(BeNil())
@@ -1232,16 +1183,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1250,91 +1200,87 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationActionLowercase", func() {
+		It("UpsertRelationshipActionLowercase", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Individual", externalID2, "Asset", "can_see")
+			record3 := integration.CreateRecordRelationship(externalID, "Individual", externalID2, "Asset", "can_see")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(MatchError(ContainSubstring(
-				"invalid RelationMatch.Type: value does not match regex pattern \"^[A-Z]+(?:_[A-Z]+)*$\"")))
+				"invalid Relationship.Type: value does not match regex pattern \"^[A-Z]+(?:_[A-Z]+)*$\"")))
 			Expect(resp3).To(BeNil())
 
 			delRecord := integration.DeleteRecord(externalID, "Individual")
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1343,99 +1289,100 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("UpsertRelationDelProperty", func() {
+		It("UpsertRelationshipDelProperty", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
-			record, externalID := integration.CreateRecordIndividual("Employee")
+			record, externalID := integration.CreateRecordNodeIndividual("Employee")
 			resp, err := ingestClient.IngestRecord(
 				context.Background(),
 				record,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id := resp.Info.Changes[0].Id
 
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordResourceNoProp(externalID2, "Asset")
+			recordb := integration.CreateRecordResourceNoProperty(externalID2, "Asset")
 			resp2, err := ingestClient.IngestRecord(
 				context.Background(),
 				recordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 			id2 := resp2.Info.Changes[0].Id
 
-			record3 := integration.CreateRecordRelation(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
+			record3 := integration.CreateRecordRelationship(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
 			resp3, err := ingestClient.IngestRecord(
 				context.Background(),
 				record3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 
 			Expect(err).To(Succeed())
 			Expect(resp3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
 
-			match := integration.GetRelationMatch(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelationProperty(match, "property1")
+			delRecord3 := integration.DeleteRecordRelationshipProperty(
+				externalID,
+				"Individual",
+				externalID2,
+				"Asset",
+				"CAN_SEE",
+				"property1",
+			)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
@@ -1444,16 +1391,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1462,42 +1408,46 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Equal(id2),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RESOURCE),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
 		})
 
-		It("RelationDelNotExistingProperty", func() {
+		It("RelationshipDelNotExistingProperty", func() {
 			var err error
 			ingestClient, err := integration.InitConfigIngest()
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
 			externalID2 := integration.GenerateRandomString(10)
-			match := integration.GetRelationMatch(externalID, "Individual", externalID2, "Asset", "CAN_SEE")
-			delRecord3 := integration.DeleteRecordRelationProperty(match, "property1")
+			delRecord3 := integration.DeleteRecordRelationshipProperty(
+				externalID,
+				"Individual",
+				externalID2,
+				"Asset",
+				"CAN_SEE",
+				"property1",
+			)
 			del3, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord3,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_RELATION),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_RELATIONSHIP),
 					}))),
 				})),
 			})))
@@ -1512,9 +1462,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
+			recordb := integration.CreateRecordNoProperty(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,
@@ -1533,11 +1483,10 @@ var _ = Describe("Ingestion", func() {
 				Expect(err4).To(Succeed())
 				Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 					"RecordId": Not(BeNil()),
-					"Error":    BeNil(),
 					"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 						"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 							"Id":       Not(BeEmpty()),
-							"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+							"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 						}))),
 					})),
 				})))
@@ -1547,16 +1496,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1565,16 +1513,15 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1586,9 +1533,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
+			recordb := integration.CreateRecordNoProperty(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,
@@ -1602,7 +1549,7 @@ var _ = Describe("Ingestion", func() {
 					"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 						"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 							"Id":       Not(BeEmpty()),
-							"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+							"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 						}))),
 					})),
 				})))
@@ -1612,16 +1559,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1630,16 +1576,15 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1651,9 +1596,9 @@ var _ = Describe("Ingestion", func() {
 			Expect(err).To(Succeed())
 
 			externalID := integration.GenerateRandomString(10)
-			record := integration.CreateRecordNoProp(externalID, "Individual")
+			record := integration.CreateRecordNoProperty(externalID, "Individual")
 			externalID2 := integration.GenerateRandomString(10)
-			recordb := integration.CreateRecordNoProp(externalID2, "Individual")
+			recordb := integration.CreateRecordNoProperty(externalID2, "Individual")
 
 			records := []*ingestpb.Record{
 				record, recordb,
@@ -1667,7 +1612,7 @@ var _ = Describe("Ingestion", func() {
 					"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 						"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 							"Id":       Not(BeEmpty()),
-							"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+							"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 						}))),
 					})),
 				})))
@@ -1677,16 +1622,15 @@ var _ = Describe("Ingestion", func() {
 			del, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecord,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))
@@ -1695,16 +1639,15 @@ var _ = Describe("Ingestion", func() {
 			del2, err := ingestClient.IngestRecord(
 				context.Background(),
 				delRecordb,
-				retry.WithMax(2),
+				retry.WithMax(5),
 			)
 			Expect(err).To(Succeed())
 			Expect(del2).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"RecordId": Not(BeNil()),
-				"Error":    BeNil(),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
 						"Id":       Not(BeEmpty()),
-						"DataType": Equal(ingestpb.Change_DATA_TYPE_DIGITAL_TWIN),
+						"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
 					}))),
 				})),
 			})))

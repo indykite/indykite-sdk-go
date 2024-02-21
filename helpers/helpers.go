@@ -21,7 +21,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta2"
+	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
 // DeleteNodes is a helper function that delete all nodes of specific type either Identities
