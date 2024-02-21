@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.23.0](https://github.com/indykite/indykite-sdk-go/compare/v0.22.0...v0.23.0) (2024-02-21)
+
+
+### Features
+
+* change ingest to v3 ([36d3067](https://github.com/indykite/indykite-sdk-go/commit/36d30671a9382ad4e9b3c9727d18ae36d3d800d6))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([91912d1](https://github.com/indykite/indykite-sdk-go/commit/91912d18ab86cb183132896fc5a99131b8de79b8))
+
 ## [0.22.0](https://github.com/indykite/indykite-sdk-go/compare/v0.21.1...v0.22.0) (2024-02-09)
 
 
