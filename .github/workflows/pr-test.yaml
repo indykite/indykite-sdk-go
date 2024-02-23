@@ -18,6 +18,9 @@ env:
     INDYKITE_APPLICATION_CREDENTIALS: ${{ secrets.APP_AGENT_CREDENTIALS }}
     INDYKITE_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
     TENANT_ID: ${{ secrets.TENANT_ID }}
+    PROJECT_ID: jarvis-dev-268314
+    PROJ_NUMBER: 699926043561
+    RUN_ENV: staging
 
 jobs:
     test:
@@ -48,9 +51,18 @@ jobs:
         if: github.event_name == 'workflow_dispatch' || (github.event.pull_request && github.event.pull_request.draft == false)
         name: Integration Test
         runs-on: ubuntu-latest
+        permissions:
+            contents: 'read'
+            id-token: 'write'
         steps:
             - name: Check out code
               uses: actions/checkout@v4
+
+            - name: Authenticate to Google Cloud
+              uses: 'google-github-actions/auth@v0.4.0'
+              with:
+                  workload_identity_provider: 'projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider'
+                  service_account: 'tester@jarvis-dev-268314.iam.gserviceaccount.com'
 
             - name: Set up Go
               uses: actions/setup-go@v5
