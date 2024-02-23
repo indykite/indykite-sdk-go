@@ -18,11 +18,14 @@ package authorization_test
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
 	objectpb "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	googlehelper "github.com/indykite/indykite-sdk-go/helpers"
 	integration "github.com/indykite/indykite-sdk-go/test"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -32,6 +35,31 @@ import (
 
 var _ = Describe("Authorized", func() {
 	Describe("IsAuthorized", func() {
+		var auditLogIdentifier string
+		var noAuditLogEntry bool
+		BeforeEach(func() {
+			noAuditLogEntry = false
+			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+		})
+		AfterEach(func(ctx SpecContext) {
+			// Check that the audit log is present in BigQuery
+			client, err := googlehelper.BqClient(ctx)
+			Expect(err).To(Succeed())
+			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
+			Expect(err).To(Succeed())
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.IsAuthorized"
+			filter.EventSource = "AuthorizationService"
+			filter.EventType = "indykite.audit.authorization.isauthorized"
+			filter.AuditLogIdentifier = auditLogIdentifier
+			res, err := googlehelper.QueryAuditLog(ctx, client, &filter)
+			Expect(err).To(Succeed())
+			if noAuditLogEntry {
+				Expect(res.Data).To(BeEmpty())
+			} else {
+				Expect(res.Data).To(ContainSubstring(auditLogIdentifier))
+			}
+		}, NodeTimeout(time.Second*10))
+
 		It("IsAuthorizedDT", func() {
 			var err error
 			authorizationClient, err := integration.InitConfigAuthorization()
@@ -42,7 +70,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -89,7 +124,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource9
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -145,7 +187,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			policyTags := []string{"Tag1"}
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -192,7 +241,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			policyTags := []string{"TagBad"}
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -238,7 +294,15 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource2
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -264,7 +328,15 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource2
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -289,7 +361,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -335,7 +414,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource3
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -382,7 +468,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource4
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -428,7 +521,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource7
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -475,7 +575,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource6
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -521,7 +628,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource4
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorized(
@@ -569,7 +683,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByProperty(
@@ -617,7 +738,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByProperty(
@@ -665,7 +793,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByExternalID(
@@ -713,7 +848,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByExternalID(
@@ -757,7 +899,15 @@ var _ = Describe("Authorized", func() {
 
 			token := integration.TokenBad
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByToken(
@@ -779,7 +929,14 @@ var _ = Describe("Authorized", func() {
 
 			token := integration.TokenGoodFormat
 			resources := integration.Resource1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.IsAuthorizedByToken(
@@ -817,6 +974,31 @@ var _ = Describe("Authorized", func() {
 	})
 
 	Describe("WhatAuthorized", func() {
+		var auditLogIdentifier string
+		var noAuditLogEntry bool
+		BeforeEach(func() {
+			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+			noAuditLogEntry = false
+		})
+		AfterEach(func(ctx SpecContext) {
+			// Check that the audit log is present in BigQuery
+			client, err := googlehelper.BqClient(ctx)
+			Expect(err).To(Succeed())
+			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
+			Expect(err).To(Succeed())
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.WhatAuthorized"
+			filter.EventSource = "AuthorizationService"
+			filter.EventType = "indykite.audit.authorization.whatauthorized"
+			filter.AuditLogIdentifier = auditLogIdentifier
+			res, err := googlehelper.QueryAuditLog(ctx, client, &filter)
+			Expect(err).To(Succeed())
+			if noAuditLogEntry {
+				Expect(res.Data).To(BeEmpty())
+			} else {
+				Expect(res.Data).To(ContainSubstring(auditLogIdentifier))
+			}
+		}, NodeTimeout(time.Second*10))
+
 		It("WhatAuthorizedDT", func() {
 			var err error
 			authorizationClient, err := integration.InitConfigAuthorization()
@@ -827,7 +1009,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorized(
@@ -882,7 +1071,15 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType2
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorized(
@@ -908,7 +1105,15 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorized(
@@ -935,7 +1140,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorized(
@@ -978,7 +1190,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType3
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorized(
@@ -1022,7 +1241,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByProperty(
@@ -1072,7 +1298,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByProperty(
@@ -1116,7 +1349,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByExternalID(
@@ -1166,7 +1406,14 @@ var _ = Describe("Authorized", func() {
 			}
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByExternalID(
@@ -1204,7 +1451,15 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByToken(
@@ -1226,7 +1481,14 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			resourcesTypes := integration.ResourceType1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			resp, err := authorizationClient.WhatAuthorizedByToken(
@@ -1260,6 +1522,31 @@ var _ = Describe("Authorized", func() {
 	})
 
 	Describe("WhoAuthorized", func() {
+		var auditLogIdentifier string
+		var noAuditLogEntry bool
+		BeforeEach(func() {
+			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+			noAuditLogEntry = false
+		})
+		AfterEach(func(ctx SpecContext) {
+			// Check that the audit log is present in BigQuery
+			client, err := googlehelper.BqClient(ctx)
+			Expect(err).To(Succeed())
+			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
+			Expect(err).To(Succeed())
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.WhoAuthorized"
+			filter.EventSource = "AuthorizationService"
+			filter.EventType = "indykite.audit.authorization.whoauthorized"
+			filter.AuditLogIdentifier = auditLogIdentifier
+			res, err := googlehelper.QueryAuditLog(ctx, client, &filter)
+			Expect(err).To(Succeed())
+			if noAuditLogEntry {
+				Expect(res.Data).To(BeEmpty())
+			} else {
+				Expect(res.Data).To(ContainSubstring(auditLogIdentifier))
+			}
+		}, NodeTimeout(time.Second*10))
+
 		It("WhoAuthorized", func() {
 			var err error
 
@@ -1267,7 +1554,14 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			resources := integration.ResourceWho1
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			req := &authorizationpb.WhoAuthorizedRequest{
@@ -1326,7 +1620,15 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			resources := integration.ResourceWho2
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			noAuditLogEntry = true
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			req := &authorizationpb.WhoAuthorizedRequest{
@@ -1352,7 +1654,14 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			resources := integration.ResourceWho3
-			inputParams := map[string]*authorizationpb.InputParam{}
+			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+			inputParams := map[string]*authorizationpb.InputParam{
+				"auditLog": {
+					Value: &authorizationpb.InputParam_StringValue{
+						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+					},
+				},
+			}
 			var policyTags []string
 
 			req := &authorizationpb.WhoAuthorizedRequest{
