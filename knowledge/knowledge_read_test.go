@@ -18,6 +18,7 @@ import (
 	"context"
 
 	"go.uber.org/mock/gomock"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
@@ -69,6 +70,16 @@ var _ = Describe("Identity Knowledge API", func() {
 							Type: "abc",
 							Value: &objects.Value{
 								Type: &objects.Value_StringValue{StringValue: "something"},
+							},
+							Metadata: &knowledgeobjects.Metadata{
+								AssuranceLevel:   1,
+								VerificationTime: timestamppb.Now(),
+								Source:           "Myself",
+								CustomMetadata: map[string]*objects.Value{
+									"customdata": {
+										Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
+									},
+								},
 							},
 						},
 					},
@@ -139,6 +150,16 @@ var _ = Describe("Identity Knowledge API", func() {
 								Type: "abc",
 								Value: &objects.Value{
 									Type: &objects.Value_StringValue{StringValue: "something"},
+								},
+								Metadata: &knowledgeobjects.Metadata{
+									AssuranceLevel:   1,
+									VerificationTime: timestamppb.Now(),
+									Source:           "Myself",
+									CustomMetadata: map[string]*objects.Value{
+										"customdata": {
+											Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
+										},
+									},
 								},
 							},
 						},

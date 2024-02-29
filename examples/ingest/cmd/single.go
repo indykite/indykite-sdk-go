@@ -20,6 +20,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
@@ -40,14 +41,32 @@ var singleCmd = &cobra.Command{
 				Upsert: &ingestpb.UpsertData{
 					Data: &ingestpb.UpsertData_Node{
 						Node: &knowledgeobjects.Node{
-							ExternalId: "0001",
+							ExternalId: "truck2",
 							Type:       "Truck",
 							Properties: []*knowledgeobjects.Property{
 								{
-									Type: "vin",
+									Type: "VIN",
 									Value: &objects.Value{
-										Type: &objects.Value_IntegerValue{
-											IntegerValue: 1234,
+										Type: &objects.Value_StringValue{
+											StringValue: "yyiuyiuyiuyiu",
+										},
+									},
+									Metadata: &knowledgeobjects.Metadata{
+										AssuranceLevel:   2,
+										VerificationTime: timestamppb.Now(),
+										Source:           "BRREG",
+										CustomMetadata: map[string]*objects.Value{
+											"somethingImportant": {
+												Type: &objects.Value_StringValue{StringValue: "whatever"},
+											},
+										},
+									},
+								},
+								{
+									Type: "Model",
+									Value: &objects.Value{
+										Type: &objects.Value_StringValue{
+											StringValue: "Volvo",
 										},
 									},
 								},

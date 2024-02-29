@@ -19,6 +19,7 @@ import (
 	"encoding/base64"
 
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
@@ -205,6 +206,16 @@ func CreateRecordNodeIndividual( //nolint:gocritic // nonamedreturns against unn
 										StringValue: GenerateRandomString(6) + "@yahoo.uk",
 									},
 								},
+								Metadata: &knowledgeobjects.Metadata{
+									AssuranceLevel:   1,
+									VerificationTime: timestamppb.Now(),
+									Source:           "Myself",
+									CustomMetadata: map[string]*objects.Value{
+										"emaildata": {
+											Type: &objects.Value_StringValue{StringValue: "Emaildata"},
+										},
+									},
+								},
 							},
 							{
 								Type: "first_name",
@@ -345,6 +356,16 @@ func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // n
 										StringValue: "Active",
 									},
 								},
+								Metadata: &knowledgeobjects.Metadata{
+									AssuranceLevel:   1,
+									VerificationTime: timestamppb.Now(),
+									Source:           "Myself",
+									CustomMetadata: map[string]*objects.Value{
+										"statusdata": {
+											Type: &objects.Value_StringValue{StringValue: "StatusData"},
+										},
+									},
+								},
 							},
 						},
 					},
@@ -400,6 +421,16 @@ func CreateRecordRelationship(
 								Value: &objects.Value{
 									Type: &objects.Value_StringValue{
 										StringValue: "value1",
+									},
+								},
+								Metadata: &knowledgeobjects.Metadata{
+									AssuranceLevel:   1,
+									VerificationTime: timestamppb.Now(),
+									Source:           "Myself",
+									CustomMetadata: map[string]*objects.Value{
+										"customdata": {
+											Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
+										},
 									},
 								},
 							},
