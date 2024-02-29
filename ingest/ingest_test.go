@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"go.uber.org/mock/gomock"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
@@ -55,6 +56,16 @@ var (
 								Value: &objects.Value{
 									Type: &objects.Value_StringValue{
 										StringValue: "production",
+									},
+								},
+								Metadata: &knowledgeobjects.Metadata{
+									AssuranceLevel:   1,
+									VerificationTime: timestamppb.Now(),
+									Source:           "Myself",
+									CustomMetadata: map[string]*objects.Value{
+										"customdata": {
+											Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
+										},
 									},
 								},
 							},
