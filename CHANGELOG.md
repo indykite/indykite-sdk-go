@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.24.0](https://github.com/indykite/indykite-sdk-go/compare/v0.23.0...v0.24.0) (2024-03-05)
+
+
+### Features
+
+* add property metadata ([b7231ed](https://github.com/indykite/indykite-sdk-go/commit/b7231ed4d26627ca1d3da1bef101ad4ced71a352))
+* add property metadata ([4db2689](https://github.com/indykite/indykite-sdk-go/commit/4db2689f8390ee11b7bf7b3628fe4f350e4fbb6f))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([c680240](https://github.com/indykite/indykite-sdk-go/commit/c68024004acb616a1cf0806e34326208d8bfc507))
+
 ## [0.23.0](https://github.com/indykite/indykite-sdk-go/compare/v0.22.0...v0.23.0) (2024-02-21)
 
 
