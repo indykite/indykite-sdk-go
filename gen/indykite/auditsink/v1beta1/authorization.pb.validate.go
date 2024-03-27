@@ -792,6 +792,8 @@ func (m *IsAuthorized) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for ErrorMessage
+
 	if len(errors) > 0 {
 		return IsAuthorizedMultiError(errors)
 	}
@@ -1069,6 +1071,8 @@ func (m *WhatAuthorized) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for ErrorMessage
 
 	if len(errors) > 0 {
 		return WhatAuthorizedMultiError(errors)
@@ -1348,6 +1352,8 @@ func (m *WhoAuthorized) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for ErrorMessage
 
 	if len(errors) > 0 {
 		return WhoAuthorizedMultiError(errors)

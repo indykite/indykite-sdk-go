@@ -410,3 +410,322 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = IdentityKnowledgeReadResponseValidationError{}
+
+// Validate checks the field values on TrustedDataAccessRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TrustedDataAccessRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TrustedDataAccessRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TrustedDataAccessRequestMultiError, or nil if none found.
+func (m *TrustedDataAccessRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TrustedDataAccessRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetConsentId()); l < 22 || l > 254 {
+		err := TrustedDataAccessRequestValidationError{
+			field:  "ConsentId",
+			reason: "value length must be between 22 and 254 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_TrustedDataAccessRequest_ConsentId_Pattern.MatchString(m.GetConsentId()) {
+		err := TrustedDataAccessRequestValidationError{
+			field:  "ConsentId",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetApplicationId() != "" {
+
+		if l := utf8.RuneCountInString(m.GetApplicationId()); l < 22 || l > 254 {
+			err := TrustedDataAccessRequestValidationError{
+				field:  "ApplicationId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_TrustedDataAccessRequest_ApplicationId_Pattern.MatchString(m.GetApplicationId()) {
+			err := TrustedDataAccessRequestValidationError{
+				field:  "ApplicationId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetUser()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TrustedDataAccessRequestValidationError{
+					field:  "User",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TrustedDataAccessRequestValidationError{
+					field:  "User",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUser()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TrustedDataAccessRequestValidationError{
+				field:  "User",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TrustedDataAccessRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// TrustedDataAccessRequestMultiError is an error wrapping multiple validation
+// errors returned by TrustedDataAccessRequest.ValidateAll() if the designated
+// constraints aren't met.
+type TrustedDataAccessRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TrustedDataAccessRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TrustedDataAccessRequestMultiError) AllErrors() []error { return m }
+
+// TrustedDataAccessRequestValidationError is the validation error returned by
+// TrustedDataAccessRequest.Validate if the designated constraints aren't met.
+type TrustedDataAccessRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TrustedDataAccessRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TrustedDataAccessRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TrustedDataAccessRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TrustedDataAccessRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TrustedDataAccessRequestValidationError) ErrorName() string {
+	return "TrustedDataAccessRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TrustedDataAccessRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTrustedDataAccessRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TrustedDataAccessRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TrustedDataAccessRequestValidationError{}
+
+var _TrustedDataAccessRequest_ConsentId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+var _TrustedDataAccessRequest_ApplicationId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+// Validate checks the field values on TrustedDataAccessResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TrustedDataAccessResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TrustedDataAccessResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TrustedDataAccessResponseMultiError, or nil if none found.
+func (m *TrustedDataAccessResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TrustedDataAccessResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetNodes() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TrustedDataAccessResponseValidationError{
+						field:  fmt.Sprintf("Nodes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TrustedDataAccessResponseValidationError{
+						field:  fmt.Sprintf("Nodes[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TrustedDataAccessResponseValidationError{
+					field:  fmt.Sprintf("Nodes[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return TrustedDataAccessResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// TrustedDataAccessResponseMultiError is an error wrapping multiple validation
+// errors returned by TrustedDataAccessResponse.ValidateAll() if the
+// designated constraints aren't met.
+type TrustedDataAccessResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TrustedDataAccessResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TrustedDataAccessResponseMultiError) AllErrors() []error { return m }
+
+// TrustedDataAccessResponseValidationError is the validation error returned by
+// TrustedDataAccessResponse.Validate if the designated constraints aren't met.
+type TrustedDataAccessResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TrustedDataAccessResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TrustedDataAccessResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TrustedDataAccessResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TrustedDataAccessResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TrustedDataAccessResponseValidationError) ErrorName() string {
+	return "TrustedDataAccessResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TrustedDataAccessResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTrustedDataAccessResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TrustedDataAccessResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TrustedDataAccessResponseValidationError{}

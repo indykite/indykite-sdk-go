@@ -951,3 +951,546 @@ var _Metadata_AssuranceLevel_InLookup = map[int32]struct{}{
 	2: {},
 	3: {},
 }
+
+// Validate checks the field values on User with the rules defined in the proto
+// definition for this message. If any rules are violated, the first error
+// encountered is returned, or nil if there are no violations.
+func (m *User) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on User with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in UserMultiError, or nil if none found.
+func (m *User) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *User) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	oneofUserPresent := false
+	switch v := m.User.(type) {
+	case *User_UserId:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofUserPresent = true
+
+		if l := utf8.RuneCountInString(m.GetUserId()); l < 22 || l > 254 {
+			err := UserValidationError{
+				field:  "UserId",
+				reason: "value length must be between 22 and 254 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_User_UserId_Pattern.MatchString(m.GetUserId()) {
+			err := UserValidationError{
+				field:  "UserId",
+				reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	case *User_Property_:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofUserPresent = true
+
+		if m.GetProperty() == nil {
+			err := UserValidationError{
+				field:  "Property",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetProperty()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Property",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "Property",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetProperty()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "Property",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *User_ExternalId:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofUserPresent = true
+
+		if m.GetExternalId() == nil {
+			err := UserValidationError{
+				field:  "ExternalId",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetExternalId()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "ExternalId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserValidationError{
+						field:  "ExternalId",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetExternalId()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserValidationError{
+					field:  "ExternalId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+	if !oneofUserPresent {
+		err := UserValidationError{
+			field:  "User",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return UserMultiError(errors)
+	}
+
+	return nil
+}
+
+// UserMultiError is an error wrapping multiple validation errors returned by
+// User.ValidateAll() if the designated constraints aren't met.
+type UserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UserMultiError) AllErrors() []error { return m }
+
+// UserValidationError is the validation error returned by User.Validate if the
+// designated constraints aren't met.
+type UserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserValidationError) ErrorName() string { return "UserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserValidationError{}
+
+var _User_UserId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+// Validate checks the field values on User_ExternalID with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *User_ExternalID) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on User_ExternalID with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// User_ExternalIDMultiError, or nil if none found.
+func (m *User_ExternalID) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *User_ExternalID) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetType()) > 64 {
+		err := User_ExternalIDValidationError{
+			field:  "Type",
+			reason: "value length must be at most 64 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_User_ExternalID_Type_Pattern.MatchString(m.GetType()) {
+		err := User_ExternalIDValidationError{
+			field:  "Type",
+			reason: "value does not match regex pattern \"^[a-zA-Z]*$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetExternalId()) < 1 {
+		err := User_ExternalIDValidationError{
+			field:  "ExternalId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return User_ExternalIDMultiError(errors)
+	}
+
+	return nil
+}
+
+// User_ExternalIDMultiError is an error wrapping multiple validation errors
+// returned by User_ExternalID.ValidateAll() if the designated constraints
+// aren't met.
+type User_ExternalIDMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m User_ExternalIDMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m User_ExternalIDMultiError) AllErrors() []error { return m }
+
+// User_ExternalIDValidationError is the validation error returned by
+// User_ExternalID.Validate if the designated constraints aren't met.
+type User_ExternalIDValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e User_ExternalIDValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e User_ExternalIDValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e User_ExternalIDValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e User_ExternalIDValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e User_ExternalIDValidationError) ErrorName() string { return "User_ExternalIDValidationError" }
+
+// Error satisfies the builtin error interface
+func (e User_ExternalIDValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUser_ExternalID.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = User_ExternalIDValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = User_ExternalIDValidationError{}
+
+var _User_ExternalID_Type_Pattern = regexp.MustCompile("^[a-zA-Z]*$")
+
+// Validate checks the field values on User_Property with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *User_Property) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on User_Property with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in User_PropertyMultiError, or
+// nil if none found.
+func (m *User_Property) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *User_Property) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetType()); l < 2 || l > 20 {
+		err := User_PropertyValidationError{
+			field:  "Type",
+			reason: "value length must be between 2 and 20 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetValue() == nil {
+		err := User_PropertyValidationError{
+			field:  "Value",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetValue()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, User_PropertyValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, User_PropertyValidationError{
+					field:  "Value",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetValue()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return User_PropertyValidationError{
+				field:  "Value",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return User_PropertyMultiError(errors)
+	}
+
+	return nil
+}
+
+// User_PropertyMultiError is an error wrapping multiple validation errors
+// returned by User_Property.ValidateAll() if the designated constraints
+// aren't met.
+type User_PropertyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m User_PropertyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m User_PropertyMultiError) AllErrors() []error { return m }
+
+// User_PropertyValidationError is the validation error returned by
+// User_Property.Validate if the designated constraints aren't met.
+type User_PropertyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e User_PropertyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e User_PropertyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e User_PropertyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e User_PropertyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e User_PropertyValidationError) ErrorName() string { return "User_PropertyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e User_PropertyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUser_Property.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = User_PropertyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = User_PropertyValidationError{}
