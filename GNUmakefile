@@ -40,7 +40,7 @@ test:
 	rm coverage.out.tmp
 
 integration:
-	go clean -testcache && go test --tags=integration ./... -ginkgo.v --ginkgo.trace --ginkgo.show-node-events --ginkgo.poll-progress-after=30s --ginkgo.poll-progress-interval=120s -test.v
+	go clean -testcache && go test --tags=integration ./...
 
 cover: test
 	@echo "==> generate test coverage..."
