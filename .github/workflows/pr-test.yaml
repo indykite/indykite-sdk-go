@@ -4,10 +4,10 @@ on:
     pull_request:
         types: [opened, synchronize, reopened, ready_for_review]
         branches:
-            - master
+            - mastery
     push:
         branches:
-            - master
+            - mastery
     workflow_dispatch:
 
 concurrency:
