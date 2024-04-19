@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build !integration
+//go:build integration
 
 package authorization_test
 
@@ -788,8 +788,8 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			externalID := &authorizationpb.ExternalID{
-				Type:       "Individual",
-				ExternalId: integration.Subject1,
+				Type:       "Person",
+				ExternalId: integration.Subject2,
 			}
 
 			resources := integration.Resource1
@@ -843,7 +843,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			externalID := &authorizationpb.ExternalID{
-				Type:       "Individual",
+				Type:       "Person",
 				ExternalId: "anythingwrong",
 			}
 
@@ -1042,16 +1042,19 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
-									})),
-									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset2),
-									})),
-									"2": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset3),
 									})),
-									"3": PointTo(MatchFields(IgnoreExtras, Fields{
+									"1": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset4),
+									})),
+									"2": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset1),
+									})),
+									"3": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset5),
+									})),
+									"4": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset2),
 									})),
 								}),
 							})),
@@ -1237,7 +1240,7 @@ var _ = Describe("Authorized", func() {
 
 			digitalTwinProperty := &authorizationpb.Property{
 				Type:  "email",
-				Value: objectpb.String(integration.EmailGood),
+				Value: objectpb.String(integration.EmailGood2),
 			}
 
 			resourcesTypes := integration.ResourceType1
@@ -1274,10 +1277,13 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
+										"ExternalId": Equal(integration.Asset3),
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset2),
+										"ExternalId": Equal(integration.Asset4),
+									})),
+									"2": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset1),
 									})),
 								}),
 							})),
@@ -1344,8 +1350,8 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			externalID := &authorizationpb.ExternalID{
-				Type:       "Individual",
-				ExternalId: integration.Subject1,
+				Type:       "Person",
+				ExternalId: integration.Subject4,
 			}
 
 			resourcesTypes := integration.ResourceType1
@@ -1382,10 +1388,13 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
+										"ExternalId": Equal(integration.Asset3),
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset2),
+										"ExternalId": Equal(integration.Asset4),
+									})),
+									"2": PointTo(MatchFields(IgnoreExtras, Fields{
+										"ExternalId": Equal(integration.Asset1),
 									})),
 								}),
 							})),
@@ -1401,7 +1410,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			externalID := &authorizationpb.ExternalID{
-				Type:       "Individual",
+				Type:       "Person",
 				ExternalId: "SomethingWrong",
 			}
 
@@ -1593,10 +1602,10 @@ var _ = Describe("Authorized", func() {
 									action0: PointTo(MatchFields(IgnoreExtras, Fields{
 										"Subjects": MatchAllElementsWithIndex(IndexIdentity, Elements{
 											"0": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject1),
+												"ExternalId": Equal(integration.Subject2),
 											})),
 											"1": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject2),
+												"ExternalId": Equal(integration.Subject1),
 											})),
 											"2": PointTo(MatchFields(IgnoreExtras, Fields{
 												"ExternalId": Equal(integration.Subject3),

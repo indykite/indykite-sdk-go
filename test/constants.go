@@ -35,7 +35,7 @@ var (
 				"policyVersion": "1.0-indykite"
 			},
 			"subject": {
-				"type": "Individual"
+				"type": "Person"
 			},
 			"actions": [
 				""
@@ -44,7 +44,7 @@ var (
 				"type": "Asset"
 			},
 			"condition": {
-				"cypher": "MATCH (subject:Individual)-[:BELONGS_TO]->(:Organization)-[:IS_ON]->
+				"cypher": "MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:IS_ON]->
 				(s:Subscription) MATCH (s)-[:OFFERS]->(:Service) MATCH (s)-[:COVERS]->
 				(resource:Asset) WITH subject, resource"
 			}
@@ -53,7 +53,7 @@ var (
 
 	Resource1 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "LPcearawBJWDQLR",
+			ExternalId: "pFlpMtkWqCPXVue",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -61,14 +61,14 @@ var (
 
 	Resource2 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "LPcearawBJWDQLR",
+			ExternalId: "pFlpMtkWqCPXVue",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
 	}
 
 	Resource3 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "LPcearawBJWDQLR",
+			ExternalId: "pFlpMtkWqCPXVue",
 			Type:       "Asset",
 			Actions:    []string{"DEMANDS"},
 		},
@@ -76,7 +76,7 @@ var (
 
 	Resource4 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "mfYbpowiNPJQCBY",
+			ExternalId: "QovektcrVBbNmFj",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -84,7 +84,7 @@ var (
 
 	Resource5 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "CCbJwkQtLOmCdLq",
+			ExternalId: "HQKzkgPnGJDiaGo",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -92,7 +92,7 @@ var (
 
 	Resource6 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "aXQMRIcTzyIyeKC",
+			ExternalId: "XcbZruEzGNYHLic",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -100,7 +100,7 @@ var (
 
 	Resource7 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "EvfDHrEObtYVleh",
+			ExternalId: "zIDegSbXcRlBeFZ",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -108,7 +108,7 @@ var (
 
 	Resource8 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "BLOXgHAvWFMHDsS",
+			ExternalId: "paLtQSpEcTvzeuC",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -116,12 +116,12 @@ var (
 
 	Resource9 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
-			ExternalId: "LPcearawBJWDQLR",
+			ExternalId: "pFlpMtkWqCPXVue",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
 		{
-			ExternalId: "CCbJwkQtLOmCdLq",
+			ExternalId: "HQKzkgPnGJDiaGo",
 			Type:       "Asset",
 			Actions:    []string{"SUBSCRIBES_TO"},
 		},
@@ -140,7 +140,7 @@ var (
 	}
 
 	ResourceWho1 = []*authorizationpb.WhoAuthorizedRequest_Resource{
-		{ExternalId: "LPcearawBJWDQLR", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
+		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
 	ResourceWho2 = []*authorizationpb.WhoAuthorizedRequest_Resource{
@@ -148,27 +148,30 @@ var (
 	}
 
 	ResourceWho3 = []*authorizationpb.WhoAuthorizedRequest_Resource{
-		{ExternalId: "LPcearawBJWDQLR", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
+		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
 	}
 
 	DigitalTwinBad     = "id"
 	DigitalTwinNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
-	DigitalTwin1       = "gid:AAAAFR3royp640c-gXRGdusXM4Y"
-	DigitalTwin2       = "gid:AAAAFf6Y9ZMWhEdsr3INueqfRLU"
+	DigitalTwin1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
+	DigitalTwin2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
 
-	EmailBad  = "test@example.com"
-	EmailGood = "paulo@yahoo.uk"
+	EmailBad   = "test@example.com"
+	EmailGood  = "biche@yahoo.uk"
+	EmailGood2 = "darna@yahoo.uk"
 
 	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
-	Asset1 = "CCbJwkQtLOmCdLq"
-	Asset2 = "LPcearawBJWDQLR"
-	Asset3 = "zBiBMaYOaDmdCyX"
-	Asset4 = "BLOXgHAvWFMHDsS"
+	Asset1 = "HQKzkgPnGJDiaGo"
+	Asset2 = "pFlpMtkWqCPXVue"
+	Asset3 = "zojWwtKbBLmAXCO"
+	Asset4 = "paLtQSpEcTvzeuC"
+	Asset5 = "dLZVTSllFCdZfXC"
 
-	Subject1 = "HLEgiljrtoNEiyX"
-	Subject2 = "zvPYDXxXyVgeZHw"
-	Subject3 = "TrSFiLuoSLGiCIo"
+	Subject1 = "dilZWYdFcmXiojC"
+	Subject2 = "fVcaUxJqmOkyOTX"
+	Subject3 = "lSPmCXIPRXppszf"
+	Subject4 = "NACTFFKUCcceDIz"
 
 	// TokenGoodFormat is a valid format for jwt.
 	TokenGoodFormat = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
