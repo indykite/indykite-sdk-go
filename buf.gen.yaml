@@ -7,6 +7,8 @@ managed:
         except:
             - buf.build/googleapis/googleapis
             - buf.build/envoyproxy/protoc-gen-validate
+            - buf.build/bufbuild/protovalidate
+            - buf.build/gnostic/gnostic
 plugins:
     - plugin: buf.build/protocolbuffers/go
       out: gen

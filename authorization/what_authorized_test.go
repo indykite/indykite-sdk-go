@@ -150,8 +150,12 @@ var _ = Describe("WhatAuthorized", func() {
 				Subject: &authorizationpb.Subject{
 					Subject: &authorizationpb.Subject_DigitalTwinProperty{
 						DigitalTwinProperty: &authorizationpb.Property{
-							Type:  "email_for_example",
-							Value: objectpb.String("test@example.com"),
+							Type: "email_for_example",
+							Value: &objectpb.Value{
+								Value: &objectpb.Value_StringValue{
+									StringValue: "test@example.com",
+								},
+							},
 						},
 					},
 				},
@@ -170,8 +174,12 @@ var _ = Describe("WhatAuthorized", func() {
 			resp, err := authorizationClient.WhatAuthorizedByProperty(
 				ctx,
 				&authorizationpb.Property{
-					Type:  "email_for_example",
-					Value: objectpb.String("test@example.com"),
+					Type: "email_for_example",
+					Value: &objectpb.Value{
+						Value: &objectpb.Value_StringValue{
+							StringValue: "test@example.com",
+						},
+					},
 				},
 				resourceTypeExample,
 				inputParam,

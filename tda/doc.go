@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2024 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,5 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package identityv1beta1 is generated from proto package.
-package identityv1beta1
+/*
+Package tda implements the IndyKite TrustedDataAccess Service API Client.
+*/
+package tda
+
+const versionClient = "v0.24.0" // x-release-please-version

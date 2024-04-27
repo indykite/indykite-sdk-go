@@ -99,7 +99,7 @@ func (m *UpsertData) validate(all bool) error {
 			}
 		}
 
-	case *UpsertData_Relation:
+	case *UpsertData_Relationship:
 		if v == nil {
 			err := UpsertDataValidationError{
 				field:  "Data",
@@ -112,11 +112,11 @@ func (m *UpsertData) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetRelation()).(type) {
+			switch v := interface{}(m.GetRelationship()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UpsertDataValidationError{
-						field:  "Relation",
+						field:  "Relationship",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -124,16 +124,16 @@ func (m *UpsertData) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UpsertDataValidationError{
-						field:  "Relation",
+						field:  "Relationship",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetRelation()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetRelationship()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UpsertDataValidationError{
-					field:  "Relation",
+					field:  "Relationship",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -285,7 +285,7 @@ func (m *DeleteData) validate(all bool) error {
 			}
 		}
 
-	case *DeleteData_Relation:
+	case *DeleteData_Relationship:
 		if v == nil {
 			err := DeleteDataValidationError{
 				field:  "Data",
@@ -298,11 +298,11 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetRelation()).(type) {
+			switch v := interface{}(m.GetRelationship()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, DeleteDataValidationError{
-						field:  "Relation",
+						field:  "Relationship",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -310,16 +310,16 @@ func (m *DeleteData) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, DeleteDataValidationError{
-						field:  "Relation",
+						field:  "Relationship",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetRelation()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetRelationship()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return DeleteDataValidationError{
-					field:  "Relation",
+					field:  "Relationship",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -367,7 +367,7 @@ func (m *DeleteData) validate(all bool) error {
 			}
 		}
 
-	case *DeleteData_RelationProperty:
+	case *DeleteData_RelationshipProperty:
 		if v == nil {
 			err := DeleteDataValidationError{
 				field:  "Data",
@@ -380,11 +380,11 @@ func (m *DeleteData) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetRelationProperty()).(type) {
+			switch v := interface{}(m.GetRelationshipProperty()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, DeleteDataValidationError{
-						field:  "RelationProperty",
+						field:  "RelationshipProperty",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -392,16 +392,16 @@ func (m *DeleteData) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, DeleteDataValidationError{
-						field:  "RelationProperty",
+						field:  "RelationshipProperty",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetRelationProperty()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetRelationshipProperty()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return DeleteDataValidationError{
-					field:  "RelationProperty",
+					field:  "RelationshipProperty",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -718,92 +718,13 @@ func (m *Node) validate(all bool) error {
 
 	var errors []error
 
-	switch v := m.Type.(type) {
-	case *Node_DigitalTwin:
-		if v == nil {
-			err := NodeValidationError{
-				field:  "Type",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
+	// no validation rules for Id
 
-		if all {
-			switch v := interface{}(m.GetDigitalTwin()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, NodeValidationError{
-						field:  "DigitalTwin",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, NodeValidationError{
-						field:  "DigitalTwin",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetDigitalTwin()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return NodeValidationError{
-					field:  "DigitalTwin",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
+	// no validation rules for ExternalId
 
-	case *Node_Resource:
-		if v == nil {
-			err := NodeValidationError{
-				field:  "Type",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
+	// no validation rules for Type
 
-		if all {
-			switch v := interface{}(m.GetResource()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, NodeValidationError{
-						field:  "Resource",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, NodeValidationError{
-						field:  "Resource",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetResource()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return NodeValidationError{
-					field:  "Resource",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	default:
-		_ = v // ensures v is used
-	}
+	// no validation rules for IsIdentity
 
 	if len(errors) > 0 {
 		return NodeMultiError(errors)
@@ -882,51 +803,82 @@ var _ interface {
 	ErrorName() string
 } = NodeValidationError{}
 
-// Validate checks the field values on Relation with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
+// Validate checks the field values on Relationship with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *Relation) Validate() error {
+func (m *Relationship) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Relation with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in RelationMultiError, or nil
-// if none found.
-func (m *Relation) ValidateAll() error {
+// ValidateAll checks the field values on Relationship with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in RelationshipMultiError, or
+// nil if none found.
+func (m *Relationship) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Relation) validate(all bool) error {
+func (m *Relationship) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
+	// no validation rules for Type
+
 	if all {
-		switch v := interface{}(m.GetMatch()).(type) {
+		switch v := interface{}(m.GetSource()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, RelationValidationError{
-					field:  "Match",
+				errors = append(errors, RelationshipValidationError{
+					field:  "Source",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, RelationValidationError{
-					field:  "Match",
+				errors = append(errors, RelationshipValidationError{
+					field:  "Source",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetMatch()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetSource()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return RelationValidationError{
-				field:  "Match",
+			return RelationshipValidationError{
+				field:  "Source",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetTarget()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RelationshipValidationError{
+					field:  "Target",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RelationshipValidationError{
+					field:  "Target",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTarget()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RelationshipValidationError{
+				field:  "Target",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -934,18 +886,18 @@ func (m *Relation) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return RelationMultiError(errors)
+		return RelationshipMultiError(errors)
 	}
 
 	return nil
 }
 
-// RelationMultiError is an error wrapping multiple validation errors returned
-// by Relation.ValidateAll() if the designated constraints aren't met.
-type RelationMultiError []error
+// RelationshipMultiError is an error wrapping multiple validation errors
+// returned by Relationship.ValidateAll() if the designated constraints aren't met.
+type RelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m RelationMultiError) Error() string {
+func (m RelationshipMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -954,11 +906,11 @@ func (m RelationMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m RelationMultiError) AllErrors() []error { return m }
+func (m RelationshipMultiError) AllErrors() []error { return m }
 
-// RelationValidationError is the validation error returned by
-// Relation.Validate if the designated constraints aren't met.
-type RelationValidationError struct {
+// RelationshipValidationError is the validation error returned by
+// Relationship.Validate if the designated constraints aren't met.
+type RelationshipValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -966,22 +918,22 @@ type RelationValidationError struct {
 }
 
 // Field function returns field value.
-func (e RelationValidationError) Field() string { return e.field }
+func (e RelationshipValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e RelationValidationError) Reason() string { return e.reason }
+func (e RelationshipValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e RelationValidationError) Cause() error { return e.cause }
+func (e RelationshipValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e RelationValidationError) Key() bool { return e.key }
+func (e RelationshipValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e RelationValidationError) ErrorName() string { return "RelationValidationError" }
+func (e RelationshipValidationError) ErrorName() string { return "RelationshipValidationError" }
 
 // Error satisfies the builtin error interface
-func (e RelationValidationError) Error() string {
+func (e RelationshipValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -993,14 +945,14 @@ func (e RelationValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sRelation.%s: %s%s",
+		"invalid %sRelationship.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = RelationValidationError{}
+var _ error = RelationshipValidationError{}
 
 var _ interface {
 	Field() string
@@ -1008,7 +960,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = RelationValidationError{}
+} = RelationshipValidationError{}
 
 // Validate checks the field values on NodeMatch with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1113,166 +1065,6 @@ var _ interface {
 	ErrorName() string
 } = NodeMatchValidationError{}
 
-// Validate checks the field values on RelationMatch with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *RelationMatch) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on RelationMatch with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in RelationMatchMultiError, or
-// nil if none found.
-func (m *RelationMatch) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *RelationMatch) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if all {
-		switch v := interface{}(m.GetSourceMatch()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, RelationMatchValidationError{
-					field:  "SourceMatch",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, RelationMatchValidationError{
-					field:  "SourceMatch",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetSourceMatch()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return RelationMatchValidationError{
-				field:  "SourceMatch",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetTargetMatch()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, RelationMatchValidationError{
-					field:  "TargetMatch",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, RelationMatchValidationError{
-					field:  "TargetMatch",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetTargetMatch()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return RelationMatchValidationError{
-				field:  "TargetMatch",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for Type
-
-	if len(errors) > 0 {
-		return RelationMatchMultiError(errors)
-	}
-
-	return nil
-}
-
-// RelationMatchMultiError is an error wrapping multiple validation errors
-// returned by RelationMatch.ValidateAll() if the designated constraints
-// aren't met.
-type RelationMatchMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m RelationMatchMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m RelationMatchMultiError) AllErrors() []error { return m }
-
-// RelationMatchValidationError is the validation error returned by
-// RelationMatch.Validate if the designated constraints aren't met.
-type RelationMatchValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e RelationMatchValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e RelationMatchValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e RelationMatchValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e RelationMatchValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e RelationMatchValidationError) ErrorName() string { return "RelationMatchValidationError" }
-
-// Error satisfies the builtin error interface
-func (e RelationMatchValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sRelationMatch.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = RelationMatchValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = RelationMatchValidationError{}
-
 // Validate checks the field values on DeleteData_NodePropertyMatch with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1324,7 +1116,7 @@ func (m *DeleteData_NodePropertyMatch) validate(all bool) error {
 		}
 	}
 
-	// no validation rules for Key
+	// no validation rules for PropertyType
 
 	if len(errors) > 0 {
 		return DeleteData_NodePropertyMatchMultiError(errors)
@@ -1407,75 +1199,106 @@ var _ interface {
 	ErrorName() string
 } = DeleteData_NodePropertyMatchValidationError{}
 
-// Validate checks the field values on DeleteData_RelationPropertyMatch with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the first error encountered is returned, or nil if there are
-// no violations.
-func (m *DeleteData_RelationPropertyMatch) Validate() error {
+// Validate checks the field values on DeleteData_RelationshipPropertyMatch
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *DeleteData_RelationshipPropertyMatch) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on DeleteData_RelationPropertyMatch with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// DeleteData_RelationPropertyMatchMultiError, or nil if none found.
-func (m *DeleteData_RelationPropertyMatch) ValidateAll() error {
+// ValidateAll checks the field values on DeleteData_RelationshipPropertyMatch
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// DeleteData_RelationshipPropertyMatchMultiError, or nil if none found.
+func (m *DeleteData_RelationshipPropertyMatch) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *DeleteData_RelationPropertyMatch) validate(all bool) error {
+func (m *DeleteData_RelationshipPropertyMatch) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
+	// no validation rules for Type
+
 	if all {
-		switch v := interface{}(m.GetMatch()).(type) {
+		switch v := interface{}(m.GetSource()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, DeleteData_RelationPropertyMatchValidationError{
-					field:  "Match",
+				errors = append(errors, DeleteData_RelationshipPropertyMatchValidationError{
+					field:  "Source",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, DeleteData_RelationPropertyMatchValidationError{
-					field:  "Match",
+				errors = append(errors, DeleteData_RelationshipPropertyMatchValidationError{
+					field:  "Source",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetMatch()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetSource()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return DeleteData_RelationPropertyMatchValidationError{
-				field:  "Match",
+			return DeleteData_RelationshipPropertyMatchValidationError{
+				field:  "Source",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
 		}
 	}
 
-	// no validation rules for Key
+	if all {
+		switch v := interface{}(m.GetTarget()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DeleteData_RelationshipPropertyMatchValidationError{
+					field:  "Target",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DeleteData_RelationshipPropertyMatchValidationError{
+					field:  "Target",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTarget()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteData_RelationshipPropertyMatchValidationError{
+				field:  "Target",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for PropertyType
 
 	if len(errors) > 0 {
-		return DeleteData_RelationPropertyMatchMultiError(errors)
+		return DeleteData_RelationshipPropertyMatchMultiError(errors)
 	}
 
 	return nil
 }
 
-// DeleteData_RelationPropertyMatchMultiError is an error wrapping multiple
+// DeleteData_RelationshipPropertyMatchMultiError is an error wrapping multiple
 // validation errors returned by
-// DeleteData_RelationPropertyMatch.ValidateAll() if the designated
+// DeleteData_RelationshipPropertyMatch.ValidateAll() if the designated
 // constraints aren't met.
-type DeleteData_RelationPropertyMatchMultiError []error
+type DeleteData_RelationshipPropertyMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m DeleteData_RelationPropertyMatchMultiError) Error() string {
+func (m DeleteData_RelationshipPropertyMatchMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1484,12 +1307,12 @@ func (m DeleteData_RelationPropertyMatchMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m DeleteData_RelationPropertyMatchMultiError) AllErrors() []error { return m }
+func (m DeleteData_RelationshipPropertyMatchMultiError) AllErrors() []error { return m }
 
-// DeleteData_RelationPropertyMatchValidationError is the validation error
-// returned by DeleteData_RelationPropertyMatch.Validate if the designated
+// DeleteData_RelationshipPropertyMatchValidationError is the validation error
+// returned by DeleteData_RelationshipPropertyMatch.Validate if the designated
 // constraints aren't met.
-type DeleteData_RelationPropertyMatchValidationError struct {
+type DeleteData_RelationshipPropertyMatchValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1497,24 +1320,24 @@ type DeleteData_RelationPropertyMatchValidationError struct {
 }
 
 // Field function returns field value.
-func (e DeleteData_RelationPropertyMatchValidationError) Field() string { return e.field }
+func (e DeleteData_RelationshipPropertyMatchValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e DeleteData_RelationPropertyMatchValidationError) Reason() string { return e.reason }
+func (e DeleteData_RelationshipPropertyMatchValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e DeleteData_RelationPropertyMatchValidationError) Cause() error { return e.cause }
+func (e DeleteData_RelationshipPropertyMatchValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e DeleteData_RelationPropertyMatchValidationError) Key() bool { return e.key }
+func (e DeleteData_RelationshipPropertyMatchValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e DeleteData_RelationPropertyMatchValidationError) ErrorName() string {
-	return "DeleteData_RelationPropertyMatchValidationError"
+func (e DeleteData_RelationshipPropertyMatchValidationError) ErrorName() string {
+	return "DeleteData_RelationshipPropertyMatchValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e DeleteData_RelationPropertyMatchValidationError) Error() string {
+func (e DeleteData_RelationshipPropertyMatchValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1526,14 +1349,14 @@ func (e DeleteData_RelationPropertyMatchValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sDeleteData_RelationPropertyMatch.%s: %s%s",
+		"invalid %sDeleteData_RelationshipPropertyMatch.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = DeleteData_RelationPropertyMatchValidationError{}
+var _ error = DeleteData_RelationshipPropertyMatchValidationError{}
 
 var _ interface {
 	Field() string
@@ -1541,4 +1364,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = DeleteData_RelationPropertyMatchValidationError{}
+} = DeleteData_RelationshipPropertyMatchValidationError{}

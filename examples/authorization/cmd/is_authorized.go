@@ -126,8 +126,12 @@ var withPropertyCmd = &cobra.Command{
 		var policyTags []string
 
 		property := &authorizationpb.Property{
-			Type:  propertyType,
-			Value: objects.String(propertyValue),
+			Type: propertyType,
+			Value: &objects.Value{
+				Value: &objects.Value_StringValue{
+					StringValue: propertyValue,
+				},
+			},
 		}
 
 		resp, err := client.IsAuthorizedByProperty(

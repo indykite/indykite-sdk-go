@@ -1,0 +1,7 @@
+---
+version: v1
+plugins:
+    - plugin: connect-openapi
+      out: doc/openapi
+      opt:
+          - content-types=json

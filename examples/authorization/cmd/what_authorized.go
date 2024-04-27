@@ -115,8 +115,12 @@ var whatWithPropertyCmd = &cobra.Command{
 		}
 
 		property := &authorizationpb.Property{
-			Type:  propertyType,
-			Value: objects.String(propertyValue),
+			Type: propertyType,
+			Value: &objects.Value{
+				Value: &objects.Value_StringValue{
+					StringValue: propertyValue,
+				},
+			},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}
 		var policyTags []string

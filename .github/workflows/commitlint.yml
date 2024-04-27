@@ -7,14 +7,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: wagoid/commitlint-github-action@v5
+            - uses: wagoid/commitlint-github-action@v6
 
     strict-commitlint:
         name: Strict commit lint
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: wagoid/commitlint-github-action@v5
+            - uses: wagoid/commitlint-github-action@v6
               with:
                   failOnWarnings: true
             - name: Check amount of commits
