@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2024 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,5 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package identityv1beta2 is generated from proto package.
-package identityv1beta2
+package main
+
+import (
+	"github.com/indykite/indykite-sdk-go/examples/tda/cmd"
+)
+
+func main() {
+	cmd.Execute()
+}

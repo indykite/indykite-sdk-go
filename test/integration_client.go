@@ -23,6 +23,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
 
 	"github.com/indykite/indykite-sdk-go/authorization"
+	"github.com/indykite/indykite-sdk-go/config"
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 	"github.com/indykite/indykite-sdk-go/ingest"
@@ -32,6 +33,7 @@ var (
 	clientAuthorization *authorization.Client
 	clientIngest        *ingest.Client
 	retryIngest         *ingest.RetryClient
+	clientConfig        *config.Client
 	err                 error
 )
 
@@ -76,6 +78,18 @@ func InitConfigIngestRetry() (*ingest.RetryClient, error) {
 		er(fmt.Sprintf("failed to create IndyKite Ingest RetryClient: %v", err))
 	}
 	return retryIngest, nil
+}
+
+// InitConfigConfig file and ENV variables if set.
+func InitConfigConfig() (*config.Client, error) {
+	clientConfig, err = config.NewClient(context.Background(),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithRetryOptions(retry.Disable()),
+	)
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite Config Client: %v", err))
+	}
+	return clientConfig, err
 }
 
 func er(msg any) {

@@ -32,6 +32,7 @@ install-tools:
 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	@go install github.com/onsi/ginkgo/v2/ginkgo@latest
 	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+	@go install github.com/sudorandom/protoc-gen-connect-openapi@main
 	@echo Installation completed
 
 test:
