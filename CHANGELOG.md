@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.25.0](https://github.com/indykite/indykite-sdk-go/compare/v0.24.0...v0.25.0) (2024-05-03)
+
+
+### Features
+
+* add tda and consent config node ([846a5cd](https://github.com/indykite/indykite-sdk-go/commit/846a5cdf19d414545bb2f20d133a94532982baf6))
+* remove deprecated functions ([da1f092](https://github.com/indykite/indykite-sdk-go/commit/da1f092cbae9489caa5493504411731ef1a951ce))
+* remove tests from pipeline ([2e56fa8](https://github.com/indykite/indykite-sdk-go/commit/2e56fa82dbd1584857fd1c457e0627f719641530))
+
+
+### Miscellaneous Chores
+
+* **deps:** update golangci/golangci-lint-action action to v5 ([2187f7a](https://github.com/indykite/indykite-sdk-go/commit/2187f7a534e113a613835987eeae5b682f07a91d))
+
 ## [0.24.0](https://github.com/indykite/indykite-sdk-go/compare/v0.23.0...v0.24.0) (2024-03-05)
 
 
