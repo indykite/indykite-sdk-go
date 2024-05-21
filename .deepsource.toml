@@ -1,5 +1,11 @@
 version = 1
 
+test_patterns = [
+  "**/*_test.go",
+  "test/**",
+  "**/testdata/**",
+]
+
 [[analyzers]]
 name = "go"
 
