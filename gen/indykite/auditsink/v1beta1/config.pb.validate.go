@@ -1326,6 +1326,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
+	case *ConfigDetail_TokenExchangeConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetTokenExchangeConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "TokenExchangeConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "TokenExchangeConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetTokenExchangeConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "TokenExchangeConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *ConfigDetail_Oauth2ApplicationConfig:
 		if v == nil {
 			err := ConfigDetailValidationError{
@@ -4743,6 +4784,249 @@ var _ interface {
 	ErrorName() string
 } = RevokeConfigPermissionsValidationError{}
 
+// Validate checks the field values on TokenExchangeConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenExchangeConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenExchangeConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenExchangeConfigMultiError, or nil if none found.
+func (m *TokenExchangeConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenExchangeConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	{
+		sorted_keys := make([]string, len(m.GetClaimsMapping()))
+		i := 0
+		for key := range m.GetClaimsMapping() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetClaimsMapping()[key]
+			_ = val
+
+			// no validation rules for ClaimsMapping[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, TokenExchangeConfigValidationError{
+							field:  fmt.Sprintf("ClaimsMapping[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, TokenExchangeConfigValidationError{
+							field:  fmt.Sprintf("ClaimsMapping[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return TokenExchangeConfigValidationError{
+						field:  fmt.Sprintf("ClaimsMapping[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
+	// no validation rules for IkgNodeType
+
+	// no validation rules for PerformUpsert
+
+	switch v := m.TokenMatcher.(type) {
+	case *TokenExchangeConfig_Jwt:
+		if v == nil {
+			err := TokenExchangeConfigValidationError{
+				field:  "TokenMatcher",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetJwt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenExchangeConfigValidationError{
+						field:  "Jwt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenExchangeConfigValidationError{
+						field:  "Jwt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetJwt()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenExchangeConfigValidationError{
+					field:  "Jwt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+	switch v := m.Validation.(type) {
+	case *TokenExchangeConfig_Offline_:
+		if v == nil {
+			err := TokenExchangeConfigValidationError{
+				field:  "Validation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetOffline()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenExchangeConfigValidationError{
+						field:  "Offline",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenExchangeConfigValidationError{
+						field:  "Offline",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetOffline()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenExchangeConfigValidationError{
+					field:  "Offline",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+
+	if len(errors) > 0 {
+		return TokenExchangeConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenExchangeConfigMultiError is an error wrapping multiple validation
+// errors returned by TokenExchangeConfig.ValidateAll() if the designated
+// constraints aren't met.
+type TokenExchangeConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenExchangeConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenExchangeConfigMultiError) AllErrors() []error { return m }
+
+// TokenExchangeConfigValidationError is the validation error returned by
+// TokenExchangeConfig.Validate if the designated constraints aren't met.
+type TokenExchangeConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenExchangeConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenExchangeConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenExchangeConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenExchangeConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenExchangeConfigValidationError) ErrorName() string {
+	return "TokenExchangeConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenExchangeConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenExchangeConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenExchangeConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenExchangeConfigValidationError{}
+
 // Validate checks the field values on CreatedConfig_Location with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -5070,3 +5354,316 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AuditSinkConfig_KafkaValidationError{}
+
+// Validate checks the field values on TokenExchangeConfig_JWT with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenExchangeConfig_JWT) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenExchangeConfig_JWT with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenExchangeConfig_JWTMultiError, or nil if none found.
+func (m *TokenExchangeConfig_JWT) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenExchangeConfig_JWT) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Issuer
+
+	// no validation rules for Audience
+
+	if len(errors) > 0 {
+		return TokenExchangeConfig_JWTMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenExchangeConfig_JWTMultiError is an error wrapping multiple validation
+// errors returned by TokenExchangeConfig_JWT.ValidateAll() if the designated
+// constraints aren't met.
+type TokenExchangeConfig_JWTMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenExchangeConfig_JWTMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenExchangeConfig_JWTMultiError) AllErrors() []error { return m }
+
+// TokenExchangeConfig_JWTValidationError is the validation error returned by
+// TokenExchangeConfig_JWT.Validate if the designated constraints aren't met.
+type TokenExchangeConfig_JWTValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenExchangeConfig_JWTValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenExchangeConfig_JWTValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenExchangeConfig_JWTValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenExchangeConfig_JWTValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenExchangeConfig_JWTValidationError) ErrorName() string {
+	return "TokenExchangeConfig_JWTValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenExchangeConfig_JWTValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenExchangeConfig_JWT.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenExchangeConfig_JWTValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenExchangeConfig_JWTValidationError{}
+
+// Validate checks the field values on TokenExchangeConfig_Offline with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenExchangeConfig_Offline) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenExchangeConfig_Offline with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenExchangeConfig_OfflineMultiError, or nil if none found.
+func (m *TokenExchangeConfig_Offline) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenExchangeConfig_Offline) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return TokenExchangeConfig_OfflineMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenExchangeConfig_OfflineMultiError is an error wrapping multiple
+// validation errors returned by TokenExchangeConfig_Offline.ValidateAll() if
+// the designated constraints aren't met.
+type TokenExchangeConfig_OfflineMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenExchangeConfig_OfflineMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenExchangeConfig_OfflineMultiError) AllErrors() []error { return m }
+
+// TokenExchangeConfig_OfflineValidationError is the validation error returned
+// by TokenExchangeConfig_Offline.Validate if the designated constraints
+// aren't met.
+type TokenExchangeConfig_OfflineValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenExchangeConfig_OfflineValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenExchangeConfig_OfflineValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenExchangeConfig_OfflineValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenExchangeConfig_OfflineValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenExchangeConfig_OfflineValidationError) ErrorName() string {
+	return "TokenExchangeConfig_OfflineValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenExchangeConfig_OfflineValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenExchangeConfig_Offline.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenExchangeConfig_OfflineValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenExchangeConfig_OfflineValidationError{}
+
+// Validate checks the field values on TokenExchangeConfig_Claim with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenExchangeConfig_Claim) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenExchangeConfig_Claim with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenExchangeConfig_ClaimMultiError, or nil if none found.
+func (m *TokenExchangeConfig_Claim) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenExchangeConfig_Claim) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Selector
+
+	if len(errors) > 0 {
+		return TokenExchangeConfig_ClaimMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenExchangeConfig_ClaimMultiError is an error wrapping multiple validation
+// errors returned by TokenExchangeConfig_Claim.ValidateAll() if the
+// designated constraints aren't met.
+type TokenExchangeConfig_ClaimMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenExchangeConfig_ClaimMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenExchangeConfig_ClaimMultiError) AllErrors() []error { return m }
+
+// TokenExchangeConfig_ClaimValidationError is the validation error returned by
+// TokenExchangeConfig_Claim.Validate if the designated constraints aren't met.
+type TokenExchangeConfig_ClaimValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenExchangeConfig_ClaimValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenExchangeConfig_ClaimValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenExchangeConfig_ClaimValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenExchangeConfig_ClaimValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenExchangeConfig_ClaimValidationError) ErrorName() string {
+	return "TokenExchangeConfig_ClaimValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenExchangeConfig_ClaimValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenExchangeConfig_Claim.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenExchangeConfig_ClaimValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenExchangeConfig_ClaimValidationError{}
