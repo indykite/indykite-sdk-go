@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.26.0](https://github.com/indykite/indykite-sdk-go/compare/v0.25.0...v0.26.0) (2024-05-27)
+
+
+### Features
+
+* add batch ingest endpoints ([1bace7a](https://github.com/indykite/indykite-sdk-go/commit/1bace7a28da7bb088a56a9d0342f41af10dc7aac))
+
+
+### Miscellaneous Chores
+
+* add deepsource file ([47940bd](https://github.com/indykite/indykite-sdk-go/commit/47940bd0c526c1ce85eea460b22e3569497471af))
+
 ## [0.25.0](https://github.com/indykite/indykite-sdk-go/compare/v0.24.0...v0.25.0) (2024-05-03)
 
 
