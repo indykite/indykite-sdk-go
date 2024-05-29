@@ -58,7 +58,7 @@ var _ = Describe("TDA", func() {
 				},
 			},
 			ConsentId:      "gid:aof7m7kl966tmzct2kc75kxeisl",
-			RevokeAfterUse: true,
+			ValidityPeriod: 86400,
 		}
 
 		mockGrantConsentRequest2 := tdapb.GrantConsentRequest{
@@ -71,7 +71,7 @@ var _ = Describe("TDA", func() {
 				},
 			},
 			ConsentId:      "gid:aof7m7kl966tmzct2kc75kxeisl",
-			RevokeAfterUse: true,
+			ValidityPeriod: 86400,
 		}
 
 		mockGrantConsentRequest3 := tdapb.GrantConsentRequest{
@@ -86,7 +86,7 @@ var _ = Describe("TDA", func() {
 				},
 			},
 			ConsentId:      "gid:aof7m7kl966tmzct2kc75kxeisl",
-			RevokeAfterUse: true,
+			ValidityPeriod: 86400,
 		}
 		DescribeTable("GrantConsentSuccess",
 			func(req *tdapb.GrantConsentRequest, beResp *tdapb.GrantConsentResponse) {

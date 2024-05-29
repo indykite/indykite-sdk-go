@@ -11996,6 +11996,19 @@ func (m *ConsentConfiguration) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if val := m.GetValidityPeriod(); val < 86400 || val > 63072000 {
+		err := ConsentConfigurationValidationError{
+			field:  "ValidityPeriod",
+			reason: "value must be inside range [86400, 63072000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for RevokeAfterUse
+
 	if len(errors) > 0 {
 		return ConsentConfigurationMultiError(errors)
 	}
