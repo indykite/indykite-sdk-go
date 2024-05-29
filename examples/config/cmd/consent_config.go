@@ -35,9 +35,11 @@ var createConsentConfigCmd = &cobra.Command{
 	Short: "Create Consent configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ConsentConfiguration{
-			Purpose:       "Taking control",
-			DataPoints:    []string{"lastname", "firstname", "email"},
-			ApplicationId: "gid:AAAABMoo7PXYfkwepSVjj4GTtfc",
+			Purpose:        "Taking control",
+			DataPoints:     []string{"lastname", "firstname", "email"},
+			ApplicationId:  "gid:AAAABMoo7PXYfkwepSVjj4GTtfc",
+			ValidityPeriod: 86400,
+			RevokeAfterUse: true,
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name")
 		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
@@ -64,9 +66,11 @@ var updateConsentConfigCmd = &cobra.Command{
 	Short: "Update Consent configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ConsentConfiguration{
-			Purpose:       "Taking control upd",
-			DataPoints:    []string{"lastname", "firstname", "email"},
-			ApplicationId: "gid:like-real-application-id",
+			Purpose:        "Taking control upd",
+			DataPoints:     []string{"lastname", "firstname", "email"},
+			ApplicationId:  "gid:like-real-application-id",
+			ValidityPeriod: 86400,
+			RevokeAfterUse: true,
 		}
 		updateReq, _ := config.NewUpdate("gid:id-of-existing-config")
 		updateReq.WithConsentConfig(configuration)

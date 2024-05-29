@@ -139,9 +139,11 @@ var _ = Describe("ConfigNode", func() {
 					Version:     0,
 					Config: &configpb.ConfigNode_ConsentConfig{
 						ConsentConfig: &configpb.ConsentConfiguration{
-							Purpose:       "Taking control",
-							DataPoints:    []string{"lastname", "firstname", "email"},
-							ApplicationId: "gid:like-real-application-id",
+							Purpose:        "Taking control",
+							DataPoints:     []string{"lastname", "firstname", "email"},
+							ApplicationId:  "gid:like-real-application-id",
+							ValidityPeriod: uint64(86400),
+							RevokeAfterUse: true,
 						},
 					},
 				},
@@ -508,9 +510,11 @@ var _ = Describe("ConfigNode", func() {
 
 		It("CreateConsentConfiguration", func() {
 			configuration := &configpb.ConsentConfiguration{
-				Purpose:       "Taking control",
-				DataPoints:    []string{"lastname", "firstname", "email"},
-				ApplicationId: "gid:like-real-application-id",
+				Purpose:        "Taking control",
+				DataPoints:     []string{"lastname", "firstname", "email"},
+				ApplicationId:  "gid:like-real-application-id",
+				ValidityPeriod: uint64(86400),
+				RevokeAfterUse: true,
 			}
 
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
@@ -534,8 +538,10 @@ var _ = Describe("ConfigNode", func() {
 					"Location": Equal("gid:like-real-customer-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"ConsentConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"Purpose":       Equal("Taking control"),
-							"ApplicationId": Equal("gid:like-real-application-id"),
+							"Purpose":        Equal("Taking control"),
+							"ApplicationId":  Equal("gid:like-real-application-id"),
+							"ValidityPeriod": Equal(uint64(86400)),
+							"RevokeAfterUse": Equal(true),
 						})),
 					})),
 				}))),
@@ -875,9 +881,11 @@ var _ = Describe("ConfigNode", func() {
 
 		It("UpdateConsentConfiguration", func() {
 			configuration := &configpb.ConsentConfiguration{
-				Purpose:       "Taking control",
-				DataPoints:    []string{"lastname", "firstname", "email"},
-				ApplicationId: "gid:like-real-application-id",
+				Purpose:        "Taking control",
+				DataPoints:     []string{"lastname", "firstname", "email"},
+				ApplicationId:  "gid:like-real-application-id",
+				ValidityPeriod: uint64(86400),
+				RevokeAfterUse: true,
 			}
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")

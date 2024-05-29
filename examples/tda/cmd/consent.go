@@ -57,7 +57,7 @@ var grantConsent = &cobra.Command{
 					},
 				},
 				ConsentId:      consentId,
-				RevokeAfterUse: true,
+				ValidityPeriod: 86400,
 			},
 			retry.WithMax(2),
 		)
