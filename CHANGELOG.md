@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0](https://github.com/indykite/indykite-sdk-go/compare/v0.26.0...v0.27.0) (2024-05-30)
+
+
+### Features
+
+* add consent expiry ([808f991](https://github.com/indykite/indykite-sdk-go/commit/808f99104cc39509d2f18f53ed92c079dcc26eaa))
+
 ## [0.26.0](https://github.com/indykite/indykite-sdk-go/compare/v0.25.0...v0.26.0) (2024-05-27)
 
 
