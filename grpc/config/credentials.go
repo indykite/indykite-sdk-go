@@ -24,11 +24,9 @@ import (
 
 type (
 	CredentialsConfig struct {
-		BaseURL         string `json:"baseUrl,omitempty"         yaml:"base_url,omitempty"`
-		ApplicationID   string `json:"applicationId,omitempty"   yaml:"application_id,omitempty"`
-		AppSpaceID      string `json:"appSpaceId,omitempty"      yaml:"app_space_id,omitempty"`
-		DefaultTenantID string `json:"defaultTenantId,omitempty" yaml:"default_tenant_id,omitempty"`
-
+		BaseURL               string          `json:"baseUrl,omitempty"               yaml:"base_url,omitempty"`
+		ApplicationID         string          `json:"applicationId,omitempty"         yaml:"application_id,omitempty"`
+		AppSpaceID            string          `json:"appSpaceId,omitempty"            yaml:"app_space_id,omitempty"`
 		AppAgentID            string          `json:"appAgentId,omitempty"            yaml:"app_agent_id,omitempty"`
 		ServiceAccountID      string          `json:"serviceAccountId,omitempty"      yaml:"service_account_id,omitempty"` //nolint:lll
 		Endpoint              string          `json:"endpoint,omitempty"              yaml:"endpoint,omitempty"`
