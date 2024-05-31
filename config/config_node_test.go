@@ -21,9 +21,7 @@ import (
 	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/indykite/indykite-sdk-go/config"
 	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
@@ -94,7 +92,6 @@ var _ = Describe("ConfigNode", func() {
 					CreateTime:  timestamppb.Now(),
 					CustomerId:  "gid:like-real-customer-id",
 					AppSpaceId:  "gid:like-real-app-space-id",
-					TenantId:    "gid:like-real-tenant-id",
 					Etag:        "123qwe",
 					Version:     0,
 					Config: &configpb.ConfigNode_AuthorizationPolicyConfig{
@@ -134,7 +131,6 @@ var _ = Describe("ConfigNode", func() {
 					CreateTime:  timestamppb.Now(),
 					CustomerId:  "gid:like-real-customer-id",
 					AppSpaceId:  "gid:like-real-app-space-id",
-					TenantId:    "gid:like-real-tenant-id",
 					Etag:        "123qwe",
 					Version:     0,
 					Config: &configpb.ConfigNode_ConsentConfig{
@@ -162,46 +158,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("ReadSuccessOAuth2Client", func() {
-			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
-			beResp := &configpb.ReadConfigNodeResponse{
-				ConfigNode: &configpb.ConfigNode{
-					Id:          "gid:like-real-config-node-id",
-					Name:        "like-real-config-node-name",
-					DisplayName: "Like Real Config-Node Name",
-					CreatedBy:   "creator",
-					CreateTime:  timestamppb.Now(),
-					CustomerId:  "gid:like-real-customer-id",
-					AppSpaceId:  "gid:like-real-app-space-id",
-					TenantId:    "gid:like-real-tenant-id",
-					Etag:        "123qwe",
-					Config: &configpb.ConfigNode_Oauth2ClientConfig{
-						Oauth2ClientConfig: &configpb.OAuth2ClientConfig{
-							ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
-							ClientId:      "manager-secret-123456789012345678901234",
-							ClientSecret:  "submitter-password",
-							DefaultScopes: []string{"openid", "profile", "email"},
-							AllowedScopes: []string{"openid", "profile", "email"},
-						},
-					},
-				},
-			}
-			mockClient.EXPECT().
-				ReadConfigNode(
-					gomock.Any(),
-					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-						"Id": Equal("gid:like-real-config-node-id"),
-					}))),
-					gomock.Any(),
-				).Return(beResp, nil)
-
-			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("ReadError", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -210,7 +166,7 @@ var _ = Describe("ConfigNode", func() {
 					Id:     "gid:like-real-config-node-id",
 					Name:   "like-real-config-node-name",
 					Etag:   "123qwe",
-					Config: &configpb.ConfigNode_AuthFlowConfig{},
+					Config: &configpb.ConfigNode_AuthorizationPolicyConfig{},
 				},
 			}
 			mockClient.EXPECT().
@@ -266,200 +222,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not create request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-		})
-
-		It("CreateOAuth2Client", func() {
-			configuration := &configpb.OAuth2ClientConfig{
-				ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
-				ClientId:      "client-id-123456789012345678901234",
-				ClientSecret:  "client-secret",
-				DefaultScopes: []string{"openid", "profile", "email"},
-				AllowedScopes: []string{"openid", "profile", "email"},
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithOAuth2ClientConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"Oauth2ClientConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"ClientId":     Equal("client-id-123456789012345678901234"),
-							"ClientSecret": Equal("client-secret"),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("CreateWebauthnProvider", func() {
-			configuration := &configpb.WebAuthnProviderConfig{
-				RelyingParties:          map[string]string{"http://localhost": "localhost"},
-				AttestationPreference:   configpb.ConveyancePreference_CONVEYANCE_PREFERENCE_NONE,
-				AuthenticatorAttachment: configpb.AuthenticatorAttachment_AUTHENTICATOR_ATTACHMENT_DEFAULT,
-				RequireResidentKey:      false,
-				UserVerification:        configpb.UserVerificationRequirement_USER_VERIFICATION_REQUIREMENT_PREFERRED,
-				RegistrationTimeout:     &durationpb.Duration{Seconds: 30},
-				AuthenticationTimeout:   &durationpb.Duration{Seconds: 60},
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithWebauthnProviderConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"WebauthnProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"AttestationPreference": Equal(configpb.ConveyancePreference_CONVEYANCE_PREFERENCE_NONE),
-							"AuthenticatorAttachment": Equal(
-								configpb.AuthenticatorAttachment_AUTHENTICATOR_ATTACHMENT_DEFAULT,
-							),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("CreateEmailNotification", func() {
-			configuration := &configpb.EmailServiceConfig{
-				DefaultFromAddress: &configpb.Email{Name: "indy", Address: "sos@example.com"},
-				Default:            true,
-				Provider: &configpb.EmailServiceConfig_Sendgrid{
-					Sendgrid: &configpb.SendGridProviderConfig{
-						ApiKey:      "12qe2e3r4t5y6u7i8o92t2t3t4t5y6u7i83h5h6",
-						SandboxMode: false,
-						IpPoolName: &wrapperspb.StringValue{
-							Value: "Like real IpPoolName Name",
-						},
-						Host: &wrapperspb.StringValue{
-							Value: "https://api.sendgrid.com",
-						},
-					},
-				},
-				InvitationMessage: &configpb.EmailDefinition{
-					Email: &configpb.EmailDefinition_Message{
-						Message: &configpb.EmailMessage{
-							From:    &configpb.Email{Name: "indy", Address: "sos@example.com"},
-							Subject: "invitation subject",
-						},
-					},
-				},
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithEmailNotificationConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"EmailServiceConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"DefaultFromAddress": PointTo(MatchFields(IgnoreExtras, Fields{
-								"Name":    Equal("indy"),
-								"Address": Equal("sos@example.com"),
-							})),
-							"Default": Equal(true),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("CreateAuthFlow", func() {
-			configuration := &configpb.AuthFlowConfig{
-				SourceFormat: configpb.AuthFlowConfig_FORMAT_BARE_JSON,
-				Source:       []byte("wolf"),
-				Default:      false,
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithAuthFlowConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"AuthFlowConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SourceFormat": Equal(configpb.AuthFlowConfig_FORMAT_BARE_JSON),
-							"Default":      Equal(false),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("CreateAuthorizationPolicy", func() {
@@ -554,22 +316,22 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("CreateNonValid", func() {
-			configuration := &configpb.OAuth2ClientConfig{
-				ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
-				ClientId:      "client-id-123456789012345678901234",
-				ClientSecret:  "sec",
-				DefaultScopes: []string{"openid", "profile", "email"},
-				AllowedScopes: []string{"openid", "profile", "email"},
+			configuration := &configpb.ConsentConfiguration{
+				Purpose:        "Taking control",
+				DataPoints:     []string{"lastname", "firstname", "email"},
+				ApplicationId:  "gid:like",
+				ValidityPeriod: uint64(86400),
+				RevokeAfterUse: true,
 			}
 
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
 			Ω(err).To(Succeed())
 			configNodeRequest.ForLocation("gid:like-real-customer-id")
 			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithOAuth2ClientConfig(configuration)
+			configNodeRequest.WithConsentConfig(configuration)
 			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
 			Expect(resp).To(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("ClientSecret: value length must be at least 8 runes")))
+			Expect(err).To(MatchError(ContainSubstring("value length must be between 22 and 254 runes")))
 		})
 
 		It("CreateNonValidName", func() {
@@ -643,195 +405,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(clientErr.Unwrap()).To(Succeed())
 			Expect(clientErr.Message()).To(Equal("invalid nil or not update request"))
 			Expect(clientErr.Code()).To(Equal(codes.InvalidArgument))
-		})
-
-		It("UpdateOAuth2Client", func() {
-			configuration := &configpb.OAuth2ClientConfig{
-				ProviderType:  configpb.ProviderType_PROVIDER_TYPE_GOOGLE_COM,
-				ClientId:      "client-id-123456789012345678901234",
-				ClientSecret:  "client-secret",
-				DefaultScopes: []string{"openid", "profile", "email"},
-				AllowedScopes: []string{"openid", "profile", "email"},
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithOAuth2ClientConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"Oauth2ClientConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"ClientId":     Equal("client-id-123456789012345678901234"),
-							"ClientSecret": Equal("client-secret"),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateWebAuthnProvider", func() {
-			configuration := &configpb.WebAuthnProviderConfig{
-				RelyingParties:          map[string]string{"http://localhost": "localhost"},
-				AttestationPreference:   configpb.ConveyancePreference_CONVEYANCE_PREFERENCE_NONE,
-				AuthenticatorAttachment: configpb.AuthenticatorAttachment_AUTHENTICATOR_ATTACHMENT_DEFAULT,
-				RequireResidentKey:      false,
-				UserVerification:        configpb.UserVerificationRequirement_USER_VERIFICATION_REQUIREMENT_PREFERRED,
-				RegistrationTimeout:     &durationpb.Duration{Seconds: 30},
-				AuthenticationTimeout:   &durationpb.Duration{Seconds: 60},
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithWebauthnProviderConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"WebauthnProviderConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"AttestationPreference": Equal(configpb.ConveyancePreference_CONVEYANCE_PREFERENCE_NONE),
-							"AuthenticatorAttachment": Equal(
-								configpb.AuthenticatorAttachment_AUTHENTICATOR_ATTACHMENT_DEFAULT,
-							),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateEmailNotification", func() {
-			configuration := &configpb.EmailServiceConfig{
-				DefaultFromAddress: &configpb.Email{Name: "indy", Address: "sos@example.com"},
-				Default:            true,
-				Provider: &configpb.EmailServiceConfig_Sendgrid{
-					Sendgrid: &configpb.SendGridProviderConfig{
-						ApiKey:      "12qe2e3r4t5y6u7i8o92t2t3t4t5y6u7i83h5h6",
-						SandboxMode: false,
-						IpPoolName: &wrapperspb.StringValue{
-							Value: "Like real IpPoolName Name",
-						},
-						Host: &wrapperspb.StringValue{
-							Value: "https://api.sendgrid.com",
-						},
-					},
-				},
-				InvitationMessage: &configpb.EmailDefinition{
-					Email: &configpb.EmailDefinition_Message{
-						Message: &configpb.EmailMessage{
-							From:    &configpb.Email{Name: "indy", Address: "sos@example.com"},
-							Subject: "invitation subject",
-						},
-					},
-				},
-			}
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithEmailNotificationConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"EmailServiceConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"DefaultFromAddress": PointTo(MatchFields(IgnoreExtras, Fields{
-								"Name":    Equal("indy"),
-								"Address": Equal("sos@example.com"),
-							})),
-							"Default": Equal(true),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateAuthFlow", func() {
-			configuration := &configpb.AuthFlowConfig{
-				SourceFormat: configpb.AuthFlowConfig_FORMAT_BARE_JSON,
-				Source:       []byte("wolf"),
-				Default:      false,
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithAuthFlowConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"AuthFlowConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"SourceFormat": Equal(configpb.AuthFlowConfig_FORMAT_BARE_JSON),
-							"Default":      Equal(false),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
 		})
 
 		It("UpdateAuthorizationPolicy", func() {
@@ -1087,7 +660,6 @@ var _ = Describe("ConfigNode", func() {
 						CreateTime:  timestamppb.Now(),
 						CustomerId:  "gid:like-real-customer-id",
 						AppSpaceId:  "gid:like-real-app-space-id",
-						TenantId:    "gid:like-real-tenant-id",
 						Etag:        "123qwe",
 						Version:     0,
 						Config: &configpb.ConfigNode_AuthorizationPolicyConfig{
@@ -1106,7 +678,6 @@ var _ = Describe("ConfigNode", func() {
 						CreateTime:  timestamppb.Now(),
 						CustomerId:  "gid:like-real-customer-id",
 						AppSpaceId:  "gid:like-real-app-space-id",
-						TenantId:    "gid:like-real-tenant-id",
 						Etag:        "123qwe",
 						Version:     1,
 						Config: &configpb.ConfigNode_AuthorizationPolicyConfig{

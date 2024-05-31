@@ -1326,7 +1326,7 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
-	case *ConfigDetail_TokenExchangeConfig:
+	case *ConfigDetail_TokenIntrospectConfig:
 		if v == nil {
 			err := ConfigDetailValidationError{
 				field:  "Configuration",
@@ -1339,11 +1339,11 @@ func (m *ConfigDetail) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetTokenExchangeConfig()).(type) {
+			switch v := interface{}(m.GetTokenIntrospectConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ConfigDetailValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -1351,16 +1351,16 @@ func (m *ConfigDetail) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ConfigDetailValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetTokenExchangeConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetTokenIntrospectConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ConfigDetailValidationError{
-					field:  "TokenExchangeConfig",
+					field:  "TokenIntrospectConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -4784,22 +4784,22 @@ var _ interface {
 	ErrorName() string
 } = RevokeConfigPermissionsValidationError{}
 
-// Validate checks the field values on TokenExchangeConfig with the rules
+// Validate checks the field values on TokenIntrospectConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *TokenExchangeConfig) Validate() error {
+func (m *TokenIntrospectConfig) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on TokenExchangeConfig with the rules
+// ValidateAll checks the field values on TokenIntrospectConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// TokenExchangeConfigMultiError, or nil if none found.
-func (m *TokenExchangeConfig) ValidateAll() error {
+// TokenIntrospectConfigMultiError, or nil if none found.
+func (m *TokenIntrospectConfig) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *TokenExchangeConfig) validate(all bool) error {
+func (m *TokenIntrospectConfig) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -4824,7 +4824,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 				switch v := interface{}(val).(type) {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
-						errors = append(errors, TokenExchangeConfigValidationError{
+						errors = append(errors, TokenIntrospectConfigValidationError{
 							field:  fmt.Sprintf("ClaimsMapping[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
@@ -4832,7 +4832,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 					}
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
-						errors = append(errors, TokenExchangeConfigValidationError{
+						errors = append(errors, TokenIntrospectConfigValidationError{
 							field:  fmt.Sprintf("ClaimsMapping[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
@@ -4841,7 +4841,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 				}
 			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
-					return TokenExchangeConfigValidationError{
+					return TokenIntrospectConfigValidationError{
 						field:  fmt.Sprintf("ClaimsMapping[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4857,9 +4857,9 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 	// no validation rules for PerformUpsert
 
 	switch v := m.TokenMatcher.(type) {
-	case *TokenExchangeConfig_Jwt:
+	case *TokenIntrospectConfig_Jwt:
 		if v == nil {
-			err := TokenExchangeConfigValidationError{
+			err := TokenIntrospectConfigValidationError{
 				field:  "TokenMatcher",
 				reason: "oneof value cannot be a typed-nil",
 			}
@@ -4873,7 +4873,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 			switch v := interface{}(m.GetJwt()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, TokenExchangeConfigValidationError{
+					errors = append(errors, TokenIntrospectConfigValidationError{
 						field:  "Jwt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4881,7 +4881,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, TokenExchangeConfigValidationError{
+					errors = append(errors, TokenIntrospectConfigValidationError{
 						field:  "Jwt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4890,7 +4890,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetJwt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return TokenExchangeConfigValidationError{
+				return TokenIntrospectConfigValidationError{
 					field:  "Jwt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4902,9 +4902,9 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 		_ = v // ensures v is used
 	}
 	switch v := m.Validation.(type) {
-	case *TokenExchangeConfig_Offline_:
+	case *TokenIntrospectConfig_Offline_:
 		if v == nil {
-			err := TokenExchangeConfigValidationError{
+			err := TokenIntrospectConfigValidationError{
 				field:  "Validation",
 				reason: "oneof value cannot be a typed-nil",
 			}
@@ -4918,7 +4918,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 			switch v := interface{}(m.GetOffline()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, TokenExchangeConfigValidationError{
+					errors = append(errors, TokenIntrospectConfigValidationError{
 						field:  "Offline",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4926,7 +4926,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, TokenExchangeConfigValidationError{
+					errors = append(errors, TokenIntrospectConfigValidationError{
 						field:  "Offline",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4935,7 +4935,7 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetOffline()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return TokenExchangeConfigValidationError{
+				return TokenIntrospectConfigValidationError{
 					field:  "Offline",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4948,19 +4948,19 @@ func (m *TokenExchangeConfig) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return TokenExchangeConfigMultiError(errors)
+		return TokenIntrospectConfigMultiError(errors)
 	}
 
 	return nil
 }
 
-// TokenExchangeConfigMultiError is an error wrapping multiple validation
-// errors returned by TokenExchangeConfig.ValidateAll() if the designated
+// TokenIntrospectConfigMultiError is an error wrapping multiple validation
+// errors returned by TokenIntrospectConfig.ValidateAll() if the designated
 // constraints aren't met.
-type TokenExchangeConfigMultiError []error
+type TokenIntrospectConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m TokenExchangeConfigMultiError) Error() string {
+func (m TokenIntrospectConfigMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -4969,11 +4969,11 @@ func (m TokenExchangeConfigMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m TokenExchangeConfigMultiError) AllErrors() []error { return m }
+func (m TokenIntrospectConfigMultiError) AllErrors() []error { return m }
 
-// TokenExchangeConfigValidationError is the validation error returned by
-// TokenExchangeConfig.Validate if the designated constraints aren't met.
-type TokenExchangeConfigValidationError struct {
+// TokenIntrospectConfigValidationError is the validation error returned by
+// TokenIntrospectConfig.Validate if the designated constraints aren't met.
+type TokenIntrospectConfigValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -4981,24 +4981,24 @@ type TokenExchangeConfigValidationError struct {
 }
 
 // Field function returns field value.
-func (e TokenExchangeConfigValidationError) Field() string { return e.field }
+func (e TokenIntrospectConfigValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e TokenExchangeConfigValidationError) Reason() string { return e.reason }
+func (e TokenIntrospectConfigValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e TokenExchangeConfigValidationError) Cause() error { return e.cause }
+func (e TokenIntrospectConfigValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e TokenExchangeConfigValidationError) Key() bool { return e.key }
+func (e TokenIntrospectConfigValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e TokenExchangeConfigValidationError) ErrorName() string {
-	return "TokenExchangeConfigValidationError"
+func (e TokenIntrospectConfigValidationError) ErrorName() string {
+	return "TokenIntrospectConfigValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e TokenExchangeConfigValidationError) Error() string {
+func (e TokenIntrospectConfigValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -5010,14 +5010,14 @@ func (e TokenExchangeConfigValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sTokenExchangeConfig.%s: %s%s",
+		"invalid %sTokenIntrospectConfig.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = TokenExchangeConfigValidationError{}
+var _ error = TokenIntrospectConfigValidationError{}
 
 var _ interface {
 	Field() string
@@ -5025,7 +5025,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = TokenExchangeConfigValidationError{}
+} = TokenIntrospectConfigValidationError{}
 
 // Validate checks the field values on CreatedConfig_Location with the rules
 // defined in the proto definition for this message. If any rules are
@@ -5355,22 +5355,22 @@ var _ interface {
 	ErrorName() string
 } = AuditSinkConfig_KafkaValidationError{}
 
-// Validate checks the field values on TokenExchangeConfig_JWT with the rules
+// Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *TokenExchangeConfig_JWT) Validate() error {
+func (m *TokenIntrospectConfig_JWT) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on TokenExchangeConfig_JWT with the
+// ValidateAll checks the field values on TokenIntrospectConfig_JWT with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// TokenExchangeConfig_JWTMultiError, or nil if none found.
-func (m *TokenExchangeConfig_JWT) ValidateAll() error {
+// TokenIntrospectConfig_JWTMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_JWT) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *TokenExchangeConfig_JWT) validate(all bool) error {
+func (m *TokenIntrospectConfig_JWT) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -5382,19 +5382,19 @@ func (m *TokenExchangeConfig_JWT) validate(all bool) error {
 	// no validation rules for Audience
 
 	if len(errors) > 0 {
-		return TokenExchangeConfig_JWTMultiError(errors)
+		return TokenIntrospectConfig_JWTMultiError(errors)
 	}
 
 	return nil
 }
 
-// TokenExchangeConfig_JWTMultiError is an error wrapping multiple validation
-// errors returned by TokenExchangeConfig_JWT.ValidateAll() if the designated
-// constraints aren't met.
-type TokenExchangeConfig_JWTMultiError []error
+// TokenIntrospectConfig_JWTMultiError is an error wrapping multiple validation
+// errors returned by TokenIntrospectConfig_JWT.ValidateAll() if the
+// designated constraints aren't met.
+type TokenIntrospectConfig_JWTMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m TokenExchangeConfig_JWTMultiError) Error() string {
+func (m TokenIntrospectConfig_JWTMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -5403,11 +5403,11 @@ func (m TokenExchangeConfig_JWTMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m TokenExchangeConfig_JWTMultiError) AllErrors() []error { return m }
+func (m TokenIntrospectConfig_JWTMultiError) AllErrors() []error { return m }
 
-// TokenExchangeConfig_JWTValidationError is the validation error returned by
-// TokenExchangeConfig_JWT.Validate if the designated constraints aren't met.
-type TokenExchangeConfig_JWTValidationError struct {
+// TokenIntrospectConfig_JWTValidationError is the validation error returned by
+// TokenIntrospectConfig_JWT.Validate if the designated constraints aren't met.
+type TokenIntrospectConfig_JWTValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -5415,24 +5415,24 @@ type TokenExchangeConfig_JWTValidationError struct {
 }
 
 // Field function returns field value.
-func (e TokenExchangeConfig_JWTValidationError) Field() string { return e.field }
+func (e TokenIntrospectConfig_JWTValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e TokenExchangeConfig_JWTValidationError) Reason() string { return e.reason }
+func (e TokenIntrospectConfig_JWTValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e TokenExchangeConfig_JWTValidationError) Cause() error { return e.cause }
+func (e TokenIntrospectConfig_JWTValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e TokenExchangeConfig_JWTValidationError) Key() bool { return e.key }
+func (e TokenIntrospectConfig_JWTValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e TokenExchangeConfig_JWTValidationError) ErrorName() string {
-	return "TokenExchangeConfig_JWTValidationError"
+func (e TokenIntrospectConfig_JWTValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_JWTValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e TokenExchangeConfig_JWTValidationError) Error() string {
+func (e TokenIntrospectConfig_JWTValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -5444,14 +5444,14 @@ func (e TokenExchangeConfig_JWTValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sTokenExchangeConfig_JWT.%s: %s%s",
+		"invalid %sTokenIntrospectConfig_JWT.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = TokenExchangeConfig_JWTValidationError{}
+var _ error = TokenIntrospectConfig_JWTValidationError{}
 
 var _ interface {
 	Field() string
@@ -5459,24 +5459,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = TokenExchangeConfig_JWTValidationError{}
+} = TokenIntrospectConfig_JWTValidationError{}
 
-// Validate checks the field values on TokenExchangeConfig_Offline with the
+// Validate checks the field values on TokenIntrospectConfig_Offline with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *TokenExchangeConfig_Offline) Validate() error {
+func (m *TokenIntrospectConfig_Offline) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on TokenExchangeConfig_Offline with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// TokenExchangeConfig_OfflineMultiError, or nil if none found.
-func (m *TokenExchangeConfig_Offline) ValidateAll() error {
+// ValidateAll checks the field values on TokenIntrospectConfig_Offline with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// TokenIntrospectConfig_OfflineMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Offline) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *TokenExchangeConfig_Offline) validate(all bool) error {
+func (m *TokenIntrospectConfig_Offline) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -5484,19 +5484,19 @@ func (m *TokenExchangeConfig_Offline) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return TokenExchangeConfig_OfflineMultiError(errors)
+		return TokenIntrospectConfig_OfflineMultiError(errors)
 	}
 
 	return nil
 }
 
-// TokenExchangeConfig_OfflineMultiError is an error wrapping multiple
-// validation errors returned by TokenExchangeConfig_Offline.ValidateAll() if
-// the designated constraints aren't met.
-type TokenExchangeConfig_OfflineMultiError []error
+// TokenIntrospectConfig_OfflineMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Offline.ValidateAll()
+// if the designated constraints aren't met.
+type TokenIntrospectConfig_OfflineMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m TokenExchangeConfig_OfflineMultiError) Error() string {
+func (m TokenIntrospectConfig_OfflineMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -5505,12 +5505,12 @@ func (m TokenExchangeConfig_OfflineMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m TokenExchangeConfig_OfflineMultiError) AllErrors() []error { return m }
+func (m TokenIntrospectConfig_OfflineMultiError) AllErrors() []error { return m }
 
-// TokenExchangeConfig_OfflineValidationError is the validation error returned
-// by TokenExchangeConfig_Offline.Validate if the designated constraints
-// aren't met.
-type TokenExchangeConfig_OfflineValidationError struct {
+// TokenIntrospectConfig_OfflineValidationError is the validation error
+// returned by TokenIntrospectConfig_Offline.Validate if the designated
+// constraints aren't met.
+type TokenIntrospectConfig_OfflineValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -5518,24 +5518,24 @@ type TokenExchangeConfig_OfflineValidationError struct {
 }
 
 // Field function returns field value.
-func (e TokenExchangeConfig_OfflineValidationError) Field() string { return e.field }
+func (e TokenIntrospectConfig_OfflineValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e TokenExchangeConfig_OfflineValidationError) Reason() string { return e.reason }
+func (e TokenIntrospectConfig_OfflineValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e TokenExchangeConfig_OfflineValidationError) Cause() error { return e.cause }
+func (e TokenIntrospectConfig_OfflineValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e TokenExchangeConfig_OfflineValidationError) Key() bool { return e.key }
+func (e TokenIntrospectConfig_OfflineValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e TokenExchangeConfig_OfflineValidationError) ErrorName() string {
-	return "TokenExchangeConfig_OfflineValidationError"
+func (e TokenIntrospectConfig_OfflineValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_OfflineValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e TokenExchangeConfig_OfflineValidationError) Error() string {
+func (e TokenIntrospectConfig_OfflineValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -5547,14 +5547,14 @@ func (e TokenExchangeConfig_OfflineValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sTokenExchangeConfig_Offline.%s: %s%s",
+		"invalid %sTokenIntrospectConfig_Offline.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = TokenExchangeConfig_OfflineValidationError{}
+var _ error = TokenIntrospectConfig_OfflineValidationError{}
 
 var _ interface {
 	Field() string
@@ -5562,24 +5562,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = TokenExchangeConfig_OfflineValidationError{}
+} = TokenIntrospectConfig_OfflineValidationError{}
 
-// Validate checks the field values on TokenExchangeConfig_Claim with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on TokenIntrospectConfig_Claim with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *TokenExchangeConfig_Claim) Validate() error {
+func (m *TokenIntrospectConfig_Claim) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on TokenExchangeConfig_Claim with the
+// ValidateAll checks the field values on TokenIntrospectConfig_Claim with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// TokenExchangeConfig_ClaimMultiError, or nil if none found.
-func (m *TokenExchangeConfig_Claim) ValidateAll() error {
+// TokenIntrospectConfig_ClaimMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Claim) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *TokenExchangeConfig_Claim) validate(all bool) error {
+func (m *TokenIntrospectConfig_Claim) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -5589,19 +5589,19 @@ func (m *TokenExchangeConfig_Claim) validate(all bool) error {
 	// no validation rules for Selector
 
 	if len(errors) > 0 {
-		return TokenExchangeConfig_ClaimMultiError(errors)
+		return TokenIntrospectConfig_ClaimMultiError(errors)
 	}
 
 	return nil
 }
 
-// TokenExchangeConfig_ClaimMultiError is an error wrapping multiple validation
-// errors returned by TokenExchangeConfig_Claim.ValidateAll() if the
-// designated constraints aren't met.
-type TokenExchangeConfig_ClaimMultiError []error
+// TokenIntrospectConfig_ClaimMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Claim.ValidateAll() if
+// the designated constraints aren't met.
+type TokenIntrospectConfig_ClaimMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m TokenExchangeConfig_ClaimMultiError) Error() string {
+func (m TokenIntrospectConfig_ClaimMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -5610,11 +5610,12 @@ func (m TokenExchangeConfig_ClaimMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m TokenExchangeConfig_ClaimMultiError) AllErrors() []error { return m }
+func (m TokenIntrospectConfig_ClaimMultiError) AllErrors() []error { return m }
 
-// TokenExchangeConfig_ClaimValidationError is the validation error returned by
-// TokenExchangeConfig_Claim.Validate if the designated constraints aren't met.
-type TokenExchangeConfig_ClaimValidationError struct {
+// TokenIntrospectConfig_ClaimValidationError is the validation error returned
+// by TokenIntrospectConfig_Claim.Validate if the designated constraints
+// aren't met.
+type TokenIntrospectConfig_ClaimValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -5622,24 +5623,24 @@ type TokenExchangeConfig_ClaimValidationError struct {
 }
 
 // Field function returns field value.
-func (e TokenExchangeConfig_ClaimValidationError) Field() string { return e.field }
+func (e TokenIntrospectConfig_ClaimValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e TokenExchangeConfig_ClaimValidationError) Reason() string { return e.reason }
+func (e TokenIntrospectConfig_ClaimValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e TokenExchangeConfig_ClaimValidationError) Cause() error { return e.cause }
+func (e TokenIntrospectConfig_ClaimValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e TokenExchangeConfig_ClaimValidationError) Key() bool { return e.key }
+func (e TokenIntrospectConfig_ClaimValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e TokenExchangeConfig_ClaimValidationError) ErrorName() string {
-	return "TokenExchangeConfig_ClaimValidationError"
+func (e TokenIntrospectConfig_ClaimValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_ClaimValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e TokenExchangeConfig_ClaimValidationError) Error() string {
+func (e TokenIntrospectConfig_ClaimValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -5651,14 +5652,14 @@ func (e TokenExchangeConfig_ClaimValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sTokenExchangeConfig_Claim.%s: %s%s",
+		"invalid %sTokenIntrospectConfig_Claim.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = TokenExchangeConfig_ClaimValidationError{}
+var _ error = TokenIntrospectConfig_ClaimValidationError{}
 
 var _ interface {
 	Field() string
@@ -5666,4 +5667,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = TokenExchangeConfig_ClaimValidationError{}
+} = TokenIntrospectConfig_ClaimValidationError{}

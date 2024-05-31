@@ -43,7 +43,6 @@
       "include-component-in-tag": false,
       "extra-files": [
         "config/doc.go",
-        "identity/doc.go",
         "ingest/doc.go",
         "authorization/doc.go",
         "knowledge/doc.go"

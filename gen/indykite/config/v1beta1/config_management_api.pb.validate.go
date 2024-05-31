@@ -14442,7 +14442,7 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
-	case *CreateConfigNodeRequest_TokenExchangeConfig:
+	case *CreateConfigNodeRequest_TokenIntrospectConfig:
 		if v == nil {
 			err := CreateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -14455,9 +14455,9 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
-		if m.GetTokenExchangeConfig() == nil {
+		if m.GetTokenIntrospectConfig() == nil {
 			err := CreateConfigNodeRequestValidationError{
-				field:  "TokenExchangeConfig",
+				field:  "TokenIntrospectConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -14467,11 +14467,11 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetTokenExchangeConfig()).(type) {
+			switch v := interface{}(m.GetTokenIntrospectConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -14479,16 +14479,16 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetTokenExchangeConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetTokenIntrospectConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return CreateConfigNodeRequestValidationError{
-					field:  "TokenExchangeConfig",
+					field:  "TokenIntrospectConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -15758,7 +15758,7 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
-	case *UpdateConfigNodeRequest_TokenExchangeConfig:
+	case *UpdateConfigNodeRequest_TokenIntrospectConfig:
 		if v == nil {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -15770,9 +15770,9 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-		if m.GetTokenExchangeConfig() == nil {
+		if m.GetTokenIntrospectConfig() == nil {
 			err := UpdateConfigNodeRequestValidationError{
-				field:  "TokenExchangeConfig",
+				field:  "TokenIntrospectConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -15782,11 +15782,11 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetTokenExchangeConfig()).(type) {
+			switch v := interface{}(m.GetTokenIntrospectConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -15794,16 +15794,16 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "TokenExchangeConfig",
+						field:  "TokenIntrospectConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetTokenExchangeConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetTokenIntrospectConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
-					field:  "TokenExchangeConfig",
+					field:  "TokenIntrospectConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
