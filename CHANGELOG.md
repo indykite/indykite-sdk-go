@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.0](https://github.com/indykite/indykite-sdk-go/compare/v0.27.0...v0.28.0) (2024-06-03)
+
+
+### Features
+
+* remove outdated features ([be13f0e](https://github.com/indykite/indykite-sdk-go/commit/be13f0e7e57c52fc5d72ae519c4275502ce42d1e))
+
 ## [0.27.0](https://github.com/indykite/indykite-sdk-go/compare/v0.26.0...v0.27.0) (2024-05-30)
 
 
