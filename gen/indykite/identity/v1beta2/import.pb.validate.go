@@ -1386,26 +1386,30 @@ func (m *ImportDigitalTwin) validate(all bool) error {
 
 	}
 
-	if l := utf8.RuneCountInString(m.GetTenantId()); l < 27 || l > 100 {
-		err := ImportDigitalTwinValidationError{
-			field:  "TenantId",
-			reason: "value length must be between 27 and 100 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	if m.GetTenantId() != "" {
 
-	if !_ImportDigitalTwin_TenantId_Pattern.MatchString(m.GetTenantId()) {
-		err := ImportDigitalTwinValidationError{
-			field:  "TenantId",
-			reason: "value does not match regex pattern \"^gid:[A-Za-z0-9-_]{27,100}$\"",
+		if l := utf8.RuneCountInString(m.GetTenantId()); l < 27 || l > 100 {
+			err := ImportDigitalTwinValidationError{
+				field:  "TenantId",
+				reason: "value length must be between 27 and 100 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
+
+		if !_ImportDigitalTwin_TenantId_Pattern.MatchString(m.GetTenantId()) {
+			err := ImportDigitalTwinValidationError{
+				field:  "TenantId",
+				reason: "value does not match regex pattern \"^gid:[A-Za-z0-9-_]{27,100}$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		errors = append(errors, err)
+
 	}
 
 	if _, ok := _ImportDigitalTwin_Kind_InLookup[m.GetKind()]; !ok {
