@@ -68,16 +68,7 @@ func (m *DigitalTwin) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetTenantId()) != 16 {
-		err := DigitalTwinValidationError{
-			field:  "TenantId",
-			reason: "value length must be 16 bytes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for TenantId
 
 	if _, ok := DigitalTwinKind_name[int32(m.GetKind())]; !ok {
 		err := DigitalTwinValidationError{

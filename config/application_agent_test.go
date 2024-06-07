@@ -95,12 +95,13 @@ var _ = Describe("ApplicationAgent", func() {
 				},
 				&configpb.ReadApplicationAgentResponse{
 					ApplicationAgent: &configpb.ApplicationAgent{
-						Id:            "gid:like-real-application-agent-id",
-						Name:          "like-real-application-agent-name",
-						DisplayName:   "Like Real Application Agent Name",
-						CreatedBy:     "creator",
-						CreateTime:    timestamppb.Now(),
-						ApplicationId: "gid:like-real-application-id",
+						Id:                   "gid:like-real-application-agent-id",
+						Name:                 "like-real-application-agent-name",
+						DisplayName:          "Like Real Application Agent Name",
+						CreatedBy:            "creator",
+						CreateTime:           timestamppb.Now(),
+						ApplicationId:        "gid:like-real-application-id",
+						ApiAccessRestriction: []string{"indykite.*"},
 					},
 				},
 			),
@@ -115,12 +116,13 @@ var _ = Describe("ApplicationAgent", func() {
 				},
 				&configpb.ReadApplicationAgentResponse{
 					ApplicationAgent: &configpb.ApplicationAgent{
-						Id:            "gid:like-real-application-agent-id",
-						Name:          "like-real-application-agent-name",
-						DisplayName:   "Like Real Application Agent Name",
-						CreatedBy:     "creator",
-						CreateTime:    timestamppb.Now(),
-						ApplicationId: "gid:like-real-application-id",
+						Id:                   "gid:like-real-application-agent-id",
+						Name:                 "like-real-application-agent-name",
+						DisplayName:          "Like Real Application Agent Name",
+						CreatedBy:            "creator",
+						CreateTime:           timestamppb.Now(),
+						ApplicationId:        "gid:like-real-application-id",
+						ApiAccessRestriction: []string{"indykite.*"},
 					},
 				},
 			),
@@ -176,9 +178,10 @@ var _ = Describe("ApplicationAgent", func() {
 		It("Create", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Agent Name"}
 			req := &configpb.CreateApplicationAgentRequest{
-				ApplicationId: "gid:like-real-application-id",
-				Name:          "like-real-application-agent-name",
-				DisplayName:   displayNamePb,
+				ApplicationId:  "gid:like-real-application-id",
+				Name:           "like-real-application-agent-name",
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"indykite.*", "indykite.tda.*"},
 			}
 			beResp := &configpb.CreateApplicationAgentResponse{
 				Id:         "gid:like-real-application-agent-id",
@@ -340,13 +343,14 @@ var _ = Describe("ApplicationAgent", func() {
 
 			mockResp := &configpb.ListApplicationAgentsResponse{
 				ApplicationAgent: &configpb.ApplicationAgent{
-					Id:            "gid:like-real-applicationagent-id",
-					Name:          "like-real-applicationagent-name",
-					DisplayName:   "Like Real ApplicationAgent Name",
-					CreatedBy:     "creator",
-					CreateTime:    timestamppb.Now(),
-					Etag:          "123qwert",
-					ApplicationId: "gid:like-real-application-id",
+					Id:                   "gid:like-real-applicationagent-id",
+					Name:                 "like-real-applicationagent-name",
+					DisplayName:          "Like Real ApplicationAgent Name",
+					CreatedBy:            "creator",
+					CreateTime:           timestamppb.Now(),
+					Etag:                 "123qwert",
+					ApplicationId:        "gid:like-real-application-id",
+					ApiAccessRestriction: []string{"indykite.*"},
 				},
 			}
 

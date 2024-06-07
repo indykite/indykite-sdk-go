@@ -2221,16 +2221,7 @@ func (m *ListDigitalTwinsRequest) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetTenantId()) != 16 {
-		err := ListDigitalTwinsRequestValidationError{
-			field:  "TenantId",
-			reason: "value length must be 16 bytes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for TenantId
 
 	// no validation rules for CollectionId
 
