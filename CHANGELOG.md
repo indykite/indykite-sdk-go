@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/indykite/indykite-sdk-go/compare/v0.28.0...v0.29.0) (2024-06-10)
+
+
+### Features
+
+* add api access restriction ([ca2d71d](https://github.com/indykite/indykite-sdk-go/commit/ca2d71dbc97da919c0ba652d458a48d40bce448f))
+
 ## [0.28.0](https://github.com/indykite/indykite-sdk-go/compare/v0.27.0...v0.28.0) (2024-06-03)
 
 
