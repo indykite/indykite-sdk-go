@@ -46,7 +46,7 @@ var _ = Describe("Test creating gRPC connection from setting", func() {
 	})
 
 	It("Dial should return passed connection when is specified", func() {
-		originConn, err := google_grpc.Dial(listener.Addr().String(),
+		originConn, err := google_grpc.NewClient(listener.Addr().String(),
 			google_grpc.WithTransportCredentials(insecure.NewCredentials()))
 		Expect(err).To(Succeed())
 
@@ -56,7 +56,7 @@ var _ = Describe("Test creating gRPC connection from setting", func() {
 	})
 
 	It("DialPool should return single connection pool with given connection", func() {
-		originConn, err := google_grpc.Dial(listener.Addr().String(),
+		originConn, err := google_grpc.NewClient(listener.Addr().String(),
 			google_grpc.WithTransportCredentials(insecure.NewCredentials()))
 		Expect(err).To(Succeed())
 
