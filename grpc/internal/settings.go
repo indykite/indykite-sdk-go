@@ -143,7 +143,7 @@ func (ds *DialSettings) Build(ctx context.Context) ([]grpc.DialOption, *config.C
 		// grpc.WithDefaultServiceConfig(`{"loadBalancingConfig":[{"grpclb":{"childPolicy":[{"pick_first":{}}]}}]}`),
 		grpc.WithDisableServiceConfig(),
 	)
-	if len(ds.UserAgent) > 0 {
+	if ds.UserAgent != "" {
 		dialOptions = append(dialOptions, grpc.WithUserAgent(ds.UserAgent))
 	}
 

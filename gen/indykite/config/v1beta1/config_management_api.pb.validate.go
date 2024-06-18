@@ -11486,59 +11486,6 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 
 	oneofConfigPresent := false
 	switch v := m.Config.(type) {
-	case *CreateConfigNodeRequest_AuthFlowConfig:
-		if v == nil {
-			err := CreateConfigNodeRequestValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofConfigPresent = true
-
-		if m.GetAuthFlowConfig() == nil {
-			err := CreateConfigNodeRequestValidationError{
-				field:  "AuthFlowConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetAuthFlowConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CreateConfigNodeRequestValidationError{
-					field:  "AuthFlowConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	case *CreateConfigNodeRequest_EmailServiceConfig:
 		if v == nil {
 			err := CreateConfigNodeRequestValidationError{
@@ -11745,59 +11692,6 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return CreateConfigNodeRequestValidationError{
 					field:  "Oauth2ClientConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *CreateConfigNodeRequest_PasswordProviderConfig:
-		if v == nil {
-			err := CreateConfigNodeRequestValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofConfigPresent = true
-
-		if m.GetPasswordProviderConfig() == nil {
-			err := CreateConfigNodeRequestValidationError{
-				field:  "PasswordProviderConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetPasswordProviderConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CreateConfigNodeRequestValidationError{
-					field:  "PasswordProviderConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -12812,58 +12706,6 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 	}
 
 	switch v := m.Config.(type) {
-	case *UpdateConfigNodeRequest_AuthFlowConfig:
-		if v == nil {
-			err := UpdateConfigNodeRequestValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if m.GetAuthFlowConfig() == nil {
-			err := UpdateConfigNodeRequestValidationError{
-				field:  "AuthFlowConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetAuthFlowConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UpdateConfigNodeRequestValidationError{
-					field:  "AuthFlowConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	case *UpdateConfigNodeRequest_EmailServiceConfig:
 		if v == nil {
 			err := UpdateConfigNodeRequestValidationError{
@@ -13066,58 +12908,6 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
 					field:  "Oauth2ClientConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *UpdateConfigNodeRequest_PasswordProviderConfig:
-		if v == nil {
-			err := UpdateConfigNodeRequestValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if m.GetPasswordProviderConfig() == nil {
-			err := UpdateConfigNodeRequestValidationError{
-				field:  "PasswordProviderConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetPasswordProviderConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UpdateConfigNodeRequestValidationError{
-					field:  "PasswordProviderConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
