@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.29.1](https://github.com/indykite/indykite-sdk-go/compare/v0.29.0...v0.29.1) (2024-06-18)
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([8e268d1](https://github.com/indykite/indykite-sdk-go/commit/8e268d1bd42c48c094374ba0b1cc3af6c68c6798))
+* **deps:** update golangci/golangci-lint-action action to v6 ([fd26212](https://github.com/indykite/indykite-sdk-go/commit/fd26212097a2c33029330d8b2d28f55638312010))
+* update proto ([c9d8bad](https://github.com/indykite/indykite-sdk-go/commit/c9d8bad00a4cd5572735897161742b43326a4702))
+
 ## [0.29.0](https://github.com/indykite/indykite-sdk-go/compare/v0.28.0...v0.29.0) (2024-06-10)
 
 
