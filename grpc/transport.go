@@ -41,7 +41,7 @@ func Dial(ctx context.Context, opts ...ClientOption) (*grpc.ClientConn, *config.
 	if dop, cfg, err = o.Build(ctx); err != nil {
 		return nil, nil, err
 	}
-	c, err := grpc.DialContext(ctx, o.Endpoint, dop...)
+	c, err := grpc.NewClient(o.Endpoint, dop...)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -76,7 +76,7 @@ func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.Cred
 
 	if poolSize < 2 {
 		// Fast path for common case for a connection pool with a single connection.
-		conn, err = grpc.DialContext(ctx, o.Endpoint, dop...)
+		conn, err = grpc.NewClient(o.Endpoint, dop...)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -85,7 +85,7 @@ func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.Cred
 
 	pool := &roundRobinConnPool{}
 	for i := 0; i < poolSize; i++ {
-		conn, err = grpc.DialContext(ctx, o.Endpoint, dop...)
+		conn, err = grpc.NewClient(o.Endpoint, dop...)
 		if err != nil {
 			defer func() { _ = pool.Close() }() //nolint:revive,gocritic // If this happen, loop is exited
 			return nil, nil, err

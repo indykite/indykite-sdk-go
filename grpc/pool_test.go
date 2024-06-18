@@ -53,7 +53,8 @@ var _ = Describe("Test Connection pools", func() {
 
 		pool := &roundRobinConnPool{}
 		for i := 0; i < 4; i++ {
-			conn, err := grpc.Dial(listener.Addr().String(), grpc.WithTransportCredentials(insecure.NewCredentials()))
+			conn, err := grpc.NewClient(listener.Addr().String(),
+				grpc.WithTransportCredentials(insecure.NewCredentials()))
 			Expect(err).To(Succeed())
 			pool.conns = append(pool.conns, conn)
 		}
