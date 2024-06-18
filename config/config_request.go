@@ -207,22 +207,6 @@ func (x *NodeRequest) WithEmailNotificationConfig(v *configpb.EmailServiceConfig
 	return x
 }
 
-func (x *NodeRequest) WithAuthFlowConfig(v *configpb.AuthFlowConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_AuthFlowConfig{AuthFlowConfig: v}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_AuthFlowConfig{AuthFlowConfig: v}
-		}
-	}
-	return x
-}
-
 func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPolicyConfig) *NodeRequest {
 	switch {
 	case x.create != nil:
@@ -289,6 +273,26 @@ func (x *NodeRequest) WithAuditSinkConfig(v *configpb.AuditSinkConfig) *NodeRequ
 		if v != nil {
 			x.update.Config = &configpb.UpdateConfigNodeRequest_AuditSinkConfig{
 				AuditSinkConfig: v,
+			}
+		}
+	}
+	return x
+}
+
+func (x *NodeRequest) WithTokenIntrospectConfig(v *configpb.TokenIntrospectConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_TokenIntrospectConfig{
+				TokenIntrospectConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_TokenIntrospectConfig{
+				TokenIntrospectConfig: v,
 			}
 		}
 	}

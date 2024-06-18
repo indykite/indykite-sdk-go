@@ -3216,59 +3216,6 @@ func (m *ConfigNode) validate(all bool) error {
 
 	oneofConfigPresent := false
 	switch v := m.Config.(type) {
-	case *ConfigNode_AuthFlowConfig:
-		if v == nil {
-			err := ConfigNodeValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofConfigPresent = true
-
-		if m.GetAuthFlowConfig() == nil {
-			err := ConfigNodeValidationError{
-				field:  "AuthFlowConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetAuthFlowConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ConfigNodeValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ConfigNodeValidationError{
-						field:  "AuthFlowConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetAuthFlowConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ConfigNodeValidationError{
-					field:  "AuthFlowConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	case *ConfigNode_EmailServiceConfig:
 		if v == nil {
 			err := ConfigNodeValidationError{
@@ -3422,59 +3369,6 @@ func (m *ConfigNode) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return ConfigNodeValidationError{
 					field:  "Oauth2ClientConfig",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *ConfigNode_PasswordProviderConfig:
-		if v == nil {
-			err := ConfigNodeValidationError{
-				field:  "Config",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofConfigPresent = true
-
-		if m.GetPasswordProviderConfig() == nil {
-			err := ConfigNodeValidationError{
-				field:  "PasswordProviderConfig",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetPasswordProviderConfig()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ConfigNodeValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ConfigNodeValidationError{
-						field:  "PasswordProviderConfig",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetPasswordProviderConfig()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ConfigNodeValidationError{
-					field:  "PasswordProviderConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -6994,130 +6888,6 @@ var _ interface {
 	ErrorName() string
 } = WebAuthnSiteDefinitionValidationError{}
 
-// Validate checks the field values on AuthFlowConfig with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *AuthFlowConfig) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on AuthFlowConfig with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AuthFlowConfigMultiError,
-// or nil if none found.
-func (m *AuthFlowConfig) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *AuthFlowConfig) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if _, ok := AuthFlowConfig_Format_name[int32(m.GetSourceFormat())]; !ok {
-		err := AuthFlowConfigValidationError{
-			field:  "SourceFormat",
-			reason: "value must be one of the defined enum values",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if len(m.GetSource()) > 1048576 {
-		err := AuthFlowConfigValidationError{
-			field:  "Source",
-			reason: "value length must be at most 1048576 bytes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	// no validation rules for Default
-
-	if len(errors) > 0 {
-		return AuthFlowConfigMultiError(errors)
-	}
-
-	return nil
-}
-
-// AuthFlowConfigMultiError is an error wrapping multiple validation errors
-// returned by AuthFlowConfig.ValidateAll() if the designated constraints
-// aren't met.
-type AuthFlowConfigMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m AuthFlowConfigMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m AuthFlowConfigMultiError) AllErrors() []error { return m }
-
-// AuthFlowConfigValidationError is the validation error returned by
-// AuthFlowConfig.Validate if the designated constraints aren't met.
-type AuthFlowConfigValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e AuthFlowConfigValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e AuthFlowConfigValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e AuthFlowConfigValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e AuthFlowConfigValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e AuthFlowConfigValidationError) ErrorName() string { return "AuthFlowConfigValidationError" }
-
-// Error satisfies the builtin error interface
-func (e AuthFlowConfigValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sAuthFlowConfig.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = AuthFlowConfigValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = AuthFlowConfigValidationError{}
-
 // Validate checks the field values on SAFRProviderConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -9949,766 +9719,6 @@ var _ interface {
 	ErrorName() string
 } = EmailMessageValidationError{}
 
-// Validate checks the field values on PasswordProviderConfig with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *PasswordProviderConfig) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PasswordProviderConfig with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// PasswordProviderConfigMultiError, or nil if none found.
-func (m *PasswordProviderConfig) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PasswordProviderConfig) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if m.GetUsernamePolicy() == nil {
-		err := PasswordProviderConfigValidationError{
-			field:  "UsernamePolicy",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetUsernamePolicy()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "UsernamePolicy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "UsernamePolicy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetUsernamePolicy()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "UsernamePolicy",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if m.GetPasswordPolicy() == nil {
-		err := PasswordProviderConfigValidationError{
-			field:  "PasswordPolicy",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if all {
-		switch v := interface{}(m.GetPasswordPolicy()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "PasswordPolicy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "PasswordPolicy",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetPasswordPolicy()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "PasswordPolicy",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetFailInterval()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "FailInterval",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "FailInterval",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetFailInterval()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "FailInterval",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetMinimumPasswordLifetime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "MinimumPasswordLifetime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "MinimumPasswordLifetime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetMinimumPasswordLifetime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "MinimumPasswordLifetime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetMaximumPasswordLifetime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "MaximumPasswordLifetime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "MaximumPasswordLifetime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetMaximumPasswordLifetime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "MaximumPasswordLifetime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	// no validation rules for PasswordHistory
-
-	// no validation rules for MaximumConsecutiveFailures
-
-	if all {
-		switch v := interface{}(m.GetLockoutTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "LockoutTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordProviderConfigValidationError{
-					field:  "LockoutTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetLockoutTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordProviderConfigValidationError{
-				field:  "LockoutTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return PasswordProviderConfigMultiError(errors)
-	}
-
-	return nil
-}
-
-// PasswordProviderConfigMultiError is an error wrapping multiple validation
-// errors returned by PasswordProviderConfig.ValidateAll() if the designated
-// constraints aren't met.
-type PasswordProviderConfigMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m PasswordProviderConfigMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m PasswordProviderConfigMultiError) AllErrors() []error { return m }
-
-// PasswordProviderConfigValidationError is the validation error returned by
-// PasswordProviderConfig.Validate if the designated constraints aren't met.
-type PasswordProviderConfigValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e PasswordProviderConfigValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e PasswordProviderConfigValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e PasswordProviderConfigValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e PasswordProviderConfigValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e PasswordProviderConfigValidationError) ErrorName() string {
-	return "PasswordProviderConfigValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e PasswordProviderConfigValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sPasswordProviderConfig.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = PasswordProviderConfigValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = PasswordProviderConfigValidationError{}
-
-// Validate checks the field values on UsernamePolicy with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *UsernamePolicy) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UsernamePolicy with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in UsernamePolicyMultiError,
-// or nil if none found.
-func (m *UsernamePolicy) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UsernamePolicy) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(m.GetAllowedUsernameFormats()) > 3 {
-		err := UsernamePolicyValidationError{
-			field:  "AllowedUsernameFormats",
-			reason: "value must contain no more than 3 item(s)",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	_UsernamePolicy_AllowedUsernameFormats_Unique := make(map[string]struct{}, len(m.GetAllowedUsernameFormats()))
-
-	for idx, item := range m.GetAllowedUsernameFormats() {
-		_, _ = idx, item
-
-		if _, exists := _UsernamePolicy_AllowedUsernameFormats_Unique[item]; exists {
-			err := UsernamePolicyValidationError{
-				field:  fmt.Sprintf("AllowedUsernameFormats[%v]", idx),
-				reason: "repeated value must contain unique items",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		} else {
-			_UsernamePolicy_AllowedUsernameFormats_Unique[item] = struct{}{}
-		}
-
-		if _, ok := _UsernamePolicy_AllowedUsernameFormats_InLookup[item]; !ok {
-			err := UsernamePolicyValidationError{
-				field:  fmt.Sprintf("AllowedUsernameFormats[%v]", idx),
-				reason: "value must be in list [email mobile username]",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
-	// no validation rules for ValidEmail
-
-	// no validation rules for VerifyEmail
-
-	if d := m.GetVerifyEmailGracePeriod(); d != nil {
-		dur, err := d.AsDuration(), d.CheckValid()
-		if err != nil {
-			err = UsernamePolicyValidationError{
-				field:  "VerifyEmailGracePeriod",
-				reason: "value is not a valid duration",
-				cause:  err,
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		} else {
-
-			lte := time.Duration(900*time.Second + 0*time.Nanosecond)
-			gte := time.Duration(5*time.Second + 0*time.Nanosecond)
-
-			if dur < gte || dur > lte {
-				err := UsernamePolicyValidationError{
-					field:  "VerifyEmailGracePeriod",
-					reason: "value must be inside range [5s, 15m0s]",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			}
-
-		}
-	}
-
-	if len(errors) > 0 {
-		return UsernamePolicyMultiError(errors)
-	}
-
-	return nil
-}
-
-// UsernamePolicyMultiError is an error wrapping multiple validation errors
-// returned by UsernamePolicy.ValidateAll() if the designated constraints
-// aren't met.
-type UsernamePolicyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UsernamePolicyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UsernamePolicyMultiError) AllErrors() []error { return m }
-
-// UsernamePolicyValidationError is the validation error returned by
-// UsernamePolicy.Validate if the designated constraints aren't met.
-type UsernamePolicyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UsernamePolicyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UsernamePolicyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UsernamePolicyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UsernamePolicyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UsernamePolicyValidationError) ErrorName() string { return "UsernamePolicyValidationError" }
-
-// Error satisfies the builtin error interface
-func (e UsernamePolicyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUsernamePolicy.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UsernamePolicyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UsernamePolicyValidationError{}
-
-var _UsernamePolicy_AllowedUsernameFormats_InLookup = map[string]struct{}{
-	"email":    {},
-	"mobile":   {},
-	"username": {},
-}
-
-// Validate checks the field values on UniquePropertyConstraint with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UniquePropertyConstraint) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UniquePropertyConstraint with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// UniquePropertyConstraintMultiError, or nil if none found.
-func (m *UniquePropertyConstraint) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UniquePropertyConstraint) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for TenantUnique
-
-	if len(m.GetCanonicalization()) > 0 {
-
-		_UniquePropertyConstraint_Canonicalization_Unique := make(map[string]struct{}, len(m.GetCanonicalization()))
-
-		for idx, item := range m.GetCanonicalization() {
-			_, _ = idx, item
-
-			if _, exists := _UniquePropertyConstraint_Canonicalization_Unique[item]; exists {
-				err := UniquePropertyConstraintValidationError{
-					field:  fmt.Sprintf("Canonicalization[%v]", idx),
-					reason: "repeated value must contain unique items",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			} else {
-				_UniquePropertyConstraint_Canonicalization_Unique[item] = struct{}{}
-			}
-
-			if _, ok := _UniquePropertyConstraint_Canonicalization_InLookup[item]; !ok {
-				err := UniquePropertyConstraintValidationError{
-					field:  fmt.Sprintf("Canonicalization[%v]", idx),
-					reason: "value must be in list [unicode case-insensitive]",
-				}
-				if !all {
-					return err
-				}
-				errors = append(errors, err)
-			}
-
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return UniquePropertyConstraintMultiError(errors)
-	}
-
-	return nil
-}
-
-// UniquePropertyConstraintMultiError is an error wrapping multiple validation
-// errors returned by UniquePropertyConstraint.ValidateAll() if the designated
-// constraints aren't met.
-type UniquePropertyConstraintMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UniquePropertyConstraintMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UniquePropertyConstraintMultiError) AllErrors() []error { return m }
-
-// UniquePropertyConstraintValidationError is the validation error returned by
-// UniquePropertyConstraint.Validate if the designated constraints aren't met.
-type UniquePropertyConstraintValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UniquePropertyConstraintValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UniquePropertyConstraintValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UniquePropertyConstraintValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UniquePropertyConstraintValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UniquePropertyConstraintValidationError) ErrorName() string {
-	return "UniquePropertyConstraintValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e UniquePropertyConstraintValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUniquePropertyConstraint.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UniquePropertyConstraintValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UniquePropertyConstraintValidationError{}
-
-var _UniquePropertyConstraint_Canonicalization_InLookup = map[string]struct{}{
-	"unicode":          {},
-	"case-insensitive": {},
-}
-
-// Validate checks the field values on PasswordPolicy with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *PasswordPolicy) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PasswordPolicy with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in PasswordPolicyMultiError,
-// or nil if none found.
-func (m *PasswordPolicy) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PasswordPolicy) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Template
-
-	if all {
-		switch v := interface{}(m.GetMinimumLength()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, PasswordPolicyValidationError{
-					field:  "MinimumLength",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, PasswordPolicyValidationError{
-					field:  "MinimumLength",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetMinimumLength()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return PasswordPolicyValidationError{
-				field:  "MinimumLength",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return PasswordPolicyMultiError(errors)
-	}
-
-	return nil
-}
-
-// PasswordPolicyMultiError is an error wrapping multiple validation errors
-// returned by PasswordPolicy.ValidateAll() if the designated constraints
-// aren't met.
-type PasswordPolicyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m PasswordPolicyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m PasswordPolicyMultiError) AllErrors() []error { return m }
-
-// PasswordPolicyValidationError is the validation error returned by
-// PasswordPolicy.Validate if the designated constraints aren't met.
-type PasswordPolicyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e PasswordPolicyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e PasswordPolicyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e PasswordPolicyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e PasswordPolicyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e PasswordPolicyValidationError) ErrorName() string { return "PasswordPolicyValidationError" }
-
-// Error satisfies the builtin error interface
-func (e PasswordPolicyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sPasswordPolicy.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = PasswordPolicyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = PasswordPolicyValidationError{}
-
 // Validate checks the field values on AuthorizationPolicyConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -11562,10 +10572,10 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 		}
 	}
 
-	if utf8.RuneCountInString(m.GetIkgNodeType()) > 64 {
+	if l := utf8.RuneCountInString(m.GetIkgNodeType()); l < 2 || l > 64 {
 		err := TokenIntrospectConfigValidationError{
 			field:  "IkgNodeType",
-			reason: "value length must be at most 64 runes",
+			reason: "value length must be between 2 and 64 runes, inclusive",
 		}
 		if !all {
 			return err
@@ -11641,6 +10651,59 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 			}
 		}
 
+	case *TokenIntrospectConfig_Opaque_:
+		if v == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "TokenMatcher",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofTokenMatcherPresent = true
+
+		if m.GetOpaque() == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "Opaque",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetOpaque()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Opaque",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Opaque",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetOpaque()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectConfigValidationError{
+					field:  "Opaque",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -11654,6 +10717,7 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 		}
 		errors = append(errors, err)
 	}
+	oneofValidationPresent := false
 	switch v := m.Validation.(type) {
 	case *TokenIntrospectConfig_Offline_:
 		if v == nil {
@@ -11666,6 +10730,7 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 			}
 			errors = append(errors, err)
 		}
+		oneofValidationPresent = true
 
 		if m.GetOffline() == nil {
 			err := TokenIntrospectConfigValidationError{
@@ -11707,8 +10772,71 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 			}
 		}
 
+	case *TokenIntrospectConfig_Online_:
+		if v == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "Validation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValidationPresent = true
+
+		if m.GetOnline() == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "Online",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetOnline()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Online",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Online",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetOnline()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectConfigValidationError{
+					field:  "Online",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
+	}
+	if !oneofValidationPresent {
+		err := TokenIntrospectConfigValidationError{
+			field:  "Validation",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -11929,6 +11057,109 @@ var _ interface {
 	ErrorName() string
 } = TokenIntrospectConfig_JWTValidationError{}
 
+// Validate checks the field values on TokenIntrospectConfig_Opaque with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenIntrospectConfig_Opaque) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenIntrospectConfig_Opaque with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenIntrospectConfig_OpaqueMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Opaque) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenIntrospectConfig_Opaque) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return TokenIntrospectConfig_OpaqueMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenIntrospectConfig_OpaqueMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Opaque.ValidateAll() if
+// the designated constraints aren't met.
+type TokenIntrospectConfig_OpaqueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenIntrospectConfig_OpaqueMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenIntrospectConfig_OpaqueMultiError) AllErrors() []error { return m }
+
+// TokenIntrospectConfig_OpaqueValidationError is the validation error returned
+// by TokenIntrospectConfig_Opaque.Validate if the designated constraints
+// aren't met.
+type TokenIntrospectConfig_OpaqueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenIntrospectConfig_OpaqueValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_OpaqueValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenIntrospectConfig_OpaqueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenIntrospectConfig_Opaque.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenIntrospectConfig_OpaqueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenIntrospectConfig_OpaqueValidationError{}
+
 // Validate checks the field values on TokenIntrospectConfig_Offline with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -12080,6 +11311,164 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TokenIntrospectConfig_OfflineValidationError{}
+
+// Validate checks the field values on TokenIntrospectConfig_Online with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenIntrospectConfig_Online) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenIntrospectConfig_Online with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenIntrospectConfig_OnlineMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Online) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenIntrospectConfig_Online) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetUserinfoEndpoint() != "" {
+
+		if uri, err := url.Parse(m.GetUserinfoEndpoint()); err != nil {
+			err = TokenIntrospectConfig_OnlineValidationError{
+				field:  "UserinfoEndpoint",
+				reason: "value must be a valid URI",
+				cause:  err,
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else if !uri.IsAbs() {
+			err := TokenIntrospectConfig_OnlineValidationError{
+				field:  "UserinfoEndpoint",
+				reason: "value must be absolute",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if d := m.GetCacheTtl(); d != nil {
+		dur, err := d.AsDuration(), d.CheckValid()
+		if err != nil {
+			err = TokenIntrospectConfig_OnlineValidationError{
+				field:  "CacheTtl",
+				reason: "value is not a valid duration",
+				cause:  err,
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+
+			lte := time.Duration(3600*time.Second + 0*time.Nanosecond)
+
+			if dur > lte {
+				err := TokenIntrospectConfig_OnlineValidationError{
+					field:  "CacheTtl",
+					reason: "value must be less than or equal to 1h0m0s",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+	}
+
+	if len(errors) > 0 {
+		return TokenIntrospectConfig_OnlineMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenIntrospectConfig_OnlineMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Online.ValidateAll() if
+// the designated constraints aren't met.
+type TokenIntrospectConfig_OnlineMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenIntrospectConfig_OnlineMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenIntrospectConfig_OnlineMultiError) AllErrors() []error { return m }
+
+// TokenIntrospectConfig_OnlineValidationError is the validation error returned
+// by TokenIntrospectConfig_Online.Validate if the designated constraints
+// aren't met.
+type TokenIntrospectConfig_OnlineValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenIntrospectConfig_OnlineValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenIntrospectConfig_OnlineValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenIntrospectConfig_OnlineValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenIntrospectConfig_OnlineValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenIntrospectConfig_OnlineValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_OnlineValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenIntrospectConfig_OnlineValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenIntrospectConfig_Online.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenIntrospectConfig_OnlineValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenIntrospectConfig_OnlineValidationError{}
 
 // Validate checks the field values on TokenIntrospectConfig_Claim with the
 // rules defined in the proto definition for this message. If any rules are

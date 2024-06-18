@@ -158,7 +158,6 @@ func FromError(err error) *StatusError {
 	if s, ok := err.(*ClientError); ok {
 		return &StatusError{grpcStatus: status.New(s.code, s.msg), origin: s.cause}
 	}
-	//nolint:errorlint // TODO: Should be fixed, but also heavily tested
 	if se, ok := err.(interface {
 		GRPCStatus() *status.Status
 	}); ok {

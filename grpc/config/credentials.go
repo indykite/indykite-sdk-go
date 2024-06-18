@@ -48,7 +48,7 @@ func DefaultEnvironmentLoader(_ context.Context) (*CredentialsConfig, error) {
 }
 
 func StaticCredentialsJSON(credentialsJSON []byte) CredentialsLoader {
-	return func(ctx context.Context) (*CredentialsConfig, error) {
+	return func(_ context.Context) (*CredentialsConfig, error) {
 		return UnmarshalCredentialConfig(credentialsJSON)
 	}
 }
@@ -66,7 +66,7 @@ func UnmarshalCredentialConfig(credentialJSON []byte) (*CredentialsConfig, error
 }
 
 func StaticCredentialConfig(config *CredentialsConfig) CredentialsLoader {
-	return func(ctx context.Context) (*CredentialsConfig, error) {
+	return func(_ context.Context) (*CredentialsConfig, error) {
 		return config, nil
 	}
 }
