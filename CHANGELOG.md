@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.30.0](https://github.com/indykite/indykite-sdk-go/compare/v0.29.1...v0.30.0) (2024-06-20)
+
+
+### Features
+
+* remove authz token ([f6f5ef6](https://github.com/indykite/indykite-sdk-go/commit/f6f5ef61284ff9f1437fa75d58962647c52ced28))
+
 ## [0.29.1](https://github.com/indykite/indykite-sdk-go/compare/v0.29.0...v0.29.1) (2024-06-18)
 
 
