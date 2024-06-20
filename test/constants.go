@@ -172,12 +172,6 @@ var (
 	Subject2 = "fVcaUxJqmOkyOTX"
 	Subject3 = "lSPmCXIPRXppszf"
 	Subject4 = "NACTFFKUCcceDIz"
-
-	// TokenGoodFormat is a valid format for jwt.
-	TokenGoodFormat = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
-		"eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9." +
-		"dyt0CoTl4WoVjAHI9Q_CwSKhl6d_9rhM3NrXuJttkao" // #nosec G101
-	TokenBad = "token_invalid_format"
 )
 
 func GenerateRandomString(length int) string {
