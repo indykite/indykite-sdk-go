@@ -850,6 +850,8 @@ func (m *GrantConsentResponse) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for PropertiesGrantedCount
+
 	if len(errors) > 0 {
 		return GrantConsentResponseMultiError(errors)
 	}

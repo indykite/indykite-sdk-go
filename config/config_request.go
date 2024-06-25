@@ -174,39 +174,6 @@ func (x *NodeRequest) WithBookmarks(bookmarks []string) *NodeRequest {
 	return x
 }
 
-// WithOAuth2ClientConfig sets the new OAuth2ClientConfig changes which will be merged.
-func (x *NodeRequest) WithOAuth2ClientConfig(v *configpb.OAuth2ClientConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_Oauth2ClientConfig{Oauth2ClientConfig: v}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_Oauth2ClientConfig{Oauth2ClientConfig: v}
-		}
-	}
-	return x
-}
-
-func (x *NodeRequest) WithEmailNotificationConfig(v *configpb.EmailServiceConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_EmailServiceConfig{EmailServiceConfig: v}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_EmailServiceConfig{EmailServiceConfig: v}
-		}
-	}
-	return x
-}
-
 func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPolicyConfig) *NodeRequest {
 	switch {
 	case x.create != nil:
@@ -234,26 +201,6 @@ func (x *NodeRequest) WithConsentConfig(v *configpb.ConsentConfiguration) *NodeR
 		x.update.Config = nil
 		if v != nil {
 			x.update.Config = &configpb.UpdateConfigNodeRequest_ConsentConfig{ConsentConfig: v}
-		}
-	}
-	return x
-}
-
-func (x *NodeRequest) WithWebauthnProviderConfig(v *configpb.WebAuthnProviderConfig) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Config = nil
-		if v != nil {
-			x.create.Config = &configpb.CreateConfigNodeRequest_WebauthnProviderConfig{
-				WebauthnProviderConfig: v,
-			}
-		}
-	case x.update != nil:
-		x.update.Config = nil
-		if v != nil {
-			x.update.Config = &configpb.UpdateConfigNodeRequest_WebauthnProviderConfig{
-				WebauthnProviderConfig: v,
-			}
 		}
 	}
 	return x

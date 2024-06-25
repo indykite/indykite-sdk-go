@@ -155,6 +155,7 @@ var (
 	DigitalTwinNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
 	DigitalTwin1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
 	DigitalTwin2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
+	DigitalTwin3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
 
 	EmailBad   = "test@example.com"
 	EmailGood  = "biche@yahoo.uk"
@@ -172,6 +173,9 @@ var (
 	Subject2 = "fVcaUxJqmOkyOTX"
 	Subject3 = "lSPmCXIPRXppszf"
 	Subject4 = "NACTFFKUCcceDIz"
+
+	ConsentConfigID = "gid:AAAAHfho2CFLq0rWpmSapJj0JHY"
+	Application     = "gid:AAAABMoo7PXYfkwepSVjj4GTtfc"
 )
 
 func GenerateRandomString(length int) string {
@@ -503,4 +507,88 @@ func DeleteRecordRelationshipProperty(
 		},
 	}
 	return record
+}
+
+func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
+	typeNode string) (*knowledgeobjects.Node, string) {
+	externalID := GenerateRandomString(10)
+	node := &knowledgeobjects.Node{
+		ExternalId: externalID,
+		Type:       typeNode,
+		IsIdentity: true,
+		Properties: []*knowledgeobjects.Property{
+			{
+				Type: "email",
+				Value: &objects.Value{
+					Type: &objects.Value_StringValue{
+						StringValue: GenerateRandomString(6) + "@yahoo.uk",
+					},
+				},
+				Metadata: &knowledgeobjects.Metadata{
+					AssuranceLevel:   1,
+					VerificationTime: timestamppb.Now(),
+					Source:           "Myself",
+					CustomMetadata: map[string]*objects.Value{
+						"emaildata": {
+							Type: &objects.Value_StringValue{StringValue: "Emaildata"},
+						},
+					},
+				},
+			},
+			{
+				Type: "first_name",
+				Value: &objects.Value{
+					Type: &objects.Value_StringValue{
+						StringValue: GenerateRandomString(6),
+					},
+				},
+			},
+			{
+				Type: "last_name",
+				Value: &objects.Value{
+					Type: &objects.Value_StringValue{
+						StringValue: GenerateRandomString(6),
+					},
+				},
+			},
+		},
+	}
+	return node, externalID
+}
+
+func BatchNodesType( //nolint:gocritic // nonamedreturns against unnamedResult
+	typeNode string) ([]*knowledgeobjects.Node, string, string) {
+	node1, externalID1 := CreateBatchNodes(typeNode)
+	node2, externalID2 := CreateBatchNodes(typeNode)
+	nodes := []*knowledgeobjects.Node{
+		node1, node2,
+	}
+	return nodes, externalID1, externalID2
+}
+
+func BatchRelationships(
+	relationship *ingestpb.Relationship, relationship2 *ingestpb.Relationship) []*ingestpb.Relationship {
+	relationships := []*ingestpb.Relationship{
+		relationship,
+		relationship2,
+	}
+	return relationships
+}
+
+func CreateBatchNodeMatch(
+	externalID string, typeNode string) *ingestpb.NodeMatch {
+	nodeMatch := &ingestpb.NodeMatch{
+		ExternalId: externalID,
+		Type:       typeNode,
+	}
+	return nodeMatch
+}
+
+func BatchNodesMatch(
+	nodeMatch *ingestpb.NodeMatch, nodeMatch2 *ingestpb.NodeMatch) []*ingestpb.NodeMatch {
+	nodes := []*ingestpb.NodeMatch{
+		nodeMatch,
+		nodeMatch2,
+	}
+	return nodes
 }

@@ -27,6 +27,7 @@ import (
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 	"github.com/indykite/indykite-sdk-go/ingest"
+	"github.com/indykite/indykite-sdk-go/tda"
 )
 
 var (
@@ -34,6 +35,7 @@ var (
 	clientIngest        *ingest.Client
 	retryIngest         *ingest.RetryClient
 	clientConfig        *config.Client
+	clientTda           *tda.Client
 	err                 error
 )
 
@@ -90,6 +92,19 @@ func InitConfigConfig() (*config.Client, error) {
 		er(fmt.Sprintf("failed to create IndyKite Config Client: %v", err))
 	}
 	return clientConfig, err
+}
+
+// InitConfigTda reads in tda file and ENV variables if set.
+func InitConfigTda() (*tda.Client, error) {
+	clientTda, err = tda.NewClient(context.Background(),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithRetryOptions(retry.Disable()),
+	)
+
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite TDA Client: %v", err))
+	}
+	return clientTda, nil
 }
 
 func er(msg any) {
