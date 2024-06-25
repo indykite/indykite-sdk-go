@@ -10330,10 +10330,10 @@ func (m *ConsentConfiguration) validate(all bool) error {
 			_ConsentConfiguration_DataPoints_Unique[item] = struct{}{}
 		}
 
-		if l := utf8.RuneCountInString(item); l < 1 || l > 64 {
+		if l := utf8.RuneCountInString(item); l < 1 || l > 1024 {
 			err := ConsentConfigurationValidationError{
 				field:  fmt.Sprintf("DataPoints[%v]", idx),
-				reason: "value length must be between 1 and 64 runes, inclusive",
+				reason: "value length must be between 1 and 1024 runes, inclusive",
 			}
 			if !all {
 				return err
@@ -10341,10 +10341,10 @@ func (m *ConsentConfiguration) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-		if !_ConsentConfiguration_DataPoints_Pattern.MatchString(item) {
+		if !strings.HasPrefix(item, "{") {
 			err := ConsentConfigurationValidationError{
 				field:  fmt.Sprintf("DataPoints[%v]", idx),
-				reason: "value does not match regex pattern \"^[a-zA-Z_][a-zA-Z0-9_]+$\"",
+				reason: "value does not have prefix \"{\"",
 			}
 			if !all {
 				return err
@@ -10468,8 +10468,6 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ConsentConfigurationValidationError{}
-
-var _ConsentConfiguration_DataPoints_Pattern = regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]+$")
 
 var _ConsentConfiguration_ApplicationId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
@@ -10922,6 +10920,162 @@ var _ interface {
 var _TokenIntrospectConfig_ClaimsMapping_Pattern = regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]+$")
 
 var _TokenIntrospectConfig_IkgNodeType_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
+
+// Validate checks the field values on ConsentDataPoint with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ConsentDataPoint) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConsentDataPoint with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConsentDataPointMultiError, or nil if none found.
+func (m *ConsentDataPoint) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConsentDataPoint) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetQuery()) > 1024 {
+		err := ConsentDataPointValidationError{
+			field:  "Query",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := len(m.GetReturns()); l < 1 || l > 20 {
+		err := ConsentDataPointValidationError{
+			field:  "Returns",
+			reason: "value must contain between 1 and 20 items, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetReturns() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConsentDataPointValidationError{
+						field:  fmt.Sprintf("Returns[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConsentDataPointValidationError{
+						field:  fmt.Sprintf("Returns[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConsentDataPointValidationError{
+					field:  fmt.Sprintf("Returns[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ConsentDataPointMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConsentDataPointMultiError is an error wrapping multiple validation errors
+// returned by ConsentDataPoint.ValidateAll() if the designated constraints
+// aren't met.
+type ConsentDataPointMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConsentDataPointMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConsentDataPointMultiError) AllErrors() []error { return m }
+
+// ConsentDataPointValidationError is the validation error returned by
+// ConsentDataPoint.Validate if the designated constraints aren't met.
+type ConsentDataPointValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConsentDataPointValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConsentDataPointValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConsentDataPointValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConsentDataPointValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConsentDataPointValidationError) ErrorName() string { return "ConsentDataPointValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ConsentDataPointValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConsentDataPoint.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConsentDataPointValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConsentDataPointValidationError{}
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are
@@ -11583,3 +11737,127 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TokenIntrospectConfig_ClaimValidationError{}
+
+// Validate checks the field values on ConsentDataPoint_Return with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ConsentDataPoint_Return) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConsentDataPoint_Return with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConsentDataPoint_ReturnMultiError, or nil if none found.
+func (m *ConsentDataPoint_Return) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConsentDataPoint_Return) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetVariable()) > 32 {
+		err := ConsentDataPoint_ReturnValidationError{
+			field:  "Variable",
+			reason: "value length must be at most 32 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetProperties()) > 50 {
+		err := ConsentDataPoint_ReturnValidationError{
+			field:  "Properties",
+			reason: "value must contain no more than 50 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ConsentDataPoint_ReturnMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConsentDataPoint_ReturnMultiError is an error wrapping multiple validation
+// errors returned by ConsentDataPoint_Return.ValidateAll() if the designated
+// constraints aren't met.
+type ConsentDataPoint_ReturnMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConsentDataPoint_ReturnMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConsentDataPoint_ReturnMultiError) AllErrors() []error { return m }
+
+// ConsentDataPoint_ReturnValidationError is the validation error returned by
+// ConsentDataPoint_Return.Validate if the designated constraints aren't met.
+type ConsentDataPoint_ReturnValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConsentDataPoint_ReturnValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConsentDataPoint_ReturnValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConsentDataPoint_ReturnValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConsentDataPoint_ReturnValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConsentDataPoint_ReturnValidationError) ErrorName() string {
+	return "ConsentDataPoint_ReturnValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ConsentDataPoint_ReturnValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConsentDataPoint_Return.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConsentDataPoint_ReturnValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConsentDataPoint_ReturnValidationError{}

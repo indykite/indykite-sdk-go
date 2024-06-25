@@ -135,8 +135,11 @@ var _ = Describe("ConfigNode", func() {
 					Version:     0,
 					Config: &configpb.ConfigNode_ConsentConfig{
 						ConsentConfig: &configpb.ConsentConfiguration{
-							Purpose:        "Taking control",
-							DataPoints:     []string{"lastname", "firstname", "email"},
+							Purpose: "Taking control",
+							DataPoints: []string{
+								"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
+									"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
+							},
 							ApplicationId:  "gid:like-real-application-id",
 							ValidityPeriod: uint64(86400),
 							RevokeAfterUse: true,
@@ -272,8 +275,11 @@ var _ = Describe("ConfigNode", func() {
 
 		It("CreateConsentConfiguration", func() {
 			configuration := &configpb.ConsentConfiguration{
-				Purpose:        "Taking control",
-				DataPoints:     []string{"lastname", "firstname", "email"},
+				Purpose: "Taking control",
+				DataPoints: []string{
+					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
+						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
+				},
 				ApplicationId:  "gid:like-real-application-id",
 				ValidityPeriod: uint64(86400),
 				RevokeAfterUse: true,
@@ -317,8 +323,11 @@ var _ = Describe("ConfigNode", func() {
 
 		It("CreateNonValid", func() {
 			configuration := &configpb.ConsentConfiguration{
-				Purpose:        "Taking control",
-				DataPoints:     []string{"lastname", "firstname", "email"},
+				Purpose: "Taking control",
+				DataPoints: []string{
+					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
+						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
+				},
 				ApplicationId:  "gid:like",
 				ValidityPeriod: uint64(86400),
 				RevokeAfterUse: true,
@@ -454,8 +463,11 @@ var _ = Describe("ConfigNode", func() {
 
 		It("UpdateConsentConfiguration", func() {
 			configuration := &configpb.ConsentConfiguration{
-				Purpose:        "Taking control",
-				DataPoints:     []string{"lastname", "firstname", "email"},
+				Purpose: "Taking control",
+				DataPoints: []string{
+					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
+						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
+				},
 				ApplicationId:  "gid:like-real-application-id",
 				ValidityPeriod: uint64(86400),
 				RevokeAfterUse: true,

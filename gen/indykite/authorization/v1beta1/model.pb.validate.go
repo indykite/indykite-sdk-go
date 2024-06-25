@@ -58,59 +58,6 @@ func (m *Subject) validate(all bool) error {
 
 	oneofSubjectPresent := false
 	switch v := m.Subject.(type) {
-	case *Subject_DigitalTwinIdentifier:
-		if v == nil {
-			err := SubjectValidationError{
-				field:  "Subject",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofSubjectPresent = true
-
-		if m.GetDigitalTwinIdentifier() == nil {
-			err := SubjectValidationError{
-				field:  "DigitalTwinIdentifier",
-				reason: "value is required",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if all {
-			switch v := interface{}(m.GetDigitalTwinIdentifier()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, SubjectValidationError{
-						field:  "DigitalTwinIdentifier",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, SubjectValidationError{
-						field:  "DigitalTwinIdentifier",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetDigitalTwinIdentifier()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return SubjectValidationError{
-					field:  "DigitalTwinIdentifier",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
 	case *Subject_DigitalTwinId:
 		if v == nil {
 			err := SubjectValidationError{
