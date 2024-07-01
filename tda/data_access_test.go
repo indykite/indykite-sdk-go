@@ -23,6 +23,7 @@ import (
 
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	objects2 "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	tdapb "github.com/indykite/indykite-sdk-go/gen/indykite/tda/v1beta1"
 	"github.com/indykite/indykite-sdk-go/tda"
 	"github.com/indykite/indykite-sdk-go/test"
@@ -176,6 +177,37 @@ var _ = Describe("TDA", func() {
 			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
 		}
 
+		mockDataAccessResponse := tdapb.DataAccessResponse{
+			Persons: []*knowledgeobjects.Node{
+				{
+					Id:         "gid:xyz",
+					ExternalId: "0000",
+					Type:       "Person",
+					IsIdentity: true,
+				},
+			},
+			Nodes: []*tdapb.DataAccessResponse_Node{
+				{
+					PersonId: "gid:xyz",
+					Node: &knowledgeobjects.Node{
+						Id:         "gid:abc",
+						ExternalId: "1111",
+						Type:       "Car",
+						Properties: []*knowledgeobjects.Property{
+							{
+								Type: "PlateNumber",
+								Value: &objects2.Value{
+									Type: &objects2.Value_StringValue{
+										StringValue: "N4567",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+
 		DescribeTable("DataAccessSuccess",
 			func(req *tdapb.DataAccessRequest, beResp *tdapb.DataAccessResponse) {
 				mockClient.EXPECT().DataAccess(
@@ -192,54 +224,22 @@ var _ = Describe("TDA", func() {
 			Entry(
 				"data access with user id and returns response",
 				&mockDataAccessRequest,
-				&tdapb.DataAccessResponse{
-					Nodes: []*knowledgeobjects.Node{
-						{
-							Id:         "gid:xyz",
-							ExternalId: "0000",
-							Type:       "Store",
-						},
-					},
-				},
+				&mockDataAccessResponse,
 			),
 			Entry(
 				"data access with external id and returns response",
 				&mockDataAccessRequest2,
-				&tdapb.DataAccessResponse{
-					Nodes: []*knowledgeobjects.Node{
-						{
-							Id:         "gid:xyz",
-							ExternalId: "0000",
-							Type:       "Store",
-						},
-					},
-				},
+				&mockDataAccessResponse,
 			),
 			Entry(
 				"data access with property and returns response",
 				&mockDataAccessRequest3,
-				&tdapb.DataAccessResponse{
-					Nodes: []*knowledgeobjects.Node{
-						{
-							Id:         "gid:xyz",
-							ExternalId: "0000",
-							Type:       "Store",
-						},
-					},
-				},
+				&mockDataAccessResponse,
 			),
 			Entry(
 				"data access without user and returns response",
 				&mockDataAccessRequest4,
-				&tdapb.DataAccessResponse{
-					Nodes: []*knowledgeobjects.Node{
-						{
-							Id:         "gid:xyz",
-							ExternalId: "0000",
-							Type:       "Store",
-						},
-					},
-				},
+				&mockDataAccessResponse,
 			),
 		)
 

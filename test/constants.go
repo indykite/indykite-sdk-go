@@ -156,6 +156,7 @@ var (
 	DigitalTwin1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
 	DigitalTwin2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
 	DigitalTwin3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
+	DigitalTwin4       = "gid:AAAAHC_gEo51KUkbvMdGenKHc6Q"
 
 	EmailBad   = "test@example.com"
 	EmailGood  = "biche@yahoo.uk"
@@ -163,18 +164,22 @@ var (
 
 	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
-	Asset1 = "HQKzkgPnGJDiaGo"
-	Asset2 = "pFlpMtkWqCPXVue"
-	Asset3 = "zojWwtKbBLmAXCO"
-	Asset4 = "paLtQSpEcTvzeuC"
-	Asset5 = "dLZVTSllFCdZfXC"
+	Asset1  = "HQKzkgPnGJDiaGo"
+	Asset2  = "pFlpMtkWqCPXVue"
+	Asset3  = "zojWwtKbBLmAXCO"
+	Asset4  = "paLtQSpEcTvzeuC"
+	Asset5  = "dLZVTSllFCdZfXC"
+	Car1    = "gid:AAAAHGFc4HM1TUg8oRiWIsQsVz8"
+	Car1Ext = "9658744"
 
-	Subject1 = "dilZWYdFcmXiojC"
-	Subject2 = "fVcaUxJqmOkyOTX"
-	Subject3 = "lSPmCXIPRXppszf"
-	Subject4 = "NACTFFKUCcceDIz"
+	Subject1   = "dilZWYdFcmXiojC"
+	Subject2   = "fVcaUxJqmOkyOTX"
+	Subject3   = "lSPmCXIPRXppszf"
+	Subject4   = "NACTFFKUCcceDIz"
+	SubjectDT4 = "852147963"
 
 	ConsentConfigID = "gid:AAAAHfho2CFLq0rWpmSapJj0JHY"
+	ConsentConfig2  = "gid:AAAAHY0vIMaQx0J9mznHhmarV0M"
 	Application     = "gid:AAAABMoo7PXYfkwepSVjj4GTtfc"
 )
 

@@ -35,15 +35,15 @@ var batchUpsertNodesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		node1 := &knowledgeobjects.Node{
-			ExternalId: "0000",
-			Type:       "Employee",
+			ExternalId: "852147963",
+			Type:       "Person",
 			IsIdentity: true,
 			Properties: []*knowledgeobjects.Property{
 				{
 					Type: "email",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "0000@yahoo.com",
+							StringValue: "enora@yahoo.com",
 						},
 					},
 					Metadata: &knowledgeobjects.Metadata{
@@ -57,19 +57,35 @@ var batchUpsertNodesCmd = &cobra.Command{
 						},
 					},
 				},
+				{
+					Type: "last_name",
+					Value: &objects.Value{
+						Type: &objects.Value_StringValue{
+							StringValue: "mushu",
+						},
+					},
+				},
+				{
+					Type: "first_name",
+					Value: &objects.Value{
+						Type: &objects.Value_StringValue{
+							StringValue: "enora",
+						},
+					},
+				},
 			},
 		}
 
 		node2 := &knowledgeobjects.Node{
-			ExternalId: "0001",
-			Type:       "Truck",
+			ExternalId: "9658744",
+			Type:       "Car",
 			IsIdentity: false,
 			Properties: []*knowledgeobjects.Property{
 				{
-					Type: "vin",
+					Type: "plateNumber",
 					Value: &objects.Value{
-						Type: &objects.Value_IntegerValue{
-							IntegerValue: 1234,
+						Type: &objects.Value_StringValue{
+							StringValue: "NO1234",
 						},
 					},
 				},

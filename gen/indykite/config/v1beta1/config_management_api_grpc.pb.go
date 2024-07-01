@@ -60,24 +60,11 @@ const (
 	ConfigManagementAPI_RegisterServiceAccountCredential_FullMethodName   = "/indykite.config.v1beta1.ConfigManagementAPI/RegisterServiceAccountCredential"
 	ConfigManagementAPI_ReadServiceAccountCredential_FullMethodName       = "/indykite.config.v1beta1.ConfigManagementAPI/ReadServiceAccountCredential"
 	ConfigManagementAPI_DeleteServiceAccountCredential_FullMethodName     = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteServiceAccountCredential"
-	ConfigManagementAPI_CreateTenant_FullMethodName                       = "/indykite.config.v1beta1.ConfigManagementAPI/CreateTenant"
-	ConfigManagementAPI_ReadTenant_FullMethodName                         = "/indykite.config.v1beta1.ConfigManagementAPI/ReadTenant"
-	ConfigManagementAPI_ListTenants_FullMethodName                        = "/indykite.config.v1beta1.ConfigManagementAPI/ListTenants"
-	ConfigManagementAPI_UpdateTenant_FullMethodName                       = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateTenant"
-	ConfigManagementAPI_DeleteTenant_FullMethodName                       = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteTenant"
 	ConfigManagementAPI_CreateConfigNode_FullMethodName                   = "/indykite.config.v1beta1.ConfigManagementAPI/CreateConfigNode"
 	ConfigManagementAPI_ReadConfigNode_FullMethodName                     = "/indykite.config.v1beta1.ConfigManagementAPI/ReadConfigNode"
 	ConfigManagementAPI_UpdateConfigNode_FullMethodName                   = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateConfigNode"
 	ConfigManagementAPI_DeleteConfigNode_FullMethodName                   = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteConfigNode"
 	ConfigManagementAPI_ListConfigNodeVersions_FullMethodName             = "/indykite.config.v1beta1.ConfigManagementAPI/ListConfigNodeVersions"
-	ConfigManagementAPI_CreateOAuth2Provider_FullMethodName               = "/indykite.config.v1beta1.ConfigManagementAPI/CreateOAuth2Provider"
-	ConfigManagementAPI_ReadOAuth2Provider_FullMethodName                 = "/indykite.config.v1beta1.ConfigManagementAPI/ReadOAuth2Provider"
-	ConfigManagementAPI_UpdateOAuth2Provider_FullMethodName               = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateOAuth2Provider"
-	ConfigManagementAPI_DeleteOAuth2Provider_FullMethodName               = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteOAuth2Provider"
-	ConfigManagementAPI_CreateOAuth2Application_FullMethodName            = "/indykite.config.v1beta1.ConfigManagementAPI/CreateOAuth2Application"
-	ConfigManagementAPI_ReadOAuth2Application_FullMethodName              = "/indykite.config.v1beta1.ConfigManagementAPI/ReadOAuth2Application"
-	ConfigManagementAPI_UpdateOAuth2Application_FullMethodName            = "/indykite.config.v1beta1.ConfigManagementAPI/UpdateOAuth2Application"
-	ConfigManagementAPI_DeleteOAuth2Application_FullMethodName            = "/indykite.config.v1beta1.ConfigManagementAPI/DeleteOAuth2Application"
 	ConfigManagementAPI_AssignPermissions_FullMethodName                  = "/indykite.config.v1beta1.ConfigManagementAPI/AssignPermissions"
 	ConfigManagementAPI_RevokePermissions_FullMethodName                  = "/indykite.config.v1beta1.ConfigManagementAPI/RevokePermissions"
 	ConfigManagementAPI_ListPermissions_FullMethodName                    = "/indykite.config.v1beta1.ConfigManagementAPI/ListPermissions"
@@ -92,10 +79,8 @@ type ConfigManagementAPIClient interface {
 	// ReadCustomer by ID or name, or gets it from a service account and returns all attributes.
 	ReadCustomer(ctx context.Context, in *ReadCustomerRequest, opts ...grpc.CallOption) (*ReadCustomerResponse, error)
 	// CreateApplicationSpace for a customer.
-	// For now, we do not support creating custom Issuers, so implicit Issuer is created automatically with this call.
-	// To get IssuerID, which is required to create Tenant later, use ReadApplicationSpace.
 	CreateApplicationSpace(ctx context.Context, in *CreateApplicationSpaceRequest, opts ...grpc.CallOption) (*CreateApplicationSpaceResponse, error)
-	// ReadApplicationSpace by ID or name and returns all attributes including Issuer ID.
+	// ReadApplicationSpace by ID or name and returns all attributes.
 	ReadApplicationSpace(ctx context.Context, in *ReadApplicationSpaceRequest, opts ...grpc.CallOption) (*ReadApplicationSpaceResponse, error)
 	// ListApplicationSpaces in a given customer space with list of names.
 	ListApplicationSpaces(ctx context.Context, in *ListApplicationSpacesRequest, opts ...grpc.CallOption) (ConfigManagementAPI_ListApplicationSpacesClient, error)
@@ -150,18 +135,7 @@ type ConfigManagementAPIClient interface {
 	ReadServiceAccountCredential(ctx context.Context, in *ReadServiceAccountCredentialRequest, opts ...grpc.CallOption) (*ReadServiceAccountCredentialResponse, error)
 	// DeleteServiceAccountCredential by ID.
 	DeleteServiceAccountCredential(ctx context.Context, in *DeleteServiceAccountCredentialRequest, opts ...grpc.CallOption) (*DeleteServiceAccountCredentialResponse, error)
-	// CreateTenant for given Issuer. See CreateApplicationSpace method description to get more knowledge
-	// about Application Space and Issuer relation.
-	CreateTenant(ctx context.Context, in *CreateTenantRequest, opts ...grpc.CallOption) (*CreateTenantResponse, error)
-	// ReadTenant by ID or name and returns all attributes.
-	ReadTenant(ctx context.Context, in *ReadTenantRequest, opts ...grpc.CallOption) (*ReadTenantResponse, error)
-	// ListTenants in a given Application Space with list of names.
-	ListTenants(ctx context.Context, in *ListTenantsRequest, opts ...grpc.CallOption) (ConfigManagementAPI_ListTenantsClient, error)
-	// UpdateTenant by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateTenant(ctx context.Context, in *UpdateTenantRequest, opts ...grpc.CallOption) (*UpdateTenantResponse, error)
-	// DeleteTenant by ID with optional etag, to prevent deleting Tenant currently changed by others.
-	DeleteTenant(ctx context.Context, in *DeleteTenantRequest, opts ...grpc.CallOption) (*DeleteTenantResponse, error)
-	// CreateConfigNode on Customer, Application Space or Tenant level.
+	// CreateConfigNode on Customer or Application Space.
 	// All generic configuration nodes are created by this endpoint.
 	CreateConfigNode(ctx context.Context, in *CreateConfigNodeRequest, opts ...grpc.CallOption) (*CreateConfigNodeResponse, error)
 	// ReadConfigNode by ID. Method works with all generic configuration objects.
@@ -172,22 +146,6 @@ type ConfigManagementAPIClient interface {
 	DeleteConfigNode(ctx context.Context, in *DeleteConfigNodeRequest, opts ...grpc.CallOption) (*DeleteConfigNodeResponse, error)
 	// ListConfigNodeVersions list previous versions of a given ConfigNode.
 	ListConfigNodeVersions(ctx context.Context, in *ListConfigNodeVersionsRequest, opts ...grpc.CallOption) (*ListConfigNodeVersionsResponse, error)
-	// CreateOAuth2Provider under given Application Space.
-	CreateOAuth2Provider(ctx context.Context, in *CreateOAuth2ProviderRequest, opts ...grpc.CallOption) (*CreateOAuth2ProviderResponse, error)
-	// ReadOAuth2Provider by ID and returns all attributes and configuration.
-	ReadOAuth2Provider(ctx context.Context, in *ReadOAuth2ProviderRequest, opts ...grpc.CallOption) (*ReadOAuth2ProviderResponse, error)
-	// UpdateOAuth2Provider by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateOAuth2Provider(ctx context.Context, in *UpdateOAuth2ProviderRequest, opts ...grpc.CallOption) (*UpdateOAuth2ProviderResponse, error)
-	// DeleteOAuth2Provider by ID with optional etag, to prevent deleting Provider currently changed by others.
-	DeleteOAuth2Provider(ctx context.Context, in *DeleteOAuth2ProviderRequest, opts ...grpc.CallOption) (*DeleteOAuth2ProviderResponse, error)
-	// CreateOAuth2Application under given OAuth2 Provider.
-	CreateOAuth2Application(ctx context.Context, in *CreateOAuth2ApplicationRequest, opts ...grpc.CallOption) (*CreateOAuth2ApplicationResponse, error)
-	// ReadOAuth2Application by ID and returns all attributes and configuration.
-	ReadOAuth2Application(ctx context.Context, in *ReadOAuth2ApplicationRequest, opts ...grpc.CallOption) (*ReadOAuth2ApplicationResponse, error)
-	// UpdateOAuth2Application by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateOAuth2Application(ctx context.Context, in *UpdateOAuth2ApplicationRequest, opts ...grpc.CallOption) (*UpdateOAuth2ApplicationResponse, error)
-	// DeleteOAuth2Application by ID with optional etag, to prevent deleting OAuth2 Application currently changed by others.
-	DeleteOAuth2Application(ctx context.Context, in *DeleteOAuth2ApplicationRequest, opts ...grpc.CallOption) (*DeleteOAuth2ApplicationResponse, error)
 	// AssignPermissions to a digital twin.
 	AssignPermissions(ctx context.Context, in *AssignPermissionsRequest, opts ...grpc.CallOption) (*AssignPermissionsResponse, error)
 	// RevokePermissions for a digital twin.
@@ -533,79 +491,6 @@ func (c *configManagementAPIClient) DeleteServiceAccountCredential(ctx context.C
 	return out, nil
 }
 
-func (c *configManagementAPIClient) CreateTenant(ctx context.Context, in *CreateTenantRequest, opts ...grpc.CallOption) (*CreateTenantResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateTenantResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_CreateTenant_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) ReadTenant(ctx context.Context, in *ReadTenantRequest, opts ...grpc.CallOption) (*ReadTenantResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReadTenantResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_ReadTenant_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) ListTenants(ctx context.Context, in *ListTenantsRequest, opts ...grpc.CallOption) (ConfigManagementAPI_ListTenantsClient, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ConfigManagementAPI_ServiceDesc.Streams[3], ConfigManagementAPI_ListTenants_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &configManagementAPIListTenantsClient{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type ConfigManagementAPI_ListTenantsClient interface {
-	Recv() (*ListTenantsResponse, error)
-	grpc.ClientStream
-}
-
-type configManagementAPIListTenantsClient struct {
-	grpc.ClientStream
-}
-
-func (x *configManagementAPIListTenantsClient) Recv() (*ListTenantsResponse, error) {
-	m := new(ListTenantsResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *configManagementAPIClient) UpdateTenant(ctx context.Context, in *UpdateTenantRequest, opts ...grpc.CallOption) (*UpdateTenantResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateTenantResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_UpdateTenant_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) DeleteTenant(ctx context.Context, in *DeleteTenantRequest, opts ...grpc.CallOption) (*DeleteTenantResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteTenantResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_DeleteTenant_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *configManagementAPIClient) CreateConfigNode(ctx context.Context, in *CreateConfigNodeRequest, opts ...grpc.CallOption) (*CreateConfigNodeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateConfigNodeResponse)
@@ -656,86 +541,6 @@ func (c *configManagementAPIClient) ListConfigNodeVersions(ctx context.Context, 
 	return out, nil
 }
 
-func (c *configManagementAPIClient) CreateOAuth2Provider(ctx context.Context, in *CreateOAuth2ProviderRequest, opts ...grpc.CallOption) (*CreateOAuth2ProviderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateOAuth2ProviderResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_CreateOAuth2Provider_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) ReadOAuth2Provider(ctx context.Context, in *ReadOAuth2ProviderRequest, opts ...grpc.CallOption) (*ReadOAuth2ProviderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReadOAuth2ProviderResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_ReadOAuth2Provider_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) UpdateOAuth2Provider(ctx context.Context, in *UpdateOAuth2ProviderRequest, opts ...grpc.CallOption) (*UpdateOAuth2ProviderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateOAuth2ProviderResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_UpdateOAuth2Provider_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) DeleteOAuth2Provider(ctx context.Context, in *DeleteOAuth2ProviderRequest, opts ...grpc.CallOption) (*DeleteOAuth2ProviderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteOAuth2ProviderResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_DeleteOAuth2Provider_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) CreateOAuth2Application(ctx context.Context, in *CreateOAuth2ApplicationRequest, opts ...grpc.CallOption) (*CreateOAuth2ApplicationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateOAuth2ApplicationResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_CreateOAuth2Application_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) ReadOAuth2Application(ctx context.Context, in *ReadOAuth2ApplicationRequest, opts ...grpc.CallOption) (*ReadOAuth2ApplicationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReadOAuth2ApplicationResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_ReadOAuth2Application_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) UpdateOAuth2Application(ctx context.Context, in *UpdateOAuth2ApplicationRequest, opts ...grpc.CallOption) (*UpdateOAuth2ApplicationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateOAuth2ApplicationResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_UpdateOAuth2Application_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *configManagementAPIClient) DeleteOAuth2Application(ctx context.Context, in *DeleteOAuth2ApplicationRequest, opts ...grpc.CallOption) (*DeleteOAuth2ApplicationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteOAuth2ApplicationResponse)
-	err := c.cc.Invoke(ctx, ConfigManagementAPI_DeleteOAuth2Application_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *configManagementAPIClient) AssignPermissions(ctx context.Context, in *AssignPermissionsRequest, opts ...grpc.CallOption) (*AssignPermissionsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AssignPermissionsResponse)
@@ -775,10 +580,8 @@ type ConfigManagementAPIServer interface {
 	// ReadCustomer by ID or name, or gets it from a service account and returns all attributes.
 	ReadCustomer(context.Context, *ReadCustomerRequest) (*ReadCustomerResponse, error)
 	// CreateApplicationSpace for a customer.
-	// For now, we do not support creating custom Issuers, so implicit Issuer is created automatically with this call.
-	// To get IssuerID, which is required to create Tenant later, use ReadApplicationSpace.
 	CreateApplicationSpace(context.Context, *CreateApplicationSpaceRequest) (*CreateApplicationSpaceResponse, error)
-	// ReadApplicationSpace by ID or name and returns all attributes including Issuer ID.
+	// ReadApplicationSpace by ID or name and returns all attributes.
 	ReadApplicationSpace(context.Context, *ReadApplicationSpaceRequest) (*ReadApplicationSpaceResponse, error)
 	// ListApplicationSpaces in a given customer space with list of names.
 	ListApplicationSpaces(*ListApplicationSpacesRequest, ConfigManagementAPI_ListApplicationSpacesServer) error
@@ -833,18 +636,7 @@ type ConfigManagementAPIServer interface {
 	ReadServiceAccountCredential(context.Context, *ReadServiceAccountCredentialRequest) (*ReadServiceAccountCredentialResponse, error)
 	// DeleteServiceAccountCredential by ID.
 	DeleteServiceAccountCredential(context.Context, *DeleteServiceAccountCredentialRequest) (*DeleteServiceAccountCredentialResponse, error)
-	// CreateTenant for given Issuer. See CreateApplicationSpace method description to get more knowledge
-	// about Application Space and Issuer relation.
-	CreateTenant(context.Context, *CreateTenantRequest) (*CreateTenantResponse, error)
-	// ReadTenant by ID or name and returns all attributes.
-	ReadTenant(context.Context, *ReadTenantRequest) (*ReadTenantResponse, error)
-	// ListTenants in a given Application Space with list of names.
-	ListTenants(*ListTenantsRequest, ConfigManagementAPI_ListTenantsServer) error
-	// UpdateTenant by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateTenant(context.Context, *UpdateTenantRequest) (*UpdateTenantResponse, error)
-	// DeleteTenant by ID with optional etag, to prevent deleting Tenant currently changed by others.
-	DeleteTenant(context.Context, *DeleteTenantRequest) (*DeleteTenantResponse, error)
-	// CreateConfigNode on Customer, Application Space or Tenant level.
+	// CreateConfigNode on Customer or Application Space.
 	// All generic configuration nodes are created by this endpoint.
 	CreateConfigNode(context.Context, *CreateConfigNodeRequest) (*CreateConfigNodeResponse, error)
 	// ReadConfigNode by ID. Method works with all generic configuration objects.
@@ -855,22 +647,6 @@ type ConfigManagementAPIServer interface {
 	DeleteConfigNode(context.Context, *DeleteConfigNodeRequest) (*DeleteConfigNodeResponse, error)
 	// ListConfigNodeVersions list previous versions of a given ConfigNode.
 	ListConfigNodeVersions(context.Context, *ListConfigNodeVersionsRequest) (*ListConfigNodeVersionsResponse, error)
-	// CreateOAuth2Provider under given Application Space.
-	CreateOAuth2Provider(context.Context, *CreateOAuth2ProviderRequest) (*CreateOAuth2ProviderResponse, error)
-	// ReadOAuth2Provider by ID and returns all attributes and configuration.
-	ReadOAuth2Provider(context.Context, *ReadOAuth2ProviderRequest) (*ReadOAuth2ProviderResponse, error)
-	// UpdateOAuth2Provider by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateOAuth2Provider(context.Context, *UpdateOAuth2ProviderRequest) (*UpdateOAuth2ProviderResponse, error)
-	// DeleteOAuth2Provider by ID with optional etag, to prevent deleting Provider currently changed by others.
-	DeleteOAuth2Provider(context.Context, *DeleteOAuth2ProviderRequest) (*DeleteOAuth2ProviderResponse, error)
-	// CreateOAuth2Application under given OAuth2 Provider.
-	CreateOAuth2Application(context.Context, *CreateOAuth2ApplicationRequest) (*CreateOAuth2ApplicationResponse, error)
-	// ReadOAuth2Application by ID and returns all attributes and configuration.
-	ReadOAuth2Application(context.Context, *ReadOAuth2ApplicationRequest) (*ReadOAuth2ApplicationResponse, error)
-	// UpdateOAuth2Application by ID with optional etag, to prevent overwriting changes made by others in the same time.
-	UpdateOAuth2Application(context.Context, *UpdateOAuth2ApplicationRequest) (*UpdateOAuth2ApplicationResponse, error)
-	// DeleteOAuth2Application by ID with optional etag, to prevent deleting OAuth2 Application currently changed by others.
-	DeleteOAuth2Application(context.Context, *DeleteOAuth2ApplicationRequest) (*DeleteOAuth2ApplicationResponse, error)
 	// AssignPermissions to a digital twin.
 	AssignPermissions(context.Context, *AssignPermissionsRequest) (*AssignPermissionsResponse, error)
 	// RevokePermissions for a digital twin.
@@ -961,21 +737,6 @@ func (UnimplementedConfigManagementAPIServer) ReadServiceAccountCredential(conte
 func (UnimplementedConfigManagementAPIServer) DeleteServiceAccountCredential(context.Context, *DeleteServiceAccountCredentialRequest) (*DeleteServiceAccountCredentialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteServiceAccountCredential not implemented")
 }
-func (UnimplementedConfigManagementAPIServer) CreateTenant(context.Context, *CreateTenantRequest) (*CreateTenantResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateTenant not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) ReadTenant(context.Context, *ReadTenantRequest) (*ReadTenantResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadTenant not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) ListTenants(*ListTenantsRequest, ConfigManagementAPI_ListTenantsServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListTenants not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) UpdateTenant(context.Context, *UpdateTenantRequest) (*UpdateTenantResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateTenant not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) DeleteTenant(context.Context, *DeleteTenantRequest) (*DeleteTenantResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteTenant not implemented")
-}
 func (UnimplementedConfigManagementAPIServer) CreateConfigNode(context.Context, *CreateConfigNodeRequest) (*CreateConfigNodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateConfigNode not implemented")
 }
@@ -990,30 +751,6 @@ func (UnimplementedConfigManagementAPIServer) DeleteConfigNode(context.Context, 
 }
 func (UnimplementedConfigManagementAPIServer) ListConfigNodeVersions(context.Context, *ListConfigNodeVersionsRequest) (*ListConfigNodeVersionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListConfigNodeVersions not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) CreateOAuth2Provider(context.Context, *CreateOAuth2ProviderRequest) (*CreateOAuth2ProviderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateOAuth2Provider not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) ReadOAuth2Provider(context.Context, *ReadOAuth2ProviderRequest) (*ReadOAuth2ProviderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadOAuth2Provider not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) UpdateOAuth2Provider(context.Context, *UpdateOAuth2ProviderRequest) (*UpdateOAuth2ProviderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateOAuth2Provider not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) DeleteOAuth2Provider(context.Context, *DeleteOAuth2ProviderRequest) (*DeleteOAuth2ProviderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteOAuth2Provider not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) CreateOAuth2Application(context.Context, *CreateOAuth2ApplicationRequest) (*CreateOAuth2ApplicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateOAuth2Application not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) ReadOAuth2Application(context.Context, *ReadOAuth2ApplicationRequest) (*ReadOAuth2ApplicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadOAuth2Application not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) UpdateOAuth2Application(context.Context, *UpdateOAuth2ApplicationRequest) (*UpdateOAuth2ApplicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateOAuth2Application not implemented")
-}
-func (UnimplementedConfigManagementAPIServer) DeleteOAuth2Application(context.Context, *DeleteOAuth2ApplicationRequest) (*DeleteOAuth2ApplicationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteOAuth2Application not implemented")
 }
 func (UnimplementedConfigManagementAPIServer) AssignPermissions(context.Context, *AssignPermissionsRequest) (*AssignPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AssignPermissions not implemented")
@@ -1513,99 +1250,6 @@ func _ConfigManagementAPI_DeleteServiceAccountCredential_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ConfigManagementAPI_CreateTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateTenantRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).CreateTenant(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_CreateTenant_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).CreateTenant(ctx, req.(*CreateTenantRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_ReadTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadTenantRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).ReadTenant(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_ReadTenant_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).ReadTenant(ctx, req.(*ReadTenantRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_ListTenants_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListTenantsRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ConfigManagementAPIServer).ListTenants(m, &configManagementAPIListTenantsServer{ServerStream: stream})
-}
-
-type ConfigManagementAPI_ListTenantsServer interface {
-	Send(*ListTenantsResponse) error
-	grpc.ServerStream
-}
-
-type configManagementAPIListTenantsServer struct {
-	grpc.ServerStream
-}
-
-func (x *configManagementAPIListTenantsServer) Send(m *ListTenantsResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _ConfigManagementAPI_UpdateTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateTenantRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).UpdateTenant(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_UpdateTenant_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).UpdateTenant(ctx, req.(*UpdateTenantRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_DeleteTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteTenantRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).DeleteTenant(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_DeleteTenant_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).DeleteTenant(ctx, req.(*DeleteTenantRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ConfigManagementAPI_CreateConfigNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateConfigNodeRequest)
 	if err := dec(in); err != nil {
@@ -1692,150 +1336,6 @@ func _ConfigManagementAPI_ListConfigNodeVersions_Handler(srv interface{}, ctx co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ConfigManagementAPIServer).ListConfigNodeVersions(ctx, req.(*ListConfigNodeVersionsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_CreateOAuth2Provider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOAuth2ProviderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).CreateOAuth2Provider(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_CreateOAuth2Provider_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).CreateOAuth2Provider(ctx, req.(*CreateOAuth2ProviderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_ReadOAuth2Provider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadOAuth2ProviderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).ReadOAuth2Provider(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_ReadOAuth2Provider_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).ReadOAuth2Provider(ctx, req.(*ReadOAuth2ProviderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_UpdateOAuth2Provider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateOAuth2ProviderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).UpdateOAuth2Provider(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_UpdateOAuth2Provider_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).UpdateOAuth2Provider(ctx, req.(*UpdateOAuth2ProviderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_DeleteOAuth2Provider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteOAuth2ProviderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).DeleteOAuth2Provider(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_DeleteOAuth2Provider_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).DeleteOAuth2Provider(ctx, req.(*DeleteOAuth2ProviderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_CreateOAuth2Application_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOAuth2ApplicationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).CreateOAuth2Application(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_CreateOAuth2Application_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).CreateOAuth2Application(ctx, req.(*CreateOAuth2ApplicationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_ReadOAuth2Application_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadOAuth2ApplicationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).ReadOAuth2Application(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_ReadOAuth2Application_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).ReadOAuth2Application(ctx, req.(*ReadOAuth2ApplicationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_UpdateOAuth2Application_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateOAuth2ApplicationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).UpdateOAuth2Application(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_UpdateOAuth2Application_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).UpdateOAuth2Application(ctx, req.(*UpdateOAuth2ApplicationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ConfigManagementAPI_DeleteOAuth2Application_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteOAuth2ApplicationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ConfigManagementAPIServer).DeleteOAuth2Application(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ConfigManagementAPI_DeleteOAuth2Application_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigManagementAPIServer).DeleteOAuth2Application(ctx, req.(*DeleteOAuth2ApplicationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1994,22 +1494,6 @@ var ConfigManagementAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ConfigManagementAPI_DeleteServiceAccountCredential_Handler,
 		},
 		{
-			MethodName: "CreateTenant",
-			Handler:    _ConfigManagementAPI_CreateTenant_Handler,
-		},
-		{
-			MethodName: "ReadTenant",
-			Handler:    _ConfigManagementAPI_ReadTenant_Handler,
-		},
-		{
-			MethodName: "UpdateTenant",
-			Handler:    _ConfigManagementAPI_UpdateTenant_Handler,
-		},
-		{
-			MethodName: "DeleteTenant",
-			Handler:    _ConfigManagementAPI_DeleteTenant_Handler,
-		},
-		{
 			MethodName: "CreateConfigNode",
 			Handler:    _ConfigManagementAPI_CreateConfigNode_Handler,
 		},
@@ -2028,38 +1512,6 @@ var ConfigManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListConfigNodeVersions",
 			Handler:    _ConfigManagementAPI_ListConfigNodeVersions_Handler,
-		},
-		{
-			MethodName: "CreateOAuth2Provider",
-			Handler:    _ConfigManagementAPI_CreateOAuth2Provider_Handler,
-		},
-		{
-			MethodName: "ReadOAuth2Provider",
-			Handler:    _ConfigManagementAPI_ReadOAuth2Provider_Handler,
-		},
-		{
-			MethodName: "UpdateOAuth2Provider",
-			Handler:    _ConfigManagementAPI_UpdateOAuth2Provider_Handler,
-		},
-		{
-			MethodName: "DeleteOAuth2Provider",
-			Handler:    _ConfigManagementAPI_DeleteOAuth2Provider_Handler,
-		},
-		{
-			MethodName: "CreateOAuth2Application",
-			Handler:    _ConfigManagementAPI_CreateOAuth2Application_Handler,
-		},
-		{
-			MethodName: "ReadOAuth2Application",
-			Handler:    _ConfigManagementAPI_ReadOAuth2Application_Handler,
-		},
-		{
-			MethodName: "UpdateOAuth2Application",
-			Handler:    _ConfigManagementAPI_UpdateOAuth2Application_Handler,
-		},
-		{
-			MethodName: "DeleteOAuth2Application",
-			Handler:    _ConfigManagementAPI_DeleteOAuth2Application_Handler,
 		},
 		{
 			MethodName: "AssignPermissions",
@@ -2088,11 +1540,6 @@ var ConfigManagementAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ListApplicationAgents",
 			Handler:       _ConfigManagementAPI_ListApplicationAgents_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "ListTenants",
-			Handler:       _ConfigManagementAPI_ListTenants_Handler,
 			ServerStreams: true,
 		},
 	},
