@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.31.0](https://github.com/indykite/indykite-sdk-go/compare/v0.30.1...v0.31.0) (2024-07-01)
+
+
+### Features
+
+* update data access and proto files ([8934c2f](https://github.com/indykite/indykite-sdk-go/commit/8934c2f5427493a25be13ae2c9cb6589306f48b6))
+
 ## [0.30.1](https://github.com/indykite/indykite-sdk-go/compare/v0.30.0...v0.30.1) (2024-06-27)
 
 
