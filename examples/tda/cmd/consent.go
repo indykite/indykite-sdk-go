@@ -109,19 +109,15 @@ var dataAccess = &cobra.Command{
 		var consentId string
 		fmt.Scanln(&consentId)
 
-		fmt.Print("Enter User ID (identity node gid): ")
-		var userId string
-		fmt.Scanln(&userId)
+		fmt.Print("Enter Application ID (Application gid): ")
+		var applicationId string
+		fmt.Scanln(&applicationId)
 
 		resp, err := client.DataAccess(
 			context.Background(),
 			&tdapb.DataAccessRequest{
-				ConsentId: consentId,
-				User: &objects.User{
-					User: &objects.User_UserId{
-						UserId: userId,
-					},
-				},
+				ConsentId:     consentId,
+				ApplicationId: applicationId,
 			},
 			retry.WithMax(2),
 		)

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:generate mockgen -copyright_file ./doc/LICENSE -package config -destination ./test/config/v1beta1/config_management_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1 ConfigManagementAPIClient,ConfigManagementAPI_ListApplicationSpacesClient,ConfigManagementAPI_ListApplicationsClient,ConfigManagementAPI_ListTenantsClient,ConfigManagementAPI_ListApplicationAgentsClient
+//go:generate mockgen -copyright_file ./doc/LICENSE -package config -destination ./test/config/v1beta1/config_management_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1 ConfigManagementAPIClient,ConfigManagementAPI_ListApplicationSpacesClient,ConfigManagementAPI_ListApplicationsClient,ConfigManagementAPI_ListApplicationAgentsClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package ingest -destination ./test/ingest/v1beta3/ingest_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3 IngestAPIClient,IngestAPI_StreamRecordsClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package authorization -destination ./test/authorization/v1beta1/authorization_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1 AuthorizationAPIClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package knowledge -destination ./test/knowledge/v1beta2/identity_knowledge_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2 IdentityKnowledgeAPIClient

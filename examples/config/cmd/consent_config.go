@@ -35,8 +35,9 @@ var createConsentConfigCmd = &cobra.Command{
 	Short: "Create Consent configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ConsentConfiguration{
-			Purpose:        "Taking control",
-			DataPoints:     []string{"lastname", "firstname", "email"},
+			Purpose: "Taking control",
+			DataPoints: []string{"\"query\": \"\", \"returns\": [ { \"variable\": \"\", " +
+				"\"properties\": [\"name\", \"email\", \"location\"]}]"},
 			ApplicationId:  "gid:AAAABMoo7PXYfkwepSVjj4GTtfc",
 			ValidityPeriod: 86400,
 			RevokeAfterUse: true,
@@ -66,8 +67,9 @@ var updateConsentConfigCmd = &cobra.Command{
 	Short: "Update Consent configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ConsentConfiguration{
-			Purpose:        "Taking control upd",
-			DataPoints:     []string{"lastname", "firstname", "email"},
+			Purpose: "Taking control upd",
+			DataPoints: []string{"\"query\": \"\", \"returns\": [ { \"variable\": \"\", " +
+				"\"properties\": [\"name\", \"email\", \"location\"]}]"},
 			ApplicationId:  "gid:like-real-application-id",
 			ValidityPeriod: 86400,
 			RevokeAfterUse: true,
