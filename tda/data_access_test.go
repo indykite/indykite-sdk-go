@@ -23,7 +23,6 @@ import (
 
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
-	objects2 "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	tdapb "github.com/indykite/indykite-sdk-go/gen/indykite/tda/v1beta1"
 	"github.com/indykite/indykite-sdk-go/tda"
 	"github.com/indykite/indykite-sdk-go/test"
@@ -127,130 +126,6 @@ var _ = Describe("TDA", func() {
 			).Return(nil, status.Error(mockErrorCode, mockErrorMessage))
 
 			resp, err := tdaClient.GrantConsent(context.Background(), &mockGrantConsentRequest)
-			Ω(resp).To(BeNil())
-			Ω(err).To(HaveOccurred())
-			Ω(err).To(test.MatchStatusError(mockErrorCode, mockErrorMessage))
-		})
-	})
-
-	Describe("Trusted Consented Data", func() {
-		mockDataAccessRequest := tdapb.DataAccessRequest{
-			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
-			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
-			User: &knowledgeobjects.User{
-				User: &knowledgeobjects.User_UserId{
-					UserId: "gid:886hfic8fswlz3zjrc2e3nun9xs",
-				},
-			},
-		}
-
-		mockDataAccessRequest2 := tdapb.DataAccessRequest{
-			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
-			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
-			User: &knowledgeobjects.User{
-				User: &knowledgeobjects.User_ExternalId{
-					ExternalId: &knowledgeobjects.User_ExternalID{
-						Type:       "Person",
-						ExternalId: "HLEgiljrtoNEiyX",
-					},
-				},
-			},
-		}
-
-		mockDataAccessRequest3 := tdapb.DataAccessRequest{
-			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
-			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
-			User: &knowledgeobjects.User{
-				User: &knowledgeobjects.User_Property_{
-					Property: &knowledgeobjects.User_Property{
-						Type: "abc",
-						Value: &objects.Value{
-							Value: &objects.Value_StringValue{StringValue: "something"},
-						},
-					},
-				},
-			},
-		}
-
-		mockDataAccessRequest4 := tdapb.DataAccessRequest{
-			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
-			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
-		}
-
-		mockDataAccessResponse := tdapb.DataAccessResponse{
-			Persons: []*knowledgeobjects.Node{
-				{
-					Id:         "gid:xyz",
-					ExternalId: "0000",
-					Type:       "Person",
-					IsIdentity: true,
-				},
-			},
-			Nodes: []*tdapb.DataAccessResponse_Node{
-				{
-					PersonId: "gid:xyz",
-					Node: &knowledgeobjects.Node{
-						Id:         "gid:abc",
-						ExternalId: "1111",
-						Type:       "Car",
-						Properties: []*knowledgeobjects.Property{
-							{
-								Type: "PlateNumber",
-								Value: &objects2.Value{
-									Type: &objects2.Value_StringValue{
-										StringValue: "N4567",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		}
-
-		DescribeTable("DataAccessSuccess",
-			func(req *tdapb.DataAccessRequest, beResp *tdapb.DataAccessResponse) {
-				mockClient.EXPECT().DataAccess(
-					gomock.Any(),
-					test.WrapMatcher(test.EqualProto(req)),
-					gomock.Any(),
-				).Return(beResp, nil)
-
-				resp, err := tdaClient.DataAccess(context.Background(), req)
-				Ω(resp).ToNot(BeNil())
-				Ω(err).To(Succeed())
-				Ω(resp).To(test.EqualProto(beResp))
-			},
-			Entry(
-				"data access with user id and returns response",
-				&mockDataAccessRequest,
-				&mockDataAccessResponse,
-			),
-			Entry(
-				"data access with external id and returns response",
-				&mockDataAccessRequest2,
-				&mockDataAccessResponse,
-			),
-			Entry(
-				"data access with property and returns response",
-				&mockDataAccessRequest3,
-				&mockDataAccessResponse,
-			),
-			Entry(
-				"data access without user and returns response",
-				&mockDataAccessRequest4,
-				&mockDataAccessResponse,
-			),
-		)
-
-		It("handles and returns error", func() {
-			mockClient.EXPECT().DataAccess(
-				gomock.Any(),
-				gomock.Eq(&mockDataAccessRequest),
-				gomock.Any(),
-			).Return(nil, status.Error(mockErrorCode, mockErrorMessage))
-
-			resp, err := tdaClient.DataAccess(context.Background(), &mockDataAccessRequest)
 			Ω(resp).To(BeNil())
 			Ω(err).To(HaveOccurred())
 			Ω(err).To(test.MatchStatusError(mockErrorCode, mockErrorMessage))

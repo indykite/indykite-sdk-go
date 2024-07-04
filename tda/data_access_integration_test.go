@@ -55,31 +55,6 @@ var _ = Describe("TDA", func() {
 				"PropertiesGrantedCount": Equal(uint64(1)),
 			})))
 
-			resp3, err := tdaClient.DataAccess(
-				context.Background(),
-				&tdapb.DataAccessRequest{
-					ConsentId:     integration.ConsentConfig2,
-					ApplicationId: integration.Application,
-					User: &knowledgeobjects.User{
-						User: &knowledgeobjects.User_UserId{
-							UserId: integration.DigitalTwin4,
-						},
-					},
-				},
-				retry.WithMax(5),
-			)
-			Expect(err).To(Succeed())
-			Expect(resp3).ToNot(BeNil())
-			result3 := resp3.Persons[0]
-			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"Id": Equal(integration.DigitalTwin4),
-			})))
-			result4 := resp3.Nodes[0]
-			Expect(result4).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"PersonId": Equal(integration.DigitalTwin4),
-				"Node":     HaveField("Id", Equal(integration.Car1)),
-			})))
-
 			tdaRevokeRequest := tdapb.RevokeConsentRequest{
 				User: &knowledgeobjects.User{
 					User: &knowledgeobjects.User_UserId{
@@ -122,34 +97,6 @@ var _ = Describe("TDA", func() {
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"PropertiesGrantedCount": Equal(uint64(1)),
-			})))
-
-			resp3, err := tdaClient.DataAccess(
-				context.Background(),
-				&tdapb.DataAccessRequest{
-					ConsentId:     integration.ConsentConfig2,
-					ApplicationId: integration.Application,
-					User: &knowledgeobjects.User{
-						User: &knowledgeobjects.User_ExternalId{
-							ExternalId: &knowledgeobjects.User_ExternalID{
-								Type:       "Person",
-								ExternalId: integration.SubjectDT4,
-							},
-						},
-					},
-				},
-				retry.WithMax(5),
-			)
-			Expect(err).To(Succeed())
-			Expect(resp3).ToNot(BeNil())
-			result3 := resp3.Persons[0]
-			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"Id": Equal(integration.DigitalTwin4),
-			})))
-			result4 := resp3.Nodes[0]
-			Expect(result4).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"PersonId": Equal(integration.DigitalTwin4),
-				"Node":     HaveField("Id", Equal(integration.Car1)),
 			})))
 
 			tdaRevokeRequest := tdapb.RevokeConsentRequest{
