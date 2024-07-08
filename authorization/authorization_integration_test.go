@@ -66,7 +66,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource1
@@ -120,7 +120,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin2,
+				Id: integration.Node2,
 			}
 
 			resources := integration.Resource9
@@ -183,7 +183,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource1
@@ -237,7 +237,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource1
@@ -290,7 +290,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource2
@@ -324,7 +324,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwinBad,
+				Id: integration.NodeBad,
 			}
 
 			resources := integration.Resource2
@@ -357,7 +357,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwinNotInDB,
+				Id: integration.NodeNotInDB,
 			}
 
 			resources := integration.Resource1
@@ -410,7 +410,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource3
@@ -464,7 +464,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource4
@@ -517,7 +517,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource7
@@ -571,7 +571,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource6
@@ -624,7 +624,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resources := integration.Resource4
@@ -925,7 +925,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resourcesTypes := integration.ResourceType1
@@ -990,7 +990,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resourcesTypes := integration.ResourceType2
@@ -1024,7 +1024,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwinBad,
+				Id: integration.NodeBad,
 			}
 
 			resourcesTypes := integration.ResourceType1
@@ -1059,7 +1059,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwinNotInDB,
+				Id: integration.NodeNotInDB,
 			}
 
 			resourcesTypes := integration.ResourceType1
@@ -1109,7 +1109,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 
 			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.DigitalTwin1,
+				Id: integration.Node1,
 			}
 
 			resourcesTypes := integration.ResourceType3

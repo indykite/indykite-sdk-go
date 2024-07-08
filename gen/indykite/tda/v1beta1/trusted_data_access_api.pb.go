@@ -216,8 +216,7 @@ type DataAccessResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Persons []*v1beta1.Node            `protobuf:"bytes,1,rep,name=persons,proto3" json:"persons,omitempty"`
-	Nodes   []*DataAccessResponse_Node `protobuf:"bytes,2,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	Nodes []*TrustedDataNode `protobuf:"bytes,1,rep,name=nodes,proto3" json:"nodes,omitempty"`
 }
 
 func (x *DataAccessResponse) Reset() {
@@ -252,14 +251,7 @@ func (*DataAccessResponse) Descriptor() ([]byte, []int) {
 	return file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *DataAccessResponse) GetPersons() []*v1beta1.Node {
-	if x != nil {
-		return x.Persons
-	}
-	return nil
-}
-
-func (x *DataAccessResponse) GetNodes() []*DataAccessResponse_Node {
+func (x *DataAccessResponse) GetNodes() []*TrustedDataNode {
 	if x != nil {
 		return x.Nodes
 	}
@@ -476,61 +468,6 @@ func (*RevokeConsentResponse) Descriptor() ([]byte, []int) {
 	return file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDescGZIP(), []int{7}
 }
 
-type DataAccessResponse_Node struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	PersonId string        `protobuf:"bytes,1,opt,name=person_id,json=personId,proto3" json:"person_id,omitempty"`
-	Node     *v1beta1.Node `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
-}
-
-func (x *DataAccessResponse_Node) Reset() {
-	*x = DataAccessResponse_Node{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_tda_v1beta1_trusted_data_access_api_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DataAccessResponse_Node) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DataAccessResponse_Node) ProtoMessage() {}
-
-func (x *DataAccessResponse_Node) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_tda_v1beta1_trusted_data_access_api_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DataAccessResponse_Node.ProtoReflect.Descriptor instead.
-func (*DataAccessResponse_Node) Descriptor() ([]byte, []int) {
-	return file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDescGZIP(), []int{3, 0}
-}
-
-func (x *DataAccessResponse_Node) GetPersonId() string {
-	if x != nil {
-		return x.PersonId
-	}
-	return ""
-}
-
-func (x *DataAccessResponse_Node) GetNode() *v1beta1.Node {
-	if x != nil {
-		return x.Node
-	}
-	return nil
-}
-
 var File_indykite_tda_v1beta1_trusted_data_access_api_proto protoreflect.FileDescriptor
 
 var file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDesc = []byte{
@@ -576,23 +513,12 @@ var file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDesc = []byte{
 	0x28, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e, 0x6f, 0x77, 0x6c,
 	0x65, 0x64, 0x67, 0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62,
 	0x65, 0x74, 0x61, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01,
-	0x02, 0x10, 0x00, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x80, 0x02, 0x0a, 0x12, 0x44, 0x61,
-	0x74, 0x61, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x42, 0x0a, 0x07, 0x70, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x28, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e, 0x6f,
-	0x77, 0x6c, 0x65, 0x64, 0x67, 0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x07, 0x70, 0x65, 0x72,
-	0x73, 0x6f, 0x6e, 0x73, 0x12, 0x43, 0x0a, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x18, 0x02, 0x20,
-	0x03, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x74,
-	0x64, 0x61, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x41,
-	0x63, 0x63, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x4e, 0x6f,
-	0x64, 0x65, 0x52, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x1a, 0x61, 0x0a, 0x04, 0x4e, 0x6f, 0x64,
-	0x65, 0x12, 0x1b, 0x0a, 0x09, 0x70, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x3c,
-	0x0a, 0x04, 0x6e, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x69,
-	0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67,
-	0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x04, 0x6e, 0x6f, 0x64, 0x65, 0x22, 0xcb, 0x01, 0x0a,
+	0x02, 0x10, 0x00, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x51, 0x0a, 0x12, 0x44, 0x61, 0x74,
+	0x61, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x3b, 0x0a, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x25,
+	0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x74, 0x64, 0x61, 0x2e, 0x76, 0x31,
+	0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x54, 0x72, 0x75, 0x73, 0x74, 0x65, 0x64, 0x44, 0x61, 0x74,
+	0x61, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x05, 0x6e, 0x6f, 0x64, 0x65, 0x73, 0x22, 0xcb, 0x01, 0x0a,
 	0x13, 0x47, 0x72, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x12, 0x46, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x28, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e,
@@ -680,43 +606,40 @@ func file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDescGZIP() []byt
 	return file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDescData
 }
 
-var file_indykite_tda_v1beta1_trusted_data_access_api_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_indykite_tda_v1beta1_trusted_data_access_api_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_indykite_tda_v1beta1_trusted_data_access_api_proto_goTypes = []any{
-	(*ListConsentsRequest)(nil),     // 0: indykite.tda.v1beta1.ListConsentsRequest
-	(*ListConsentsResponse)(nil),    // 1: indykite.tda.v1beta1.ListConsentsResponse
-	(*DataAccessRequest)(nil),       // 2: indykite.tda.v1beta1.DataAccessRequest
-	(*DataAccessResponse)(nil),      // 3: indykite.tda.v1beta1.DataAccessResponse
-	(*GrantConsentRequest)(nil),     // 4: indykite.tda.v1beta1.GrantConsentRequest
-	(*GrantConsentResponse)(nil),    // 5: indykite.tda.v1beta1.GrantConsentResponse
-	(*RevokeConsentRequest)(nil),    // 6: indykite.tda.v1beta1.RevokeConsentRequest
-	(*RevokeConsentResponse)(nil),   // 7: indykite.tda.v1beta1.RevokeConsentResponse
-	(*DataAccessResponse_Node)(nil), // 8: indykite.tda.v1beta1.DataAccessResponse.Node
-	(*v1beta1.User)(nil),            // 9: indykite.knowledge.objects.v1beta1.User
-	(*Consent)(nil),                 // 10: indykite.tda.v1beta1.Consent
-	(*v1beta1.Node)(nil),            // 11: indykite.knowledge.objects.v1beta1.Node
+	(*ListConsentsRequest)(nil),   // 0: indykite.tda.v1beta1.ListConsentsRequest
+	(*ListConsentsResponse)(nil),  // 1: indykite.tda.v1beta1.ListConsentsResponse
+	(*DataAccessRequest)(nil),     // 2: indykite.tda.v1beta1.DataAccessRequest
+	(*DataAccessResponse)(nil),    // 3: indykite.tda.v1beta1.DataAccessResponse
+	(*GrantConsentRequest)(nil),   // 4: indykite.tda.v1beta1.GrantConsentRequest
+	(*GrantConsentResponse)(nil),  // 5: indykite.tda.v1beta1.GrantConsentResponse
+	(*RevokeConsentRequest)(nil),  // 6: indykite.tda.v1beta1.RevokeConsentRequest
+	(*RevokeConsentResponse)(nil), // 7: indykite.tda.v1beta1.RevokeConsentResponse
+	(*v1beta1.User)(nil),          // 8: indykite.knowledge.objects.v1beta1.User
+	(*Consent)(nil),               // 9: indykite.tda.v1beta1.Consent
+	(*TrustedDataNode)(nil),       // 10: indykite.tda.v1beta1.TrustedDataNode
 }
 var file_indykite_tda_v1beta1_trusted_data_access_api_proto_depIdxs = []int32{
-	9,  // 0: indykite.tda.v1beta1.ListConsentsRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
-	10, // 1: indykite.tda.v1beta1.ListConsentsResponse.consents:type_name -> indykite.tda.v1beta1.Consent
-	9,  // 2: indykite.tda.v1beta1.DataAccessRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
-	11, // 3: indykite.tda.v1beta1.DataAccessResponse.persons:type_name -> indykite.knowledge.objects.v1beta1.Node
-	8,  // 4: indykite.tda.v1beta1.DataAccessResponse.nodes:type_name -> indykite.tda.v1beta1.DataAccessResponse.Node
-	9,  // 5: indykite.tda.v1beta1.GrantConsentRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
-	9,  // 6: indykite.tda.v1beta1.RevokeConsentRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
-	11, // 7: indykite.tda.v1beta1.DataAccessResponse.Node.node:type_name -> indykite.knowledge.objects.v1beta1.Node
-	2,  // 8: indykite.tda.v1beta1.TrustedDataAccessAPI.DataAccess:input_type -> indykite.tda.v1beta1.DataAccessRequest
-	4,  // 9: indykite.tda.v1beta1.TrustedDataAccessAPI.GrantConsent:input_type -> indykite.tda.v1beta1.GrantConsentRequest
-	6,  // 10: indykite.tda.v1beta1.TrustedDataAccessAPI.RevokeConsent:input_type -> indykite.tda.v1beta1.RevokeConsentRequest
-	0,  // 11: indykite.tda.v1beta1.TrustedDataAccessAPI.ListConsents:input_type -> indykite.tda.v1beta1.ListConsentsRequest
-	3,  // 12: indykite.tda.v1beta1.TrustedDataAccessAPI.DataAccess:output_type -> indykite.tda.v1beta1.DataAccessResponse
-	5,  // 13: indykite.tda.v1beta1.TrustedDataAccessAPI.GrantConsent:output_type -> indykite.tda.v1beta1.GrantConsentResponse
-	7,  // 14: indykite.tda.v1beta1.TrustedDataAccessAPI.RevokeConsent:output_type -> indykite.tda.v1beta1.RevokeConsentResponse
-	1,  // 15: indykite.tda.v1beta1.TrustedDataAccessAPI.ListConsents:output_type -> indykite.tda.v1beta1.ListConsentsResponse
-	12, // [12:16] is the sub-list for method output_type
-	8,  // [8:12] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	8,  // 0: indykite.tda.v1beta1.ListConsentsRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
+	9,  // 1: indykite.tda.v1beta1.ListConsentsResponse.consents:type_name -> indykite.tda.v1beta1.Consent
+	8,  // 2: indykite.tda.v1beta1.DataAccessRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
+	10, // 3: indykite.tda.v1beta1.DataAccessResponse.nodes:type_name -> indykite.tda.v1beta1.TrustedDataNode
+	8,  // 4: indykite.tda.v1beta1.GrantConsentRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
+	8,  // 5: indykite.tda.v1beta1.RevokeConsentRequest.user:type_name -> indykite.knowledge.objects.v1beta1.User
+	2,  // 6: indykite.tda.v1beta1.TrustedDataAccessAPI.DataAccess:input_type -> indykite.tda.v1beta1.DataAccessRequest
+	4,  // 7: indykite.tda.v1beta1.TrustedDataAccessAPI.GrantConsent:input_type -> indykite.tda.v1beta1.GrantConsentRequest
+	6,  // 8: indykite.tda.v1beta1.TrustedDataAccessAPI.RevokeConsent:input_type -> indykite.tda.v1beta1.RevokeConsentRequest
+	0,  // 9: indykite.tda.v1beta1.TrustedDataAccessAPI.ListConsents:input_type -> indykite.tda.v1beta1.ListConsentsRequest
+	3,  // 10: indykite.tda.v1beta1.TrustedDataAccessAPI.DataAccess:output_type -> indykite.tda.v1beta1.DataAccessResponse
+	5,  // 11: indykite.tda.v1beta1.TrustedDataAccessAPI.GrantConsent:output_type -> indykite.tda.v1beta1.GrantConsentResponse
+	7,  // 12: indykite.tda.v1beta1.TrustedDataAccessAPI.RevokeConsent:output_type -> indykite.tda.v1beta1.RevokeConsentResponse
+	1,  // 13: indykite.tda.v1beta1.TrustedDataAccessAPI.ListConsents:output_type -> indykite.tda.v1beta1.ListConsentsResponse
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_indykite_tda_v1beta1_trusted_data_access_api_proto_init() }
@@ -822,18 +745,6 @@ func file_indykite_tda_v1beta1_trusted_data_access_api_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_tda_v1beta1_trusted_data_access_api_proto_msgTypes[8].Exporter = func(v any, i int) any {
-			switch v := v.(*DataAccessResponse_Node); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -841,7 +752,7 @@ func file_indykite_tda_v1beta1_trusted_data_access_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_tda_v1beta1_trusted_data_access_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

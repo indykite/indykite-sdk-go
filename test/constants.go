@@ -151,12 +151,13 @@ var (
 		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
 	}
 
-	DigitalTwinBad     = "id"
-	DigitalTwinNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
-	DigitalTwin1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
-	DigitalTwin2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
-	DigitalTwin3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
-	DigitalTwin4       = "gid:AAAAHC_gEo51KUkbvMdGenKHc6Q"
+	NodeBad     = "id"
+	NodeNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
+	Node1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
+	Node2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
+	Node3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
+	Node4       = "gid:AAAAHC_gEo51KUkbvMdGenKHc6Q"
+	Node5       = "gid:AAAAHKOnVUXFSEe5gSqzl0fOHoU"
 
 	EmailBad   = "test@example.com"
 	EmailGood  = "biche@yahoo.uk"
@@ -171,15 +172,19 @@ var (
 	Asset5  = "dLZVTSllFCdZfXC"
 	Car1    = "gid:AAAAHGFc4HM1TUg8oRiWIsQsVz8"
 	Car1Ext = "9658744"
+	Car2    = "gid:AAAAHFLO98h-sEakqs0Qnvpkqq8"
+	Car2Ext = "963258"
 
 	Subject1   = "dilZWYdFcmXiojC"
 	Subject2   = "fVcaUxJqmOkyOTX"
 	Subject3   = "lSPmCXIPRXppszf"
 	Subject4   = "NACTFFKUCcceDIz"
 	SubjectDT4 = "852147963"
+	SubjectDT5 = "741258"
 
 	ConsentConfigID = "gid:AAAAHfho2CFLq0rWpmSapJj0JHY"
 	ConsentConfig2  = "gid:AAAAHY0vIMaQx0J9mznHhmarV0M"
+	ConsentConfig3  = "gid:AAAAHcghAxMMo0vBjxi4IpZgsjQ"
 	Application     = "gid:AAAABMoo7PXYfkwepSVjj4GTtfc"
 )
 

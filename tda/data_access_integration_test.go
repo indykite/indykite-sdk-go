@@ -42,7 +42,7 @@ var _ = Describe("TDA", func() {
 				&tdapb.GrantConsentRequest{
 					User: &knowledgeobjects.User{
 						User: &knowledgeobjects.User_UserId{
-							UserId: integration.DigitalTwin4,
+							UserId: integration.Node4,
 						},
 					},
 					ConsentId:      integration.ConsentConfig2,
@@ -55,13 +55,36 @@ var _ = Describe("TDA", func() {
 				"PropertiesGrantedCount": Equal(uint64(1)),
 			})))
 
+			resp3, err := tdaClient.DataAccess(
+				context.Background(),
+				&tdapb.DataAccessRequest{
+					ConsentId:     integration.ConsentConfig2,
+					ApplicationId: integration.Application,
+					User: &knowledgeobjects.User{
+						User: &knowledgeobjects.User_UserId{
+							UserId: integration.Node4,
+						},
+					},
+				},
+				retry.WithMax(5),
+			)
+			Expect(err).To(Succeed())
+			Expect(resp3).ToNot(BeNil())
+			result3 := resp3.Nodes[0]
+			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id": Equal(integration.Node4),
+				"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal(integration.Car1),
+				}))),
+			})))
+
 			tdaRevokeRequest := tdapb.RevokeConsentRequest{
 				User: &knowledgeobjects.User{
 					User: &knowledgeobjects.User_UserId{
-						UserId: integration.DigitalTwin4,
+						UserId: integration.Node4,
 					},
 				},
-				ConsentId: integration.ConsentConfigID,
+				ConsentId: integration.ConsentConfig2,
 			}
 			resp2, err := tdaClient.RevokeConsent(
 				context.Background(),
@@ -70,6 +93,23 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).ToNot(BeNil())
+
+			resp4, err := tdaClient.DataAccess(
+				context.Background(),
+				&tdapb.DataAccessRequest{
+					ConsentId:     integration.ConsentConfig2,
+					ApplicationId: integration.Application,
+					User: &knowledgeobjects.User{
+						User: &knowledgeobjects.User_UserId{
+							UserId: integration.Node4,
+						},
+					},
+				},
+				retry.WithMax(5),
+			)
+			Expect(err).To(Succeed())
+			Expect(resp4).ToNot(BeNil())
+			Expect(resp4.Nodes).To(BeNil())
 		})
 
 		It("GrantConsentByExternalIdSuccess", func() {
@@ -99,6 +139,32 @@ var _ = Describe("TDA", func() {
 				"PropertiesGrantedCount": Equal(uint64(1)),
 			})))
 
+			resp3, err := tdaClient.DataAccess(
+				context.Background(),
+				&tdapb.DataAccessRequest{
+					ConsentId:     integration.ConsentConfig2,
+					ApplicationId: integration.Application,
+					User: &knowledgeobjects.User{
+						User: &knowledgeobjects.User_ExternalId{
+							ExternalId: &knowledgeobjects.User_ExternalID{
+								Type:       "Person",
+								ExternalId: integration.SubjectDT4,
+							},
+						},
+					},
+				},
+				retry.WithMax(5),
+			)
+			Expect(err).To(Succeed())
+			Expect(resp3).ToNot(BeNil())
+			result3 := resp3.Nodes[0]
+			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id": Equal(integration.Node4),
+				"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal(integration.Car1),
+				}))),
+			})))
+
 			tdaRevokeRequest := tdapb.RevokeConsentRequest{
 				User: &knowledgeobjects.User{
 					User: &knowledgeobjects.User_ExternalId{
@@ -117,6 +183,198 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp2).ToNot(BeNil())
+
+			resp4, err := tdaClient.DataAccess(
+				context.Background(),
+				&tdapb.DataAccessRequest{
+					ConsentId:     integration.ConsentConfig2,
+					ApplicationId: integration.Application,
+					User: &knowledgeobjects.User{
+						User: &knowledgeobjects.User_ExternalId{
+							ExternalId: &knowledgeobjects.User_ExternalID{
+								Type:       "Person",
+								ExternalId: integration.SubjectDT4,
+							},
+						},
+					},
+				},
+				retry.WithMax(5),
+			)
+			Expect(err).To(Succeed())
+			Expect(resp4).ToNot(BeNil())
+			Expect(resp4.Nodes).To(BeNil())
 		})
+	})
+	It("GrantConsentCreatedInHubByIdSuccess", func() {
+		var err error
+		tdaClient, err := integration.InitConfigTda()
+		Expect(err).To(Succeed())
+
+		resp, err := tdaClient.GrantConsent(
+			context.Background(),
+			&tdapb.GrantConsentRequest{
+				User: &knowledgeobjects.User{
+					User: &knowledgeobjects.User_UserId{
+						UserId: integration.Node5,
+					},
+				},
+				ConsentId:      integration.ConsentConfig3,
+				ValidityPeriod: uint64(86400),
+			},
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+			"PropertiesGrantedCount": Equal(uint64(2)),
+		})))
+
+		resp3, err := tdaClient.DataAccess(
+			context.Background(),
+			&tdapb.DataAccessRequest{
+				ConsentId:     integration.ConsentConfig3,
+				ApplicationId: integration.Application,
+				User: &knowledgeobjects.User{
+					User: &knowledgeobjects.User_UserId{
+						UserId: integration.Node5,
+					},
+				},
+			},
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp3).ToNot(BeNil())
+		result3 := resp3.Nodes[0]
+		Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
+			"Id": Equal(integration.Node5),
+			"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id": Equal(integration.Car2),
+			}))),
+		})))
+
+		tdaRevokeRequest := tdapb.RevokeConsentRequest{
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_UserId{
+					UserId: integration.Node5,
+				},
+			},
+			ConsentId: integration.ConsentConfig3,
+		}
+		resp2, err := tdaClient.RevokeConsent(
+			context.Background(),
+			&tdaRevokeRequest,
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp2).ToNot(BeNil())
+
+		resp4, err := tdaClient.DataAccess(
+			context.Background(),
+			&tdapb.DataAccessRequest{
+				ConsentId:     integration.ConsentConfig3,
+				ApplicationId: integration.Application,
+				User: &knowledgeobjects.User{
+					User: &knowledgeobjects.User_UserId{
+						UserId: integration.Node5,
+					},
+				},
+			},
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp4).ToNot(BeNil())
+		Expect(resp4.Nodes).To(BeNil())
+	})
+
+	It("GrantConsentCreatedInHubByExternalIdSuccess", func() {
+		var err error
+		tdaClient, err := integration.InitConfigTda()
+		Expect(err).To(Succeed())
+
+		tdaRequest := tdapb.GrantConsentRequest{
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ExternalId{
+					ExternalId: &knowledgeobjects.User_ExternalID{
+						Type:       "Person",
+						ExternalId: integration.SubjectDT5,
+					},
+				},
+			},
+			ConsentId:      integration.ConsentConfig3,
+			ValidityPeriod: uint64(86400),
+		}
+		resp, err := tdaClient.GrantConsent(
+			context.Background(),
+			&tdaRequest,
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+			"PropertiesGrantedCount": Equal(uint64(2)),
+		})))
+
+		resp3, err := tdaClient.DataAccess(
+			context.Background(),
+			&tdapb.DataAccessRequest{
+				ConsentId:     integration.ConsentConfig3,
+				ApplicationId: integration.Application,
+				User: &knowledgeobjects.User{
+					User: &knowledgeobjects.User_ExternalId{
+						ExternalId: &knowledgeobjects.User_ExternalID{
+							Type:       "Person",
+							ExternalId: integration.SubjectDT5,
+						},
+					},
+				},
+			},
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp3).ToNot(BeNil())
+		result3 := resp3.Nodes[0]
+		Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
+			"Id": Equal(integration.Node5),
+			"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id": Equal(integration.Car2),
+			}))),
+		})))
+
+		tdaRevokeRequest := tdapb.RevokeConsentRequest{
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ExternalId{
+					ExternalId: &knowledgeobjects.User_ExternalID{
+						Type:       "Person",
+						ExternalId: integration.SubjectDT5,
+					},
+				},
+			},
+			ConsentId: integration.ConsentConfig3,
+		}
+		resp2, err := tdaClient.RevokeConsent(
+			context.Background(),
+			&tdaRevokeRequest,
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp2).ToNot(BeNil())
+
+		resp4, err := tdaClient.DataAccess(
+			context.Background(),
+			&tdapb.DataAccessRequest{
+				ConsentId:     integration.ConsentConfig3,
+				ApplicationId: integration.Application,
+				User: &knowledgeobjects.User{
+					User: &knowledgeobjects.User_ExternalId{
+						ExternalId: &knowledgeobjects.User_ExternalID{
+							Type:       "Person",
+							ExternalId: integration.SubjectDT5,
+						},
+					},
+				},
+			},
+			retry.WithMax(5),
+		)
+		Expect(err).To(Succeed())
+		Expect(resp4).ToNot(BeNil())
+		Expect(resp4.Nodes).To(BeNil())
 	})
 })
