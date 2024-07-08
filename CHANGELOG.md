@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.32.0](https://github.com/indykite/indykite-sdk-go/compare/v0.31.0...v0.32.0) (2024-07-08)
+
+
+### Features
+
+* put tda tests back ([72c360b](https://github.com/indykite/indykite-sdk-go/commit/72c360b901f9e9655d3565a9fa2c0a84f72a1a36))
+* remove tda tests temporarily ([5df33ea](https://github.com/indykite/indykite-sdk-go/commit/5df33ea3f2756841449b2496cf49fc22a1384402))
+
 ## [0.31.0](https://github.com/indykite/indykite-sdk-go/compare/v0.30.1...v0.31.0) (2024-07-01)
 
 
