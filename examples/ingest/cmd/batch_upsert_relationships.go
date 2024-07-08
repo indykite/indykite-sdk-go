@@ -37,11 +37,11 @@ var batchUpsertRelationshipsCmd = &cobra.Command{
 
 		relationship1 := &ingestpb.Relationship{
 			Source: &ingestpb.NodeMatch{
-				ExternalId: "852147963",
+				ExternalId: "741258",
 				Type:       "Person",
 			},
 			Target: &ingestpb.NodeMatch{
-				ExternalId: "9658744",
+				ExternalId: "963258",
 				Type:       "Car",
 			},
 			Type: "OWNS",
