@@ -718,6 +718,8 @@ func (m *ApplicationSpace) validate(all bool) error {
 
 	// no validation rules for IkgStatus
 
+	// no validation rules for Region
+
 	if len(errors) > 0 {
 		return ApplicationSpaceMultiError(errors)
 	}
@@ -3775,6 +3777,8 @@ func (m *ConsentConfiguration) validate(all bool) error {
 	}
 
 	// no validation rules for RevokeAfterUse
+
+	// no validation rules for TokenStatus
 
 	if len(errors) > 0 {
 		return ConsentConfigurationMultiError(errors)

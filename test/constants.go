@@ -186,6 +186,9 @@ var (
 	ConsentConfig2  = "gid:AAAAHY0vIMaQx0J9mznHhmarV0M"
 	ConsentConfig3  = "gid:AAAAHcghAxMMo0vBjxi4IpZgsjQ"
 	Application     = "gid:AAAABMoo7PXYfkwepSVjj4GTtfc"
+	ConsentInvalid  = "gid:AAAAHQlNWOqosEpOuI7iyJ46Lhc"
+	ConsentEnforce  = "gid:AAAAHZqv2OcINERSmJxWdp_Zdx4"
+	ConsentAllow    = "gid:AAAAHf5ZnwufDUK-tnCjoSsw-cQ"
 )
 
 func GenerateRandomString(length int) string {

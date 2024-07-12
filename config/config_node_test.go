@@ -143,6 +143,7 @@ var _ = Describe("ConfigNode", func() {
 							ApplicationId:  "gid:like-real-application-id",
 							ValidityPeriod: uint64(86400),
 							RevokeAfterUse: true,
+							TokenStatus:    3,
 						},
 					},
 				},
@@ -283,6 +284,7 @@ var _ = Describe("ConfigNode", func() {
 				ApplicationId:  "gid:like-real-application-id",
 				ValidityPeriod: uint64(86400),
 				RevokeAfterUse: true,
+				TokenStatus:    3,
 			}
 
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
@@ -471,6 +473,7 @@ var _ = Describe("ConfigNode", func() {
 				ApplicationId:  "gid:like-real-application-id",
 				ValidityPeriod: uint64(86400),
 				RevokeAfterUse: true,
+				TokenStatus:    3,
 			}
 
 			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
