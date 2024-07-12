@@ -497,6 +497,32 @@ func (m *CreateApplicationSpaceRequest) validate(all bool) error {
 
 	}
 
+	if m.GetRegion() != "" {
+
+		if _, ok := _CreateApplicationSpaceRequest_Region_InLookup[m.GetRegion()]; !ok {
+			err := CreateApplicationSpaceRequestValidationError{
+				field:  "Region",
+				reason: "value must be in list [europe-west1 us-east1]",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if l := utf8.RuneCountInString(m.GetRegion()); l < 2 || l > 63 {
+			err := CreateApplicationSpaceRequestValidationError{
+				field:  "Region",
+				reason: "value length must be between 2 and 63 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return CreateApplicationSpaceRequestMultiError(errors)
 	}
@@ -583,6 +609,11 @@ var _CreateApplicationSpaceRequest_CustomerId_Pattern = regexp.MustCompile("^[A-
 var _CreateApplicationSpaceRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
 var _CreateApplicationSpaceRequest_Bookmarks_Pattern = regexp.MustCompile("^[a-zA-Z0-9_-]{40,}$")
+
+var _CreateApplicationSpaceRequest_Region_InLookup = map[string]struct{}{
+	"europe-west1": {},
+	"us-east1":     {},
+}
 
 // Validate checks the field values on CreateApplicationSpaceResponse with the
 // rules defined in the proto definition for this message. If any rules are

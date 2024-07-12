@@ -89,6 +89,17 @@ var _ = Describe("TDA", func() {
 			ConsentId:      "gid:aof7m7kl966tmzct2kc75kxeisl",
 			ValidityPeriod: 86400,
 		}
+
+		mockGrantConsentRequest4 := tdapb.GrantConsentRequest{
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ThirdPartyToken{
+					ThirdPartyToken: "eyJhbGciOiJFUzI1NiIsImtpZCI6IlVzTjNV",
+				},
+			},
+			ConsentId:      "gid:aof7m7kl966tmzct2kc75kxeisl",
+			ValidityPeriod: 86400,
+		}
+
 		DescribeTable("GrantConsentSuccess",
 			func(req *tdapb.GrantConsentRequest, beResp *tdapb.GrantConsentResponse) {
 				mockClient.EXPECT().GrantConsent(
@@ -115,6 +126,11 @@ var _ = Describe("TDA", func() {
 			Entry(
 				"grants consent with property and returns response",
 				&mockGrantConsentRequest3,
+				&tdapb.GrantConsentResponse{},
+			),
+			Entry(
+				"grants consent with token and returns response",
+				&mockGrantConsentRequest4,
 				&tdapb.GrantConsentResponse{},
 			),
 		)
@@ -175,6 +191,16 @@ var _ = Describe("TDA", func() {
 		mockDataAccessRequest4 := tdapb.DataAccessRequest{
 			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
 			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
+		}
+
+		mockDataAccessRequest5 := tdapb.DataAccessRequest{
+			ConsentId:     "gid:aof7m7kl966tmzct2kc75kxeisl",
+			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ThirdPartyToken{
+					ThirdPartyToken: "eyJhbGciOiJFUzI1NiIsImtpZCI6IlVzTjNV",
+				},
+			},
 		}
 
 		mockDataAccessResponse := tdapb.DataAccessResponse{
@@ -238,6 +264,11 @@ var _ = Describe("TDA", func() {
 				&mockDataAccessRequest4,
 				&mockDataAccessResponse,
 			),
+			Entry(
+				"data access with token and returns response",
+				&mockDataAccessRequest5,
+				&mockDataAccessResponse,
+			),
 		)
 
 		It("handles and returns error", func() {
@@ -290,6 +321,15 @@ var _ = Describe("TDA", func() {
 			ConsentId: "gid:aof7m7kl966tmzct2kc75kxeisl",
 		}
 
+		mockRevokeConsentRequest4 := tdapb.RevokeConsentRequest{
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ThirdPartyToken{
+					ThirdPartyToken: "eyJhbGciOiJFUzI1NiIsImtpZCI6IlVzTjNV",
+				},
+			},
+			ConsentId: "gid:aof7m7kl966tmzct2kc75kxeisl",
+		}
+
 		DescribeTable("RevokeConsentSuccess",
 			func(req *tdapb.RevokeConsentRequest, beResp *tdapb.RevokeConsentResponse) {
 				mockClient.EXPECT().RevokeConsent(
@@ -316,6 +356,11 @@ var _ = Describe("TDA", func() {
 			Entry(
 				"revokes consent with property",
 				&mockRevokeConsentRequest3,
+				&tdapb.RevokeConsentResponse{},
+			),
+			Entry(
+				"revokes consent with token",
+				&mockRevokeConsentRequest4,
 				&tdapb.RevokeConsentResponse{},
 			),
 		)
@@ -370,6 +415,15 @@ var _ = Describe("TDA", func() {
 			},
 		}
 
+		mockListConsentsRequest4 := tdapb.ListConsentsRequest{
+			ApplicationId: "gid:AAAAFbJmG6cY2032lHlm1H0HImY",
+			User: &knowledgeobjects.User{
+				User: &knowledgeobjects.User_ThirdPartyToken{
+					ThirdPartyToken: "eyJhbGciOiJFUzI1NiIsImtpZCI6IlVzTjNV",
+				},
+			},
+		}
+
 		DescribeTable("ListConsentsSuccess",
 			func(req *tdapb.ListConsentsRequest, beResp *tdapb.ListConsentsResponse) {
 				mockClient.EXPECT().ListConsents(
@@ -410,6 +464,18 @@ var _ = Describe("TDA", func() {
 			Entry(
 				"list of consents  with property",
 				&mockListConsentsRequest3,
+				&tdapb.ListConsentsResponse{
+					Consents: []*tdapb.Consent{
+						{
+							Id:         "gid:xyz",
+							Properties: []string{"email", "name"},
+						},
+					},
+				},
+			),
+			Entry(
+				"list of consents  with token",
+				&mockListConsentsRequest4,
 				&tdapb.ListConsentsResponse{
 					Consents: []*tdapb.Consent{
 						{

@@ -1116,6 +1116,30 @@ func (m *User) validate(all bool) error {
 			}
 		}
 
+	case *User_ThirdPartyToken:
+		if v == nil {
+			err := UserValidationError{
+				field:  "User",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofUserPresent = true
+
+		if utf8.RuneCountInString(m.GetThirdPartyToken()) < 1 {
+			err := UserValidationError{
+				field:  "ThirdPartyToken",
+				reason: "value length must be at least 1 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 	default:
 		_ = v // ensures v is used
 	}

@@ -100,6 +100,7 @@ var _ = Describe("AppSpace", func() {
 						DisplayName: "Like Real Appspace Name",
 						CreatedBy:   "creator",
 						CreateTime:  timestamppb.Now(),
+						Region:      "europe-west1",
 					},
 				},
 			),
@@ -119,6 +120,7 @@ var _ = Describe("AppSpace", func() {
 						DisplayName: "Like Real Appspace Name",
 						CreatedBy:   "creator",
 						CreateTime:  timestamppb.Now(),
+						Region:      "europe-west1",
 					},
 				},
 			),
@@ -179,6 +181,7 @@ var _ = Describe("AppSpace", func() {
 				CustomerId:  "gid:like-real-customer-id",
 				Name:        "like-real-appspace-name",
 				DisplayName: displayNamePb,
+				Region:      "europe-west1",
 			}
 			beResp := &configpb.CreateApplicationSpaceResponse{
 				Id:         "gid:like-real-app_space-id",

@@ -41,6 +41,7 @@ var createConsentConfigCmd = &cobra.Command{
 			ApplicationId:  "gid:AAAABMoo7PXYfkwepSVjj4GTtfc",
 			ValidityPeriod: 86400,
 			RevokeAfterUse: true,
+			TokenStatus:    3,
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name")
 		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
@@ -73,6 +74,7 @@ var updateConsentConfigCmd = &cobra.Command{
 			ApplicationId:  "gid:like-real-application-id",
 			ValidityPeriod: 86400,
 			RevokeAfterUse: true,
+			TokenStatus:    3,
 		}
 		updateReq, _ := config.NewUpdate("gid:id-of-existing-config")
 		updateReq.WithConsentConfig(configuration)
