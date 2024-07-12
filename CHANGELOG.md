@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.33.0](https://github.com/indykite/indykite-sdk-go/compare/v0.32.0...v0.33.0) (2024-07-12)
+
+
+### Features
+
+* add appspace region + tda token ([9617574](https://github.com/indykite/indykite-sdk-go/commit/9617574216a022f8f8cc17cd04e611476b901096))
+
 ## [0.32.0](https://github.com/indykite/indykite-sdk-go/compare/v0.31.0...v0.32.0) (2024-07-08)
 
 
