@@ -150,7 +150,7 @@ type ConfigManagementAPIClient interface {
 	AssignPermissions(ctx context.Context, in *AssignPermissionsRequest, opts ...grpc.CallOption) (*AssignPermissionsResponse, error)
 	// RevokePermissions for a digital twin.
 	RevokePermissions(ctx context.Context, in *RevokePermissionsRequest, opts ...grpc.CallOption) (*RevokePermissionsResponse, error)
-	// ListPermissions of Digital twins and Invitations related to a customer.
+	// ListPermissions of Digital twins and service accounts related to a customer.
 	ListPermissions(ctx context.Context, in *ListPermissionsRequest, opts ...grpc.CallOption) (*ListPermissionsResponse, error)
 }
 
@@ -651,7 +651,7 @@ type ConfigManagementAPIServer interface {
 	AssignPermissions(context.Context, *AssignPermissionsRequest) (*AssignPermissionsResponse, error)
 	// RevokePermissions for a digital twin.
 	RevokePermissions(context.Context, *RevokePermissionsRequest) (*RevokePermissionsResponse, error)
-	// ListPermissions of Digital twins and Invitations related to a customer.
+	// ListPermissions of Digital twins and service accounts related to a customer.
 	ListPermissions(context.Context, *ListPermissionsRequest) (*ListPermissionsResponse, error)
 }
 

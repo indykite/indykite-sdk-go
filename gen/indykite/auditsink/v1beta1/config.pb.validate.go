@@ -1119,6 +1119,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
+	case *ConfigDetail_IngestPipelineConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetIngestPipelineConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetIngestPipelineConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "IngestPipelineConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}

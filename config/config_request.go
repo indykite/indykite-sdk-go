@@ -246,6 +246,26 @@ func (x *NodeRequest) WithTokenIntrospectConfig(v *configpb.TokenIntrospectConfi
 	return x
 }
 
+func (x *NodeRequest) WithIngestPipelineConfig(v *configpb.IngestPipelineConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_IngestPipelineConfig{
+				IngestPipelineConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_IngestPipelineConfig{
+				IngestPipelineConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
 	if x.read != nil {
 		x.read.Version = version
