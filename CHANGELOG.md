@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://github.com/indykite/indykite-sdk-go/compare/v0.33.0...v0.34.0) (2024-07-22)
+
+
+### Features
+
+* add ingest pipeline config ([#256](https://github.com/indykite/indykite-sdk-go/issues/256)) ([92c2a9a](https://github.com/indykite/indykite-sdk-go/commit/92c2a9a6c38e15767b184a7783199825d1640377))
+
 ## [0.33.0](https://github.com/indykite/indykite-sdk-go/compare/v0.32.0...v0.33.0) (2024-07-12)
 
 
