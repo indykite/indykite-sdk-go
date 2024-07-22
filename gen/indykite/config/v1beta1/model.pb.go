@@ -147,6 +147,67 @@ func (ExternalTokenStatus) EnumDescriptor() ([]byte, []int) {
 	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{1}
 }
 
+type IngestPipelineOperation int32
+
+const (
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_INVALID                      IngestPipelineOperation = 0
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_UPSERT_NODE                  IngestPipelineOperation = 1
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_UPSERT_RELATIONSHIP          IngestPipelineOperation = 2
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_DELETE_NODE                  IngestPipelineOperation = 3
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP          IngestPipelineOperation = 4
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_DELETE_NODE_PROPERTY         IngestPipelineOperation = 5
+	IngestPipelineOperation_INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP_PROPERTY IngestPipelineOperation = 6
+)
+
+// Enum value maps for IngestPipelineOperation.
+var (
+	IngestPipelineOperation_name = map[int32]string{
+		0: "INGEST_PIPELINE_OPERATION_INVALID",
+		1: "INGEST_PIPELINE_OPERATION_UPSERT_NODE",
+		2: "INGEST_PIPELINE_OPERATION_UPSERT_RELATIONSHIP",
+		3: "INGEST_PIPELINE_OPERATION_DELETE_NODE",
+		4: "INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP",
+		5: "INGEST_PIPELINE_OPERATION_DELETE_NODE_PROPERTY",
+		6: "INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP_PROPERTY",
+	}
+	IngestPipelineOperation_value = map[string]int32{
+		"INGEST_PIPELINE_OPERATION_INVALID":                      0,
+		"INGEST_PIPELINE_OPERATION_UPSERT_NODE":                  1,
+		"INGEST_PIPELINE_OPERATION_UPSERT_RELATIONSHIP":          2,
+		"INGEST_PIPELINE_OPERATION_DELETE_NODE":                  3,
+		"INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP":          4,
+		"INGEST_PIPELINE_OPERATION_DELETE_NODE_PROPERTY":         5,
+		"INGEST_PIPELINE_OPERATION_DELETE_RELATIONSHIP_PROPERTY": 6,
+	}
+)
+
+func (x IngestPipelineOperation) Enum() *IngestPipelineOperation {
+	p := new(IngestPipelineOperation)
+	*p = x
+	return p
+}
+
+func (x IngestPipelineOperation) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IngestPipelineOperation) Descriptor() protoreflect.EnumDescriptor {
+	return file_indykite_config_v1beta1_model_proto_enumTypes[2].Descriptor()
+}
+
+func (IngestPipelineOperation) Type() protoreflect.EnumType {
+	return &file_indykite_config_v1beta1_model_proto_enumTypes[2]
+}
+
+func (x IngestPipelineOperation) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IngestPipelineOperation.Descriptor instead.
+func (IngestPipelineOperation) EnumDescriptor() ([]byte, []int) {
+	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{2}
+}
+
 type AuthorizationPolicyConfig_Status int32
 
 const (
@@ -183,11 +244,11 @@ func (x AuthorizationPolicyConfig_Status) String() string {
 }
 
 func (AuthorizationPolicyConfig_Status) Descriptor() protoreflect.EnumDescriptor {
-	return file_indykite_config_v1beta1_model_proto_enumTypes[2].Descriptor()
+	return file_indykite_config_v1beta1_model_proto_enumTypes[3].Descriptor()
 }
 
 func (AuthorizationPolicyConfig_Status) Type() protoreflect.EnumType {
-	return &file_indykite_config_v1beta1_model_proto_enumTypes[2]
+	return &file_indykite_config_v1beta1_model_proto_enumTypes[3]
 }
 
 func (x AuthorizationPolicyConfig_Status) Number() protoreflect.EnumNumber {
@@ -2136,6 +2197,69 @@ func (x *ConsentDataPoint) GetReturns() []*ConsentDataPoint_Return {
 	return nil
 }
 
+type IngestPipelineConfig struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sources       []string                  `protobuf:"bytes,1,rep,name=sources,proto3" json:"sources,omitempty"`
+	Operations    []IngestPipelineOperation `protobuf:"varint,2,rep,packed,name=operations,proto3,enum=indykite.config.v1beta1.IngestPipelineOperation" json:"operations,omitempty"`
+	AppAgentToken string                    `protobuf:"bytes,3,opt,name=app_agent_token,json=appAgentToken,proto3" json:"app_agent_token,omitempty"`
+}
+
+func (x *IngestPipelineConfig) Reset() {
+	*x = IngestPipelineConfig{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *IngestPipelineConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IngestPipelineConfig) ProtoMessage() {}
+
+func (x *IngestPipelineConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IngestPipelineConfig.ProtoReflect.Descriptor instead.
+func (*IngestPipelineConfig) Descriptor() ([]byte, []int) {
+	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *IngestPipelineConfig) GetSources() []string {
+	if x != nil {
+		return x.Sources
+	}
+	return nil
+}
+
+func (x *IngestPipelineConfig) GetOperations() []IngestPipelineOperation {
+	if x != nil {
+		return x.Operations
+	}
+	return nil
+}
+
+func (x *IngestPipelineConfig) GetAppAgentToken() string {
+	if x != nil {
+		return x.AppAgentToken
+	}
+	return ""
+}
+
 // JWT specifies all attributes to match with received token.
 type TokenIntrospectConfig_JWT struct {
 	state         protoimpl.MessageState
@@ -2151,7 +2275,7 @@ type TokenIntrospectConfig_JWT struct {
 func (x *TokenIntrospectConfig_JWT) Reset() {
 	*x = TokenIntrospectConfig_JWT{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[15]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2164,7 +2288,7 @@ func (x *TokenIntrospectConfig_JWT) String() string {
 func (*TokenIntrospectConfig_JWT) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_JWT) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[15]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2205,7 +2329,7 @@ type TokenIntrospectConfig_Opaque struct {
 func (x *TokenIntrospectConfig_Opaque) Reset() {
 	*x = TokenIntrospectConfig_Opaque{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[16]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2218,7 +2342,7 @@ func (x *TokenIntrospectConfig_Opaque) String() string {
 func (*TokenIntrospectConfig_Opaque) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Opaque) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[16]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2249,7 +2373,7 @@ type TokenIntrospectConfig_Offline struct {
 func (x *TokenIntrospectConfig_Offline) Reset() {
 	*x = TokenIntrospectConfig_Offline{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[17]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2262,7 +2386,7 @@ func (x *TokenIntrospectConfig_Offline) String() string {
 func (*TokenIntrospectConfig_Offline) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Offline) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[17]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2310,7 +2434,7 @@ type TokenIntrospectConfig_Online struct {
 func (x *TokenIntrospectConfig_Online) Reset() {
 	*x = TokenIntrospectConfig_Online{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[18]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2323,7 +2447,7 @@ func (x *TokenIntrospectConfig_Online) String() string {
 func (*TokenIntrospectConfig_Online) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Online) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[18]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2371,7 +2495,7 @@ type TokenIntrospectConfig_Claim struct {
 func (x *TokenIntrospectConfig_Claim) Reset() {
 	*x = TokenIntrospectConfig_Claim{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[19]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2384,7 +2508,7 @@ func (x *TokenIntrospectConfig_Claim) String() string {
 func (*TokenIntrospectConfig_Claim) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Claim) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[19]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2419,7 +2543,7 @@ type ConsentDataPoint_Return struct {
 func (x *ConsentDataPoint_Return) Reset() {
 	*x = ConsentDataPoint_Return{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[21]
+		mi := &file_indykite_config_v1beta1_model_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2432,7 +2556,7 @@ func (x *ConsentDataPoint_Return) String() string {
 func (*ConsentDataPoint_Return) ProtoMessage() {}
 
 func (x *ConsentDataPoint_Return) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[21]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3037,31 +3161,70 @@ var file_indykite_config_v1beta1_model_proto_rawDesc = []byte{
 	0x42, 0x07, 0xfa, 0x42, 0x04, 0x72, 0x02, 0x18, 0x20, 0x52, 0x08, 0x76, 0x61, 0x72, 0x69, 0x61,
 	0x62, 0x6c, 0x65, 0x12, 0x28, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x69, 0x65,
 	0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x92, 0x01, 0x02, 0x10,
-	0x32, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x69, 0x65, 0x73, 0x2a, 0xdd, 0x01,
-	0x0a, 0x11, 0x41, 0x70, 0x70, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x4b, 0x47, 0x53, 0x74, 0x61,
-	0x74, 0x75, 0x73, 0x12, 0x27, 0x0a, 0x23, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43, 0x45,
-	0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x54,
-	0x55, 0x53, 0x5f, 0x49, 0x4e, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x10, 0x00, 0x12, 0x27, 0x0a, 0x23,
-	0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x45, 0x4e, 0x44,
-	0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x26, 0x0a, 0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41,
-	0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x56, 0x45, 0x10, 0x02, 0x12, 0x26, 0x0a,
-	0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53,
-	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x41, 0x49,
-	0x4c, 0x45, 0x44, 0x10, 0x03, 0x12, 0x26, 0x0a, 0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41,
-	0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x41, 0x55, 0x53, 0x45, 0x44, 0x10, 0x04, 0x2a, 0xa0, 0x01,
-	0x0a, 0x13, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x53,
-	0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x21, 0x0a, 0x1d, 0x45, 0x58, 0x54, 0x45, 0x52, 0x4e, 0x41,
-	0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x49,
-	0x4e, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x10, 0x00, 0x12, 0x21, 0x0a, 0x1d, 0x45, 0x58, 0x54, 0x45,
-	0x52, 0x4e, 0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55,
-	0x53, 0x5f, 0x45, 0x4e, 0x46, 0x4f, 0x52, 0x43, 0x45, 0x10, 0x01, 0x12, 0x1f, 0x0a, 0x1b, 0x45,
-	0x58, 0x54, 0x45, 0x52, 0x4e, 0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53, 0x54,
-	0x41, 0x54, 0x55, 0x53, 0x5f, 0x41, 0x4c, 0x4c, 0x4f, 0x57, 0x10, 0x02, 0x12, 0x22, 0x0a, 0x1e,
+	0x32, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x69, 0x65, 0x73, 0x22, 0xfe, 0x01,
+	0x0a, 0x14, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65,
+	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x24, 0x0a, 0x07, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x42, 0x0a, 0xfa, 0x42, 0x07, 0x92, 0x01, 0x04, 0x08,
+	0x01, 0x10, 0x0a, 0x52, 0x07, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x12, 0x5c, 0x0a, 0x0a,
+	0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0e,
+	0x32, 0x30, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x63, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x49, 0x6e, 0x67, 0x65, 0x73,
+	0x74, 0x50, 0x69, 0x70, 0x65, 0x6c, 0x69, 0x6e, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x42, 0x0a, 0xfa, 0x42, 0x07, 0x92, 0x01, 0x04, 0x08, 0x01, 0x10, 0x06, 0x52, 0x0a,
+	0x6f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x62, 0x0a, 0x0f, 0x61, 0x70,
+	0x70, 0x5f, 0x61, 0x67, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x09, 0x42, 0x3a, 0xfa, 0x42, 0x37, 0x72, 0x35, 0x32, 0x33, 0x5e, 0x5b, 0x41, 0x2d,
+	0x5a, 0x61, 0x2d, 0x7a, 0x30, 0x2d, 0x39, 0x2d, 0x5f, 0x5d, 0x2b, 0x3f, 0x5c, 0x2e, 0x5b, 0x41,
+	0x2d, 0x5a, 0x61, 0x2d, 0x7a, 0x30, 0x2d, 0x39, 0x2d, 0x5f, 0x5d, 0x2b, 0x3f, 0x5c, 0x2e, 0x5b,
+	0x41, 0x2d, 0x5a, 0x61, 0x2d, 0x7a, 0x30, 0x2d, 0x39, 0x2d, 0x5f, 0x5d, 0x2b, 0x3f, 0x24, 0x52,
+	0x0d, 0x61, 0x70, 0x70, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x2a, 0xdd,
+	0x01, 0x0a, 0x11, 0x41, 0x70, 0x70, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x4b, 0x47, 0x53, 0x74,
+	0x61, 0x74, 0x75, 0x73, 0x12, 0x27, 0x0a, 0x23, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43,
+	0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41,
+	0x54, 0x55, 0x53, 0x5f, 0x49, 0x4e, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x10, 0x00, 0x12, 0x27, 0x0a,
+	0x23, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53,
+	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x45, 0x4e,
+	0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x26, 0x0a, 0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50,
+	0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53,
+	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x56, 0x45, 0x10, 0x02, 0x12, 0x26,
+	0x0a, 0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50, 0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f,
+	0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x41,
+	0x49, 0x4c, 0x45, 0x44, 0x10, 0x03, 0x12, 0x26, 0x0a, 0x22, 0x41, 0x50, 0x50, 0x5f, 0x53, 0x50,
+	0x41, 0x43, 0x45, 0x5f, 0x49, 0x4b, 0x47, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x53,
+	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x41, 0x55, 0x53, 0x45, 0x44, 0x10, 0x04, 0x2a, 0xa0,
+	0x01, 0x0a, 0x13, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
+	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x21, 0x0a, 0x1d, 0x45, 0x58, 0x54, 0x45, 0x52, 0x4e,
+	0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f,
+	0x49, 0x4e, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x10, 0x00, 0x12, 0x21, 0x0a, 0x1d, 0x45, 0x58, 0x54,
+	0x45, 0x52, 0x4e, 0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53, 0x54, 0x41, 0x54,
+	0x55, 0x53, 0x5f, 0x45, 0x4e, 0x46, 0x4f, 0x52, 0x43, 0x45, 0x10, 0x01, 0x12, 0x1f, 0x0a, 0x1b,
 	0x45, 0x58, 0x54, 0x45, 0x52, 0x4e, 0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f, 0x53,
-	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x44, 0x49, 0x53, 0x41, 0x4c, 0x4c, 0x4f, 0x57, 0x10, 0x03,
+	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x41, 0x4c, 0x4c, 0x4f, 0x57, 0x10, 0x02, 0x12, 0x22, 0x0a,
+	0x1e, 0x45, 0x58, 0x54, 0x45, 0x52, 0x4e, 0x41, 0x4c, 0x5f, 0x54, 0x4f, 0x4b, 0x45, 0x4e, 0x5f,
+	0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x44, 0x49, 0x53, 0x41, 0x4c, 0x4c, 0x4f, 0x57, 0x10,
+	0x03, 0x2a, 0xec, 0x02, 0x0a, 0x17, 0x49, 0x6e, 0x67, 0x65, 0x73, 0x74, 0x50, 0x69, 0x70, 0x65,
+	0x6c, 0x69, 0x6e, 0x65, 0x4f, 0x70, 0x65, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x25, 0x0a,
+	0x21, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50, 0x49, 0x50, 0x45, 0x4c, 0x49, 0x4e, 0x45,
+	0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x49, 0x4e, 0x56, 0x41, 0x4c,
+	0x49, 0x44, 0x10, 0x00, 0x12, 0x29, 0x0a, 0x25, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50,
+	0x49, 0x50, 0x45, 0x4c, 0x49, 0x4e, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f,
+	0x4e, 0x5f, 0x55, 0x50, 0x53, 0x45, 0x52, 0x54, 0x5f, 0x4e, 0x4f, 0x44, 0x45, 0x10, 0x01, 0x12,
+	0x31, 0x0a, 0x2d, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50, 0x49, 0x50, 0x45, 0x4c, 0x49,
+	0x4e, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x55, 0x50, 0x53,
+	0x45, 0x52, 0x54, 0x5f, 0x52, 0x45, 0x4c, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x53, 0x48, 0x49, 0x50,
+	0x10, 0x02, 0x12, 0x29, 0x0a, 0x25, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50, 0x49, 0x50,
+	0x45, 0x4c, 0x49, 0x4e, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x5f,
+	0x44, 0x45, 0x4c, 0x45, 0x54, 0x45, 0x5f, 0x4e, 0x4f, 0x44, 0x45, 0x10, 0x03, 0x12, 0x31, 0x0a,
+	0x2d, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50, 0x49, 0x50, 0x45, 0x4c, 0x49, 0x4e, 0x45,
+	0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x44, 0x45, 0x4c, 0x45, 0x54,
+	0x45, 0x5f, 0x52, 0x45, 0x4c, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x53, 0x48, 0x49, 0x50, 0x10, 0x04,
+	0x12, 0x32, 0x0a, 0x2e, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50, 0x49, 0x50, 0x45, 0x4c,
+	0x49, 0x4e, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x44, 0x45,
+	0x4c, 0x45, 0x54, 0x45, 0x5f, 0x4e, 0x4f, 0x44, 0x45, 0x5f, 0x50, 0x52, 0x4f, 0x50, 0x45, 0x52,
+	0x54, 0x59, 0x10, 0x05, 0x12, 0x3a, 0x0a, 0x36, 0x49, 0x4e, 0x47, 0x45, 0x53, 0x54, 0x5f, 0x50,
+	0x49, 0x50, 0x45, 0x4c, 0x49, 0x4e, 0x45, 0x5f, 0x4f, 0x50, 0x45, 0x52, 0x41, 0x54, 0x49, 0x4f,
+	0x4e, 0x5f, 0x44, 0x45, 0x4c, 0x45, 0x54, 0x45, 0x5f, 0x52, 0x45, 0x4c, 0x41, 0x54, 0x49, 0x4f,
+	0x4e, 0x53, 0x48, 0x49, 0x50, 0x5f, 0x50, 0x52, 0x4f, 0x50, 0x45, 0x52, 0x54, 0x59, 0x10, 0x06,
 	0x42, 0xf6, 0x01, 0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
 	0x65, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31,
 	0x42, 0x0a, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x4d,
@@ -3093,98 +3256,101 @@ func file_indykite_config_v1beta1_model_proto_rawDescGZIP() []byte {
 	return file_indykite_config_v1beta1_model_proto_rawDescData
 }
 
-var file_indykite_config_v1beta1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_indykite_config_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_indykite_config_v1beta1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_indykite_config_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_indykite_config_v1beta1_model_proto_goTypes = []any{
 	(AppSpaceIKGStatus)(0),                // 0: indykite.config.v1beta1.AppSpaceIKGStatus
 	(ExternalTokenStatus)(0),              // 1: indykite.config.v1beta1.ExternalTokenStatus
-	(AuthorizationPolicyConfig_Status)(0), // 2: indykite.config.v1beta1.AuthorizationPolicyConfig.Status
-	(*UniqueNameIdentifier)(nil),          // 3: indykite.config.v1beta1.UniqueNameIdentifier
-	(*Customer)(nil),                      // 4: indykite.config.v1beta1.Customer
-	(*ApplicationSpace)(nil),              // 5: indykite.config.v1beta1.ApplicationSpace
-	(*Application)(nil),                   // 6: indykite.config.v1beta1.Application
-	(*ApplicationAgent)(nil),              // 7: indykite.config.v1beta1.ApplicationAgent
-	(*ApplicationAgentCredential)(nil),    // 8: indykite.config.v1beta1.ApplicationAgentCredential
-	(*ServiceAccount)(nil),                // 9: indykite.config.v1beta1.ServiceAccount
-	(*ServiceAccountCredential)(nil),      // 10: indykite.config.v1beta1.ServiceAccountCredential
-	(*ConfigNode)(nil),                    // 11: indykite.config.v1beta1.ConfigNode
-	(*AuthorizationPolicyConfig)(nil),     // 12: indykite.config.v1beta1.AuthorizationPolicyConfig
-	(*AuditSinkConfig)(nil),               // 13: indykite.config.v1beta1.AuditSinkConfig
-	(*KafkaSinkConfig)(nil),               // 14: indykite.config.v1beta1.KafkaSinkConfig
-	(*ConsentConfiguration)(nil),          // 15: indykite.config.v1beta1.ConsentConfiguration
-	(*TokenIntrospectConfig)(nil),         // 16: indykite.config.v1beta1.TokenIntrospectConfig
-	(*ConsentDataPoint)(nil),              // 17: indykite.config.v1beta1.ConsentDataPoint
-	(*TokenIntrospectConfig_JWT)(nil),     // 18: indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	(*TokenIntrospectConfig_Opaque)(nil),  // 19: indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	(*TokenIntrospectConfig_Offline)(nil), // 20: indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	(*TokenIntrospectConfig_Online)(nil),  // 21: indykite.config.v1beta1.TokenIntrospectConfig.Online
-	(*TokenIntrospectConfig_Claim)(nil),   // 22: indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	nil,                                   // 23: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	(*ConsentDataPoint_Return)(nil),       // 24: indykite.config.v1beta1.ConsentDataPoint.Return
-	(*wrapperspb.StringValue)(nil),        // 25: google.protobuf.StringValue
-	(*timestamppb.Timestamp)(nil),         // 26: google.protobuf.Timestamp
-	(*PolicyBuilderConfig)(nil),           // 27: indykite.config.v1beta1.PolicyBuilderConfig
-	(*durationpb.Duration)(nil),           // 28: google.protobuf.Duration
+	(IngestPipelineOperation)(0),          // 2: indykite.config.v1beta1.IngestPipelineOperation
+	(AuthorizationPolicyConfig_Status)(0), // 3: indykite.config.v1beta1.AuthorizationPolicyConfig.Status
+	(*UniqueNameIdentifier)(nil),          // 4: indykite.config.v1beta1.UniqueNameIdentifier
+	(*Customer)(nil),                      // 5: indykite.config.v1beta1.Customer
+	(*ApplicationSpace)(nil),              // 6: indykite.config.v1beta1.ApplicationSpace
+	(*Application)(nil),                   // 7: indykite.config.v1beta1.Application
+	(*ApplicationAgent)(nil),              // 8: indykite.config.v1beta1.ApplicationAgent
+	(*ApplicationAgentCredential)(nil),    // 9: indykite.config.v1beta1.ApplicationAgentCredential
+	(*ServiceAccount)(nil),                // 10: indykite.config.v1beta1.ServiceAccount
+	(*ServiceAccountCredential)(nil),      // 11: indykite.config.v1beta1.ServiceAccountCredential
+	(*ConfigNode)(nil),                    // 12: indykite.config.v1beta1.ConfigNode
+	(*AuthorizationPolicyConfig)(nil),     // 13: indykite.config.v1beta1.AuthorizationPolicyConfig
+	(*AuditSinkConfig)(nil),               // 14: indykite.config.v1beta1.AuditSinkConfig
+	(*KafkaSinkConfig)(nil),               // 15: indykite.config.v1beta1.KafkaSinkConfig
+	(*ConsentConfiguration)(nil),          // 16: indykite.config.v1beta1.ConsentConfiguration
+	(*TokenIntrospectConfig)(nil),         // 17: indykite.config.v1beta1.TokenIntrospectConfig
+	(*ConsentDataPoint)(nil),              // 18: indykite.config.v1beta1.ConsentDataPoint
+	(*IngestPipelineConfig)(nil),          // 19: indykite.config.v1beta1.IngestPipelineConfig
+	(*TokenIntrospectConfig_JWT)(nil),     // 20: indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	(*TokenIntrospectConfig_Opaque)(nil),  // 21: indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	(*TokenIntrospectConfig_Offline)(nil), // 22: indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	(*TokenIntrospectConfig_Online)(nil),  // 23: indykite.config.v1beta1.TokenIntrospectConfig.Online
+	(*TokenIntrospectConfig_Claim)(nil),   // 24: indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	nil,                                   // 25: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	(*ConsentDataPoint_Return)(nil),       // 26: indykite.config.v1beta1.ConsentDataPoint.Return
+	(*wrapperspb.StringValue)(nil),        // 27: google.protobuf.StringValue
+	(*timestamppb.Timestamp)(nil),         // 28: google.protobuf.Timestamp
+	(*PolicyBuilderConfig)(nil),           // 29: indykite.config.v1beta1.PolicyBuilderConfig
+	(*durationpb.Duration)(nil),           // 30: google.protobuf.Duration
 }
 var file_indykite_config_v1beta1_model_proto_depIdxs = []int32{
-	25, // 0: indykite.config.v1beta1.Customer.description:type_name -> google.protobuf.StringValue
-	26, // 1: indykite.config.v1beta1.Customer.create_time:type_name -> google.protobuf.Timestamp
-	26, // 2: indykite.config.v1beta1.Customer.update_time:type_name -> google.protobuf.Timestamp
-	26, // 3: indykite.config.v1beta1.Customer.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 4: indykite.config.v1beta1.Customer.delete_time:type_name -> google.protobuf.Timestamp
-	25, // 5: indykite.config.v1beta1.ApplicationSpace.description:type_name -> google.protobuf.StringValue
-	26, // 6: indykite.config.v1beta1.ApplicationSpace.create_time:type_name -> google.protobuf.Timestamp
-	26, // 7: indykite.config.v1beta1.ApplicationSpace.update_time:type_name -> google.protobuf.Timestamp
-	26, // 8: indykite.config.v1beta1.ApplicationSpace.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 9: indykite.config.v1beta1.ApplicationSpace.delete_time:type_name -> google.protobuf.Timestamp
+	27, // 0: indykite.config.v1beta1.Customer.description:type_name -> google.protobuf.StringValue
+	28, // 1: indykite.config.v1beta1.Customer.create_time:type_name -> google.protobuf.Timestamp
+	28, // 2: indykite.config.v1beta1.Customer.update_time:type_name -> google.protobuf.Timestamp
+	28, // 3: indykite.config.v1beta1.Customer.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 4: indykite.config.v1beta1.Customer.delete_time:type_name -> google.protobuf.Timestamp
+	27, // 5: indykite.config.v1beta1.ApplicationSpace.description:type_name -> google.protobuf.StringValue
+	28, // 6: indykite.config.v1beta1.ApplicationSpace.create_time:type_name -> google.protobuf.Timestamp
+	28, // 7: indykite.config.v1beta1.ApplicationSpace.update_time:type_name -> google.protobuf.Timestamp
+	28, // 8: indykite.config.v1beta1.ApplicationSpace.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 9: indykite.config.v1beta1.ApplicationSpace.delete_time:type_name -> google.protobuf.Timestamp
 	0,  // 10: indykite.config.v1beta1.ApplicationSpace.ikg_status:type_name -> indykite.config.v1beta1.AppSpaceIKGStatus
-	25, // 11: indykite.config.v1beta1.Application.description:type_name -> google.protobuf.StringValue
-	26, // 12: indykite.config.v1beta1.Application.create_time:type_name -> google.protobuf.Timestamp
-	26, // 13: indykite.config.v1beta1.Application.update_time:type_name -> google.protobuf.Timestamp
-	26, // 14: indykite.config.v1beta1.Application.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 15: indykite.config.v1beta1.Application.delete_time:type_name -> google.protobuf.Timestamp
-	25, // 16: indykite.config.v1beta1.ApplicationAgent.description:type_name -> google.protobuf.StringValue
-	26, // 17: indykite.config.v1beta1.ApplicationAgent.create_time:type_name -> google.protobuf.Timestamp
-	26, // 18: indykite.config.v1beta1.ApplicationAgent.update_time:type_name -> google.protobuf.Timestamp
-	26, // 19: indykite.config.v1beta1.ApplicationAgent.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 20: indykite.config.v1beta1.ApplicationAgent.delete_time:type_name -> google.protobuf.Timestamp
-	26, // 21: indykite.config.v1beta1.ApplicationAgentCredential.create_time:type_name -> google.protobuf.Timestamp
-	26, // 22: indykite.config.v1beta1.ApplicationAgentCredential.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 23: indykite.config.v1beta1.ApplicationAgentCredential.delete_time:type_name -> google.protobuf.Timestamp
-	25, // 24: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
-	26, // 25: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
-	26, // 26: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
-	26, // 27: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 28: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
-	26, // 29: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
-	26, // 30: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 31: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
-	25, // 32: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
-	26, // 33: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
-	26, // 34: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
-	26, // 35: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
-	26, // 36: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
-	13, // 37: indykite.config.v1beta1.ConfigNode.audit_sink_config:type_name -> indykite.config.v1beta1.AuditSinkConfig
-	12, // 38: indykite.config.v1beta1.ConfigNode.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
-	15, // 39: indykite.config.v1beta1.ConfigNode.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
-	16, // 40: indykite.config.v1beta1.ConfigNode.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
-	2,  // 41: indykite.config.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig.Status
-	27, // 42: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
-	14, // 43: indykite.config.v1beta1.AuditSinkConfig.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
+	27, // 11: indykite.config.v1beta1.Application.description:type_name -> google.protobuf.StringValue
+	28, // 12: indykite.config.v1beta1.Application.create_time:type_name -> google.protobuf.Timestamp
+	28, // 13: indykite.config.v1beta1.Application.update_time:type_name -> google.protobuf.Timestamp
+	28, // 14: indykite.config.v1beta1.Application.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 15: indykite.config.v1beta1.Application.delete_time:type_name -> google.protobuf.Timestamp
+	27, // 16: indykite.config.v1beta1.ApplicationAgent.description:type_name -> google.protobuf.StringValue
+	28, // 17: indykite.config.v1beta1.ApplicationAgent.create_time:type_name -> google.protobuf.Timestamp
+	28, // 18: indykite.config.v1beta1.ApplicationAgent.update_time:type_name -> google.protobuf.Timestamp
+	28, // 19: indykite.config.v1beta1.ApplicationAgent.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 20: indykite.config.v1beta1.ApplicationAgent.delete_time:type_name -> google.protobuf.Timestamp
+	28, // 21: indykite.config.v1beta1.ApplicationAgentCredential.create_time:type_name -> google.protobuf.Timestamp
+	28, // 22: indykite.config.v1beta1.ApplicationAgentCredential.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 23: indykite.config.v1beta1.ApplicationAgentCredential.delete_time:type_name -> google.protobuf.Timestamp
+	27, // 24: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
+	28, // 25: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
+	28, // 26: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
+	28, // 27: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 28: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
+	28, // 29: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
+	28, // 30: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 31: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
+	27, // 32: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
+	28, // 33: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
+	28, // 34: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
+	28, // 35: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
+	28, // 36: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
+	14, // 37: indykite.config.v1beta1.ConfigNode.audit_sink_config:type_name -> indykite.config.v1beta1.AuditSinkConfig
+	13, // 38: indykite.config.v1beta1.ConfigNode.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
+	16, // 39: indykite.config.v1beta1.ConfigNode.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
+	17, // 40: indykite.config.v1beta1.ConfigNode.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
+	3,  // 41: indykite.config.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig.Status
+	29, // 42: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
+	15, // 43: indykite.config.v1beta1.AuditSinkConfig.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
 	1,  // 44: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
-	18, // 45: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	19, // 46: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	20, // 47: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	21, // 48: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
-	23, // 49: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	24, // 50: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
-	28, // 51: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
-	22, // 52: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	53, // [53:53] is the sub-list for method output_type
-	53, // [53:53] is the sub-list for method input_type
-	53, // [53:53] is the sub-list for extension type_name
-	53, // [53:53] is the sub-list for extension extendee
-	0,  // [0:53] is the sub-list for field type_name
+	20, // 45: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	21, // 46: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	22, // 47: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	23, // 48: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
+	25, // 49: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	26, // 50: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
+	2,  // 51: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
+	30, // 52: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
+	24, // 53: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	54, // [54:54] is the sub-list for method output_type
+	54, // [54:54] is the sub-list for method input_type
+	54, // [54:54] is the sub-list for extension type_name
+	54, // [54:54] is the sub-list for extension extendee
+	0,  // [0:54] is the sub-list for field type_name
 }
 
 func init() { file_indykite_config_v1beta1_model_proto_init() }
@@ -3375,7 +3541,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_config_v1beta1_model_proto_msgTypes[15].Exporter = func(v any, i int) any {
-			switch v := v.(*TokenIntrospectConfig_JWT); i {
+			switch v := v.(*IngestPipelineConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3387,7 +3553,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_config_v1beta1_model_proto_msgTypes[16].Exporter = func(v any, i int) any {
-			switch v := v.(*TokenIntrospectConfig_Opaque); i {
+			switch v := v.(*TokenIntrospectConfig_JWT); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3399,7 +3565,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_config_v1beta1_model_proto_msgTypes[17].Exporter = func(v any, i int) any {
-			switch v := v.(*TokenIntrospectConfig_Offline); i {
+			switch v := v.(*TokenIntrospectConfig_Opaque); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3411,7 +3577,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_config_v1beta1_model_proto_msgTypes[18].Exporter = func(v any, i int) any {
-			switch v := v.(*TokenIntrospectConfig_Online); i {
+			switch v := v.(*TokenIntrospectConfig_Offline); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3423,6 +3589,18 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			}
 		}
 		file_indykite_config_v1beta1_model_proto_msgTypes[19].Exporter = func(v any, i int) any {
+			switch v := v.(*TokenIntrospectConfig_Online); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_config_v1beta1_model_proto_msgTypes[20].Exporter = func(v any, i int) any {
 			switch v := v.(*TokenIntrospectConfig_Claim); i {
 			case 0:
 				return &v.state
@@ -3434,7 +3612,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_config_v1beta1_model_proto_msgTypes[21].Exporter = func(v any, i int) any {
+		file_indykite_config_v1beta1_model_proto_msgTypes[22].Exporter = func(v any, i int) any {
 			switch v := v.(*ConsentDataPoint_Return); i {
 			case 0:
 				return &v.state
@@ -3467,8 +3645,8 @@ func file_indykite_config_v1beta1_model_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_config_v1beta1_model_proto_rawDesc,
-			NumEnums:      3,
-			NumMessages:   22,
+			NumEnums:      4,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

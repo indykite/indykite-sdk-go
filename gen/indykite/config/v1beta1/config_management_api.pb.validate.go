@@ -9894,6 +9894,59 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *CreateConfigNodeRequest_IngestPipelineConfig:
+		if v == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetIngestPipelineConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "IngestPipelineConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetIngestPipelineConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetIngestPipelineConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "IngestPipelineConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -10845,6 +10898,58 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *UpdateConfigNodeRequest_IngestPipelineConfig:
+		if v == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetIngestPipelineConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "IngestPipelineConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetIngestPipelineConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "IngestPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetIngestPipelineConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "IngestPipelineConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -11751,7 +11856,7 @@ func (m *AssignPermissionsRequest) validate(all bool) error {
 	if _, ok := _AssignPermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := AssignPermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer customer_viewer]",
+			reason: "value must be in list [all_editor all_viewer]",
 		}
 		if !all {
 			return err
@@ -11913,9 +12018,8 @@ var _ interface {
 var _AssignPermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _AssignPermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor":      {},
-	"all_viewer":      {},
-	"customer_viewer": {},
+	"all_editor": {},
+	"all_viewer": {},
 }
 
 var _AssignPermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
@@ -12077,7 +12181,7 @@ func (m *RevokePermissionsRequest) validate(all bool) error {
 	if _, ok := _RevokePermissionsRequest_Role_InLookup[m.GetRole()]; !ok {
 		err := RevokePermissionsRequestValidationError{
 			field:  "Role",
-			reason: "value must be in list [all_editor all_viewer customer_viewer]",
+			reason: "value must be in list [all_editor all_viewer]",
 		}
 		if !all {
 			return err
@@ -12239,9 +12343,8 @@ var _ interface {
 var _RevokePermissionsRequest_TargetIdentifier_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 var _RevokePermissionsRequest_Role_InLookup = map[string]struct{}{
-	"all_editor":      {},
-	"all_viewer":      {},
-	"customer_viewer": {},
+	"all_editor": {},
+	"all_viewer": {},
 }
 
 var _RevokePermissionsRequest_CustomerId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
@@ -12593,40 +12696,6 @@ func (m *ListPermissionsResponse) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return ListPermissionsResponseValidationError{
 					field:  fmt.Sprintf("ServiceAccounts[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	for idx, item := range m.GetInvitations() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListPermissionsResponseValidationError{
-						field:  fmt.Sprintf("Invitations[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ListPermissionsResponseValidationError{
-						field:  fmt.Sprintf("Invitations[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListPermissionsResponseValidationError{
-					field:  fmt.Sprintf("Invitations[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -13107,146 +13176,3 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListPermissionsResponse_ServiceAccountValidationError{}
-
-// Validate checks the field values on ListPermissionsResponse_Invitation with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the first error encountered is returned, or nil if there are
-// no violations.
-func (m *ListPermissionsResponse_Invitation) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ListPermissionsResponse_Invitation
-// with the rules defined in the proto definition for this message. If any
-// rules are violated, the result is a list of violation errors wrapped in
-// ListPermissionsResponse_InvitationMultiError, or nil if none found.
-func (m *ListPermissionsResponse_Invitation) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ListPermissionsResponse_Invitation) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Invitee
-
-	// no validation rules for Id
-
-	for idx, item := range m.GetRoles() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListPermissionsResponse_InvitationValidationError{
-						field:  fmt.Sprintf("Roles[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ListPermissionsResponse_InvitationValidationError{
-						field:  fmt.Sprintf("Roles[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListPermissionsResponse_InvitationValidationError{
-					field:  fmt.Sprintf("Roles[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return ListPermissionsResponse_InvitationMultiError(errors)
-	}
-
-	return nil
-}
-
-// ListPermissionsResponse_InvitationMultiError is an error wrapping multiple
-// validation errors returned by
-// ListPermissionsResponse_Invitation.ValidateAll() if the designated
-// constraints aren't met.
-type ListPermissionsResponse_InvitationMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ListPermissionsResponse_InvitationMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ListPermissionsResponse_InvitationMultiError) AllErrors() []error { return m }
-
-// ListPermissionsResponse_InvitationValidationError is the validation error
-// returned by ListPermissionsResponse_Invitation.Validate if the designated
-// constraints aren't met.
-type ListPermissionsResponse_InvitationValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListPermissionsResponse_InvitationValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListPermissionsResponse_InvitationValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListPermissionsResponse_InvitationValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListPermissionsResponse_InvitationValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListPermissionsResponse_InvitationValidationError) ErrorName() string {
-	return "ListPermissionsResponse_InvitationValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListPermissionsResponse_InvitationValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListPermissionsResponse_Invitation.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListPermissionsResponse_InvitationValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListPermissionsResponse_InvitationValidationError{}

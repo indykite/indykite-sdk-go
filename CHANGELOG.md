@@ -29,7 +29,7 @@
 
 * **deps:** update everything ([d26aa7f](https://github.com/indykite/indykite-sdk-go/commit/d26aa7fa546f656d2b6536ccfb3536d083633133))
 
-* add batch and tda integration tests ([2b5f443](https://github.com/indykite/indykite-sdk-go/commit/2b5f443ef9d5fa1dd0d88832a0a950b9b846888e)) 
+* add batch and tda integration tests ([2b5f443](https://github.com/indykite/indykite-sdk-go/commit/2b5f443ef9d5fa1dd0d88832a0a950b9b846888e))
 
 ## [0.30.0](https://github.com/indykite/indykite-sdk-go/compare/v0.29.1...v0.30.0) (2024-06-20)
 
