@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.1](https://github.com/indykite/indykite-sdk-go/compare/v0.34.0...v0.34.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* update deps ([#258](https://github.com/indykite/indykite-sdk-go/issues/258)) ([77b8165](https://github.com/indykite/indykite-sdk-go/commit/77b816592a7ebef360ed30a1c790117ca4081bef))
+
 ## [0.34.0](https://github.com/indykite/indykite-sdk-go/compare/v0.33.0...v0.34.0) (2024-07-22)
 
 
