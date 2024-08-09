@@ -43,6 +43,11 @@ test:
 integration:
 	go clean -testcache && go test --tags=integration ./...
 
+report:
+	go get github.com/vakenbolt/go-test-report && go install github.com/vakenbolt/go-test-report/
+	go clean -testcache && go test -json --tags=integration ./... | go-test-report -o  test-report.html -t "Go SDK Tests report"
+	go mod tidy
+
 cover: test
 	@echo "==> generate test coverage..."
 	go tool cover -html=coverage.out
