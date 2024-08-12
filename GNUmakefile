@@ -33,6 +33,7 @@ install-tools:
 	@go install github.com/onsi/ginkgo/v2/ginkgo@latest
 	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
 	@go install github.com/sudorandom/protoc-gen-connect-openapi@main
+	@go install github.com/vakenbolt/go-test-report@latest
 	@echo Installation completed
 
 test:
@@ -42,6 +43,9 @@ test:
 
 integration:
 	go clean -testcache && go test --tags=integration ./...
+
+report:
+	go clean -testcache && go test -json --tags=integration ./... | go-test-report -o  test-report.html -t "Go SDK Tests report"
 
 cover: test
 	@echo "==> generate test coverage..."
