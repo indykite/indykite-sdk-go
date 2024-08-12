@@ -20,3 +20,6 @@
 
 # Mac OS
 .DS_Store
+
+# test report
+test-report.html
