@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.0](https://github.com/indykite/indykite-sdk-go/compare/v0.34.1...v0.35.0) (2024-08-13)
+
+
+### Features
+
+* add report in make for pipeline ([0dd13be](https://github.com/indykite/indykite-sdk-go/commit/0dd13be0660a2c365443cf2e24242f198e4cc548))
+
 ## [0.34.1](https://github.com/indykite/indykite-sdk-go/compare/v0.34.0...v0.34.1) (2024-07-23)
 
 
