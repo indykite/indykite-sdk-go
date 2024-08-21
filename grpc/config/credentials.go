@@ -47,6 +47,14 @@ func DefaultEnvironmentLoader(_ context.Context) (*CredentialsConfig, error) {
 	return UnmarshalCredentialConfig(data)
 }
 
+func DefaultEnvironmentLoaderConfig(_ context.Context) (*CredentialsConfig, error) {
+	data, err := lookupEnvCredentialVariables("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS")
+	if err != nil {
+		return nil, err
+	}
+	return UnmarshalCredentialConfig(data)
+}
+
 func StaticCredentialsJSON(credentialsJSON []byte) CredentialsLoader {
 	return func(_ context.Context) (*CredentialsConfig, error) {
 		return UnmarshalCredentialConfig(credentialsJSON)

@@ -85,7 +85,7 @@ func InitConfigIngestRetry() (*ingest.RetryClient, error) {
 // InitConfigConfig file and ENV variables if set.
 func InitConfigConfig() (*config.Client, error) {
 	clientConfig, err = config.NewClient(context.Background(),
-		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoaderConfig),
 		grpc.WithRetryOptions(retry.Disable()),
 	)
 	if err != nil {

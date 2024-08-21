@@ -25,30 +25,31 @@ import (
 	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 )
 
-var consentConfigCmd = &cobra.Command{
-	Use:   "consent",
-	Short: "Consent config",
+var externalDataResolverConfigCmd = &cobra.Command{
+	Use:   "externalDataResolver",
+	Short: "ExternalDataResolver config",
 }
 
-var createConsentConfigCmd = &cobra.Command{
+var createExternalDataResolverConfigCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Create Consent configuration",
+	Short: "Create ExternalDataResolver config",
 	Run: func(cmd *cobra.Command, args []string) {
-		configuration := &configpb.ConsentConfiguration{
-			Purpose: "Taking control again",
-			DataPoints: []string{
-				"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
-					"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
+		configuration := &configpb.ExternalDataResolverConfig{
+			Url:    "https://example.com/source",
+			Method: "GET",
+			Headers: map[string]*configpb.ExternalDataResolverConfig_Header{
+				"Authorization": {Values: []string{"Bearer edyUTY"}},
+				"Content-Type":  {Values: []string{"application/json"}},
 			},
-			ApplicationId:  "gid:AAAABMoo7PXYfkwepSVjj4GTtfc",
-			ValidityPeriod: 86400,
-			RevokeAfterUse: true,
-			TokenStatus:    3,
+			RequestType:      configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
+			RequestPayload:   []byte(`{"key": "value"}`),
+			ResponseType:     configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
+			ResponseSelector: ".",
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name")
 		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
 		createReq.WithDisplayName("Like real ConfigNode Name")
-		createReq.WithConsentConfig(configuration)
+		createReq.WithExternalDataResolverConfig(configuration)
 
 		resp, err := client.CreateConfigNode(context.Background(), createReq)
 		if err != nil {
@@ -65,21 +66,24 @@ var createConsentConfigCmd = &cobra.Command{
 	},
 }
 
-var updateConsentConfigCmd = &cobra.Command{
+var updateExternalDataResolverConfigCmd = &cobra.Command{
 	Use:   "update",
-	Short: "Update Consent configuration",
+	Short: "Update ExternalDataResolver config",
 	Run: func(cmd *cobra.Command, args []string) {
-		configuration := &configpb.ConsentConfiguration{
-			Purpose: "Taking control upd",
-			DataPoints: []string{"\"query\": \"\", \"returns\": [ { \"variable\": \"\", " +
-				"\"properties\": [\"name\", \"email\", \"location\"]}]"},
-			ApplicationId:  "gid:like-real-application-id",
-			ValidityPeriod: 86400,
-			RevokeAfterUse: true,
-			TokenStatus:    3,
+		configuration := &configpb.ExternalDataResolverConfig{
+			Url:    "https://example.com/source",
+			Method: "GET",
+			Headers: map[string]*configpb.ExternalDataResolverConfig_Header{
+				"Authorization": {Values: []string{"Bearer edyUTY"}},
+				"Content-Type":  {Values: []string{"application/json"}},
+			},
+			RequestType:      configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
+			RequestPayload:   []byte(`{"key": "value"}`),
+			ResponseType:     configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
+			ResponseSelector: ".",
 		}
 		updateReq, _ := config.NewUpdate("gid:id-of-existing-config")
-		updateReq.WithConsentConfig(configuration)
+		updateReq.WithExternalDataResolverConfig(configuration)
 
 		resp, err := client.UpdateConfigNode(context.Background(), updateReq)
 		if err != nil {
@@ -96,9 +100,9 @@ var updateConsentConfigCmd = &cobra.Command{
 	},
 }
 
-var deleteConsentConfigCmd = &cobra.Command{
+var deleteExternalDataResolverConfigCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Delete Consent configuration",
+	Short: "Delete ExternalDataResolver configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		deleteReq, _ := config.NewDelete("gid:id-of-existing-config")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
@@ -110,8 +114,8 @@ var deleteConsentConfigCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(consentConfigCmd)
-	consentConfigCmd.AddCommand(createConsentConfigCmd)
-	consentConfigCmd.AddCommand(updateConsentConfigCmd)
-	consentConfigCmd.AddCommand(deleteConsentConfigCmd)
+	rootCmd.AddCommand(externalDataResolverConfigCmd)
+	externalDataResolverConfigCmd.AddCommand(createExternalDataResolverConfigCmd)
+	externalDataResolverConfigCmd.AddCommand(updateExternalDataResolverConfigCmd)
+	externalDataResolverConfigCmd.AddCommand(deleteExternalDataResolverConfigCmd)
 }
