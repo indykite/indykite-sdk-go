@@ -18,8 +18,9 @@ plugins:
       out: gen
       opt:
           - paths=source_relative
-    - plugin: buf.build/grpc/go
+    - plugin: buf.build/grpc/go:v1.4.0
       out: gen
       opt:
           - paths=source_relative
           - require_unimplemented_servers=false
+          

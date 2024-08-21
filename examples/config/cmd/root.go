@@ -105,7 +105,7 @@ func initConfig() {
 	}
 
 	client, err = config.NewClient(context.Background(),
-		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoaderConfig),
 		grpc.WithServiceAccount(),
 	)
 	if err != nil {

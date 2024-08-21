@@ -266,6 +266,46 @@ func (x *NodeRequest) WithIngestPipelineConfig(v *configpb.IngestPipelineConfig)
 	return x
 }
 
+func (x *NodeRequest) WithIdentityMatchingPipelineConfig(v *configpb.IdentityMatchingPipelineConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_IdentityMatchingPipelineConfig{
+				IdentityMatchingPipelineConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_IdentityMatchingPipelineConfig{
+				IdentityMatchingPipelineConfig: v,
+			}
+		}
+	}
+	return x
+}
+
+func (x *NodeRequest) WithExternalDataResolverConfig(v *configpb.ExternalDataResolverConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_ExternalDataResolverConfig{
+				ExternalDataResolverConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_ExternalDataResolverConfig{
+				ExternalDataResolverConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
 	if x.read != nil {
 		x.read.Version = version
