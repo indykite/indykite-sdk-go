@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.36.0](https://github.com/indykite/indykite-sdk-go/compare/v0.35.0...v0.36.0) (2024-08-23)
+
+
+### Features
+
+* add external data resolver config node ([1dbef98](https://github.com/indykite/indykite-sdk-go/commit/1dbef98845d61badd463646a5f6f480b8fcf506f))
+
 ## [0.35.0](https://github.com/indykite/indykite-sdk-go/compare/v0.34.1...v0.35.0) (2024-08-13)
 
 
