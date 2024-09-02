@@ -53,6 +53,11 @@ var (
 						StringValue: "12345",
 					},
 				},
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: "gid:AAAAGaiIPzg6L0DKkbIh22crsFg",
+					},
+				},
 				Metadata: &knowledgeobjects.Metadata{
 					AssuranceLevel:   1,
 					VerificationTime: timestamppb.Now(),
@@ -99,6 +104,11 @@ var (
 				Value: &objects.Value{
 					Type: &objects.Value_StringValue{
 						StringValue: "0000@yahoo.com",
+					},
+				},
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Name{
+						Name: "ExternalValueName",
 					},
 				},
 				Metadata: &knowledgeobjects.Metadata{

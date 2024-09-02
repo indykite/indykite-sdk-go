@@ -239,20 +239,102 @@ func (x *Relationship) GetProperties() map[string]*v1beta2.Value {
 	return nil
 }
 
+type ExternalValue struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Resolver:
+	//
+	//	*ExternalValue_Id
+	//	*ExternalValue_Name
+	Resolver isExternalValue_Resolver `protobuf_oneof:"resolver"`
+}
+
+func (x *ExternalValue) Reset() {
+	*x = ExternalValue{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExternalValue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExternalValue) ProtoMessage() {}
+
+func (x *ExternalValue) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExternalValue.ProtoReflect.Descriptor instead.
+func (*ExternalValue) Descriptor() ([]byte, []int) {
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{2}
+}
+
+func (m *ExternalValue) GetResolver() isExternalValue_Resolver {
+	if m != nil {
+		return m.Resolver
+	}
+	return nil
+}
+
+func (x *ExternalValue) GetId() string {
+	if x, ok := x.GetResolver().(*ExternalValue_Id); ok {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ExternalValue) GetName() string {
+	if x, ok := x.GetResolver().(*ExternalValue_Name); ok {
+		return x.Name
+	}
+	return ""
+}
+
+type isExternalValue_Resolver interface {
+	isExternalValue_Resolver()
+}
+
+type ExternalValue_Id struct {
+	Id string `protobuf:"bytes,1,opt,name=id,proto3,oneof"`
+}
+
+type ExternalValue_Name struct {
+	Name string `protobuf:"bytes,2,opt,name=name,proto3,oneof"`
+}
+
+func (*ExternalValue_Id) isExternalValue_Resolver() {}
+
+func (*ExternalValue_Name) isExternalValue_Resolver() {}
+
 type Property struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type     string         `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Value    *v1beta2.Value `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	Metadata *Metadata      `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Type          string         `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	Value         *v1beta2.Value `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	ExternalValue *ExternalValue `protobuf:"bytes,4,opt,name=external_value,json=externalValue,proto3" json:"external_value,omitempty"`
+	Metadata      *Metadata      `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 }
 
 func (x *Property) Reset() {
 	*x = Property{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2]
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -265,7 +347,7 @@ func (x *Property) String() string {
 func (*Property) ProtoMessage() {}
 
 func (x *Property) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2]
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -278,7 +360,7 @@ func (x *Property) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Property.ProtoReflect.Descriptor instead.
 func (*Property) Descriptor() ([]byte, []int) {
-	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{2}
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Property) GetType() string {
@@ -291,6 +373,13 @@ func (x *Property) GetType() string {
 func (x *Property) GetValue() *v1beta2.Value {
 	if x != nil {
 		return x.Value
+	}
+	return nil
+}
+
+func (x *Property) GetExternalValue() *ExternalValue {
+	if x != nil {
+		return x.ExternalValue
 	}
 	return nil
 }
@@ -316,7 +405,7 @@ type Metadata struct {
 func (x *Metadata) Reset() {
 	*x = Metadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[3]
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -329,7 +418,7 @@ func (x *Metadata) String() string {
 func (*Metadata) ProtoMessage() {}
 
 func (x *Metadata) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[3]
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -342,7 +431,7 @@ func (x *Metadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Metadata.ProtoReflect.Descriptor instead.
 func (*Metadata) Descriptor() ([]byte, []int) {
-	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{3}
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Metadata) GetAssuranceLevel() int32 {
@@ -391,7 +480,7 @@ type User struct {
 func (x *User) Reset() {
 	*x = User{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4]
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -404,7 +493,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4]
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -417,7 +506,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{4}
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{5}
 }
 
 func (m *User) GetUser() isUser_User {
@@ -496,7 +585,7 @@ type User_ExternalID struct {
 func (x *User_ExternalID) Reset() {
 	*x = User_ExternalID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[7]
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -509,7 +598,7 @@ func (x *User_ExternalID) String() string {
 func (*User_ExternalID) ProtoMessage() {}
 
 func (x *User_ExternalID) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[7]
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -522,7 +611,7 @@ func (x *User_ExternalID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User_ExternalID.ProtoReflect.Descriptor instead.
 func (*User_ExternalID) Descriptor() ([]byte, []int) {
-	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{4, 0}
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{5, 0}
 }
 
 func (x *User_ExternalID) GetType() string {
@@ -551,7 +640,7 @@ type User_Property struct {
 func (x *User_Property) Reset() {
 	*x = User_Property{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8]
+		mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -564,7 +653,7 @@ func (x *User_Property) String() string {
 func (*User_Property) ProtoMessage() {}
 
 func (x *User_Property) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8]
+	mi := &file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -577,7 +666,7 @@ func (x *User_Property) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User_Property.ProtoReflect.Descriptor instead.
 func (*User_Property) Descriptor() ([]byte, []int) {
-	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{4, 1}
+	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP(), []int{5, 1}
 }
 
 func (x *User_Property) GetType() string {
@@ -664,14 +753,26 @@ var file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDesc = []byte{
 	0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6f,
 	0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x56,
 	0x61, 0x6c, 0x75, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22,
-	0xc3, 0x01, 0x0a, 0x08, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x12, 0x36, 0x0a, 0x04,
-	0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x22, 0xfa, 0x42, 0x1f, 0x72,
-	0x1d, 0x28, 0x80, 0x02, 0x32, 0x18, 0x5e, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x5f, 0x5d,
-	0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30, 0x2d, 0x39, 0x5f, 0x5d, 0x2b, 0x24, 0x52, 0x04,
-	0x74, 0x79, 0x70, 0x65, 0x12, 0x35, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6f,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x32, 0x2e, 0x56,
-	0x61, 0x6c, 0x75, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x48, 0x0a, 0x08, 0x6d,
+	0x64, 0x0a, 0x0d, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x75, 0x65,
+	0x12, 0x25, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x13, 0xfa, 0x42,
+	0x10, 0x72, 0x0e, 0x10, 0x16, 0x18, 0x80, 0x02, 0x3a, 0x04, 0x67, 0x69, 0x64, 0x3a, 0xd0, 0x01,
+	0x01, 0x48, 0x00, 0x52, 0x02, 0x69, 0x64, 0x12, 0x20, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x0a, 0xfa, 0x42, 0x07, 0x72, 0x05, 0x10, 0x01, 0x18, 0x80,
+	0x02, 0x48, 0x00, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x42, 0x0a, 0x0a, 0x08, 0x72, 0x65, 0x73,
+	0x6f, 0x6c, 0x76, 0x65, 0x72, 0x22, 0x9d, 0x02, 0x0a, 0x08, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72,
+	0x74, 0x79, 0x12, 0x36, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x42, 0x22, 0xfa, 0x42, 0x1f, 0x72, 0x1d, 0x28, 0x80, 0x02, 0x32, 0x18, 0x5e, 0x5b, 0x61, 0x2d,
+	0x7a, 0x41, 0x2d, 0x5a, 0x5f, 0x5d, 0x5b, 0x61, 0x2d, 0x7a, 0x41, 0x2d, 0x5a, 0x30, 0x2d, 0x39,
+	0x5f, 0x5d, 0x2b, 0x24, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x35, 0x0a, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x69, 0x6e, 0x64, 0x79,
+	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x32, 0x2e, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x12, 0x58, 0x0a, 0x0e, 0x65, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x5f, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x69, 0x6e, 0x64, 0x79,
+	0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64, 0x67, 0x65, 0x2e, 0x6f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x45,
+	0x78, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x52, 0x0d, 0x65, 0x78,
+	0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x48, 0x0a, 0x08, 0x6d,
 	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2c, 0x2e,
 	0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x6b, 0x6e, 0x6f, 0x77, 0x6c, 0x65, 0x64,
 	0x67, 0x65, 0x2e, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74,
@@ -768,42 +869,44 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescGZIP() []byte {
 	return file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDescData
 }
 
-var file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_indykite_knowledge_objects_v1beta1_ikg_proto_goTypes = []any{
 	(*Node)(nil),                  // 0: indykite.knowledge.objects.v1beta1.Node
 	(*Relationship)(nil),          // 1: indykite.knowledge.objects.v1beta1.Relationship
-	(*Property)(nil),              // 2: indykite.knowledge.objects.v1beta1.Property
-	(*Metadata)(nil),              // 3: indykite.knowledge.objects.v1beta1.Metadata
-	(*User)(nil),                  // 4: indykite.knowledge.objects.v1beta1.User
-	nil,                           // 5: indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry
-	nil,                           // 6: indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry
-	(*User_ExternalID)(nil),       // 7: indykite.knowledge.objects.v1beta1.User.ExternalID
-	(*User_Property)(nil),         // 8: indykite.knowledge.objects.v1beta1.User.Property
-	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
-	(*v1beta2.Value)(nil),         // 10: indykite.objects.v1beta2.Value
-	(*v1beta1.Value)(nil),         // 11: indykite.objects.v1beta1.Value
+	(*ExternalValue)(nil),         // 2: indykite.knowledge.objects.v1beta1.ExternalValue
+	(*Property)(nil),              // 3: indykite.knowledge.objects.v1beta1.Property
+	(*Metadata)(nil),              // 4: indykite.knowledge.objects.v1beta1.Metadata
+	(*User)(nil),                  // 5: indykite.knowledge.objects.v1beta1.User
+	nil,                           // 6: indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry
+	nil,                           // 7: indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry
+	(*User_ExternalID)(nil),       // 8: indykite.knowledge.objects.v1beta1.User.ExternalID
+	(*User_Property)(nil),         // 9: indykite.knowledge.objects.v1beta1.User.Property
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*v1beta2.Value)(nil),         // 11: indykite.objects.v1beta2.Value
+	(*v1beta1.Value)(nil),         // 12: indykite.objects.v1beta1.Value
 }
 var file_indykite_knowledge_objects_v1beta1_ikg_proto_depIdxs = []int32{
-	9,  // 0: indykite.knowledge.objects.v1beta1.Node.create_time:type_name -> google.protobuf.Timestamp
-	9,  // 1: indykite.knowledge.objects.v1beta1.Node.update_time:type_name -> google.protobuf.Timestamp
-	2,  // 2: indykite.knowledge.objects.v1beta1.Node.properties:type_name -> indykite.knowledge.objects.v1beta1.Property
-	9,  // 3: indykite.knowledge.objects.v1beta1.Relationship.create_time:type_name -> google.protobuf.Timestamp
-	9,  // 4: indykite.knowledge.objects.v1beta1.Relationship.update_time:type_name -> google.protobuf.Timestamp
-	5,  // 5: indykite.knowledge.objects.v1beta1.Relationship.properties:type_name -> indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry
-	10, // 6: indykite.knowledge.objects.v1beta1.Property.value:type_name -> indykite.objects.v1beta2.Value
-	3,  // 7: indykite.knowledge.objects.v1beta1.Property.metadata:type_name -> indykite.knowledge.objects.v1beta1.Metadata
-	9,  // 8: indykite.knowledge.objects.v1beta1.Metadata.verification_time:type_name -> google.protobuf.Timestamp
-	6,  // 9: indykite.knowledge.objects.v1beta1.Metadata.custom_metadata:type_name -> indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry
-	8,  // 10: indykite.knowledge.objects.v1beta1.User.property:type_name -> indykite.knowledge.objects.v1beta1.User.Property
-	7,  // 11: indykite.knowledge.objects.v1beta1.User.external_id:type_name -> indykite.knowledge.objects.v1beta1.User.ExternalID
-	10, // 12: indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry.value:type_name -> indykite.objects.v1beta2.Value
-	10, // 13: indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry.value:type_name -> indykite.objects.v1beta2.Value
-	11, // 14: indykite.knowledge.objects.v1beta1.User.Property.value:type_name -> indykite.objects.v1beta1.Value
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	10, // 0: indykite.knowledge.objects.v1beta1.Node.create_time:type_name -> google.protobuf.Timestamp
+	10, // 1: indykite.knowledge.objects.v1beta1.Node.update_time:type_name -> google.protobuf.Timestamp
+	3,  // 2: indykite.knowledge.objects.v1beta1.Node.properties:type_name -> indykite.knowledge.objects.v1beta1.Property
+	10, // 3: indykite.knowledge.objects.v1beta1.Relationship.create_time:type_name -> google.protobuf.Timestamp
+	10, // 4: indykite.knowledge.objects.v1beta1.Relationship.update_time:type_name -> google.protobuf.Timestamp
+	6,  // 5: indykite.knowledge.objects.v1beta1.Relationship.properties:type_name -> indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry
+	11, // 6: indykite.knowledge.objects.v1beta1.Property.value:type_name -> indykite.objects.v1beta2.Value
+	2,  // 7: indykite.knowledge.objects.v1beta1.Property.external_value:type_name -> indykite.knowledge.objects.v1beta1.ExternalValue
+	4,  // 8: indykite.knowledge.objects.v1beta1.Property.metadata:type_name -> indykite.knowledge.objects.v1beta1.Metadata
+	10, // 9: indykite.knowledge.objects.v1beta1.Metadata.verification_time:type_name -> google.protobuf.Timestamp
+	7,  // 10: indykite.knowledge.objects.v1beta1.Metadata.custom_metadata:type_name -> indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry
+	9,  // 11: indykite.knowledge.objects.v1beta1.User.property:type_name -> indykite.knowledge.objects.v1beta1.User.Property
+	8,  // 12: indykite.knowledge.objects.v1beta1.User.external_id:type_name -> indykite.knowledge.objects.v1beta1.User.ExternalID
+	11, // 13: indykite.knowledge.objects.v1beta1.Relationship.PropertiesEntry.value:type_name -> indykite.objects.v1beta2.Value
+	11, // 14: indykite.knowledge.objects.v1beta1.Metadata.CustomMetadataEntry.value:type_name -> indykite.objects.v1beta2.Value
+	12, // 15: indykite.knowledge.objects.v1beta1.User.Property.value:type_name -> indykite.objects.v1beta1.Value
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_indykite_knowledge_objects_v1beta1_ikg_proto_init() }
@@ -837,7 +940,7 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 			}
 		}
 		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2].Exporter = func(v any, i int) any {
-			switch v := v.(*Property); i {
+			switch v := v.(*ExternalValue); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -849,7 +952,7 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 			}
 		}
 		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[3].Exporter = func(v any, i int) any {
-			switch v := v.(*Metadata); i {
+			switch v := v.(*Property); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -861,6 +964,18 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 			}
 		}
 		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4].Exporter = func(v any, i int) any {
+			switch v := v.(*Metadata); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[5].Exporter = func(v any, i int) any {
 			switch v := v.(*User); i {
 			case 0:
 				return &v.state
@@ -872,7 +987,7 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[7].Exporter = func(v any, i int) any {
+		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8].Exporter = func(v any, i int) any {
 			switch v := v.(*User_ExternalID); i {
 			case 0:
 				return &v.state
@@ -884,7 +999,7 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 				return nil
 			}
 		}
-		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[8].Exporter = func(v any, i int) any {
+		file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[9].Exporter = func(v any, i int) any {
 			switch v := v.(*User_Property); i {
 			case 0:
 				return &v.state
@@ -897,7 +1012,11 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 			}
 		}
 	}
-	file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[4].OneofWrappers = []any{
+	file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[2].OneofWrappers = []any{
+		(*ExternalValue_Id)(nil),
+		(*ExternalValue_Name)(nil),
+	}
+	file_indykite_knowledge_objects_v1beta1_ikg_proto_msgTypes[5].OneofWrappers = []any{
 		(*User_UserId)(nil),
 		(*User_Property_)(nil),
 		(*User_ExternalId)(nil),
@@ -909,7 +1028,7 @@ func file_indykite_knowledge_objects_v1beta1_ikg_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

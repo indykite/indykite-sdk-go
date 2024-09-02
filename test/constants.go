@@ -537,6 +537,11 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 						StringValue: GenerateRandomString(6) + "@yahoo.uk",
 					},
 				},
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Name{
+						Name: "NameExternal",
+					},
+				},
 				Metadata: &knowledgeobjects.Metadata{
 					AssuranceLevel:   1,
 					VerificationTime: timestamppb.Now(),
@@ -561,6 +566,11 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 				Value: &objects.Value{
 					Type: &objects.Value_StringValue{
 						StringValue: GenerateRandomString(6),
+					},
+				},
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: "gid:AAAAGaiIPzg6L0DKkbIh44crsFg",
 					},
 				},
 			},
