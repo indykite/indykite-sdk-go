@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.0](https://github.com/indykite/indykite-sdk-go/compare/v0.36.0...v0.37.0) (2024-09-05)
+
+
+### Features
+
+* change go version ([dd282ca](https://github.com/indykite/indykite-sdk-go/commit/dd282ca1540aed0b7491828936e0c68613a94cd5))
+
 ## [0.36.0](https://github.com/indykite/indykite-sdk-go/compare/v0.35.0...v0.36.0) (2024-08-23)
 
 
