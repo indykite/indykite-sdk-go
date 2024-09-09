@@ -4866,6 +4866,35 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if all {
+		switch v := interface{}(m.GetPropertyMappingMessage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "PropertyMappingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "PropertyMappingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPropertyMappingMessage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "PropertyMappingMessage",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if _, ok := _IdentityMatchingPipelineConfig_EntityMatchingStatus_NotInLookup[m.GetEntityMatchingStatus()]; ok {
 		err := IdentityMatchingPipelineConfigValidationError{
 			field:  "EntityMatchingStatus",
@@ -4886,6 +4915,35 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetEntityMatchingMessage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "EntityMatchingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "EntityMatchingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetEntityMatchingMessage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "EntityMatchingMessage",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	for idx, item := range m.GetPropertyMappings() {
@@ -4947,6 +5005,64 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return IdentityMatchingPipelineConfigValidationError{
 				field:  "LastRunTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetReportUrl()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReportUrl()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "ReportUrl",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetReportType()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReportType()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "ReportType",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}

@@ -1078,6 +1078,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
+	case *ConfigDetail_ExternalDataResolverConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetExternalDataResolverConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "ExternalDataResolverConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "ExternalDataResolverConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetExternalDataResolverConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "ExternalDataResolverConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *ConfigDetail_ConsentConfig:
 		if v == nil {
 			err := ConfigDetailValidationError{
@@ -1154,6 +1195,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return ConfigDetailValidationError{
 					field:  "IngestPipelineConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ConfigDetail_IdentityMatchingPipelineConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetIdentityMatchingPipelineConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "IdentityMatchingPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "IdentityMatchingPipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetIdentityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "IdentityMatchingPipelineConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -1665,6 +1747,122 @@ var _ interface {
 	ErrorName() string
 } = AuditSinkConfigValidationError{}
 
+// Validate checks the field values on ExternalDataResolverConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ExternalDataResolverConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ExternalDataResolverConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ExternalDataResolverConfigMultiError, or nil if none found.
+func (m *ExternalDataResolverConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ExternalDataResolverConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Url
+
+	// no validation rules for Method
+
+	// no validation rules for Headers
+
+	// no validation rules for RequestType
+
+	// no validation rules for RequestPayload
+
+	// no validation rules for ResponseType
+
+	// no validation rules for ResponseSelector
+
+	if len(errors) > 0 {
+		return ExternalDataResolverConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// ExternalDataResolverConfigMultiError is an error wrapping multiple
+// validation errors returned by ExternalDataResolverConfig.ValidateAll() if
+// the designated constraints aren't met.
+type ExternalDataResolverConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ExternalDataResolverConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ExternalDataResolverConfigMultiError) AllErrors() []error { return m }
+
+// ExternalDataResolverConfigValidationError is the validation error returned
+// by ExternalDataResolverConfig.Validate if the designated constraints aren't met.
+type ExternalDataResolverConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ExternalDataResolverConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ExternalDataResolverConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ExternalDataResolverConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ExternalDataResolverConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ExternalDataResolverConfigValidationError) ErrorName() string {
+	return "ExternalDataResolverConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ExternalDataResolverConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sExternalDataResolverConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ExternalDataResolverConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ExternalDataResolverConfigValidationError{}
+
 // Validate checks the field values on AuthorizationPolicyConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2113,6 +2311,47 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 			}
 		}
 
+	case *TokenIntrospectConfig_Opaque_:
+		if v == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "TokenMatcher",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetOpaque()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Opaque",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Opaque",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetOpaque()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectConfigValidationError{
+					field:  "Opaque",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -2152,6 +2391,47 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return TokenIntrospectConfigValidationError{
 					field:  "Offline",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *TokenIntrospectConfig_Online_:
+		if v == nil {
+			err := TokenIntrospectConfigValidationError{
+				field:  "Validation",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetOnline()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Online",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TokenIntrospectConfigValidationError{
+						field:  "Online",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetOnline()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TokenIntrospectConfigValidationError{
+					field:  "Online",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -2241,6 +2521,541 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TokenIntrospectConfigValidationError{}
+
+// Validate checks the field values on ConsentConfiguration with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ConsentConfiguration) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConsentConfiguration with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConsentConfigurationMultiError, or nil if none found.
+func (m *ConsentConfiguration) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConsentConfiguration) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Purpose
+
+	// no validation rules for ApplicationId
+
+	// no validation rules for ValidityPeriod
+
+	// no validation rules for RevokeAfterUse
+
+	// no validation rules for TokenStatus
+
+	if len(errors) > 0 {
+		return ConsentConfigurationMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConsentConfigurationMultiError is an error wrapping multiple validation
+// errors returned by ConsentConfiguration.ValidateAll() if the designated
+// constraints aren't met.
+type ConsentConfigurationMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConsentConfigurationMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConsentConfigurationMultiError) AllErrors() []error { return m }
+
+// ConsentConfigurationValidationError is the validation error returned by
+// ConsentConfiguration.Validate if the designated constraints aren't met.
+type ConsentConfigurationValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConsentConfigurationValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConsentConfigurationValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConsentConfigurationValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConsentConfigurationValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConsentConfigurationValidationError) ErrorName() string {
+	return "ConsentConfigurationValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ConsentConfigurationValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConsentConfiguration.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConsentConfigurationValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConsentConfigurationValidationError{}
+
+// Validate checks the field values on IngestPipelineConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *IngestPipelineConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on IngestPipelineConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// IngestPipelineConfigMultiError, or nil if none found.
+func (m *IngestPipelineConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IngestPipelineConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for AppAgentToken
+
+	if len(errors) > 0 {
+		return IngestPipelineConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// IngestPipelineConfigMultiError is an error wrapping multiple validation
+// errors returned by IngestPipelineConfig.ValidateAll() if the designated
+// constraints aren't met.
+type IngestPipelineConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IngestPipelineConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IngestPipelineConfigMultiError) AllErrors() []error { return m }
+
+// IngestPipelineConfigValidationError is the validation error returned by
+// IngestPipelineConfig.Validate if the designated constraints aren't met.
+type IngestPipelineConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IngestPipelineConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IngestPipelineConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IngestPipelineConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IngestPipelineConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IngestPipelineConfigValidationError) ErrorName() string {
+	return "IngestPipelineConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IngestPipelineConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIngestPipelineConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IngestPipelineConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IngestPipelineConfigValidationError{}
+
+// Validate checks the field values on IdentityMatchingPipelineConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *IdentityMatchingPipelineConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on IdentityMatchingPipelineConfig with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// IdentityMatchingPipelineConfigMultiError, or nil if none found.
+func (m *IdentityMatchingPipelineConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetNodeFilter()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "NodeFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "NodeFilter",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetNodeFilter()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "NodeFilter",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for SimilarityScoreCutoff
+
+	// no validation rules for PropertyMappingStatus
+
+	if all {
+		switch v := interface{}(m.GetPropertyMappingMessage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "PropertyMappingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "PropertyMappingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPropertyMappingMessage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "PropertyMappingMessage",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for EntityMatchingStatus
+
+	if all {
+		switch v := interface{}(m.GetEntityMatchingMessage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "EntityMatchingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "EntityMatchingMessage",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetEntityMatchingMessage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "EntityMatchingMessage",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetPropertyMappings() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+						field:  fmt.Sprintf("PropertyMappings[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+						field:  fmt.Sprintf("PropertyMappings[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IdentityMatchingPipelineConfigValidationError{
+					field:  fmt.Sprintf("PropertyMappings[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for RerunInterval
+
+	if all {
+		switch v := interface{}(m.GetLastRunTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "LastRunTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "LastRunTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetLastRunTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "LastRunTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetReportUrl()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReportUrl()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "ReportUrl",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetReportType()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					field:  "ReportType",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReportType()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return IdentityMatchingPipelineConfigValidationError{
+				field:  "ReportType",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return IdentityMatchingPipelineConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// IdentityMatchingPipelineConfigMultiError is an error wrapping multiple
+// validation errors returned by IdentityMatchingPipelineConfig.ValidateAll()
+// if the designated constraints aren't met.
+type IdentityMatchingPipelineConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IdentityMatchingPipelineConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IdentityMatchingPipelineConfigMultiError) AllErrors() []error { return m }
+
+// IdentityMatchingPipelineConfigValidationError is the validation error
+// returned by IdentityMatchingPipelineConfig.Validate if the designated
+// constraints aren't met.
+type IdentityMatchingPipelineConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IdentityMatchingPipelineConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IdentityMatchingPipelineConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IdentityMatchingPipelineConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IdentityMatchingPipelineConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IdentityMatchingPipelineConfigValidationError) ErrorName() string {
+	return "IdentityMatchingPipelineConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IdentityMatchingPipelineConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIdentityMatchingPipelineConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IdentityMatchingPipelineConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IdentityMatchingPipelineConfigValidationError{}
 
 // Validate checks the field values on CreatedConfig_Location with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2676,6 +3491,109 @@ var _ interface {
 	ErrorName() string
 } = TokenIntrospectConfig_JWTValidationError{}
 
+// Validate checks the field values on TokenIntrospectConfig_Opaque with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenIntrospectConfig_Opaque) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenIntrospectConfig_Opaque with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenIntrospectConfig_OpaqueMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Opaque) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenIntrospectConfig_Opaque) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return TokenIntrospectConfig_OpaqueMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenIntrospectConfig_OpaqueMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Opaque.ValidateAll() if
+// the designated constraints aren't met.
+type TokenIntrospectConfig_OpaqueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenIntrospectConfig_OpaqueMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenIntrospectConfig_OpaqueMultiError) AllErrors() []error { return m }
+
+// TokenIntrospectConfig_OpaqueValidationError is the validation error returned
+// by TokenIntrospectConfig_Opaque.Validate if the designated constraints
+// aren't met.
+type TokenIntrospectConfig_OpaqueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenIntrospectConfig_OpaqueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenIntrospectConfig_OpaqueValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_OpaqueValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenIntrospectConfig_OpaqueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenIntrospectConfig_Opaque.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenIntrospectConfig_OpaqueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenIntrospectConfig_OpaqueValidationError{}
+
 // Validate checks the field values on TokenIntrospectConfig_Offline with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -2778,6 +3696,140 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TokenIntrospectConfig_OfflineValidationError{}
+
+// Validate checks the field values on TokenIntrospectConfig_Online with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TokenIntrospectConfig_Online) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TokenIntrospectConfig_Online with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TokenIntrospectConfig_OnlineMultiError, or nil if none found.
+func (m *TokenIntrospectConfig_Online) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TokenIntrospectConfig_Online) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserinfoEndpoint
+
+	if all {
+		switch v := interface{}(m.GetCacheTtl()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TokenIntrospectConfig_OnlineValidationError{
+					field:  "CacheTtl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TokenIntrospectConfig_OnlineValidationError{
+					field:  "CacheTtl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCacheTtl()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TokenIntrospectConfig_OnlineValidationError{
+				field:  "CacheTtl",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return TokenIntrospectConfig_OnlineMultiError(errors)
+	}
+
+	return nil
+}
+
+// TokenIntrospectConfig_OnlineMultiError is an error wrapping multiple
+// validation errors returned by TokenIntrospectConfig_Online.ValidateAll() if
+// the designated constraints aren't met.
+type TokenIntrospectConfig_OnlineMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TokenIntrospectConfig_OnlineMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TokenIntrospectConfig_OnlineMultiError) AllErrors() []error { return m }
+
+// TokenIntrospectConfig_OnlineValidationError is the validation error returned
+// by TokenIntrospectConfig_Online.Validate if the designated constraints
+// aren't met.
+type TokenIntrospectConfig_OnlineValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TokenIntrospectConfig_OnlineValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TokenIntrospectConfig_OnlineValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TokenIntrospectConfig_OnlineValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TokenIntrospectConfig_OnlineValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TokenIntrospectConfig_OnlineValidationError) ErrorName() string {
+	return "TokenIntrospectConfig_OnlineValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TokenIntrospectConfig_OnlineValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTokenIntrospectConfig_Online.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TokenIntrospectConfig_OnlineValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TokenIntrospectConfig_OnlineValidationError{}
 
 // Validate checks the field values on TokenIntrospectConfig_Claim with the
 // rules defined in the proto definition for this message. If any rules are
@@ -2883,3 +3935,228 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TokenIntrospectConfig_ClaimValidationError{}
+
+// Validate checks the field values on
+// IdentityMatchingPipelineConfig_NodeFilter with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *IdentityMatchingPipelineConfig_NodeFilter) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// IdentityMatchingPipelineConfig_NodeFilter with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// IdentityMatchingPipelineConfig_NodeFilterMultiError, or nil if none found.
+func (m *IdentityMatchingPipelineConfig_NodeFilter) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return IdentityMatchingPipelineConfig_NodeFilterMultiError(errors)
+	}
+
+	return nil
+}
+
+// IdentityMatchingPipelineConfig_NodeFilterMultiError is an error wrapping
+// multiple validation errors returned by
+// IdentityMatchingPipelineConfig_NodeFilter.ValidateAll() if the designated
+// constraints aren't met.
+type IdentityMatchingPipelineConfig_NodeFilterMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IdentityMatchingPipelineConfig_NodeFilterMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IdentityMatchingPipelineConfig_NodeFilterMultiError) AllErrors() []error { return m }
+
+// IdentityMatchingPipelineConfig_NodeFilterValidationError is the validation
+// error returned by IdentityMatchingPipelineConfig_NodeFilter.Validate if the
+// designated constraints aren't met.
+type IdentityMatchingPipelineConfig_NodeFilterValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) ErrorName() string {
+	return "IdentityMatchingPipelineConfig_NodeFilterValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIdentityMatchingPipelineConfig_NodeFilter.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IdentityMatchingPipelineConfig_NodeFilterValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IdentityMatchingPipelineConfig_NodeFilterValidationError{}
+
+// Validate checks the field values on
+// IdentityMatchingPipelineConfig_PropertyMapping with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *IdentityMatchingPipelineConfig_PropertyMapping) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// IdentityMatchingPipelineConfig_PropertyMapping with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// IdentityMatchingPipelineConfig_PropertyMappingMultiError, or nil if none found.
+func (m *IdentityMatchingPipelineConfig_PropertyMapping) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IdentityMatchingPipelineConfig_PropertyMapping) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SourceNodeType
+
+	// no validation rules for SourceNodeProperty
+
+	// no validation rules for TargetNodeType
+
+	// no validation rules for TargetNodeProperty
+
+	// no validation rules for SimilarityScoreCutoff
+
+	if len(errors) > 0 {
+		return IdentityMatchingPipelineConfig_PropertyMappingMultiError(errors)
+	}
+
+	return nil
+}
+
+// IdentityMatchingPipelineConfig_PropertyMappingMultiError is an error
+// wrapping multiple validation errors returned by
+// IdentityMatchingPipelineConfig_PropertyMapping.ValidateAll() if the
+// designated constraints aren't met.
+type IdentityMatchingPipelineConfig_PropertyMappingMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IdentityMatchingPipelineConfig_PropertyMappingMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IdentityMatchingPipelineConfig_PropertyMappingMultiError) AllErrors() []error { return m }
+
+// IdentityMatchingPipelineConfig_PropertyMappingValidationError is the
+// validation error returned by
+// IdentityMatchingPipelineConfig_PropertyMapping.Validate if the designated
+// constraints aren't met.
+type IdentityMatchingPipelineConfig_PropertyMappingValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) ErrorName() string {
+	return "IdentityMatchingPipelineConfig_PropertyMappingValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIdentityMatchingPipelineConfig_PropertyMapping.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IdentityMatchingPipelineConfig_PropertyMappingValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IdentityMatchingPipelineConfig_PropertyMappingValidationError{}

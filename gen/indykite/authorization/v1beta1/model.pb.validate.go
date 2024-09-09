@@ -164,7 +164,7 @@ func (m *Subject) validate(all bool) error {
 			}
 		}
 
-	case *Subject_IndykiteAccessToken:
+	case *Subject_AccessToken:
 		if v == nil {
 			err := SubjectValidationError{
 				field:  "Subject",
@@ -177,9 +177,9 @@ func (m *Subject) validate(all bool) error {
 		}
 		oneofSubjectPresent = true
 
-		if utf8.RuneCountInString(m.GetIndykiteAccessToken()) < 20 {
+		if utf8.RuneCountInString(m.GetAccessToken()) < 20 {
 			err := SubjectValidationError{
-				field:  "IndykiteAccessToken",
+				field:  "AccessToken",
 				reason: "value length must be at least 20 runes",
 			}
 			if !all {
@@ -826,6 +826,174 @@ func (m *InputParam) validate(all bool) error {
 		}
 		oneofValuePresent = true
 		// no validation rules for DoubleValue
+	case *InputParam_TimeValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+
+		if all {
+			switch v := interface{}(m.GetTimeValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "TimeValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "TimeValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetTimeValue()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InputParamValidationError{
+					field:  "TimeValue",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *InputParam_DurationValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+
+		if all {
+			switch v := interface{}(m.GetDurationValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "DurationValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "DurationValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetDurationValue()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InputParamValidationError{
+					field:  "DurationValue",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *InputParam_ArrayValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+
+		if all {
+			switch v := interface{}(m.GetArrayValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "ArrayValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "ArrayValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetArrayValue()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InputParamValidationError{
+					field:  "ArrayValue",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *InputParam_MapValue:
+		if v == nil {
+			err := InputParamValidationError{
+				field:  "Value",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofValuePresent = true
+
+		if all {
+			switch v := interface{}(m.GetMapValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "MapValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InputParamValidationError{
+						field:  "MapValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetMapValue()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InputParamValidationError{
+					field:  "MapValue",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}

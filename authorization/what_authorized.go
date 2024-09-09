@@ -56,8 +56,8 @@ func (c *Client) WhatAuthorizedByToken(
 ) (*authorizationpb.WhatAuthorizedResponse, error) {
 	return c.WhatAuthorizedWithRawRequest(ctx, &authorizationpb.WhatAuthorizedRequest{
 		Subject: &authorizationpb.Subject{
-			Subject: &authorizationpb.Subject_IndykiteAccessToken{
-				IndykiteAccessToken: token},
+			Subject: &authorizationpb.Subject_AccessToken{
+				AccessToken: token},
 		},
 		ResourceTypes: resourceTypes,
 		InputParams:   inputParams,
@@ -119,8 +119,8 @@ func (c *Client) WhatAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call WhatAuthorized client endpoint")
 	}
 
-	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_IndykiteAccessToken); ok {
-		if err := verifyTokenFormat(subject.IndykiteAccessToken); err != nil {
+	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_AccessToken); ok {
+		if err := verifyTokenFormat(subject.AccessToken); err != nil {
 			return nil, err
 		}
 	}
