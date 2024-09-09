@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.38.0](https://github.com/indykite/indykite-sdk-go/compare/v0.37.0...v0.38.0) (2024-09-09)
+
+
+### Features
+
+* update token subject and inputParam ([fd9e58f](https://github.com/indykite/indykite-sdk-go/commit/fd9e58ff1197bdc11a385c8b5199c4d73847fad3))
+
 ## [0.37.0](https://github.com/indykite/indykite-sdk-go/compare/v0.36.0...v0.37.0) (2024-09-05)
 
 
