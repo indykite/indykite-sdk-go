@@ -47,6 +47,9 @@ var _ = Describe("IsAuthorized", func() {
 		inputParam = map[string]*authorizationpb.InputParam{
 			"Color": {Value: &authorizationpb.InputParam_StringValue{StringValue: "red"}},
 		}
+		inputParamInt = map[string]*authorizationpb.InputParam{
+			"Age": {Value: &authorizationpb.InputParam_IntegerValue{IntegerValue: 21}},
+		}
 		policyTags = []string{"sometag"}
 		tokenGood  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
 			"eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9." +
@@ -160,7 +163,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamInt,
 				PolicyTags:  policyTags,
 			}
 			beResp := beResp
@@ -182,7 +185,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				resourceExample,
-				inputParam,
+				inputParamInt,
 				policyTags,
 			)
 			Expect(err).To(Succeed())
