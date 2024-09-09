@@ -226,8 +226,8 @@ var _ = Describe("WhatAuthorized", func() {
 		It("WhatAuthorizedToken", func() {
 			req := &authorizationpb.WhatAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_IndykiteAccessToken{
-						IndykiteAccessToken: tokenGood,
+					Subject: &authorizationpb.Subject_AccessToken{
+						AccessToken: tokenGood,
 					},
 				},
 				ResourceTypes: resourceTypeExample,
@@ -256,8 +256,8 @@ var _ = Describe("WhatAuthorized", func() {
 		It("WhatAuthorizedTokenWrongFormat", func() {
 			req := &authorizationpb.WhatAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_IndykiteAccessToken{
-						IndykiteAccessToken: tokenBad,
+					Subject: &authorizationpb.Subject_AccessToken{
+						AccessToken: tokenBad,
 					},
 				},
 				ResourceTypes: resourceTypeExample,
@@ -272,8 +272,8 @@ var _ = Describe("WhatAuthorized", func() {
 		It("Invalid status", func() {
 			req := &authorizationpb.WhatAuthorizedRequest{
 				Subject: &authorizationpb.Subject{
-					Subject: &authorizationpb.Subject_IndykiteAccessToken{
-						IndykiteAccessToken: tokenGood,
+					Subject: &authorizationpb.Subject_AccessToken{
+						AccessToken: tokenGood,
 					},
 				},
 				ResourceTypes: resourceTypeExample,

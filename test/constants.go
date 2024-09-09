@@ -359,7 +359,7 @@ func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // n
 								Type: "asset",
 								Value: &objects.Value{
 									Type: &objects.Value_StringValue{
-										StringValue: "T",
+										StringValue: "Truck",
 									},
 								},
 							},
