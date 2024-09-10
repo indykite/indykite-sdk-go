@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.39.0](https://github.com/indykite/indykite-sdk-go/compare/v0.38.0...v0.39.0) (2024-09-10)
+
+
+### Features
+
+* implement data ref validation ([9def30a](https://github.com/indykite/indykite-sdk-go/commit/9def30a97b4bfb8dbd77b00ea539923201654682))
+
 ## [0.38.0](https://github.com/indykite/indykite-sdk-go/compare/v0.37.0...v0.38.0) (2024-09-09)
 
 
