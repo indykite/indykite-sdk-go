@@ -189,6 +189,8 @@ var (
 	ConsentInvalid  = "gid:AAAAHQlNWOqosEpOuI7iyJ46Lhc"
 	ConsentEnforce  = "gid:AAAAHZqv2OcINERSmJxWdp_Zdx4"
 	ConsentAllow    = "gid:AAAAHf5ZnwufDUK-tnCjoSsw-cQ"
+
+	Resolver = "gid:AAAAIcrOChFSj0R5sFm1V8JXhiE"
 )
 
 func GenerateRandomString(length int) string {
@@ -357,9 +359,9 @@ func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // n
 							},
 							{
 								Type: "asset",
-								Value: &objects.Value{
-									Type: &objects.Value_StringValue{
-										StringValue: "Truck",
+								ExternalValue: &knowledgeobjects.ExternalValue{
+									Resolver: &knowledgeobjects.ExternalValue_Id{
+										Id: Resolver,
 									},
 								},
 							},
@@ -564,9 +566,72 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 					},
 				},
 			},
+			{
+				Type: "asset",
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: Resolver,
+					},
+				},
+			},
 		},
 	}
 	return node, externalID
+}
+
+func CreateBatchNodesError(
+	typeNode string) *knowledgeobjects.Node {
+	externalID := GenerateRandomString(10)
+	node := &knowledgeobjects.Node{
+		ExternalId: externalID,
+		Type:       typeNode,
+		IsIdentity: true,
+		Properties: []*knowledgeobjects.Property{
+			{
+				Type: "email",
+				Value: &objects.Value{
+					Type: &objects.Value_StringValue{
+						StringValue: GenerateRandomString(6) + "@yahoo.uk",
+					},
+				},
+			},
+			{
+				Type: "last_name",
+				Value: &objects.Value{
+					Type: &objects.Value_StringValue{
+						StringValue: GenerateRandomString(6),
+					},
+				},
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: Resolver,
+					},
+				},
+			},
+		},
+	}
+	return node
+}
+
+func CreateBatchNodesNoResolver(
+	typeNode string) *knowledgeobjects.Node {
+	externalID := GenerateRandomString(10)
+	node := &knowledgeobjects.Node{
+		ExternalId: externalID,
+		Type:       typeNode,
+		IsIdentity: true,
+		Properties: []*knowledgeobjects.Property{
+			{
+				Type: "last_name",
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: NodeNotInDB,
+					},
+				},
+			},
+		},
+	}
+	return node
 }
 
 func BatchNodesType( //nolint:gocritic // nonamedreturns against unnamedResult
