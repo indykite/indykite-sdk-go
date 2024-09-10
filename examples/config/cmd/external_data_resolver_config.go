@@ -35,10 +35,10 @@ var createExternalDataResolverConfigCmd = &cobra.Command{
 	Short: "Create ExternalDataResolver config",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ExternalDataResolverConfig{
-			Url:    "https://example.com/source",
+			Url:    "https://example.com/source2",
 			Method: "GET",
 			Headers: map[string]*configpb.ExternalDataResolverConfig_Header{
-				"Authorization": {Values: []string{"Bearer edyUTY"}},
+				"Authorization": {Values: []string{"Bearer edolkUTY"}},
 				"Content-Type":  {Values: []string{"application/json"}},
 			},
 			RequestType:      configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
@@ -46,9 +46,9 @@ var createExternalDataResolverConfigCmd = &cobra.Command{
 			ResponseType:     configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
 			ResponseSelector: ".",
 		}
-		createReq, _ := config.NewCreate("like-real-config-node-name")
+		createReq, _ := config.NewCreate("like-real-config-node-name2")
 		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
-		createReq.WithDisplayName("Like real ConfigNode Name")
+		createReq.WithDisplayName("Like real ConfigNode Name2")
 		createReq.WithExternalDataResolverConfig(configuration)
 
 		resp, err := client.CreateConfigNode(context.Background(), createReq)

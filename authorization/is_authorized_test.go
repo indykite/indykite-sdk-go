@@ -28,6 +28,7 @@ import (
 	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
 	objectpb "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta1"
+	objectpb2 "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 	"github.com/indykite/indykite-sdk-go/test"
 	authorizationmock "github.com/indykite/indykite-sdk-go/test/authorization/v1beta1"
 
@@ -46,6 +47,47 @@ var _ = Describe("IsAuthorized", func() {
 		}
 		inputParam = map[string]*authorizationpb.InputParam{
 			"Color": {Value: &authorizationpb.InputParam_StringValue{StringValue: "red"}},
+		}
+		inputParamInt = map[string]*authorizationpb.InputParam{
+			"Age": {Value: &authorizationpb.InputParam_IntegerValue{IntegerValue: 21}},
+		}
+		inputParamTime = map[string]*authorizationpb.InputParam{
+			"DateT": {Value: &authorizationpb.InputParam_TimeValue{
+				TimeValue: timestamppb.New(
+					time.Date(2024, 9, 9, 9, 9, 0, 0, time.UTC),
+				)}},
+		}
+		inputParamArray = map[string]*authorizationpb.InputParam{
+			"ArrayParam": {
+				Value: &authorizationpb.InputParam_ArrayValue{
+					ArrayValue: &objectpb2.Array{
+						Values: []*objectpb2.Value{
+							{
+								Type: &objectpb2.Value_StringValue{StringValue: "ParkingLot"},
+							},
+							{
+								Type: &objectpb2.Value_IntegerValue{IntegerValue: 42},
+							},
+						},
+					},
+				},
+			},
+		}
+		inputParamMap = map[string]*authorizationpb.InputParam{
+			"MapParam": {
+				Value: &authorizationpb.InputParam_MapValue{
+					MapValue: &objectpb2.Map{
+						Fields: map[string]*objectpb2.Value{
+							"ParkingLot": {
+								Type: &objectpb2.Value_StringValue{StringValue: "Square street"},
+							},
+							"Lot": {
+								Type: &objectpb2.Value_IntegerValue{IntegerValue: 42},
+							},
+						},
+					},
+				},
+			},
 		}
 		policyTags = []string{"sometag"}
 		tokenGood  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
@@ -160,7 +202,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamInt,
 				PolicyTags:  policyTags,
 			}
 			beResp := beResp
@@ -182,7 +224,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				resourceExample,
-				inputParam,
+				inputParamInt,
 				policyTags,
 			)
 			Expect(err).To(Succeed())
@@ -202,7 +244,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamTime,
 				PolicyTags:  policyTags,
 			}
 			beResp := beResp
@@ -217,7 +259,7 @@ var _ = Describe("IsAuthorized", func() {
 				ctx,
 				externalID,
 				resourceExample,
-				inputParam,
+				inputParamTime,
 				policyTags,
 			)
 			Expect(err).To(Succeed())
@@ -232,7 +274,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamArray,
 				PolicyTags:  policyTags,
 			}
 			beResp := beResp
@@ -247,7 +289,7 @@ var _ = Describe("IsAuthorized", func() {
 				ctx,
 				tokenGood,
 				resourceExample,
-				inputParam,
+				inputParamArray,
 				policyTags,
 			)
 			Expect(err).To(Succeed())
@@ -262,7 +304,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamMap,
 				PolicyTags:  policyTags,
 			}
 			resp, err := authorizationClient.IsAuthorizedWithRawRequest(ctx, req)
@@ -278,7 +320,7 @@ var _ = Describe("IsAuthorized", func() {
 					},
 				},
 				Resources:   resourceExample,
-				InputParams: inputParam,
+				InputParams: inputParamMap,
 				PolicyTags:  policyTags,
 			}
 			statusErr := status.New(codes.AlreadyExists, "something wrong").Err()

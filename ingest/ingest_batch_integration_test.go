@@ -189,6 +189,48 @@ var _ = Describe("Ingestion", func() {
 				}))),
 			})))
 		})
+
+		It("UpsertNodeBothValueAndExternalValue", func() {
+			var err error
+			ingestClient, err := integration.InitConfigIngest()
+			Expect(err).To(Succeed())
+
+			node1 := integration.CreateBatchNodesError("Individual")
+
+			nodes := []*knowledgeobjects.Node{
+				node1,
+			}
+			resp, err := ingestClient.BatchUpsertNodes(
+				context.Background(),
+				nodes,
+				retry.WithMax(5),
+			)
+
+			Expect(err).To(MatchError(ContainSubstring(
+				"externalValue and value are mutually exclusive")))
+			Expect(resp).To(BeNil())
+		})
+
+		It("UpsertNodeExternalValueWithoutResolver", func() {
+			var err error
+			ingestClient, err := integration.InitConfigIngest()
+			Expect(err).To(Succeed())
+
+			node1 := integration.CreateBatchNodesNoResolver("Individual")
+
+			nodes := []*knowledgeobjects.Node{
+				node1,
+			}
+			resp, err := ingestClient.BatchUpsertNodes(
+				context.Background(),
+				nodes,
+				retry.WithMax(5),
+			)
+
+			Expect(err).To(MatchError(ContainSubstring(
+				"invalid external value GID, expected GID of type ExternalDataResolver")))
+			Expect(resp).To(BeNil())
+		})
 	})
 
 	Describe("IngestBatchUpsertRelationships", func() {
