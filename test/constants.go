@@ -566,6 +566,14 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 					},
 				},
 			},
+			{
+				Type: "asset",
+				ExternalValue: &knowledgeobjects.ExternalValue{
+					Resolver: &knowledgeobjects.ExternalValue_Id{
+						Id: Resolver,
+					},
+				},
+			},
 		},
 	}
 	return node, externalID
