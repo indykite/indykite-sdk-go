@@ -17,11 +17,13 @@ package config_test
 import (
 	"context"
 	"errors"
+	"time"
 
 	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/indykite/indykite-sdk-go/config"
 	sdkerrors "github.com/indykite/indykite-sdk-go/errors"
@@ -276,6 +278,62 @@ var _ = Describe("ConfigNode", func() {
 							RequestPayload:   []byte(`{"key": "value"}`),
 							ResponseType:     1,
 							ResponseSelector: ".",
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadSuccessEntityMatchingPipelineConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_EntityMatchingPipelineConfig{
+						EntityMatchingPipelineConfig: &configpb.EntityMatchingPipelineConfig{
+							NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
+								SourceNodeTypes: []string{"employee"},
+								TargetNodeTypes: []string{"user"},
+							},
+							SimilarityScoreCutoff: 0.8,
+							PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+							EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+							PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+								{
+									SourceNodeType:        "employee",
+									SourceNodeProperty:    "email",
+									TargetNodeType:        "user",
+									TargetNodeProperty:    "address",
+									SimilarityScoreCutoff: 0.9,
+								},
+							},
+							RerunInterval: "1 day",
+							LastRunTime:   timestamppb.New(time.Now()),
+							ReportUrl:     wrapperspb.String("gs://some-path"),
+							ReportType:    wrapperspb.String("csv"),
 						},
 					},
 				},
@@ -615,6 +673,85 @@ var _ = Describe("ConfigNode", func() {
 							"RequestType":  Equal(configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON),
 							"ResponseType": Equal(configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON),
 						})),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("CreateEntityMatchingPipelineConfig", func() {
+			now := timestamppb.New(time.Now())
+			configuration := &configpb.EntityMatchingPipelineConfig{
+				NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
+					SourceNodeTypes: []string{"employee"},
+					TargetNodeTypes: []string{"user"},
+				},
+				SimilarityScoreCutoff: 0.8,
+				PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+				EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+				PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+					{
+						SourceNodeType:        "employee",
+						SourceNodeProperty:    "email",
+						TargetNodeType:        "user",
+						TargetNodeProperty:    "address",
+						SimilarityScoreCutoff: 0.9,
+					},
+				},
+				RerunInterval: "1 day",
+				LastRunTime:   now,
+				ReportUrl:     wrapperspb.String("gs://some-path"),
+				ReportType:    wrapperspb.String("csv"),
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithEntityMatchingPipelineConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+				Bookmark:   "something-like-bookmark-which-is-long-enough",
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EntityMatchingPipelineConfig": test.EqualProto(
+							&configpb.EntityMatchingPipelineConfig{
+								NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
+									SourceNodeTypes: []string{"employee"},
+									TargetNodeTypes: []string{"user"},
+								},
+								SimilarityScoreCutoff: 0.8,
+								PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+								EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+								PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+									{
+										SourceNodeType:        "employee",
+										SourceNodeProperty:    "email",
+										TargetNodeType:        "user",
+										TargetNodeProperty:    "address",
+										SimilarityScoreCutoff: 0.9,
+									},
+								},
+								RerunInterval: "1 day",
+								LastRunTime:   now,
+								ReportUrl:     wrapperspb.String("gs://some-path"),
+								ReportType:    wrapperspb.String("csv"),
+							},
+						),
 					})),
 				}))),
 				gomock.Any(),
@@ -968,6 +1105,84 @@ var _ = Describe("ConfigNode", func() {
 							"RequestType":  Equal(configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON),
 							"ResponseType": Equal(configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON),
 						})),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateEntityMatchingPipelineConfig", func() {
+			now := timestamppb.New(time.Now())
+			configuration := &configpb.EntityMatchingPipelineConfig{
+				NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
+					SourceNodeTypes: []string{"employee"},
+					TargetNodeTypes: []string{"user"},
+				},
+				SimilarityScoreCutoff: 0.9,
+				PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+				EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+				PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+					{
+						SourceNodeType:        "employee",
+						SourceNodeProperty:    "email",
+						TargetNodeType:        "user",
+						TargetNodeProperty:    "city",
+						SimilarityScoreCutoff: 0.8,
+					},
+				},
+				RerunInterval: "1 hour",
+				LastRunTime:   now,
+				ReportUrl:     wrapperspb.String("gs://some-otherpath"),
+				ReportType:    wrapperspb.String("csv"),
+			}
+
+			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.EmptyDisplayName()
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
+			configNodeRequest.WithEntityMatchingPipelineConfig(configuration)
+
+			beResp := &configpb.UpdateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwert",
+				UpdatedBy:  "creator",
+				UpdateTime: timestamppb.Now(),
+				Bookmark:   "something-like-bookmark-which-is-long-enough",
+			}
+
+			mockClient.EXPECT().UpdateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal("gid:like-real-config-node-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EntityMatchingPipelineConfig": test.EqualProto(
+							&configpb.EntityMatchingPipelineConfig{
+								NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
+									SourceNodeTypes: []string{"employee"},
+									TargetNodeTypes: []string{"user"},
+								},
+								SimilarityScoreCutoff: 0.9,
+								PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+								EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+								PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+									{
+										SourceNodeType:        "employee",
+										SourceNodeProperty:    "email",
+										TargetNodeType:        "user",
+										TargetNodeProperty:    "city",
+										SimilarityScoreCutoff: 0.8,
+									},
+								},
+								RerunInterval: "1 hour",
+								LastRunTime:   now,
+								ReportUrl:     wrapperspb.String("gs://some-otherpath"),
+								ReportType:    wrapperspb.String("csv"),
+							},
+						),
 					})),
 				}))),
 				gomock.Any(),
