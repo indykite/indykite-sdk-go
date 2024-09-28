@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /*
-Package tda implements the IndyKite TrustedDataAccess Service API Client.
+Package entitymatching implements the IndyKite TrustedDataAccess Service API Client.
 */
-package tda
+package entitymatching
 
 const versionClient = "v0.39.0" // x-release-please-version
