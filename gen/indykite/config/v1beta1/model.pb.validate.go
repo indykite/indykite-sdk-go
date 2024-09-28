@@ -3062,7 +3062,7 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 
-	case *ConfigNode_IdentityMatchingPipelineConfig:
+	case *ConfigNode_EntityMatchingPipelineConfig:
 		if v == nil {
 			err := ConfigNodeValidationError{
 				field:  "Config",
@@ -3075,9 +3075,9 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
-		if m.GetIdentityMatchingPipelineConfig() == nil {
+		if m.GetEntityMatchingPipelineConfig() == nil {
 			err := ConfigNodeValidationError{
-				field:  "IdentityMatchingPipelineConfig",
+				field:  "EntityMatchingPipelineConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -3087,11 +3087,11 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetIdentityMatchingPipelineConfig()).(type) {
+			switch v := interface{}(m.GetEntityMatchingPipelineConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ConfigNodeValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -3099,16 +3099,16 @@ func (m *ConfigNode) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ConfigNodeValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetIdentityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEntityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ConfigNodeValidationError{
-					field:  "IdentityMatchingPipelineConfig",
+					field:  "EntityMatchingPipelineConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -4782,22 +4782,22 @@ var _IngestPipelineConfig_Sources_Pattern = regexp.MustCompile("^[a-zA-Z0-9._-]{
 
 var _IngestPipelineConfig_AppAgentToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+?\\.[A-Za-z0-9-_]+?\\.[A-Za-z0-9-_]+?$")
 
-// Validate checks the field values on IdentityMatchingPipelineConfig with the
+// Validate checks the field values on EntityMatchingPipelineConfig with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *IdentityMatchingPipelineConfig) Validate() error {
+func (m *EntityMatchingPipelineConfig) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on IdentityMatchingPipelineConfig with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// IdentityMatchingPipelineConfigMultiError, or nil if none found.
-func (m *IdentityMatchingPipelineConfig) ValidateAll() error {
+// ValidateAll checks the field values on EntityMatchingPipelineConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// EntityMatchingPipelineConfigMultiError, or nil if none found.
+func (m *EntityMatchingPipelineConfig) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
+func (m *EntityMatchingPipelineConfig) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -4808,7 +4808,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetNodeFilter()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "NodeFilter",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4816,7 +4816,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "NodeFilter",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4825,7 +4825,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetNodeFilter()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "NodeFilter",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -4834,7 +4834,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 	}
 
 	if val := m.GetSimilarityScoreCutoff(); val < 0 || val > 1 {
-		err := IdentityMatchingPipelineConfigValidationError{
+		err := EntityMatchingPipelineConfigValidationError{
 			field:  "SimilarityScoreCutoff",
 			reason: "value must be inside range [0, 1]",
 		}
@@ -4844,19 +4844,8 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if _, ok := _IdentityMatchingPipelineConfig_PropertyMappingStatus_NotInLookup[m.GetPropertyMappingStatus()]; ok {
-		err := IdentityMatchingPipelineConfigValidationError{
-			field:  "PropertyMappingStatus",
-			reason: "value must not be in list [STATUS_INVALID]",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if _, ok := IdentityMatchingPipelineConfig_Status_name[int32(m.GetPropertyMappingStatus())]; !ok {
-		err := IdentityMatchingPipelineConfigValidationError{
+	if _, ok := EntityMatchingPipelineConfig_Status_name[int32(m.GetPropertyMappingStatus())]; !ok {
+		err := EntityMatchingPipelineConfigValidationError{
 			field:  "PropertyMappingStatus",
 			reason: "value must be one of the defined enum values",
 		}
@@ -4870,7 +4859,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetPropertyMappingMessage()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "PropertyMappingMessage",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4878,7 +4867,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "PropertyMappingMessage",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4887,7 +4876,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetPropertyMappingMessage()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "PropertyMappingMessage",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -4895,19 +4884,8 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	}
 
-	if _, ok := _IdentityMatchingPipelineConfig_EntityMatchingStatus_NotInLookup[m.GetEntityMatchingStatus()]; ok {
-		err := IdentityMatchingPipelineConfigValidationError{
-			field:  "EntityMatchingStatus",
-			reason: "value must not be in list [STATUS_INVALID]",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if _, ok := IdentityMatchingPipelineConfig_Status_name[int32(m.GetEntityMatchingStatus())]; !ok {
-		err := IdentityMatchingPipelineConfigValidationError{
+	if _, ok := EntityMatchingPipelineConfig_Status_name[int32(m.GetEntityMatchingStatus())]; !ok {
+		err := EntityMatchingPipelineConfigValidationError{
 			field:  "EntityMatchingStatus",
 			reason: "value must be one of the defined enum values",
 		}
@@ -4921,7 +4899,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetEntityMatchingMessage()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "EntityMatchingMessage",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4929,7 +4907,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "EntityMatchingMessage",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4938,7 +4916,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetEntityMatchingMessage()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "EntityMatchingMessage",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -4953,7 +4931,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					errors = append(errors, EntityMatchingPipelineConfigValidationError{
 						field:  fmt.Sprintf("PropertyMappings[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4961,7 +4939,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+					errors = append(errors, EntityMatchingPipelineConfigValidationError{
 						field:  fmt.Sprintf("PropertyMappings[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -4970,7 +4948,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return IdentityMatchingPipelineConfigValidationError{
+				return EntityMatchingPipelineConfigValidationError{
 					field:  fmt.Sprintf("PropertyMappings[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4986,7 +4964,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetLastRunTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "LastRunTime",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -4994,7 +4972,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "LastRunTime",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -5003,7 +4981,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetLastRunTime()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "LastRunTime",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -5015,7 +4993,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetReportUrl()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "ReportUrl",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -5023,7 +5001,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "ReportUrl",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -5032,7 +5010,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetReportUrl()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "ReportUrl",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -5044,7 +5022,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		switch v := interface{}(m.GetReportType()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "ReportType",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -5052,7 +5030,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, IdentityMatchingPipelineConfigValidationError{
+				errors = append(errors, EntityMatchingPipelineConfigValidationError{
 					field:  "ReportType",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -5061,7 +5039,7 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetReportType()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return IdentityMatchingPipelineConfigValidationError{
+			return EntityMatchingPipelineConfigValidationError{
 				field:  "ReportType",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -5070,19 +5048,19 @@ func (m *IdentityMatchingPipelineConfig) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return IdentityMatchingPipelineConfigMultiError(errors)
+		return EntityMatchingPipelineConfigMultiError(errors)
 	}
 
 	return nil
 }
 
-// IdentityMatchingPipelineConfigMultiError is an error wrapping multiple
-// validation errors returned by IdentityMatchingPipelineConfig.ValidateAll()
-// if the designated constraints aren't met.
-type IdentityMatchingPipelineConfigMultiError []error
+// EntityMatchingPipelineConfigMultiError is an error wrapping multiple
+// validation errors returned by EntityMatchingPipelineConfig.ValidateAll() if
+// the designated constraints aren't met.
+type EntityMatchingPipelineConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m IdentityMatchingPipelineConfigMultiError) Error() string {
+func (m EntityMatchingPipelineConfigMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -5091,12 +5069,12 @@ func (m IdentityMatchingPipelineConfigMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m IdentityMatchingPipelineConfigMultiError) AllErrors() []error { return m }
+func (m EntityMatchingPipelineConfigMultiError) AllErrors() []error { return m }
 
-// IdentityMatchingPipelineConfigValidationError is the validation error
-// returned by IdentityMatchingPipelineConfig.Validate if the designated
-// constraints aren't met.
-type IdentityMatchingPipelineConfigValidationError struct {
+// EntityMatchingPipelineConfigValidationError is the validation error returned
+// by EntityMatchingPipelineConfig.Validate if the designated constraints
+// aren't met.
+type EntityMatchingPipelineConfigValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -5104,24 +5082,24 @@ type IdentityMatchingPipelineConfigValidationError struct {
 }
 
 // Field function returns field value.
-func (e IdentityMatchingPipelineConfigValidationError) Field() string { return e.field }
+func (e EntityMatchingPipelineConfigValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e IdentityMatchingPipelineConfigValidationError) Reason() string { return e.reason }
+func (e EntityMatchingPipelineConfigValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e IdentityMatchingPipelineConfigValidationError) Cause() error { return e.cause }
+func (e EntityMatchingPipelineConfigValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e IdentityMatchingPipelineConfigValidationError) Key() bool { return e.key }
+func (e EntityMatchingPipelineConfigValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e IdentityMatchingPipelineConfigValidationError) ErrorName() string {
-	return "IdentityMatchingPipelineConfigValidationError"
+func (e EntityMatchingPipelineConfigValidationError) ErrorName() string {
+	return "EntityMatchingPipelineConfigValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e IdentityMatchingPipelineConfigValidationError) Error() string {
+func (e EntityMatchingPipelineConfigValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -5133,14 +5111,14 @@ func (e IdentityMatchingPipelineConfigValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sIdentityMatchingPipelineConfig.%s: %s%s",
+		"invalid %sEntityMatchingPipelineConfig.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = IdentityMatchingPipelineConfigValidationError{}
+var _ error = EntityMatchingPipelineConfigValidationError{}
 
 var _ interface {
 	Field() string
@@ -5148,15 +5126,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = IdentityMatchingPipelineConfigValidationError{}
-
-var _IdentityMatchingPipelineConfig_PropertyMappingStatus_NotInLookup = map[IdentityMatchingPipelineConfig_Status]struct{}{
-	0: {},
-}
-
-var _IdentityMatchingPipelineConfig_EntityMatchingStatus_NotInLookup = map[IdentityMatchingPipelineConfig_Status]struct{}{
-	0: {},
-}
+} = EntityMatchingPipelineConfigValidationError{}
 
 // Validate checks the field values on ExternalDataResolverConfig with the
 // rules defined in the proto definition for this message. If any rules are
@@ -6228,24 +6198,24 @@ var _ interface {
 	ErrorName() string
 } = ConsentDataPoint_ReturnValidationError{}
 
-// Validate checks the field values on
-// IdentityMatchingPipelineConfig_NodeFilter with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *IdentityMatchingPipelineConfig_NodeFilter) Validate() error {
+// Validate checks the field values on EntityMatchingPipelineConfig_NodeFilter
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *EntityMatchingPipelineConfig_NodeFilter) Validate() error {
 	return m.validate(false)
 }
 
 // ValidateAll checks the field values on
-// IdentityMatchingPipelineConfig_NodeFilter with the rules defined in the
-// proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in
-// IdentityMatchingPipelineConfig_NodeFilterMultiError, or nil if none found.
-func (m *IdentityMatchingPipelineConfig_NodeFilter) ValidateAll() error {
+// EntityMatchingPipelineConfig_NodeFilter with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// EntityMatchingPipelineConfig_NodeFilterMultiError, or nil if none found.
+func (m *EntityMatchingPipelineConfig_NodeFilter) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
+func (m *EntityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -6253,7 +6223,7 @@ func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 	var errors []error
 
 	if len(m.GetSourceNodeTypes()) < 1 {
-		err := IdentityMatchingPipelineConfig_NodeFilterValidationError{
+		err := EntityMatchingPipelineConfig_NodeFilterValidationError{
 			field:  "SourceNodeTypes",
 			reason: "value must contain at least 1 item(s)",
 		}
@@ -6263,13 +6233,13 @@ func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	_IdentityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique := make(map[string]struct{}, len(m.GetSourceNodeTypes()))
+	_EntityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique := make(map[string]struct{}, len(m.GetSourceNodeTypes()))
 
 	for idx, item := range m.GetSourceNodeTypes() {
 		_, _ = idx, item
 
-		if _, exists := _IdentityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique[item]; exists {
-			err := IdentityMatchingPipelineConfig_NodeFilterValidationError{
+		if _, exists := _EntityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique[item]; exists {
+			err := EntityMatchingPipelineConfig_NodeFilterValidationError{
 				field:  fmt.Sprintf("SourceNodeTypes[%v]", idx),
 				reason: "repeated value must contain unique items",
 			}
@@ -6278,14 +6248,14 @@ func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 			}
 			errors = append(errors, err)
 		} else {
-			_IdentityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique[item] = struct{}{}
+			_EntityMatchingPipelineConfig_NodeFilter_SourceNodeTypes_Unique[item] = struct{}{}
 		}
 
 		// no validation rules for SourceNodeTypes[idx]
 	}
 
 	if len(m.GetTargetNodeTypes()) < 1 {
-		err := IdentityMatchingPipelineConfig_NodeFilterValidationError{
+		err := EntityMatchingPipelineConfig_NodeFilterValidationError{
 			field:  "TargetNodeTypes",
 			reason: "value must contain at least 1 item(s)",
 		}
@@ -6295,13 +6265,13 @@ func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	_IdentityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique := make(map[string]struct{}, len(m.GetTargetNodeTypes()))
+	_EntityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique := make(map[string]struct{}, len(m.GetTargetNodeTypes()))
 
 	for idx, item := range m.GetTargetNodeTypes() {
 		_, _ = idx, item
 
-		if _, exists := _IdentityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique[item]; exists {
-			err := IdentityMatchingPipelineConfig_NodeFilterValidationError{
+		if _, exists := _EntityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique[item]; exists {
+			err := EntityMatchingPipelineConfig_NodeFilterValidationError{
 				field:  fmt.Sprintf("TargetNodeTypes[%v]", idx),
 				reason: "repeated value must contain unique items",
 			}
@@ -6310,27 +6280,27 @@ func (m *IdentityMatchingPipelineConfig_NodeFilter) validate(all bool) error {
 			}
 			errors = append(errors, err)
 		} else {
-			_IdentityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique[item] = struct{}{}
+			_EntityMatchingPipelineConfig_NodeFilter_TargetNodeTypes_Unique[item] = struct{}{}
 		}
 
 		// no validation rules for TargetNodeTypes[idx]
 	}
 
 	if len(errors) > 0 {
-		return IdentityMatchingPipelineConfig_NodeFilterMultiError(errors)
+		return EntityMatchingPipelineConfig_NodeFilterMultiError(errors)
 	}
 
 	return nil
 }
 
-// IdentityMatchingPipelineConfig_NodeFilterMultiError is an error wrapping
+// EntityMatchingPipelineConfig_NodeFilterMultiError is an error wrapping
 // multiple validation errors returned by
-// IdentityMatchingPipelineConfig_NodeFilter.ValidateAll() if the designated
+// EntityMatchingPipelineConfig_NodeFilter.ValidateAll() if the designated
 // constraints aren't met.
-type IdentityMatchingPipelineConfig_NodeFilterMultiError []error
+type EntityMatchingPipelineConfig_NodeFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m IdentityMatchingPipelineConfig_NodeFilterMultiError) Error() string {
+func (m EntityMatchingPipelineConfig_NodeFilterMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -6339,12 +6309,12 @@ func (m IdentityMatchingPipelineConfig_NodeFilterMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m IdentityMatchingPipelineConfig_NodeFilterMultiError) AllErrors() []error { return m }
+func (m EntityMatchingPipelineConfig_NodeFilterMultiError) AllErrors() []error { return m }
 
-// IdentityMatchingPipelineConfig_NodeFilterValidationError is the validation
-// error returned by IdentityMatchingPipelineConfig_NodeFilter.Validate if the
+// EntityMatchingPipelineConfig_NodeFilterValidationError is the validation
+// error returned by EntityMatchingPipelineConfig_NodeFilter.Validate if the
 // designated constraints aren't met.
-type IdentityMatchingPipelineConfig_NodeFilterValidationError struct {
+type EntityMatchingPipelineConfig_NodeFilterValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -6352,24 +6322,24 @@ type IdentityMatchingPipelineConfig_NodeFilterValidationError struct {
 }
 
 // Field function returns field value.
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Field() string { return e.field }
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Reason() string { return e.reason }
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Cause() error { return e.cause }
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Key() bool { return e.key }
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) ErrorName() string {
-	return "IdentityMatchingPipelineConfig_NodeFilterValidationError"
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) ErrorName() string {
+	return "EntityMatchingPipelineConfig_NodeFilterValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Error() string {
+func (e EntityMatchingPipelineConfig_NodeFilterValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -6381,14 +6351,14 @@ func (e IdentityMatchingPipelineConfig_NodeFilterValidationError) Error() string
 	}
 
 	return fmt.Sprintf(
-		"invalid %sIdentityMatchingPipelineConfig_NodeFilter.%s: %s%s",
+		"invalid %sEntityMatchingPipelineConfig_NodeFilter.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = IdentityMatchingPipelineConfig_NodeFilterValidationError{}
+var _ error = EntityMatchingPipelineConfig_NodeFilterValidationError{}
 
 var _ interface {
 	Field() string
@@ -6396,26 +6366,26 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = IdentityMatchingPipelineConfig_NodeFilterValidationError{}
+} = EntityMatchingPipelineConfig_NodeFilterValidationError{}
 
 // Validate checks the field values on
-// IdentityMatchingPipelineConfig_PropertyMapping with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
+// EntityMatchingPipelineConfig_PropertyMapping with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *IdentityMatchingPipelineConfig_PropertyMapping) Validate() error {
+func (m *EntityMatchingPipelineConfig_PropertyMapping) Validate() error {
 	return m.validate(false)
 }
 
 // ValidateAll checks the field values on
-// IdentityMatchingPipelineConfig_PropertyMapping with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in
-// IdentityMatchingPipelineConfig_PropertyMappingMultiError, or nil if none found.
-func (m *IdentityMatchingPipelineConfig_PropertyMapping) ValidateAll() error {
+// EntityMatchingPipelineConfig_PropertyMapping with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// EntityMatchingPipelineConfig_PropertyMappingMultiError, or nil if none found.
+func (m *EntityMatchingPipelineConfig_PropertyMapping) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *IdentityMatchingPipelineConfig_PropertyMapping) validate(all bool) error {
+func (m *EntityMatchingPipelineConfig_PropertyMapping) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -6433,7 +6403,7 @@ func (m *IdentityMatchingPipelineConfig_PropertyMapping) validate(all bool) erro
 	if m.GetSimilarityScoreCutoff() != 0 {
 
 		if val := m.GetSimilarityScoreCutoff(); val < 0 || val > 1 {
-			err := IdentityMatchingPipelineConfig_PropertyMappingValidationError{
+			err := EntityMatchingPipelineConfig_PropertyMappingValidationError{
 				field:  "SimilarityScoreCutoff",
 				reason: "value must be inside range [0, 1]",
 			}
@@ -6446,20 +6416,20 @@ func (m *IdentityMatchingPipelineConfig_PropertyMapping) validate(all bool) erro
 	}
 
 	if len(errors) > 0 {
-		return IdentityMatchingPipelineConfig_PropertyMappingMultiError(errors)
+		return EntityMatchingPipelineConfig_PropertyMappingMultiError(errors)
 	}
 
 	return nil
 }
 
-// IdentityMatchingPipelineConfig_PropertyMappingMultiError is an error
-// wrapping multiple validation errors returned by
-// IdentityMatchingPipelineConfig_PropertyMapping.ValidateAll() if the
+// EntityMatchingPipelineConfig_PropertyMappingMultiError is an error wrapping
+// multiple validation errors returned by
+// EntityMatchingPipelineConfig_PropertyMapping.ValidateAll() if the
 // designated constraints aren't met.
-type IdentityMatchingPipelineConfig_PropertyMappingMultiError []error
+type EntityMatchingPipelineConfig_PropertyMappingMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m IdentityMatchingPipelineConfig_PropertyMappingMultiError) Error() string {
+func (m EntityMatchingPipelineConfig_PropertyMappingMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -6468,13 +6438,13 @@ func (m IdentityMatchingPipelineConfig_PropertyMappingMultiError) Error() string
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m IdentityMatchingPipelineConfig_PropertyMappingMultiError) AllErrors() []error { return m }
+func (m EntityMatchingPipelineConfig_PropertyMappingMultiError) AllErrors() []error { return m }
 
-// IdentityMatchingPipelineConfig_PropertyMappingValidationError is the
+// EntityMatchingPipelineConfig_PropertyMappingValidationError is the
 // validation error returned by
-// IdentityMatchingPipelineConfig_PropertyMapping.Validate if the designated
+// EntityMatchingPipelineConfig_PropertyMapping.Validate if the designated
 // constraints aren't met.
-type IdentityMatchingPipelineConfig_PropertyMappingValidationError struct {
+type EntityMatchingPipelineConfig_PropertyMappingValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -6482,26 +6452,24 @@ type IdentityMatchingPipelineConfig_PropertyMappingValidationError struct {
 }
 
 // Field function returns field value.
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Field() string { return e.field }
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Reason() string {
-	return e.reason
-}
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Cause() error { return e.cause }
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Key() bool { return e.key }
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) ErrorName() string {
-	return "IdentityMatchingPipelineConfig_PropertyMappingValidationError"
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) ErrorName() string {
+	return "EntityMatchingPipelineConfig_PropertyMappingValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Error() string {
+func (e EntityMatchingPipelineConfig_PropertyMappingValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -6513,14 +6481,14 @@ func (e IdentityMatchingPipelineConfig_PropertyMappingValidationError) Error() s
 	}
 
 	return fmt.Sprintf(
-		"invalid %sIdentityMatchingPipelineConfig_PropertyMapping.%s: %s%s",
+		"invalid %sEntityMatchingPipelineConfig_PropertyMapping.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = IdentityMatchingPipelineConfig_PropertyMappingValidationError{}
+var _ error = EntityMatchingPipelineConfig_PropertyMappingValidationError{}
 
 var _ interface {
 	Field() string
@@ -6528,7 +6496,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = IdentityMatchingPipelineConfig_PropertyMappingValidationError{}
+} = EntityMatchingPipelineConfig_PropertyMappingValidationError{}
 
 // Validate checks the field values on ExternalDataResolverConfig_Header with
 // the rules defined in the proto definition for this message. If any rules

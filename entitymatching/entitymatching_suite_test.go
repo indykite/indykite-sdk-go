@@ -12,9 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-Package tda implements the IndyKite TrustedDataAccess Service API Client.
-*/
-package tda
+package entitymatching_test
 
-const versionClient = "v0.39.0" // x-release-please-version
+import (
+	"testing"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+)
+
+func TestEntityMatching(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Entity Matching Suite")
+}

@@ -9947,7 +9947,7 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
-	case *CreateConfigNodeRequest_IdentityMatchingPipelineConfig:
+	case *CreateConfigNodeRequest_EntityMatchingPipelineConfig:
 		if v == nil {
 			err := CreateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -9960,9 +9960,9 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
-		if m.GetIdentityMatchingPipelineConfig() == nil {
+		if m.GetEntityMatchingPipelineConfig() == nil {
 			err := CreateConfigNodeRequestValidationError{
-				field:  "IdentityMatchingPipelineConfig",
+				field:  "EntityMatchingPipelineConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -9972,11 +9972,11 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetIdentityMatchingPipelineConfig()).(type) {
+			switch v := interface{}(m.GetEntityMatchingPipelineConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -9984,16 +9984,16 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetIdentityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEntityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return CreateConfigNodeRequestValidationError{
-					field:  "IdentityMatchingPipelineConfig",
+					field:  "EntityMatchingPipelineConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -11056,7 +11056,7 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
-	case *UpdateConfigNodeRequest_IdentityMatchingPipelineConfig:
+	case *UpdateConfigNodeRequest_EntityMatchingPipelineConfig:
 		if v == nil {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -11068,9 +11068,9 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-		if m.GetIdentityMatchingPipelineConfig() == nil {
+		if m.GetEntityMatchingPipelineConfig() == nil {
 			err := UpdateConfigNodeRequestValidationError{
-				field:  "IdentityMatchingPipelineConfig",
+				field:  "EntityMatchingPipelineConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -11080,11 +11080,11 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetIdentityMatchingPipelineConfig()).(type) {
+			switch v := interface{}(m.GetEntityMatchingPipelineConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -11092,16 +11092,16 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "IdentityMatchingPipelineConfig",
+						field:  "EntityMatchingPipelineConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetIdentityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEntityMatchingPipelineConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
-					field:  "IdentityMatchingPipelineConfig",
+					field:  "EntityMatchingPipelineConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
