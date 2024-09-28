@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.40.0](https://github.com/indykite/indykite-sdk-go/compare/v0.39.0...v0.40.0) (2024-09-28)
+
+
+### Features
+
+* implement entitymatching ([dfadb4c](https://github.com/indykite/indykite-sdk-go/commit/dfadb4c32cb4b567279975e104c53f13883b28b8))
+
 ## [0.39.0](https://github.com/indykite/indykite-sdk-go/compare/v0.38.0...v0.39.0) (2024-09-10)
 
 
