@@ -47,7 +47,7 @@
         "authorization/doc.go",
         "knowledge/doc.go",
         "tda/doc.go",
-        "identitymatching/doc.go"
+        "entitymatching/doc.go"
       ]
     }
   }

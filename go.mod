@@ -23,8 +23,8 @@ require (
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/text v0.18.0
 	google.golang.org/api v0.199.0
-	google.golang.org/genproto v0.0.0-20240924160255-9d4c2d233b61
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240924160255-9d4c2d233b61
+	google.golang.org/genproto v0.0.0-20240930140551-af27646dc61f
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240930140551-af27646dc61f
 	google.golang.org/grpc v1.67.0
 	google.golang.org/protobuf v1.34.2
 )
@@ -52,7 +52,7 @@ require (
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240924160255-9d4c2d233b61 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240930140551-af27646dc61f // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
 
@@ -64,7 +64,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240927233043-f3f46ee36851 // indirect
+	github.com/google/pprof v0.0.0-20240929191954-255acd752d31 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.2 // indirect

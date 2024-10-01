@@ -59,9 +59,9 @@ var createEntityMatchingPipelineConfigCmd = &cobra.Command{
 			ReportUrl:     wrapperspb.String("gs://some-path"),
 			ReportType:    wrapperspb.String("csv"),
 		}
-		createReq, _ := config.NewCreate("like-real-config-node-name2")
-		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
-		createReq.WithDisplayName("Like real ConfigNode Name2")
+		createReq, _ := config.NewCreate("like-real-config-node-name3")
+		createReq.ForLocation("gid:AAAAApkaja7LKUQot5UCGh6_Zc4")
+		createReq.WithDisplayName("Like real ConfigNode Name3")
 		createReq.WithEntityMatchingPipelineConfig(configuration)
 
 		resp, err := client.CreateConfigNode(context.Background(), createReq)
@@ -127,7 +127,7 @@ var deleteEntityMatchingPipelineConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete EntityMatchingPipeline configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:id-of-existing-config")
+		deleteReq, _ := config.NewDelete("gid:AAAAIHQq2n5zkUP0gnFFtcn7hlo")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
