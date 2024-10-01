@@ -25,7 +25,7 @@ import (
 )
 
 type CreateAndRun struct {
-	configNodeID string
+	ConfigNodeID string
 }
 
 func (c *Client) CreateAndRunEntityMatching(
@@ -36,10 +36,7 @@ func (c *Client) CreateAndRunEntityMatching(
 ) (*CreateAndRun, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	duration, err := time.ParseDuration("10s")
-	if err != nil {
-		return nil, errors.NewInvalidArgumentErrorWithCause(err, "failed to Create duration on IndyKite Client")
-	}
+	duration := time.Second * 10
 
 	// create entitymatching config node
 	createReq, _ := config.NewCreate(name)
@@ -81,7 +78,7 @@ func (c *Client) CreateAndRunEntityMatching(
 			err,
 			"failed to run readConfigNodeWithInterval on IndyKite Client")
 	}
-	return &CreateAndRun{configNodeID: idPipeline}, nil
+	return &CreateAndRun{ConfigNodeID: idPipeline}, nil
 }
 
 func readSuggestedPropertyMappingWithInterval(ctx context.Context, c *Client, id string, interval time.Duration) bool {
@@ -107,7 +104,6 @@ func readSuggestedPropertyMappingWithInterval(ctx context.Context, c *Client, id
 				entitymatchingpb.PipelineStatus_PIPELINE_STATUS_STATUS_SUCCESS {
 				return true
 			}
-			return true
 		}
 	}
 }
