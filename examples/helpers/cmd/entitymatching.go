@@ -22,7 +22,8 @@ import (
 	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 )
 
-// deleteCmd represents the command for deleting the nodes in a KG
+// createandrunCmd represents the command for creating an entitymatching
+// config node and wait until statuses are success
 var createandrunCmd = &cobra.Command{
 	Use:   "createandrun",
 	Short: "Create and run in entitymatching",
@@ -36,9 +37,9 @@ var createandrunCmd = &cobra.Command{
 			},
 			SimilarityScoreCutoff: float32(0.95),
 		}
-		location := "gid:AAAAAppppppppppppppp"
-		name := "like-real-config-node-name21"
-		similarityScoreCutoff := float32(0.90)
+		location := "gid:AAAAApkaja7kkkkkkkkkkkk"
+		name := "like-real-config-node-name23"
+		similarityScoreCutoff := float32(0.95)
 		response, err := client.CreateAndRunEntityMatching(
 			location,
 			name,
