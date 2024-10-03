@@ -55,6 +55,15 @@ func DefaultEnvironmentLoaderConfig(_ context.Context) (*CredentialsConfig, erro
 	return UnmarshalCredentialConfig(data)
 }
 
+// EntityMatchingEnvironmentLoader for backward compatibility with old environment variables.
+func EntityMatchingEnvironmentLoader(_ context.Context) (*CredentialsConfig, error) {
+	data, err := lookupEnvCredentialVariables("INDYKITE_ENTITY_MATCHING_APPLICATION_CREDENTIALS")
+	if err != nil {
+		return nil, err
+	}
+	return UnmarshalCredentialConfig(data)
+}
+
 func StaticCredentialsJSON(credentialsJSON []byte) CredentialsLoader {
 	return func(_ context.Context) (*CredentialsConfig, error) {
 		return UnmarshalCredentialConfig(credentialsJSON)
