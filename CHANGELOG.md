@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.41.2](https://github.com/indykite/indykite-sdk-go/compare/v0.41.1...v0.41.2) (2024-10-03)
+
+
+### Bug Fixes
+
+* add backward compatibility with env variable ([afec24a](https://github.com/indykite/indykite-sdk-go/commit/afec24acbf21d19b91b5cb3b56440c7fefa7852c))
+
 ## [0.41.1](https://github.com/indykite/indykite-sdk-go/compare/v0.41.0...v0.41.1) (2024-10-01)
 
 
