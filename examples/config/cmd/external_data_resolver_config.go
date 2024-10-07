@@ -47,7 +47,7 @@ var createExternalDataResolverConfigCmd = &cobra.Command{
 			ResponseSelector: ".",
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name2")
-		createReq.ForLocation("gid:AAAAAvFyVpD_1kd8k2kpNY9rjFM")
+		createReq.ForLocation("gid:AAAAABBBBB_uiuiu144KNUI1245")
 		createReq.WithDisplayName("Like real ConfigNode Name2")
 		createReq.WithExternalDataResolverConfig(configuration)
 

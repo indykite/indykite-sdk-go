@@ -30,7 +30,6 @@ linters:
         - errname
         - errorlint
         - exhaustive
-        - exportloopref
         - forbidigo
         - gci
         - ginkgolinter

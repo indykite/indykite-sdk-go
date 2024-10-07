@@ -54,7 +54,7 @@ func (c *Client) DeleteNodes(
 		}
 		records = append(records, record)
 	}
-	responses, err := c.ClientIngest.StreamRecords(records) //nolint: contextcheck // against StreamRecords
+	responses, err := c.ClientIngest.StreamRecords(records) //nolint:contextcheck // against StreamRecords
 	if err != nil {
 		return nil, err
 	}

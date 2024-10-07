@@ -17,11 +17,13 @@ package test
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"os"
 
 	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
+	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
@@ -191,6 +193,26 @@ var (
 	ConsentAllow    = "gid:AAAAHf5ZnwufDUK-tnCjoSsw-cQ"
 
 	Resolver = "gid:AAAAIcrOChFSj0R5sFm1V8JXhiE"
+	URL      = "https://example.com/source2"
+	URLUpd   = "https://example.com/sourceupd"
+	Method1  = "GET"
+	Method2  = "POST"
+	Method3  = "ACTION"
+	Headers  = map[string]*configpb.ExternalDataResolverConfig_Header{
+		"Authorization": {Values: []string{"Bearer edolkUTY"}},
+		"Content-Type":  {Values: []string{"application/json"}},
+	}
+	HeadersUpd = map[string]*configpb.ExternalDataResolverConfig_Header{
+		"Authorization": {Values: []string{"Bearer pdnYhjui"}},
+		"Content-Type":  {Values: []string{"application/json"}},
+	}
+	RequestType      = configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON
+	RequestPayload   = []byte(`{"key": "value"}`)
+	ResponseType     = configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON
+	ResponseSelector = "."
+
+	CustomerID    = os.Getenv("CUSTOMER_ID")
+	WrongAppSpace = "gid:AAAAAgDRZxyY6Ecrjhj2GMCtgVI"
 )
 
 func GenerateRandomString(length int) string {
