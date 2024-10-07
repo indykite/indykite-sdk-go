@@ -88,7 +88,7 @@ func InitConfigIngestRetry() (*ingest.RetryClient, error) {
 func InitConfigConfig() (*config.Client, error) {
 	clientConfig, err = config.NewClient(context.Background(),
 		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoaderConfig),
-		grpc.WithRetryOptions(retry.Disable()),
+		grpc.WithServiceAccount(),
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Config Client: %v", err))
