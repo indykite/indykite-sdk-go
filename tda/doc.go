@@ -17,4 +17,4 @@ Package tda implements the IndyKite TrustedDataAccess Service API Client.
 */
 package tda
 
-const versionClient = "v0.41.2" // x-release-please-version
+const versionClient = "v0.42.0" // x-release-please-version
