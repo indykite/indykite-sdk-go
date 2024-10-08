@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.0](https://github.com/indykite/indykite-sdk-go/compare/v0.41.2...v0.42.0) (2024-10-08)
+
+
+### Features
+
+* add tests for resolver + modif config ([15be803](https://github.com/indykite/indykite-sdk-go/commit/15be803e59a2ae2d787836fbbd8fe0dafb8be11b))
+
 ## [0.41.2](https://github.com/indykite/indykite-sdk-go/compare/v0.41.1...v0.41.2) (2024-10-03)
 
 
