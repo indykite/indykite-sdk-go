@@ -2,10 +2,10 @@ module github.com/indykite/indykite-sdk-go
 
 go 1.22.0
 
-toolchain go1.22.5
+toolchain go1.23.2
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.2-20240920164238-5a7b106cbb87.2
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.35.1-20240920164238-5a7b106cbb87.1
 	cloud.google.com/go/bigquery v1.63.1
 	github.com/envoyproxy/protoc-gen-validate v1.1.0
 	github.com/ghodss/yaml v1.0.0
@@ -22,7 +22,7 @@ require (
 	go.uber.org/mock v0.4.0
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/text v0.19.0
-	google.golang.org/api v0.199.0
+	google.golang.org/api v0.200.0
 	google.golang.org/genproto v0.0.0-20241007155032-5fefd90f89a9
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241007155032-5fefd90f89a9
 	google.golang.org/grpc v1.67.1
@@ -31,7 +31,7 @@ require (
 
 require (
 	cloud.google.com/go v0.115.1 // indirect
-	cloud.google.com/go/auth v0.9.7 // indirect
+	cloud.google.com/go/auth v0.9.8 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
 	github.com/apache/arrow/go/v15 v15.0.2 // indirect
