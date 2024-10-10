@@ -78,6 +78,26 @@ func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeProperties(arg0, arg1 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteNodeProperties", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteNodeProperties), varargs...)
 }
 
+// BatchDeleteNodeTags mocks base method.
+func (m *MockIngestAPIClient) BatchDeleteNodeTags(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteNodeTagsRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodeTagsResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchDeleteNodeTags", varargs...)
+	ret0, _ := ret[0].(*ingestv1beta3.BatchDeleteNodeTagsResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchDeleteNodeTags indicates an expected call of BatchDeleteNodeTags.
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeTags(arg0, arg1 any, arg2 ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteNodeTags", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteNodeTags), varargs...)
+}
+
 // BatchDeleteNodes mocks base method.
 func (m *MockIngestAPIClient) BatchDeleteNodes(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteNodesRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodesResponse, error) {
 	m.ctrl.T.Helper()

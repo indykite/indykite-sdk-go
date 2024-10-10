@@ -659,6 +659,54 @@ var _ = Describe("Ingest", func() {
 			}))),
 		})))
 	})
+	It("Batch Delete Node Tags", func() {
+		mockCtrl := gomock.NewController(GinkgoT())
+		mockClient := ingestm.NewMockIngestAPIClient(mockCtrl)
+
+		client, err := ingest.NewTestClient(mockClient)
+		Expect(err).To(Succeed())
+
+		nodeTags := []*ingestpb.DeleteData_NodeTagMatch{
+			{
+				Match: nodeMatch1,
+				Tags:  []string{"Taga", "Tagb"},
+			},
+			{
+				Match: nodeMatch2,
+				Tags:  []string{"Taga", "Tagb"},
+			},
+		}
+
+		mockClient.EXPECT().BatchDeleteNodeTags(gomock.Any(),
+			gomock.Eq(&ingestpb.BatchDeleteNodeTagsRequest{
+				NodeTags: nodeTags,
+			}), gomock.Any()).Return(&ingestpb.BatchDeleteNodeTagsResponse{
+			Results: []*ingestpb.Info{
+				{
+					Changes: []*ingestpb.Change{
+						{
+							Id:       "gid:abc",
+							DataType: ingestpb.DataType_DATA_TYPE_NODE,
+						},
+						{
+							Id:       "gid:def",
+							DataType: ingestpb.DataType_DATA_TYPE_NODE,
+						},
+					},
+				},
+			}}, nil)
+
+		response, err := client.BatchDeleteNodeTags(context.Background(), nodeTags)
+		Expect(err).To(Succeed())
+		Expect(response).To(PointTo(MatchFields(IgnoreExtras, Fields{
+			"Results": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id":       Equal("gid:abc"),
+					"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
+				}))),
+			}))),
+		})))
+	})
 })
 
 var _ = Describe("Retry client", func() {

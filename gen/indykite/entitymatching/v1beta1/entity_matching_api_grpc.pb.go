@@ -45,9 +45,9 @@ const (
 type EntityMatchingAPIClient interface {
 	// RunEntityMatchingPipeline by Pipeline ID and optional property mapping.
 	RunEntityMatchingPipeline(ctx context.Context, in *RunEntityMatchingPipelineRequest, opts ...grpc.CallOption) (*RunEntityMatchingPipelineResponse, error)
-	// ReadSuggestedPropertyMapping by Pipeline Name or ID.
+	// ReadSuggestedPropertyMapping by Pipeline ID.
 	ReadSuggestedPropertyMapping(ctx context.Context, in *ReadSuggestedPropertyMappingRequest, opts ...grpc.CallOption) (*ReadSuggestedPropertyMappingResponse, error)
-	// ReadEntityMatchingReport by Pipeline Name or ID for a successful Pipeline.
+	// ReadEntityMatchingReport by Pipeline ID for a successful Pipeline.
 	ReadEntityMatchingReport(ctx context.Context, in *ReadEntityMatchingReportRequest, opts ...grpc.CallOption) (*ReadEntityMatchingReportResponse, error)
 }
 
@@ -95,9 +95,9 @@ func (c *entityMatchingAPIClient) ReadEntityMatchingReport(ctx context.Context, 
 type EntityMatchingAPIServer interface {
 	// RunEntityMatchingPipeline by Pipeline ID and optional property mapping.
 	RunEntityMatchingPipeline(context.Context, *RunEntityMatchingPipelineRequest) (*RunEntityMatchingPipelineResponse, error)
-	// ReadSuggestedPropertyMapping by Pipeline Name or ID.
+	// ReadSuggestedPropertyMapping by Pipeline ID.
 	ReadSuggestedPropertyMapping(context.Context, *ReadSuggestedPropertyMappingRequest) (*ReadSuggestedPropertyMappingResponse, error)
-	// ReadEntityMatchingReport by Pipeline Name or ID for a successful Pipeline.
+	// ReadEntityMatchingReport by Pipeline ID for a successful Pipeline.
 	ReadEntityMatchingReport(context.Context, *ReadEntityMatchingReportRequest) (*ReadEntityMatchingReportResponse, error)
 }
 

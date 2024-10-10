@@ -69,15 +69,16 @@ var batchUpsertNodesCmd = &cobra.Command{
 					Type: "first_name",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "elias",
+							StringValue: "colias",
 						},
 					},
 				},
 			},
+			Tags: []string{"Sitea", "Siteb"},
 		}
 
 		node2 := &knowledgeobjects.Node{
-			ExternalId: "963258",
+			ExternalId: "789456",
 			Type:       "Car",
 			IsIdentity: false,
 			Properties: []*knowledgeobjects.Property{
@@ -90,6 +91,7 @@ var batchUpsertNodesCmd = &cobra.Command{
 					},
 				},
 			},
+			Tags: []string{"Sitea", "Siteb"},
 		}
 
 		nodes := []*knowledgeobjects.Node{

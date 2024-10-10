@@ -213,6 +213,7 @@ var (
 
 	CustomerID    = os.Getenv("CUSTOMER_ID")
 	WrongAppSpace = "gid:AAAAAgDRZxyY6Ecrjhj2GMCtgVI"
+	Tags          = []string{"Sitea", "Siteb"}
 )
 
 func GenerateRandomString(length int) string {
@@ -597,6 +598,7 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 				},
 			},
 		},
+		Tags: []string{"Sitea", "Siteb"},
 	}
 	return node, externalID
 }

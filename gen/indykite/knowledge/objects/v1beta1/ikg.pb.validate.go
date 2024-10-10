@@ -115,10 +115,10 @@ func (m *Node) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetTags()) > 32 {
+	if len(m.GetTags()) > 10 {
 		err := NodeValidationError{
 			field:  "Tags",
-			reason: "value must contain no more than 32 item(s)",
+			reason: "value must contain no more than 10 item(s)",
 		}
 		if !all {
 			return err

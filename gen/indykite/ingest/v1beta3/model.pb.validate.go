@@ -635,6 +635,48 @@ func (m *DeleteData) validate(all bool) error {
 			}
 		}
 
+	case *DeleteData_NodeTags:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofDataPresent = true
+
+		if all {
+			switch v := interface{}(m.GetNodeTags()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, DeleteDataValidationError{
+						field:  "NodeTags",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, DeleteDataValidationError{
+						field:  "NodeTags",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetNodeTags()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return DeleteDataValidationError{
+					field:  "NodeTags",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -1442,6 +1484,192 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangeValidationError{}
+
+// Validate checks the field values on DeleteData_NodeTagMatch with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeleteData_NodeTagMatch) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteData_NodeTagMatch with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DeleteData_NodeTagMatchMultiError, or nil if none found.
+func (m *DeleteData_NodeTagMatch) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteData_NodeTagMatch) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMatch()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DeleteData_NodeTagMatchValidationError{
+					field:  "Match",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DeleteData_NodeTagMatchValidationError{
+					field:  "Match",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMatch()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteData_NodeTagMatchValidationError{
+				field:  "Match",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(m.GetTags()) > 10 {
+		err := DeleteData_NodeTagMatchValidationError{
+			field:  "Tags",
+			reason: "value must contain no more than 10 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	_DeleteData_NodeTagMatch_Tags_Unique := make(map[string]struct{}, len(m.GetTags()))
+
+	for idx, item := range m.GetTags() {
+		_, _ = idx, item
+
+		if _, exists := _DeleteData_NodeTagMatch_Tags_Unique[item]; exists {
+			err := DeleteData_NodeTagMatchValidationError{
+				field:  fmt.Sprintf("Tags[%v]", idx),
+				reason: "repeated value must contain unique items",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+			_DeleteData_NodeTagMatch_Tags_Unique[item] = struct{}{}
+		}
+
+		if utf8.RuneCountInString(item) > 64 {
+			err := DeleteData_NodeTagMatchValidationError{
+				field:  fmt.Sprintf("Tags[%v]", idx),
+				reason: "value length must be at most 64 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if !_DeleteData_NodeTagMatch_Tags_Pattern.MatchString(item) {
+			err := DeleteData_NodeTagMatchValidationError{
+				field:  fmt.Sprintf("Tags[%v]", idx),
+				reason: "value does not match regex pattern \"^([A-Z][a-z]+)+$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return DeleteData_NodeTagMatchMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteData_NodeTagMatchMultiError is an error wrapping multiple validation
+// errors returned by DeleteData_NodeTagMatch.ValidateAll() if the designated
+// constraints aren't met.
+type DeleteData_NodeTagMatchMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteData_NodeTagMatchMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteData_NodeTagMatchMultiError) AllErrors() []error { return m }
+
+// DeleteData_NodeTagMatchValidationError is the validation error returned by
+// DeleteData_NodeTagMatch.Validate if the designated constraints aren't met.
+type DeleteData_NodeTagMatchValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteData_NodeTagMatchValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteData_NodeTagMatchValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteData_NodeTagMatchValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteData_NodeTagMatchValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteData_NodeTagMatchValidationError) ErrorName() string {
+	return "DeleteData_NodeTagMatchValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteData_NodeTagMatchValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteData_NodeTagMatch.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteData_NodeTagMatchValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteData_NodeTagMatchValidationError{}
+
+var _DeleteData_NodeTagMatch_Tags_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
 
 // Validate checks the field values on DeleteData_NodePropertyMatch with the
 // rules defined in the proto definition for this message. If any rules are
