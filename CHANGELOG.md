@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.43.0](https://github.com/indykite/indykite-sdk-go/compare/v0.42.0...v0.43.0) (2024-10-10)
+
+
+### Features
+
+* add BatchDeleteNodeTags ([7c4961e](https://github.com/indykite/indykite-sdk-go/commit/7c4961e9960ac6d7a8b5677c80dc5c5ba5846ded))
+
 ## [0.42.0](https://github.com/indykite/indykite-sdk-go/compare/v0.41.2...v0.42.0) (2024-10-08)
 
 
