@@ -1,4 +1,4 @@
-// Copyright (c) 2023 IndyKite
+// Copyright (c) 2024 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,19 +19,25 @@ import (
 
 	"google.golang.org/grpc"
 
+	"github.com/indykite/indykite-sdk-go/errors"
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// IngestRecord is deprecated and will be removed: use Batch functions.
-func (c *Client) IngestRecord(
+func (c *Client) BatchDeleteNodeTags(
 	ctx context.Context,
-	record *ingestpb.Record,
+	nodeTags []*ingestpb.DeleteData_NodeTagMatch,
 	opts ...grpc.CallOption,
-) (*ingestpb.IngestRecordResponse, error) {
+) (*ingestpb.BatchDeleteNodeTagsResponse, error) {
+	req := &ingestpb.BatchDeleteNodeTagsRequest{
+		NodeTags: nodeTags,
+	}
+	if err := req.Validate(); err != nil {
+		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call BatchDeleteNodeTags")
+	}
 	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.IngestRecord( //nolint:staticcheck // backward compatibility.
-		ctx, &ingestpb.IngestRecordRequest{
-			Record: record,
-		}, opts...)
-	return resp, err
+	resp, err := c.client.BatchDeleteNodeTags(ctx, req, opts...)
+	if s := errors.FromError(err); s != nil {
+		return nil, s
+	}
+	return resp, nil
 }

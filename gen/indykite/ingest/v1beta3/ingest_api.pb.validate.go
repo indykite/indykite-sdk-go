@@ -1755,6 +1755,290 @@ var _ interface {
 	ErrorName() string
 } = BatchDeleteRelationshipPropertiesResponseValidationError{}
 
+// Validate checks the field values on BatchDeleteNodeTagsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BatchDeleteNodeTagsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchDeleteNodeTagsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchDeleteNodeTagsRequestMultiError, or nil if none found.
+func (m *BatchDeleteNodeTagsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchDeleteNodeTagsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := len(m.GetNodeTags()); l < 1 || l > 250 {
+		err := BatchDeleteNodeTagsRequestValidationError{
+			field:  "NodeTags",
+			reason: "value must contain between 1 and 250 items, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetNodeTags() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchDeleteNodeTagsRequestValidationError{
+						field:  fmt.Sprintf("NodeTags[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchDeleteNodeTagsRequestValidationError{
+						field:  fmt.Sprintf("NodeTags[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchDeleteNodeTagsRequestValidationError{
+					field:  fmt.Sprintf("NodeTags[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return BatchDeleteNodeTagsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchDeleteNodeTagsRequestMultiError is an error wrapping multiple
+// validation errors returned by BatchDeleteNodeTagsRequest.ValidateAll() if
+// the designated constraints aren't met.
+type BatchDeleteNodeTagsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchDeleteNodeTagsRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchDeleteNodeTagsRequestMultiError) AllErrors() []error { return m }
+
+// BatchDeleteNodeTagsRequestValidationError is the validation error returned
+// by BatchDeleteNodeTagsRequest.Validate if the designated constraints aren't met.
+type BatchDeleteNodeTagsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchDeleteNodeTagsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchDeleteNodeTagsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchDeleteNodeTagsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchDeleteNodeTagsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchDeleteNodeTagsRequestValidationError) ErrorName() string {
+	return "BatchDeleteNodeTagsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchDeleteNodeTagsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchDeleteNodeTagsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchDeleteNodeTagsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchDeleteNodeTagsRequestValidationError{}
+
+// Validate checks the field values on BatchDeleteNodeTagsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *BatchDeleteNodeTagsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on BatchDeleteNodeTagsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// BatchDeleteNodeTagsResponseMultiError, or nil if none found.
+func (m *BatchDeleteNodeTagsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *BatchDeleteNodeTagsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetResults() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, BatchDeleteNodeTagsResponseValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, BatchDeleteNodeTagsResponseValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return BatchDeleteNodeTagsResponseValidationError{
+					field:  fmt.Sprintf("Results[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return BatchDeleteNodeTagsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// BatchDeleteNodeTagsResponseMultiError is an error wrapping multiple
+// validation errors returned by BatchDeleteNodeTagsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type BatchDeleteNodeTagsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m BatchDeleteNodeTagsResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m BatchDeleteNodeTagsResponseMultiError) AllErrors() []error { return m }
+
+// BatchDeleteNodeTagsResponseValidationError is the validation error returned
+// by BatchDeleteNodeTagsResponse.Validate if the designated constraints
+// aren't met.
+type BatchDeleteNodeTagsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e BatchDeleteNodeTagsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e BatchDeleteNodeTagsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e BatchDeleteNodeTagsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e BatchDeleteNodeTagsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e BatchDeleteNodeTagsResponseValidationError) ErrorName() string {
+	return "BatchDeleteNodeTagsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e BatchDeleteNodeTagsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sBatchDeleteNodeTagsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = BatchDeleteNodeTagsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = BatchDeleteNodeTagsResponseValidationError{}
+
 // Validate checks the field values on StreamRecordsRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.

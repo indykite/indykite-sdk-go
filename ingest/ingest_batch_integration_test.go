@@ -231,6 +231,71 @@ var _ = Describe("Ingestion", func() {
 				"invalid external value GID, expected GID of type ExternalDataResolver")))
 			Expect(resp).To(BeNil())
 		})
+
+		It("UpsertNodesWithTags", func() {
+			var err error
+			ingestClient, err := integration.InitConfigIngest()
+			Expect(err).To(Succeed())
+
+			nodes, externalID, externalID2 := integration.BatchNodesType("Individual")
+			resp, err := ingestClient.BatchUpsertNodes(
+				context.Background(),
+				nodes,
+				retry.WithMax(5),
+			)
+
+			Expect(err).To(Succeed())
+			result := resp.Results[0]
+			Expect(result).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id":       Not(BeEmpty()),
+					"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
+				}))),
+			})))
+			id := result.Changes[0].Id
+
+			nodeMatch1 := &ingestpb.NodeMatch{
+				ExternalId: externalID,
+				Type:       "Individual",
+			}
+			nodeTags := []*ingestpb.DeleteData_NodeTagMatch{
+				{
+					Match: nodeMatch1,
+					Tags:  integration.Tags,
+				},
+			}
+			delTags, err := ingestClient.BatchDeleteNodeTags(
+				context.Background(),
+				nodeTags,
+				retry.WithMax(5),
+			)
+			Expect(err).To(Succeed())
+			resultDelTags := delTags.Results[0]
+			Expect(resultDelTags).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id":       Equal(id),
+					"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
+				}))),
+			})))
+
+			nodesMatch := integration.BatchNodesMatch(
+				integration.CreateBatchNodeMatch(externalID, "Individual"),
+				integration.CreateBatchNodeMatch(externalID2, "Individual"))
+			del, err := ingestClient.BatchDeleteNodes(
+				context.Background(),
+				nodesMatch,
+				retry.WithMax(5),
+			)
+
+			Expect(err).To(Succeed())
+			resultDel := del.Results[0]
+			Expect(resultDel).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id":       Equal(id),
+					"DataType": Equal(ingestpb.DataType_DATA_TYPE_NODE),
+				}))),
+			})))
+		})
 	})
 
 	Describe("IngestBatchUpsertRelationships", func() {

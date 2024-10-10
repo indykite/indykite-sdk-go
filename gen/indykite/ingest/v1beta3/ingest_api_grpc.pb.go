@@ -44,6 +44,7 @@ const (
 	IngestAPI_BatchDeleteRelationships_FullMethodName          = "/indykite.ingest.v1beta3.IngestAPI/BatchDeleteRelationships"
 	IngestAPI_BatchDeleteNodeProperties_FullMethodName         = "/indykite.ingest.v1beta3.IngestAPI/BatchDeleteNodeProperties"
 	IngestAPI_BatchDeleteRelationshipProperties_FullMethodName = "/indykite.ingest.v1beta3.IngestAPI/BatchDeleteRelationshipProperties"
+	IngestAPI_BatchDeleteNodeTags_FullMethodName               = "/indykite.ingest.v1beta3.IngestAPI/BatchDeleteNodeTags"
 )
 
 // IngestAPIClient is the client API for IngestAPI service.
@@ -53,6 +54,7 @@ const (
 // IngestAPI represents the service interface for data ingestion.
 type IngestAPIClient interface {
 	StreamRecords(ctx context.Context, opts ...grpc.CallOption) (IngestAPI_StreamRecordsClient, error)
+	// Deprecated: Do not use.
 	IngestRecord(ctx context.Context, in *IngestRecordRequest, opts ...grpc.CallOption) (*IngestRecordResponse, error)
 	BatchUpsertNodes(ctx context.Context, in *BatchUpsertNodesRequest, opts ...grpc.CallOption) (*BatchUpsertNodesResponse, error)
 	BatchUpsertRelationships(ctx context.Context, in *BatchUpsertRelationshipsRequest, opts ...grpc.CallOption) (*BatchUpsertRelationshipsResponse, error)
@@ -60,6 +62,7 @@ type IngestAPIClient interface {
 	BatchDeleteRelationships(ctx context.Context, in *BatchDeleteRelationshipsRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipsResponse, error)
 	BatchDeleteNodeProperties(ctx context.Context, in *BatchDeleteNodePropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteNodePropertiesResponse, error)
 	BatchDeleteRelationshipProperties(ctx context.Context, in *BatchDeleteRelationshipPropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipPropertiesResponse, error)
+	BatchDeleteNodeTags(ctx context.Context, in *BatchDeleteNodeTagsRequest, opts ...grpc.CallOption) (*BatchDeleteNodeTagsResponse, error)
 }
 
 type ingestAPIClient struct {
@@ -102,6 +105,7 @@ func (x *ingestAPIStreamRecordsClient) Recv() (*StreamRecordsResponse, error) {
 	return m, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) IngestRecord(ctx context.Context, in *IngestRecordRequest, opts ...grpc.CallOption) (*IngestRecordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(IngestRecordResponse)
@@ -172,6 +176,16 @@ func (c *ingestAPIClient) BatchDeleteRelationshipProperties(ctx context.Context,
 	return out, nil
 }
 
+func (c *ingestAPIClient) BatchDeleteNodeTags(ctx context.Context, in *BatchDeleteNodeTagsRequest, opts ...grpc.CallOption) (*BatchDeleteNodeTagsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchDeleteNodeTagsResponse)
+	err := c.cc.Invoke(ctx, IngestAPI_BatchDeleteNodeTags_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IngestAPIServer is the server API for IngestAPI service.
 // All implementations should embed UnimplementedIngestAPIServer
 // for forward compatibility
@@ -179,6 +193,7 @@ func (c *ingestAPIClient) BatchDeleteRelationshipProperties(ctx context.Context,
 // IngestAPI represents the service interface for data ingestion.
 type IngestAPIServer interface {
 	StreamRecords(IngestAPI_StreamRecordsServer) error
+	// Deprecated: Do not use.
 	IngestRecord(context.Context, *IngestRecordRequest) (*IngestRecordResponse, error)
 	BatchUpsertNodes(context.Context, *BatchUpsertNodesRequest) (*BatchUpsertNodesResponse, error)
 	BatchUpsertRelationships(context.Context, *BatchUpsertRelationshipsRequest) (*BatchUpsertRelationshipsResponse, error)
@@ -186,6 +201,7 @@ type IngestAPIServer interface {
 	BatchDeleteRelationships(context.Context, *BatchDeleteRelationshipsRequest) (*BatchDeleteRelationshipsResponse, error)
 	BatchDeleteNodeProperties(context.Context, *BatchDeleteNodePropertiesRequest) (*BatchDeleteNodePropertiesResponse, error)
 	BatchDeleteRelationshipProperties(context.Context, *BatchDeleteRelationshipPropertiesRequest) (*BatchDeleteRelationshipPropertiesResponse, error)
+	BatchDeleteNodeTags(context.Context, *BatchDeleteNodeTagsRequest) (*BatchDeleteNodeTagsResponse, error)
 }
 
 // UnimplementedIngestAPIServer should be embedded to have forward compatible implementations.
@@ -215,6 +231,9 @@ func (UnimplementedIngestAPIServer) BatchDeleteNodeProperties(context.Context, *
 }
 func (UnimplementedIngestAPIServer) BatchDeleteRelationshipProperties(context.Context, *BatchDeleteRelationshipPropertiesRequest) (*BatchDeleteRelationshipPropertiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteRelationshipProperties not implemented")
+}
+func (UnimplementedIngestAPIServer) BatchDeleteNodeTags(context.Context, *BatchDeleteNodeTagsRequest) (*BatchDeleteNodeTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteNodeTags not implemented")
 }
 
 // UnsafeIngestAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -380,6 +399,24 @@ func _IngestAPI_BatchDeleteRelationshipProperties_Handler(srv interface{}, ctx c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IngestAPI_BatchDeleteNodeTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchDeleteNodeTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IngestAPIServer).BatchDeleteNodeTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IngestAPI_BatchDeleteNodeTags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IngestAPIServer).BatchDeleteNodeTags(ctx, req.(*BatchDeleteNodeTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IngestAPI_ServiceDesc is the grpc.ServiceDesc for IngestAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -414,6 +451,10 @@ var IngestAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BatchDeleteRelationshipProperties",
 			Handler:    _IngestAPI_BatchDeleteRelationshipProperties_Handler,
+		},
+		{
+			MethodName: "BatchDeleteNodeTags",
+			Handler:    _IngestAPI_BatchDeleteNodeTags_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

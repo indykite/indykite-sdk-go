@@ -43,12 +43,13 @@ type RunEntityMatchingPipelineRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Id is the Globally unique identifier of the pipeline to run.
+	// Id is the required Globally unique identifier of the pipeline to run.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// CustomPropertyMappings contains the rules to match nodes properties.
 	// If empty, the default rules will be used (stored as part of the pipeline configuration).
 	CustomPropertyMappings []*PropertyMapping `protobuf:"bytes,2,rep,name=custom_property_mappings,json=customPropertyMappings,proto3" json:"custom_property_mappings,omitempty"`
-	// SimilarityScoreCutoff defines the threshold (in range [0,1]), above which entities will be automatically matched.
+	// SimilarityScoreCutoff defines the required threshold (in range [0,1]),
+	// above which entities will be automatically matched.
 	SimilarityScoreCutoff float32 `protobuf:"fixed32,3,opt,name=similarity_score_cutoff,json=similarityScoreCutoff,proto3" json:"similarity_score_cutoff,omitempty"`
 }
 
@@ -176,7 +177,7 @@ type ReadSuggestedPropertyMappingRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Id contains the Globally Unique Identifier of the object with server generated id.
+	// Id contains the required Globally Unique Identifier of the object with server generated id.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
@@ -291,7 +292,7 @@ type ReadEntityMatchingReportRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Id contains the Globally Unique Identifier of the object with server generated id.
+	// Id contains the required Globally Unique Identifier of the object with server generated id.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
