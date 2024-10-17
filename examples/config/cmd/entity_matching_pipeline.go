@@ -127,7 +127,7 @@ var deleteEntityMatchingPipelineConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete EntityMatchingPipeline configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:AAAAIHQq2n5zkUP0gnFFtcn7hlo")
+		deleteReq, _ := config.NewDelete("gid:AAAAIBkMrARucEOpqeM6vGJm5b0")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
