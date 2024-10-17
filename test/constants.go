@@ -40,7 +40,7 @@ var (
 				"type": "Person"
 			},
 			"actions": [
-				""
+				"SUBSCRIBES_TO"
 			],
 			"resource": {
 				"type": "Asset"
@@ -48,7 +48,7 @@ var (
 			"condition": {
 				"cypher": "MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:IS_ON]->
 				(s:Subscription) MATCH (s)-[:OFFERS]->(:Service) MATCH (s)-[:COVERS]->
-				(resource:Asset) WITH subject, resource"
+				(resource:Asset) "
 			}
 		}
 	*/
@@ -155,15 +155,15 @@ var (
 
 	NodeBad     = "id"
 	NodeNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
-	Node1       = "gid:AAAAFdrC00gBhkvelHM0OQO-u4U"
-	Node2       = "gid:AAAAFb3lFaaArUVYqk9VdY1Ct1Y"
+	Node1       = "gid:AAAAHJsPjaxKk0WchnF4wH3Hg10"
+	Node2       = "gid:AAAAHO-ocNjhAU1dlkF_1QG22Uo"
 	Node3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
-	Node4       = "gid:AAAAHC_gEo51KUkbvMdGenKHc6Q"
-	Node5       = "gid:AAAAHKOnVUXFSEe5gSqzl0fOHoU"
+	Node4       = "gid:AAAAHH50iSkNRkZni9C12Ed-7fk"
+	Node5       = "gid:AAAAHIJg29h5dErYihm_ZRLDB_Y"
 
 	EmailBad   = "test@example.com"
-	EmailGood  = "biche@yahoo.uk"
-	EmailGood2 = "darna@yahoo.uk"
+	EmailGood  = "biche@yahoo.co.uk"
+	EmailGood2 = "darna@yahoo.co.uk"
 
 	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
@@ -172,9 +172,9 @@ var (
 	Asset3  = "zojWwtKbBLmAXCO"
 	Asset4  = "paLtQSpEcTvzeuC"
 	Asset5  = "dLZVTSllFCdZfXC"
-	Car1    = "gid:AAAAHGFc4HM1TUg8oRiWIsQsVz8"
+	Car1    = "gid:AAAAHMjQZuF-L0F6lliyCVGfIRc"
 	Car1Ext = "9658744"
-	Car2    = "gid:AAAAHFLO98h-sEakqs0Qnvpkqq8"
+	Car2    = "gid:AAAAHM1Lc0CS5EJxpM5QuRUAnrc"
 	Car2Ext = "963258"
 
 	Subject1   = "dilZWYdFcmXiojC"
@@ -184,15 +184,15 @@ var (
 	SubjectDT4 = "852147963"
 	SubjectDT5 = "741258"
 
-	ConsentConfigID = "gid:AAAAHfho2CFLq0rWpmSapJj0JHY"
-	ConsentConfig2  = "gid:AAAAHY0vIMaQx0J9mznHhmarV0M"
-	ConsentConfig3  = "gid:AAAAHcghAxMMo0vBjxi4IpZgsjQ"
-	Application     = "gid:AAAABMoo7PXYfkwepSVjj4GTtfc"
-	ConsentInvalid  = "gid:AAAAHQlNWOqosEpOuI7iyJ46Lhc"
-	ConsentEnforce  = "gid:AAAAHZqv2OcINERSmJxWdp_Zdx4"
-	ConsentAllow    = "gid:AAAAHf5ZnwufDUK-tnCjoSsw-cQ"
+	ConsentConfigID = "gid:AAAAHd5zxpEOlkZtkZQBQ4LEpMg"
+	ConsentConfig2  = "gid:AAAAHW5LGqLwe02RgZH6F-p7Tqk"
+	ConsentConfig3  = "gid:AAAAHf76WounSEFgg_PZXdvz-eI"
+	Application     = "gid:AAAABAm7PCSpUkkej0_iLS8pWrM"
+	ConsentInvalid  = "gid:AAAAHXG0xeENcEY6n2qHrf5v7bU"
+	ConsentEnforce  = "gid:AAAAHedNk86qM0KHn5KkOWZPSn0"
+	ConsentAllow    = "gid:AAAAHfIbn_01-0a9igaJVUOjjg8"
 
-	Resolver = "gid:AAAAIcrOChFSj0R5sFm1V8JXhiE"
+	Resolver = "gid:AAAAIYZfGPsbJEiFnV92GnXklOc"
 	URL      = "https://example.com/source2"
 	URLUpd   = "https://example.com/sourceupd"
 	Method1  = "GET"
@@ -214,6 +214,18 @@ var (
 	CustomerID    = os.Getenv("CUSTOMER_ID")
 	WrongAppSpace = "gid:AAAAAgDRZxyY6Ecrjhj2GMCtgVI"
 	Tags          = []string{"Sitea", "Siteb"}
+
+	NodeFilter1 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
+		SourceNodeTypes: []string{"Customer"},
+		TargetNodeTypes: []string{"Client"},
+	}
+	NodeFilter2 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
+		SourceNodeTypes: []string{"Employee"},
+		TargetNodeTypes: []string{"User"},
+	}
+	NodeFilter3 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
+		SourceNodeTypes: []string{"Employee"},
+	}
 )
 
 func GenerateRandomString(length int) string {

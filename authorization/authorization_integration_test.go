@@ -195,7 +195,7 @@ var _ = Describe("Authorized", func() {
 					},
 				},
 			}
-			policyTags := []string{"Tag1"}
+			policyTags := []string{"TagOne"}
 
 			resp, err := authorizationClient.IsAuthorized(
 				context.Background(),
@@ -962,19 +962,19 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
+										"ExternalId": Equal(integration.Asset4),
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
+										"ExternalId": Equal(integration.Asset3),
 									})),
 									"2": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset1),
 									})),
 									"3": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset5),
+										"ExternalId": Equal(integration.Asset2),
 									})),
 									"4": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset2),
+										"ExternalId": Equal(integration.Asset5),
 									})),
 								}),
 							})),
@@ -1197,10 +1197,10 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
+										"ExternalId": Equal(integration.Asset4),
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
+										"ExternalId": Equal(integration.Asset3),
 									})),
 									"2": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset1),
@@ -1308,10 +1308,10 @@ var _ = Describe("Authorized", func() {
 							action: PointTo(MatchFields(IgnoreExtras, Fields{
 								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
 									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
+										"ExternalId": Equal(integration.Asset4),
 									})),
 									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
+										"ExternalId": Equal(integration.Asset3),
 									})),
 									"2": PointTo(MatchFields(IgnoreExtras, Fields{
 										"ExternalId": Equal(integration.Asset1),
@@ -1447,13 +1447,13 @@ var _ = Describe("Authorized", func() {
 									action0: PointTo(MatchFields(IgnoreExtras, Fields{
 										"Subjects": MatchAllElementsWithIndex(IndexIdentity, Elements{
 											"0": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject2),
-											})),
-											"1": PointTo(MatchFields(IgnoreExtras, Fields{
 												"ExternalId": Equal(integration.Subject1),
 											})),
-											"2": PointTo(MatchFields(IgnoreExtras, Fields{
+											"1": PointTo(MatchFields(IgnoreExtras, Fields{
 												"ExternalId": Equal(integration.Subject3),
+											})),
+											"2": PointTo(MatchFields(IgnoreExtras, Fields{
+												"ExternalId": Equal(integration.Subject2),
 											})),
 										}),
 									})),

@@ -36,7 +36,6 @@ var _ = Describe("EntityMatching", func() {
 	mockErrorCode := codes.InvalidArgument
 	mockErrorMessage := "mockError"
 	now := time.Now()
-	oneMonthFromNow := now.AddDate(0, 1, 0)
 
 	var (
 		mockCtrl             *gomock.Controller
@@ -50,53 +49,6 @@ var _ = Describe("EntityMatching", func() {
 		var err error
 		entitymatchingClient, err = entitymatching.NewTestClient(mockClient)
 		Ω(err).To(Succeed())
-	})
-
-	Describe("Read Entity Matching Report", func() {
-		mockReadEntityMatchingReportRequest := entitymatchingpb.ReadEntityMatchingReportRequest{
-			Id: "gid:886hfic8fswlz3zjrc2e3nun9xs",
-		}
-
-		DescribeTable("ReadEntityMatchingReportSuccess",
-			func(req *entitymatchingpb.ReadEntityMatchingReportRequest,
-				beResp *entitymatchingpb.ReadEntityMatchingReportResponse) {
-				mockClient.EXPECT().ReadEntityMatchingReport(
-					gomock.Any(),
-					test.WrapMatcher(test.EqualProto(req)),
-					gomock.Any(),
-				).Return(beResp, nil)
-
-				resp, err := entitymatchingClient.ReadEntityMatchingReport(context.Background(), req)
-				Ω(resp).ToNot(BeNil())
-				Ω(err).To(Succeed())
-				Ω(resp).To(test.EqualProto(beResp))
-			},
-			Entry(
-				"read entity matching report id and returns response",
-				&mockReadEntityMatchingReportRequest,
-				&entitymatchingpb.ReadEntityMatchingReportResponse{
-					Id:                   "gid:886hfic8fswlz3zjrc2e3nun9xs",
-					ReportUrl:            "https://report.com",
-					UrlExpireTime:        timestamppb.New(oneMonthFromNow),
-					EntityMatchingStatus: 3,
-				},
-			),
-		)
-
-		It("handles and returns error", func() {
-			mockClient.EXPECT().ReadEntityMatchingReport(
-				gomock.Any(),
-				gomock.Eq(&mockReadEntityMatchingReportRequest),
-				gomock.Any(),
-			).Return(nil, status.Error(mockErrorCode, mockErrorMessage))
-
-			resp, err := entitymatchingClient.ReadEntityMatchingReport(
-				context.Background(),
-				&mockReadEntityMatchingReportRequest)
-			Ω(resp).To(BeNil())
-			Ω(err).To(HaveOccurred())
-			Ω(err).To(test.MatchStatusError(mockErrorCode, mockErrorMessage))
-		})
 	})
 
 	Describe("Read Suggested Property Mapping", func() {

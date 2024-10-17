@@ -23,24 +23,6 @@ import (
 	entitymatchingpb "github.com/indykite/indykite-sdk-go/gen/indykite/entitymatching/v1beta1"
 )
 
-func (c *Client) ReadEntityMatchingReport(
-	ctx context.Context,
-	req *entitymatchingpb.ReadEntityMatchingReportRequest,
-	opts ...grpc.CallOption,
-) (*entitymatchingpb.ReadEntityMatchingReportResponse, error) {
-	if err := req.Validate(); err != nil {
-		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call ReadEntityMatchingReport")
-	}
-
-	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.ReadEntityMatchingReport(ctx, req, opts...)
-
-	if s := errors.FromError(err); s != nil {
-		return nil, s
-	}
-	return resp, nil
-}
-
 func (c *Client) ReadSuggestedPropertyMapping(
 	ctx context.Context,
 	req *entitymatchingpb.ReadSuggestedPropertyMappingRequest,
