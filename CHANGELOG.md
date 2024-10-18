@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.44.0](https://github.com/indykite/indykite-sdk-go/compare/v0.43.0...v0.44.0) (2024-10-18)
+
+
+### Features
+
+* remove read report function and add tests ([f120e3a](https://github.com/indykite/indykite-sdk-go/commit/f120e3aa4d28657fffc35bc45dd2d4df79d184bd))
+
 ## [0.43.0](https://github.com/indykite/indykite-sdk-go/compare/v0.42.0...v0.43.0) (2024-10-10)
 
 
