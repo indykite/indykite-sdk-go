@@ -84,10 +84,6 @@ var updateEntityMatchingPipelineConfigCmd = &cobra.Command{
 	Short: "Update EntityMatchingPipeline config",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.EntityMatchingPipelineConfig{
-			NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
-				SourceNodeTypes: []string{"employee"},
-				TargetNodeTypes: []string{"user"},
-			},
 			SimilarityScoreCutoff: 0.9,
 			PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
 			EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
