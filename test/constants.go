@@ -219,10 +219,6 @@ var (
 		SourceNodeTypes: []string{"Customer"},
 		TargetNodeTypes: []string{"Client"},
 	}
-	NodeFilter2 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
-		SourceNodeTypes: []string{"Employee"},
-		TargetNodeTypes: []string{"User"},
-	}
 	NodeFilter3 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
 		SourceNodeTypes: []string{"Employee"},
 	}

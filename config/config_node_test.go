@@ -1118,10 +1118,6 @@ var _ = Describe("ConfigNode", func() {
 		It("UpdateEntityMatchingPipelineConfig", func() {
 			now := timestamppb.New(time.Now())
 			configuration := &configpb.EntityMatchingPipelineConfig{
-				NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
-					SourceNodeTypes: []string{"employee"},
-					TargetNodeTypes: []string{"user"},
-				},
 				SimilarityScoreCutoff: 0.9,
 				PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
 				EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
@@ -1161,10 +1157,6 @@ var _ = Describe("ConfigNode", func() {
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"EntityMatchingPipelineConfig": test.EqualProto(
 							&configpb.EntityMatchingPipelineConfig{
-								NodeFilter: &configpb.EntityMatchingPipelineConfig_NodeFilter{
-									SourceNodeTypes: []string{"employee"},
-									TargetNodeTypes: []string{"user"},
-								},
 								SimilarityScoreCutoff: 0.9,
 								PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
 								EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,

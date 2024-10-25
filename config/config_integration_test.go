@@ -282,7 +282,7 @@ var _ = Describe("Configuration", func() {
 
 			// update config node
 			configurationUpd := &configpb.EntityMatchingPipelineConfig{
-				NodeFilter: integration.NodeFilter2,
+				SimilarityScoreCutoff: 0.9,
 			}
 			updateReq, _ := config.NewUpdate(configID)
 			updateReq.WithDisplayName("EntityMatching2" + timeNow)
