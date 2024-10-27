@@ -57,26 +57,6 @@ func (m *MockEntityMatchingAPIClient) EXPECT() *MockEntityMatchingAPIClientMockR
 	return m.recorder
 }
 
-// ReadEntityMatchingReport mocks base method.
-func (m *MockEntityMatchingAPIClient) ReadEntityMatchingReport(arg0 context.Context, arg1 *entitymatchingv1beta1.ReadEntityMatchingReportRequest, arg2 ...grpc.CallOption) (*entitymatchingv1beta1.ReadEntityMatchingReportResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ReadEntityMatchingReport", varargs...)
-	ret0, _ := ret[0].(*entitymatchingv1beta1.ReadEntityMatchingReportResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReadEntityMatchingReport indicates an expected call of ReadEntityMatchingReport.
-func (mr *MockEntityMatchingAPIClientMockRecorder) ReadEntityMatchingReport(arg0, arg1 any, arg2 ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadEntityMatchingReport", reflect.TypeOf((*MockEntityMatchingAPIClient)(nil).ReadEntityMatchingReport), varargs...)
-}
-
 // ReadSuggestedPropertyMapping mocks base method.
 func (m *MockEntityMatchingAPIClient) ReadSuggestedPropertyMapping(arg0 context.Context, arg1 *entitymatchingv1beta1.ReadSuggestedPropertyMappingRequest, arg2 ...grpc.CallOption) (*entitymatchingv1beta1.ReadSuggestedPropertyMappingResponse, error) {
 	m.ctrl.T.Helper()
