@@ -108,13 +108,10 @@ var _ = Describe("EntityMatching", func() {
 	Describe("Run Entity Matching Pipeline", func() {
 		mockRunEntityMatchingPipelineRequest := entitymatchingpb.RunEntityMatchingPipelineRequest{
 			Id: "gid:886hfic8fswlz3zjrc2e3nun9xs",
-			CustomPropertyMappings: []*entitymatchingpb.PropertyMapping{
+			CustomPropertyMappings: []*entitymatchingpb.CustomPropertyMappings{
 				{
-					SourceNodeType:        "employee",
-					SourceNodeProperty:    "email",
-					TargetNodeType:        "user",
-					TargetNodeProperty:    "address",
-					SimilarityScoreCutoff: 0.9,
+					SourceNodeProperty: "email",
+					TargetNodeProperty: "email",
 				},
 			},
 			SimilarityScoreCutoff: 0.95,

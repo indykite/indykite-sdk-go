@@ -36,7 +36,6 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	EntityMatchingAPI_RunEntityMatchingPipeline_FullMethodName    = "/indykite.entitymatching.v1beta1.EntityMatchingAPI/RunEntityMatchingPipeline"
 	EntityMatchingAPI_ReadSuggestedPropertyMapping_FullMethodName = "/indykite.entitymatching.v1beta1.EntityMatchingAPI/ReadSuggestedPropertyMapping"
-	EntityMatchingAPI_ReadEntityMatchingReport_FullMethodName     = "/indykite.entitymatching.v1beta1.EntityMatchingAPI/ReadEntityMatchingReport"
 )
 
 // EntityMatchingAPIClient is the client API for EntityMatchingAPI service.
@@ -47,8 +46,6 @@ type EntityMatchingAPIClient interface {
 	RunEntityMatchingPipeline(ctx context.Context, in *RunEntityMatchingPipelineRequest, opts ...grpc.CallOption) (*RunEntityMatchingPipelineResponse, error)
 	// ReadSuggestedPropertyMapping by Pipeline ID.
 	ReadSuggestedPropertyMapping(ctx context.Context, in *ReadSuggestedPropertyMappingRequest, opts ...grpc.CallOption) (*ReadSuggestedPropertyMappingResponse, error)
-	// ReadEntityMatchingReport by Pipeline ID for a successful Pipeline.
-	ReadEntityMatchingReport(ctx context.Context, in *ReadEntityMatchingReportRequest, opts ...grpc.CallOption) (*ReadEntityMatchingReportResponse, error)
 }
 
 type entityMatchingAPIClient struct {
@@ -79,16 +76,6 @@ func (c *entityMatchingAPIClient) ReadSuggestedPropertyMapping(ctx context.Conte
 	return out, nil
 }
 
-func (c *entityMatchingAPIClient) ReadEntityMatchingReport(ctx context.Context, in *ReadEntityMatchingReportRequest, opts ...grpc.CallOption) (*ReadEntityMatchingReportResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReadEntityMatchingReportResponse)
-	err := c.cc.Invoke(ctx, EntityMatchingAPI_ReadEntityMatchingReport_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // EntityMatchingAPIServer is the server API for EntityMatchingAPI service.
 // All implementations should embed UnimplementedEntityMatchingAPIServer
 // for forward compatibility
@@ -97,8 +84,6 @@ type EntityMatchingAPIServer interface {
 	RunEntityMatchingPipeline(context.Context, *RunEntityMatchingPipelineRequest) (*RunEntityMatchingPipelineResponse, error)
 	// ReadSuggestedPropertyMapping by Pipeline ID.
 	ReadSuggestedPropertyMapping(context.Context, *ReadSuggestedPropertyMappingRequest) (*ReadSuggestedPropertyMappingResponse, error)
-	// ReadEntityMatchingReport by Pipeline ID for a successful Pipeline.
-	ReadEntityMatchingReport(context.Context, *ReadEntityMatchingReportRequest) (*ReadEntityMatchingReportResponse, error)
 }
 
 // UnimplementedEntityMatchingAPIServer should be embedded to have forward compatible implementations.
@@ -110,9 +95,6 @@ func (UnimplementedEntityMatchingAPIServer) RunEntityMatchingPipeline(context.Co
 }
 func (UnimplementedEntityMatchingAPIServer) ReadSuggestedPropertyMapping(context.Context, *ReadSuggestedPropertyMappingRequest) (*ReadSuggestedPropertyMappingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadSuggestedPropertyMapping not implemented")
-}
-func (UnimplementedEntityMatchingAPIServer) ReadEntityMatchingReport(context.Context, *ReadEntityMatchingReportRequest) (*ReadEntityMatchingReportResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadEntityMatchingReport not implemented")
 }
 
 // UnsafeEntityMatchingAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -162,24 +144,6 @@ func _EntityMatchingAPI_ReadSuggestedPropertyMapping_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EntityMatchingAPI_ReadEntityMatchingReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadEntityMatchingReportRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EntityMatchingAPIServer).ReadEntityMatchingReport(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: EntityMatchingAPI_ReadEntityMatchingReport_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EntityMatchingAPIServer).ReadEntityMatchingReport(ctx, req.(*ReadEntityMatchingReportRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // EntityMatchingAPI_ServiceDesc is the grpc.ServiceDesc for EntityMatchingAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -194,10 +158,6 @@ var EntityMatchingAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReadSuggestedPropertyMapping",
 			Handler:    _EntityMatchingAPI_ReadSuggestedPropertyMapping_Handler,
-		},
-		{
-			MethodName: "ReadEntityMatchingReport",
-			Handler:    _EntityMatchingAPI_ReadEntityMatchingReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
