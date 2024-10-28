@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.45.0](https://github.com/indykite/indykite-sdk-go/compare/v0.44.0...v0.45.0) (2024-10-28)
+
+
+### Features
+
+* update entity matching after modifications ([548478b](https://github.com/indykite/indykite-sdk-go/commit/548478b8316b3494a8fe74193ff000a450325501))
+
+
+### Bug Fixes
+
+* align update EM pipeline request to new specs ([05e99c5](https://github.com/indykite/indykite-sdk-go/commit/05e99c50293525f3cbb837af23dd8daedd256f6a))
+
 ## [0.44.0](https://github.com/indykite/indykite-sdk-go/compare/v0.43.0...v0.44.0) (2024-10-18)
 
 
