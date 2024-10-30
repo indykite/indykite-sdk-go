@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.45.1](https://github.com/indykite/indykite-sdk-go/compare/v0.45.0...v0.45.1) (2024-10-30)
+
+
+### Bug Fixes
+
+* add loop to delete AppSpace ([5ac2e4f](https://github.com/indykite/indykite-sdk-go/commit/5ac2e4f681989a8b2197259d28dddf1f3378a34e))
+
 ## [0.45.0](https://github.com/indykite/indykite-sdk-go/compare/v0.44.0...v0.45.0) (2024-10-28)
 
 
