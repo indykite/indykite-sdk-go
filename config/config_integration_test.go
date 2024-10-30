@@ -309,7 +309,7 @@ var _ = Describe("Configuration", func() {
 				}
 				time.Sleep(retryDelay) // Wait before retrying
 			}
-			// stop delete here: too long in current EM version
+			Expect(errDel).To(Succeed())
 
 			// delete appSpace
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
@@ -318,9 +318,17 @@ var _ = Describe("Configuration", func() {
 				Etag:      etagPb,
 				Bookmarks: []string{},
 			}
-			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+			var errDelAS error
+			var respDelAS *configpb.DeleteApplicationSpaceResponse
+			for i := 0; i < maxRetries; i++ {
+				respDelAS, errDelAS = configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+				if errDelAS == nil {
+					Expect(respDelAS).NotTo(BeNil())
+					break // Exit the loop if error is nil
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
 			Expect(err).To(Succeed())
-			Expect(respDelAS).NotTo(BeNil())
 			err = configClient.Close()
 			Expect(err).To(Succeed())
 		})
