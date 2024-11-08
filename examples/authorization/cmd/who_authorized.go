@@ -32,9 +32,9 @@ var whoAuthorizedCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		resources := []*authorizationpb.WhoAuthorizedRequest_Resource{
 			{
-				ExternalId: "resourceID",
-				Type:       "Type",
-				Actions:    []string{"ACTION"},
+				ExternalId: "Truck1",
+				Type:       "Truck",
+				Actions:    []string{"SUBSCRIBES_TO", "OWNS"},
 			},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}

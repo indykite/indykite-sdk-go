@@ -35,7 +35,7 @@ var batchUpsertNodesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		node1 := &knowledgeobjects.Node{
-			ExternalId: "741258",
+			ExternalId: "barnabebe",
 			Type:       "Person",
 			IsIdentity: true,
 			Properties: []*knowledgeobjects.Property{
@@ -43,7 +43,7 @@ var batchUpsertNodesCmd = &cobra.Command{
 					Type: "email",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "elias@yahoo.com",
+							StringValue: "banabebe@yahoo.com",
 						},
 					},
 					Metadata: &knowledgeobjects.Metadata{
@@ -69,24 +69,7 @@ var batchUpsertNodesCmd = &cobra.Command{
 					Type: "first_name",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "colias",
-						},
-					},
-				},
-			},
-			Tags: []string{"Sitea", "Siteb"},
-		}
-
-		node2 := &knowledgeobjects.Node{
-			ExternalId: "789456",
-			Type:       "Car",
-			IsIdentity: false,
-			Properties: []*knowledgeobjects.Property{
-				{
-					Type: "plateNumber",
-					Value: &objects.Value{
-						Type: &objects.Value_StringValue{
-							StringValue: "NO8521",
+							StringValue: "barnabebe",
 						},
 					},
 				},
@@ -95,7 +78,7 @@ var batchUpsertNodesCmd = &cobra.Command{
 		}
 
 		nodes := []*knowledgeobjects.Node{
-			node1, node2,
+			node1,
 		}
 		resp, err := client.BatchUpsertNodes(context.Background(), nodes)
 		if err != nil {

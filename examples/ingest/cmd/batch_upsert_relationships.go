@@ -20,11 +20,8 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
-	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
-	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
 // batch upsert relationships represents the command for ingesting up to 250 relationships
@@ -37,60 +34,18 @@ var batchUpsertRelationshipsCmd = &cobra.Command{
 
 		relationship1 := &ingestpb.Relationship{
 			Source: &ingestpb.NodeMatch{
-				ExternalId: "741258",
+				ExternalId: "barnabebe",
 				Type:       "Person",
 			},
 			Target: &ingestpb.NodeMatch{
-				ExternalId: "963258",
-				Type:       "Car",
+				ExternalId: "tRVeocDOOzNfTIN",
+				Type:       "Organization",
 			},
-			Type: "OWNS",
-			Properties: []*knowledgeobjects.Property{
-				{
-					Type: "linked",
-					Value: &objects.Value{
-						Type: &objects.Value_StringValue{
-							StringValue: "12345",
-						},
-					},
-					Metadata: &knowledgeobjects.Metadata{
-						AssuranceLevel:   1,
-						VerificationTime: timestamppb.Now(),
-						Source:           "Myself",
-						CustomMetadata: map[string]*objects.Value{
-							"customdata": {
-								Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
-							},
-						},
-					},
-				},
-			},
-		}
-
-		relationship2 := &ingestpb.Relationship{
-			Source: &ingestpb.NodeMatch{
-				ExternalId: "0002",
-				Type:       "Employee",
-			},
-			Target: &ingestpb.NodeMatch{
-				ExternalId: "0003",
-				Type:       "Truck",
-			},
-			Type: "SERVICES",
-			Properties: []*knowledgeobjects.Property{
-				{
-					Type: "linked",
-					Value: &objects.Value{
-						Type: &objects.Value_StringValue{
-							StringValue: "678910",
-						},
-					},
-				},
-			},
+			Type: "BELONGS_TO",
 		}
 
 		relationships := []*ingestpb.Relationship{
-			relationship1, relationship2,
+			relationship1,
 		}
 		resp, err := client.BatchUpsertRelationships(context.Background(), relationships)
 		if err != nil {

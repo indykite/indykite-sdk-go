@@ -35,19 +35,16 @@ var createExternalDataResolverConfigCmd = &cobra.Command{
 	Short: "Create ExternalDataResolver config",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ExternalDataResolverConfig{
-			Url:    "https://example.com/source2",
-			Method: "GET",
-			Headers: map[string]*configpb.ExternalDataResolverConfig_Header{
-				"Authorization": {Values: []string{"Bearer edolkUTY"}},
-				"Content-Type":  {Values: []string{"application/json"}},
-			},
+			Url:              "http://super-octo-waffle.indykite.com/magic?data=2024",
+			Method:           "GET",
+			Headers:          map[string]*configpb.ExternalDataResolverConfig_Header{},
 			RequestType:      configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
-			RequestPayload:   []byte(`{"key": "value"}`),
+			RequestPayload:   []byte(``),
 			ResponseType:     configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
-			ResponseSelector: ".",
+			ResponseSelector: ".echo",
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name2")
-		createReq.ForLocation("gid:AAAAABBBBB_uiuiu144KNUI1245")
+		createReq.ForLocation("gid:AAAAAguAAAAAAAAAAAAAAAAAAAA")
 		createReq.WithDisplayName("Like real ConfigNode Name2")
 		createReq.WithExternalDataResolverConfig(configuration)
 
@@ -71,18 +68,16 @@ var updateExternalDataResolverConfigCmd = &cobra.Command{
 	Short: "Update ExternalDataResolver config",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.ExternalDataResolverConfig{
-			Url:    "https://example.com/source",
-			Method: "GET",
-			Headers: map[string]*configpb.ExternalDataResolverConfig_Header{
-				"Authorization": {Values: []string{"Bearer edyUTY"}},
-				"Content-Type":  {Values: []string{"application/json"}},
-			},
+			Url:              "http://super-octo-waffle.indykite.com/magic?data=2024",
+			Method:           "GET",
+			Headers:          map[string]*configpb.ExternalDataResolverConfig_Header{},
 			RequestType:      configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
-			RequestPayload:   []byte(`{"key": "value"}`),
+			RequestPayload:   []byte(``),
 			ResponseType:     configpb.ExternalDataResolverConfig_CONTENT_TYPE_JSON,
-			ResponseSelector: ".",
+			ResponseSelector: ".echo",
 		}
-		updateReq, _ := config.NewUpdate("gid:id-of-existing-config")
+		updateReq, _ := config.NewUpdate("gid:AAAAIZISzhPyS0i-hT-OnuiGkKE")
+		updateReq.WithDescription("Desc2")
 		updateReq.WithExternalDataResolverConfig(configuration)
 
 		resp, err := client.UpdateConfigNode(context.Background(), updateReq)
@@ -104,7 +99,7 @@ var deleteExternalDataResolverConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete ExternalDataResolver configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:id-of-existing-config")
+		deleteReq, _ := config.NewDelete("gid:AAAAIWWRI5nLaEkjhFBa4v8Gi-4")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)

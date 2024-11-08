@@ -77,8 +77,7 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 		}
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
-			{Type: "TypeA"},
-			{Type: "TypeB", Actions: []string{"ACTION"}},
+			{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}
 		var policyTags []string
@@ -153,8 +152,7 @@ var whatWithExternalIDCmd = &cobra.Command{
 		fmt.Scanln(&(externalID.ExternalId))
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
-			{Type: "TypeA", Actions: []string{"ACTION1", "ACTION2"}},
-			{Type: "TypeB", Actions: []string{"ACTION"}},
+			{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 		}
 
 		inputParams := map[string]*authorizationpb.InputParam{}
