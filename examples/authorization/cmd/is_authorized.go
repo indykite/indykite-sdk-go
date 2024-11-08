@@ -81,9 +81,9 @@ var withDigitalTwinCmd = &cobra.Command{
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				ExternalId: "resourceID",
-				Type:       "Type",
-				Actions:    []string{"ACTION"},
+				ExternalId: "Truck1",
+				Type:       "Truck",
+				Actions:    []string{"SUBSCRIBES_TO"},
 			},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}
@@ -117,9 +117,9 @@ var withPropertyCmd = &cobra.Command{
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				ExternalId: "resourceID",
-				Type:       "Type",
-				Actions:    []string{"ACTION"},
+				ExternalId: "Truck2",
+				Type:       "Truck",
+				Actions:    []string{"SUBSCRIBES_TO"},
 			},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}
@@ -163,9 +163,9 @@ var withExternalIDCmd = &cobra.Command{
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
-				ExternalId: "resourceID",
-				Type:       "Type",
-				Actions:    []string{"ACTION"},
+				ExternalId: "Truck4",
+				Type:       "Truck",
+				Actions:    []string{"SUBSCRIBES_TO"},
 			},
 		}
 		inputParams := map[string]*authorizationpb.InputParam{}

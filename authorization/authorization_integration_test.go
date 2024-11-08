@@ -60,837 +60,317 @@ var _ = Describe("Authorized", func() {
 			}
 		}, NodeTimeout(time.Second*10))
 
-		It("IsAuthorizedDT", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("DT Authorization tests",
+			func(digitalTwinId string,
+				resources []*authorizationpb.IsAuthorizedRequest_Resource,
+				policyTags []string,
+				expectedAllow bool,
+				expectedError string,
+				numberResources int) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
+				digitalTwin := &authorizationpb.DigitalTwin{
+					Id: digitalTwinId,
+				}
 
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.IsAuthorized(
+					context.Background(),
+					digitalTwin,
+					resources,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
+				if expectedError != "" {
+					if numberResources == 0 {
+						noAuditLogEntry = true
+					}
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
+					decision := resources[0].Type
+					resource := resources[0].ExternalId
+					action := resources[0].Actions[0]
 
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllKeys(Keys{
+									resource: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(Keys{
+											action: PointTo(MatchFields(IgnoreExtras, Fields{
+												"Allow": Equal(expectedAllow),
+											})),
+										}),
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("Authorized single resource", integration.Node1, integration.Resource1,
+				[]string{}, true, "", 1),
+			Entry("Authorized with tags", integration.Node1, integration.Resource1,
+				[]string{"TagOne"}, true, "", 1),
+			Entry("Unauthorized with wrong tags", integration.Node1, integration.Resource1,
+				[]string{"TagBad"}, false, "", 1),
+			Entry("Invalid resource type", integration.Node1, integration.Resource2, []string{}, false,
+				"invalid IsAuthorizedRequest_Resource.Type: value length must be between 2 and 50 runes", 0),
+			Entry("Invalid digital twin subject", integration.NodeBad, integration.Resource2,
+				[]string{}, false,
+				"invalid IsAuthorizedRequest.Subject", 0),
+			Entry("Digital twin not in DB", integration.NodeNotInDB, integration.Resource1,
+				[]string{}, false, "", 1),
+			Entry("Resource not in DB", integration.Node1, integration.Resource3,
+				[]string{}, false, "", 1),
+			Entry("Resource without subscription", integration.Node1, integration.Resource4,
+				[]string{}, false, "", 1),
+			Entry("Resource without organization", integration.Node1, integration.Resource7,
+				[]string{}, false, "", 1),
+			Entry("Authorized without service", integration.Node1, integration.Resource6,
+				[]string{}, false, "", 1),
+			Entry("Resource not linked", integration.Node1, integration.Resource4,
+				[]string{}, false, "", 1),
+			Entry("Authorized with external property", integration.Node3,
+				integration.Resource10, []string{}, true, "", 1),
+			Entry("Authorized without external property", integration.Node3,
+				integration.Resource12, []string{}, false, "", 1),
+			Entry("Authorized with wrong external property", integration.Node3,
+				integration.Resource13, []string{}, false,
+				"server was unable to complete the request", 1),
+			Entry("Authorized with external property against policy", integration.Node3,
+				integration.Resource11, []string{}, false, "", 1),
+		)
 
-		It("IsAuthorizedDTMultiple", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("DT Authorization multiple tests",
+			func(digitalTwinId string,
+				resources []*authorizationpb.IsAuthorizedRequest_Resource,
+				policyTags []string,
+				expectedAllow bool,
+				expectedError string,
+				numberResources int) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node2,
-			}
+				digitalTwin := &authorizationpb.DigitalTwin{
+					Id: digitalTwinId,
+				}
 
-			resources := integration.Resource9
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.IsAuthorized(
+					context.Background(),
+					digitalTwin,
+					resources,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
+				if expectedError != "" {
+					if numberResources == 0 {
+						noAuditLogEntry = true
+					}
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-			resource1 := resources[1].ExternalId
-			action1 := resources[1].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
+					decision := resources[0].Type
+					resource := resources[0].ExternalId
+					action := resources[0].Actions[0]
+					resource1 := resources[1].ExternalId
+					action1 := resources[1].Actions[0]
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllKeys(Keys{
+									resource: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(Keys{
+											action: PointTo(MatchFields(IgnoreExtras, Fields{
+												"Allow": Equal(expectedAllow),
+											})),
+										}),
 									})),
-								}),
-							})),
-							resource1: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action1: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedTags", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			policyTags := []string{"TagOne"}
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
+									resource1: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(Keys{
+											action1: PointTo(MatchFields(IgnoreExtras, Fields{
+												"Allow": Equal(expectedAllow),
+											})),
+										}),
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("Authorized multiple resources", integration.Node2, integration.Resource9,
+				[]string{}, true, "", 2),
+		)
 
-		It("IsAuthorizedWrongTags", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("Property Authorization tests",
+			func(typeNode string,
+				property string,
+				resources []*authorizationpb.IsAuthorizedRequest_Resource,
+				policyTags []string,
+				expectedAllow bool,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				digitalTwinProperty := &authorizationpb.Property{
+					Type:  typeNode,
+					Value: objectpb.String(property),
+				}
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			policyTags := []string{"TagBad"}
+				}
 
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.IsAuthorizedByProperty(
+					context.Background(),
+					digitalTwinProperty,
+					resources,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
+				if expectedError != "" {
+					noAuditLogEntry = true
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
+					decision := resources[0].Type
+					resource := resources[0].ExternalId
+					action := resources[0].Actions[0]
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllKeys(Keys{
+									resource: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(Keys{
+											action: PointTo(MatchFields(IgnoreExtras, Fields{
+												"Allow": Equal(expectedAllow),
+											})),
+										}),
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("Authorized property", "email", integration.EmailGood,
+				integration.Resource1, []string{}, true, ""),
+			Entry("Authorized property not in DB", "email", integration.EmailBad,
+				integration.Resource1, []string{}, false, ""),
+			Entry("Authorized property with external property", "email", integration.EmailGood,
+				integration.Resource14, []string{}, true, ""),
+		)
 
-		It("IsAuthorizedDTResourceNonValid", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("ExternalID Authorization tests",
+			func(typeNode string,
+				id string,
+				resources []*authorizationpb.IsAuthorizedRequest_Resource,
+				policyTags []string,
+				expectedAllow bool,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource2
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			noAuditLogEntry = true
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				externalID := &authorizationpb.ExternalID{
+					Type:       typeNode,
+					ExternalId: id,
+				}
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-			Expect(err).To(MatchError(ContainSubstring(
-				"invalid IsAuthorizedRequest_Resource.Type: value length must be between 2 and 50 runes")))
-			Expect(resp).To(BeNil())
-		})
+				resp, err := authorizationClient.IsAuthorizedByExternalID(
+					context.Background(),
+					externalID,
+					resources,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-		It("IsAuthorizedDTSubjectNonValid", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+				if expectedError != "" {
+					noAuditLogEntry = true
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.NodeBad,
-			}
-
-			resources := integration.Resource2
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			noAuditLogEntry = true
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-			Expect(err).To(MatchError(ContainSubstring("invalid IsAuthorizedRequest.Subject")))
-			Expect(resp).To(BeNil())
-		})
-
-		It("IsAuthorizedDTSubjectNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.NodeNotInDB,
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
+					decision := resources[0].Type
+					resource := resources[0].ExternalId
+					action := resources[0].Actions[0]
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllKeys(Keys{
+									resource: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(Keys{
+											action: PointTo(MatchFields(IgnoreExtras, Fields{
+												"Allow": Equal(expectedAllow),
+											})),
+										}),
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedDTResourceNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource3
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedDTResourceNoSubscription", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource4
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedDTResourceNoOrganization", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource7
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedDTNoService", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource6
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedDTResourceNotLinked", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resources := integration.Resource4
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorized(
-				context.Background(),
-				digitalTwin,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedProperty", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwinProperty := &authorizationpb.Property{
-				Type:  "email",
-				Value: objectpb.String(integration.EmailGood),
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorizedByProperty(
-				context.Background(),
-				digitalTwinProperty,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedPropertyNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwinProperty := &authorizationpb.Property{
-				Type:  "email",
-				Value: objectpb.String(integration.EmailBad),
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorizedByProperty(
-				context.Background(),
-				digitalTwinProperty,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedExternalID", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			externalID := &authorizationpb.ExternalID{
-				Type:       "Person",
-				ExternalId: integration.Subject2,
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorizedByExternalID(
-				context.Background(),
-				externalID,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(true),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("IsAuthorizedExternalIDNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			externalID := &authorizationpb.ExternalID{
-				Type:       "Person",
-				ExternalId: "anythingwrong",
-			}
-
-			resources := integration.Resource1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.IsAuthorizedByExternalID(
-				context.Background(),
-				externalID,
-				resources,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action := resources[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Allow": Equal(false),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("Authorized external ID", "Person", integration.Subject2,
+				integration.Resource1, []string{}, true, ""),
+			Entry("Authorized external ID not in DB", "Person", "anythingwrong",
+				integration.Resource1, []string{}, false, ""),
+			Entry("External ID with external property", "Person", integration.Subject2,
+				integration.Resource14, []string{}, true, ""),
+			Entry("External ID with external property against policy", "Person", integration.Subject2,
+				integration.Resource11, []string{}, false, ""),
+		)
 	})
 
 	Describe("WhatAuthorized", func() {
@@ -919,460 +399,239 @@ var _ = Describe("Authorized", func() {
 			}
 		}, NodeTimeout(time.Second*10))
 
-		It("WhatAuthorizedDT", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("What Authorization DT",
+			func(digitalTwinId string,
+				resourcesTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+				results []string,
+				policyTags []string,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
+				digitalTwin := &authorizationpb.DigitalTwin{
+					Id: digitalTwinId,
+				}
 
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.WhatAuthorized(
-				context.Background(),
-				digitalTwin,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.WhatAuthorized(
+					context.Background(),
+					digitalTwin,
+					resourcesTypes,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
+				if expectedError != "" {
+					noAuditLogEntry = true
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
-									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
-									})),
-									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
-									})),
-									"2": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
-									})),
-									"3": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset2),
-									})),
-									"4": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset5),
+					decision := resourcesTypes[0].Type
+					action := resourcesTypes[0].Actions[0]
+					resourceMatcher := BeEmpty() // Default to empty if no results
+					if len(results) > 0 {
+						elements := Elements{}
+						for i, result := range results {
+							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+								"ExternalId": Equal(result),
+							}))
+						}
+						resourceMatcher = MatchAllElementsWithIndex(IndexIdentity, elements)
+					}
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Actions": MatchAllKeys(Keys{
+									action: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Resources": resourceMatcher,
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("What authorized DT", integration.Node1, integration.ResourceType1,
+				[]string{integration.Asset4, integration.Asset3, integration.Asset1,
+					integration.Asset2, integration.Asset5}, []string{}, ""),
+			Entry("What Authorized DT Resource Non Valid", integration.Node1, integration.ResourceType2,
+				[]string{}, []string{},
+				"invalid WhatAuthorizedRequest_ResourceType.Type: value length must be between 2 and 50 runes"),
+			Entry("What Authorized DT Subject Non Valid", integration.NodeBad, integration.ResourceType1,
+				[]string{}, []string{}, "invalid DigitalTwin.Id: value length must be between 27 and 100 runes"),
+			Entry("What Authorized DT Subject Not In DB", integration.NodeNotInDB,
+				integration.ResourceType1, []string{}, []string{}, ""),
+			Entry("What Authorized DT Resource Not In DB", integration.Node1,
+				integration.ResourceType3, []string{}, []string{}, ""),
+			Entry("What Authorized DT With External Property", integration.Node6, integration.ResourceType4,
+				[]string{integration.Truck1}, []string{}, ""),
+			Entry("What Authorized DT With External Property Wrong Action", integration.Node7,
+				integration.ResourceType4, []string{}, []string{}, ""),
+		)
 
-		It("WhatAuthorizedDTResourceNonValid", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("What Authorization Property",
+			func(propertyType string,
+				property string,
+				resourcesTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+				results []string,
+				policyTags []string,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
+				digitalTwinProperty := &authorizationpb.Property{
+					Type:  propertyType,
+					Value: objectpb.String(property),
+				}
 
-			resourcesTypes := integration.ResourceType2
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			noAuditLogEntry = true
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.WhatAuthorized(
-				context.Background(),
-				digitalTwin,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-			Expect(err).To(MatchError(ContainSubstring(
-				"invalid WhatAuthorizedRequest_ResourceType.Type: value length must be between 2 and 50 runes")))
-			Expect(resp).To(BeNil())
-		})
+				resp, err := authorizationClient.WhatAuthorizedByProperty(
+					context.Background(),
+					digitalTwinProperty,
+					resourcesTypes,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-		It("WhatAuthorizedDTSubjectNonValid", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+				if expectedError != "" {
+					noAuditLogEntry = true
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.NodeBad,
-			}
-
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			noAuditLogEntry = true
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorized(
-				context.Background(),
-				digitalTwin,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-			Expect(err).To(MatchError(ContainSubstring(
-				"invalid DigitalTwin.Id: value length must be between 27 and 100 runes")))
-			Expect(resp).To(BeNil())
-		})
-
-		It("WhatAuthorizedDTSubjectNotInDB", func() {
-			var err error
-
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.NodeNotInDB,
-			}
-
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorized(
-				context.Background(),
-				digitalTwin,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": BeEmpty(),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("WhatAuthorizedDTResourceNotInDB", func() {
-			var err error
-
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwin := &authorizationpb.DigitalTwin{
-				Id: integration.Node1,
-			}
-
-			resourcesTypes := integration.ResourceType3
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorized(
-				context.Background(),
-				digitalTwin,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": BeEmpty(),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("WhatAuthorizedProperty", func() {
-			var err error
-
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			digitalTwinProperty := &authorizationpb.Property{
-				Type:  "email",
-				Value: objectpb.String(integration.EmailGood2),
-			}
-
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorizedByProperty(
-				context.Background(),
-				digitalTwinProperty,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
-									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
-									})),
-									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
-									})),
-									"2": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
+					decision := resourcesTypes[0].Type
+					action := resourcesTypes[0].Actions[0]
+					resourceMatcher := BeEmpty() // Default to empty if no results
+					if len(results) > 0 {
+						elements := Elements{}
+						for i, result := range results {
+							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+								"ExternalId": Equal(result),
+							}))
+						}
+						resourceMatcher = MatchAllElementsWithIndex(IndexIdentity, elements)
+					}
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Actions": MatchAllKeys(Keys{
+									action: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Resources": resourceMatcher,
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("What Authorized Property", "email", integration.EmailGood2, integration.ResourceType1,
+				[]string{integration.Asset4, integration.Asset3, integration.Asset1}, []string{}, ""),
+			Entry("What Authorized Property Not In DB", "email", integration.EmailBad, integration.ResourceType1,
+				[]string{}, []string{}, ""),
+			Entry("What Authorized Property With External Property", "email", integration.EmailWhat,
+				integration.ResourceType4, []string{integration.Truck1}, []string{}, ""),
+		)
 
-		It("WhatAuthorizedPropertyNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
+		DescribeTable("What Authorization ExternalID",
+			func(nodeType string,
+				id string,
+				resourcesTypes []*authorizationpb.WhatAuthorizedRequest_ResourceType,
+				results []string,
+				policyTags []string,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			digitalTwinProperty := &authorizationpb.Property{
-				Type:  "Email",
-				Value: objectpb.String(integration.EmailBad),
-			}
+				externalID := &authorizationpb.ExternalID{
+					Type:       nodeType,
+					ExternalId: id,
+				}
 
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			resp, err := authorizationClient.WhatAuthorizedByProperty(
-				context.Background(),
-				digitalTwinProperty,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.WhatAuthorizedByExternalID(
+					context.Background(),
+					externalID,
+					resourcesTypes,
+					inputParams,
+					policyTags,
+					retry.WithMax(5),
+				)
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
+				if expectedError != "" {
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": BeEmpty(),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
-
-		It("WhatAuthorizedExternalID", func() {
-			var err error
-
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			externalID := &authorizationpb.ExternalID{
-				Type:       "Person",
-				ExternalId: integration.Subject4,
-			}
-
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorizedByExternalID(
-				context.Background(),
-				externalID,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": MatchAllElementsWithIndex(IndexIdentity, Elements{
-									"0": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset4),
-									})),
-									"1": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset3),
-									})),
-									"2": PointTo(MatchFields(IgnoreExtras, Fields{
-										"ExternalId": Equal(integration.Asset1),
+					decision := resourcesTypes[0].Type
+					action := resourcesTypes[0].Actions[0]
+					resourceMatcher := BeEmpty() // Default to empty if no results
+					if len(results) > 0 {
+						elements := Elements{}
+						for i, result := range results {
+							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+								"ExternalId": Equal(result),
+							}))
+						}
+						resourceMatcher = MatchAllElementsWithIndex(IndexIdentity, elements)
+					}
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Actions": MatchAllKeys(Keys{
+									action: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Resources": resourceMatcher,
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
-
-		It("WhatAuthorizedExternalIDNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			externalID := &authorizationpb.ExternalID{
-				Type:       "Person",
-				ExternalId: "SomethingWrong",
-			}
-
-			resourcesTypes := integration.ResourceType1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			resp, err := authorizationClient.WhatAuthorizedByExternalID(
-				context.Background(),
-				externalID,
-				resourcesTypes,
-				inputParams,
-				policyTags,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resourcesTypes[0].Type
-			action := resourcesTypes[0].Actions[0]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Actions": MatchAllKeys(Keys{
-							action: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Resources": BeEmpty(),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("What Authorized External ID", "Person", integration.Subject4, integration.ResourceType1,
+				[]string{integration.Asset4, integration.Asset3, integration.Asset1}, []string{}, ""),
+			Entry("What Authorized External ID Not In DB", "Person", "SomethingWrong", integration.ResourceType1,
+				[]string{}, []string{}, ""),
+			Entry("What Authorized External ID With External Property", "Person", integration.Subject5,
+				integration.ResourceType4, []string{integration.Truck1}, []string{}, ""),
+			Entry("What Authorized External ID With External Property With Error", "Person", integration.Subject3,
+				integration.ResourceType4, []string{}, []string{}, "server was unable to complete the request"),
+		)
 	})
 
 	Describe("WhoAuthorized", func() {
@@ -1401,162 +660,85 @@ var _ = Describe("Authorized", func() {
 			}
 		}, NodeTimeout(time.Second*10))
 
-		It("WhoAuthorized", func() {
-			var err error
+		DescribeTable("Who Authorization",
+			func(resources []*authorizationpb.WhoAuthorizedRequest_Resource,
+				subjects []string,
+				policyTags []string,
+				expectedError string) {
+				authorizationClient, err := integration.InitConfigAuthorization()
+				Expect(err).To(Succeed())
 
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			resources := integration.ResourceWho1
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+				// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
+				inputParams := map[string]*authorizationpb.InputParam{
+					"auditLog": {
+						Value: &authorizationpb.InputParam_StringValue{
+							StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
+						},
 					},
-				},
-			}
-			var policyTags []string
+				}
 
-			req := &authorizationpb.WhoAuthorizedRequest{
-				Resources:   resources,
-				InputParams: inputParams,
-				PolicyTags:  policyTags,
-			}
+				req := &authorizationpb.WhoAuthorizedRequest{
+					Resources:   resources,
+					InputParams: inputParams,
+					PolicyTags:  policyTags,
+				}
 
-			resp, err := authorizationClient.WhoAuthorized(
-				context.Background(),
-				req,
-				retry.WithMax(5),
-			)
+				resp, err := authorizationClient.WhoAuthorized(
+					context.Background(),
+					req,
+					retry.WithMax(5),
+				)
 
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action0 := resources[0].Actions[0]
-			action1 := resources[0].Actions[1]
+				if expectedError != "" {
+					noAuditLogEntry = true
+					Expect(err).To(MatchError(ContainSubstring(expectedError)))
+					Expect(resp).To(BeNil())
+				} else {
+					Expect(err).To(Succeed())
+					Expect(resp).NotTo(BeNil())
 
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action0: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Subjects": MatchAllElementsWithIndex(IndexIdentity, Elements{
-											"0": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject1),
-											})),
-											"1": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject3),
-											})),
-											"2": PointTo(MatchFields(IgnoreExtras, Fields{
-												"ExternalId": Equal(integration.Subject2),
-											})),
-										}),
-									})),
-									action1: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Subjects": BeEmpty(),
+					decision := resources[0].Type
+					resource := resources[0].ExternalId
+					actions := resources[0].Actions
+					actionMatchers := Keys{}
+					for i, action := range actions {
+						// First action with specific subject matches
+						subjectMatcher := BeEmpty()
+						if i == 0 && len(subjects) > 0 {
+							elements := Elements{}
+							for i, subject := range subjects {
+								elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+									"ExternalId": Equal(subject),
+								}))
+							}
+							subjectMatcher = MatchAllElementsWithIndex(IndexIdentity, elements)
+						}
+						actionMatchers[action] = PointTo(MatchFields(IgnoreExtras, Fields{
+							"Subjects": subjectMatcher,
+						}))
+					}
+
+					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
+						"DecisionTime": Not(BeNil()),
+						"Decisions": MatchAllKeys(Keys{
+							decision: PointTo(MatchFields(IgnoreExtras, Fields{
+								"Resources": MatchAllKeys(Keys{
+									resource: PointTo(MatchFields(IgnoreExtras, Fields{
+										"Actions": MatchAllKeys(actionMatchers),
 									})),
 								}),
 							})),
 						}),
-					})),
-				}),
-			})))
-		})
-
-		It("WhoAuthorizedResourceNotValid", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			resources := integration.ResourceWho2
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			noAuditLogEntry = true
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			req := &authorizationpb.WhoAuthorizedRequest{
-				Resources:   resources,
-				InputParams: inputParams,
-				PolicyTags:  policyTags,
-			}
-
-			resp, err := authorizationClient.WhoAuthorized(
-				context.Background(),
-				req,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(MatchError(ContainSubstring(
-				"invalid WhoAuthorizedRequest_Resource.ExternalId: value length must be between 2 and 50 runes")))
-			Expect(resp).To(BeNil())
-		})
-
-		It("WhoAuthorizedResourceNotInDB", func() {
-			var err error
-			authorizationClient, err := integration.InitConfigAuthorization()
-			Expect(err).To(Succeed())
-
-			resources := integration.ResourceWho3
-			// To make sure that the proper audit log was queried from BigQuery, need to add a unique identifier.
-			inputParams := map[string]*authorizationpb.InputParam{
-				"auditLog": {
-					Value: &authorizationpb.InputParam_StringValue{
-						StringValue: fmt.Sprintf("\"%v\"", auditLogIdentifier),
-					},
-				},
-			}
-			var policyTags []string
-
-			req := &authorizationpb.WhoAuthorizedRequest{
-				Resources:   resources,
-				InputParams: inputParams,
-				PolicyTags:  policyTags,
-			}
-
-			resp, err := authorizationClient.WhoAuthorized(
-				context.Background(),
-				req,
-				retry.WithMax(5),
-			)
-
-			Expect(err).To(Succeed())
-			Expect(resp).NotTo(BeNil())
-
-			decision := resources[0].Type
-			resource := resources[0].ExternalId
-			action0 := resources[0].Actions[0]
-			action1 := resources[0].Actions[1]
-
-			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"DecisionTime": Not(BeNil()),
-				"Decisions": MatchAllKeys(Keys{
-					decision: PointTo(MatchFields(IgnoreExtras, Fields{
-						"Resources": MatchAllKeys(Keys{
-							resource: PointTo(MatchFields(IgnoreExtras, Fields{
-								"Actions": MatchAllKeys(Keys{
-									action0: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Subjects": BeEmpty(),
-									})),
-									action1: PointTo(MatchFields(IgnoreExtras, Fields{
-										"Subjects": BeEmpty(),
-									})),
-								}),
-							})),
-						}),
-					})),
-				}),
-			})))
-		})
+					})))
+				}
+			},
+			Entry("Who Authorized", integration.ResourceWho1,
+				[]string{integration.Subject1, integration.Subject3, integration.Subject2}, []string{}, ""),
+			Entry("Who Authorized Resource Not Valid", integration.ResourceWho2, []string{}, []string{},
+				"invalid WhoAuthorizedRequest_Resource.ExternalId: value length must be between 2 and 50 runes"),
+			Entry("Who Authorized Resource Not In DB", integration.ResourceWho3, []string{}, []string{}, ""),
+			Entry("Who Authorized With External Property", integration.ResourceWho4,
+				[]string{integration.Subject5, integration.Subject1}, []string{}, ""),
+		)
 	})
 })

@@ -129,6 +129,46 @@ var (
 		},
 	}
 
+	Resource10 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Truck1",
+			Type:       "Truck",
+			Actions:    []string{"SUBSCRIBES_TO"},
+		},
+	}
+
+	Resource11 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Truck3",
+			Type:       "Truck",
+			Actions:    []string{"SUBSCRIBES_TO"},
+		},
+	}
+
+	Resource12 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Truck4",
+			Type:       "Truck",
+			Actions:    []string{"SUBSCRIBES_TO"},
+		},
+	}
+
+	Resource13 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Truck5",
+			Type:       "Truck",
+			Actions:    []string{"SUBSCRIBES_TO"},
+		},
+	}
+
+	Resource14 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Truck2",
+			Type:       "Truck",
+			Actions:    []string{"SUBSCRIBES_TO"},
+		},
+	}
+
 	ResourceType1 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Asset", Actions: []string{"SUBSCRIBES_TO"}},
 	}
@@ -139,6 +179,10 @@ var (
 
 	ResourceType3 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Asset", Actions: []string{"DEMANDS"}},
+	}
+
+	ResourceType4 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+		{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 	}
 
 	ResourceWho1 = []*authorizationpb.WhoAuthorizedRequest_Resource{
@@ -153,17 +197,24 @@ var (
 		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
 	}
 
+	ResourceWho4 = []*authorizationpb.WhoAuthorizedRequest_Resource{
+		{ExternalId: "Truck1", Type: "Truck", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
+	}
+
 	NodeBad     = "id"
 	NodeNotInDB = "gid:AAAAGaiIPzg6L0DKkbIh22crsFg"
 	Node1       = "gid:AAAAHJsPjaxKk0WchnF4wH3Hg10"
 	Node2       = "gid:AAAAHO-ocNjhAU1dlkF_1QG22Uo"
-	Node3       = "gid:AAAAHNdVLTx1-ExZnjv7nVyRiQc"
+	Node3       = "gid:AAAAHCV9T0p2sU63pJmKD0HZzM8"
 	Node4       = "gid:AAAAHH50iSkNRkZni9C12Ed-7fk"
 	Node5       = "gid:AAAAHIJg29h5dErYihm_ZRLDB_Y"
+	Node6       = "gid:AAAAHD7D1VHJAEBoh0XAcDkvwlY"
+	Node7       = "gid:AAAAHBKAf-Hu_04hvTIingK8q5Q"
 
 	EmailBad   = "test@example.com"
 	EmailGood  = "biche@yahoo.co.uk"
 	EmailGood2 = "darna@yahoo.co.uk"
+	EmailWhat  = "banabebe@yahoo.com"
 
 	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
@@ -176,11 +227,13 @@ var (
 	Car1Ext = "9658744"
 	Car2    = "gid:AAAAHM1Lc0CS5EJxpM5QuRUAnrc"
 	Car2Ext = "963258"
+	Truck1  = "Truck1"
 
 	Subject1   = "dilZWYdFcmXiojC"
 	Subject2   = "fVcaUxJqmOkyOTX"
 	Subject3   = "lSPmCXIPRXppszf"
 	Subject4   = "NACTFFKUCcceDIz"
+	Subject5   = "barnabebe"
 	SubjectDT4 = "852147963"
 	SubjectDT5 = "741258"
 
