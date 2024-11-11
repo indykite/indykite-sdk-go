@@ -26,15 +26,14 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// StreamRecords is a helper that takes a slice of records and handles opening the stream, sending the records,
-// getting the responses, and closing the stream.
+// StreamRecords is deprecated and will be removed: use Batch functions.
 func (c *Client) StreamRecords(records []*ingestpb.Record) (
 	[]*ingestpb.StreamRecordsResponse,
 	error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
-	stream, err := c.client.StreamRecords(ctx)
+	stream, err := c.client.StreamRecords(ctx) //nolint:staticcheck // deprecated.
 	if err != nil {
 		return nil, sdkerrors.FromError(err)
 	}
@@ -63,9 +62,9 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 	return responses, nil
 }
 
-// OpenStreamClient opens a stream, ready to ingest records.
+// OpenStreamClient is deprecated and will be removed: use Batch functions.
 func (c *Client) OpenStreamClient(ctx context.Context) error {
-	stream, err := c.client.StreamRecords(ctx)
+	stream, err := c.client.StreamRecords(ctx) //nolint:staticcheck // deprecated.
 	if err != nil {
 		return sdkerrors.FromError(err)
 	}
