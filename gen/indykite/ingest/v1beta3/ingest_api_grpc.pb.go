@@ -53,6 +53,7 @@ const (
 //
 // IngestAPI represents the service interface for data ingestion.
 type IngestAPIClient interface {
+	// Deprecated: Do not use.
 	StreamRecords(ctx context.Context, opts ...grpc.CallOption) (IngestAPI_StreamRecordsClient, error)
 	// Deprecated: Do not use.
 	IngestRecord(ctx context.Context, in *IngestRecordRequest, opts ...grpc.CallOption) (*IngestRecordResponse, error)
@@ -73,6 +74,7 @@ func NewIngestAPIClient(cc grpc.ClientConnInterface) IngestAPIClient {
 	return &ingestAPIClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) StreamRecords(ctx context.Context, opts ...grpc.CallOption) (IngestAPI_StreamRecordsClient, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &IngestAPI_ServiceDesc.Streams[0], IngestAPI_StreamRecords_FullMethodName, cOpts...)
@@ -192,6 +194,7 @@ func (c *ingestAPIClient) BatchDeleteNodeTags(ctx context.Context, in *BatchDele
 //
 // IngestAPI represents the service interface for data ingestion.
 type IngestAPIServer interface {
+	// Deprecated: Do not use.
 	StreamRecords(IngestAPI_StreamRecordsServer) error
 	// Deprecated: Do not use.
 	IngestRecord(context.Context, *IngestRecordRequest) (*IngestRecordResponse, error)

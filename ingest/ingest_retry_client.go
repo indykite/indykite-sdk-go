@@ -67,10 +67,10 @@ func NewTestRetryClient(client ingestpb.IngestAPIClient, retryPolicy *RetryPolic
 	return rc, nil
 }
 
-// OpenStreamClient opens a stream, ready to ingest records.
+// OpenStreamClient is deprecated and will be removed: use Batch functions.
 func (c *RetryClient) OpenStreamClient(ctx context.Context) error {
 	c.clientContext = ctx
-	stream, err := c.client.StreamRecords(ctx)
+	stream, err := c.client.StreamRecords(ctx) //nolint:staticcheck // deprecated.
 	if err != nil {
 		return errors.FromError(err)
 	}
