@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.46.0](https://github.com/indykite/indykite-sdk-go/compare/v0.45.1...v0.46.0) (2024-11-11)
+
+
+### Features
+
+* deprecate StreamRecords and update versions ([776aef3](https://github.com/indykite/indykite-sdk-go/commit/776aef3f83b5800a5141ffb6dc6b815ae44eddf3))
+
 ## [0.45.1](https://github.com/indykite/indykite-sdk-go/compare/v0.45.0...v0.45.1) (2024-10-30)
 
 
