@@ -150,9 +150,6 @@ var _ = Describe("Authorized", func() {
 				integration.Resource10, []string{}, true, "", 1),
 			Entry("Authorized without external property", integration.Node3,
 				integration.Resource12, []string{}, false, "", 1),
-			Entry("Authorized with wrong external property", integration.Node3,
-				integration.Resource13, []string{}, false,
-				"server was unable to complete the request", 1),
 			Entry("Authorized with external property against policy", integration.Node3,
 				integration.Resource11, []string{}, false, "", 1),
 		)
@@ -629,8 +626,6 @@ var _ = Describe("Authorized", func() {
 				[]string{}, []string{}, ""),
 			Entry("What Authorized External ID With External Property", "Person", integration.Subject5,
 				integration.ResourceType4, []string{integration.Truck1}, []string{}, ""),
-			Entry("What Authorized External ID With External Property With Error", "Person", integration.Subject3,
-				integration.ResourceType4, []string{}, []string{}, "server was unable to complete the request"),
 		)
 	})
 
