@@ -32,24 +32,15 @@ var batchDeleteNodePropertiesCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		nodeMatch1 := &ingestpb.NodeMatch{
-			ExternalId: "0000",
-			Type:       "Employee",
-		}
-
 		nodeMatch2 := &ingestpb.NodeMatch{
-			ExternalId: "0001",
+			ExternalId: "Truck5",
 			Type:       "Truck",
 		}
 
 		nodeProperties := []*ingestpb.DeleteData_NodePropertyMatch{
 			{
-				Match:        nodeMatch1,
-				PropertyType: "PropertyType1",
-			},
-			{
 				Match:        nodeMatch2,
-				PropertyType: "PropertyType2",
+				PropertyType: "echo",
 			},
 		}
 		resp, err := client.BatchDeleteNodeProperties(context.Background(), nodeProperties)

@@ -17,7 +17,6 @@ package knowledge
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -233,7 +232,7 @@ func (c *Client) GetNodeByIdentifier(ctx context.Context,
 			Type: &objects.Value_StringValue{StringValue: identifier.ExternalID},
 		},
 		Type: {
-			Type: &objects.Value_StringValue{StringValue: strings.ToLower(identifier.Type)},
+			Type: &objects.Value_StringValue{StringValue: identifier.Type},
 		},
 	}
 	resp, err := c.client.IdentityKnowledgeRead(ctx, &knowledgepb.IdentityKnowledgeReadRequest{

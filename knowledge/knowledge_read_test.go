@@ -271,7 +271,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "Person"},
 				},
 			}
 			returns := []*knowledgepb.Return{
@@ -328,7 +328,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "Person"},
 				},
 			}
 			returns := []*knowledgepb.Return{
@@ -363,7 +363,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "1010"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "person"},
+					Type: &objects.Value_StringValue{StringValue: "Person"},
 				},
 			}
 			returns := []*knowledgepb.Return{
@@ -535,7 +535,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "Store"},
 				},
 			}
 			returns := []*knowledgepb.Return{
@@ -583,7 +583,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "Store"},
 				},
 			}
 			returns := []*knowledgepb.Return{
@@ -618,7 +618,7 @@ var _ = Describe("Identity Knowledge API", func() {
 					Type: &objects.Value_StringValue{StringValue: "0000"},
 				},
 				"type": {
-					Type: &objects.Value_StringValue{StringValue: "store"},
+					Type: &objects.Value_StringValue{StringValue: "Store"},
 				},
 			}
 			returns := []*knowledgepb.Return{

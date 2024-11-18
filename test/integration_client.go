@@ -28,6 +28,7 @@ import (
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 	"github.com/indykite/indykite-sdk-go/ingest"
+	"github.com/indykite/indykite-sdk-go/knowledge"
 	"github.com/indykite/indykite-sdk-go/tda"
 )
 
@@ -38,6 +39,7 @@ var (
 	clientConfig         *config.Client
 	clientTda            *tda.Client
 	clientEntitymatching *entitymatching.Client
+	clientKnowledge      *knowledge.Client
 	err                  error
 )
 
@@ -120,6 +122,19 @@ func InitConfigEntitymatching() (*entitymatching.Client, error) {
 		er(fmt.Sprintf("failed to create IndyKite Entitymatching Client: %v", err))
 	}
 	return clientEntitymatching, nil
+}
+
+// InitConfigKnowledge reads in knowledge file and ENV variables if set.
+func InitConfigKnowledge() (*knowledge.Client, error) {
+	clientKnowledge, err = knowledge.NewClient(context.Background(),
+		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
+		grpc.WithRetryOptions(retry.Disable()),
+	)
+
+	if err != nil {
+		er(fmt.Sprintf("failed to create IndyKite Knowledge Client: %v", err))
+	}
+	return clientKnowledge, nil
 }
 
 func er(msg any) {

@@ -20,7 +20,6 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
@@ -35,46 +34,36 @@ var batchUpsertNodesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		node1 := &knowledgeobjects.Node{
-			ExternalId: "barnabebe",
-			Type:       "Person",
-			IsIdentity: true,
+			ExternalId: "Truck5",
+			Type:       "Truck",
+			IsIdentity: false,
 			Properties: []*knowledgeobjects.Property{
 				{
-					Type: "email",
+					Type: "color",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "banabebe@yahoo.com",
-						},
-					},
-					Metadata: &knowledgeobjects.Metadata{
-						AssuranceLevel:   1,
-						VerificationTime: timestamppb.Now(),
-						Source:           "Myself",
-						CustomMetadata: map[string]*objects.Value{
-							"customdata": {
-								Type: &objects.Value_StringValue{StringValue: "SomeCustomData"},
-							},
+							StringValue: "blue",
 						},
 					},
 				},
 				{
-					Type: "last_name",
+					Type: "vin",
 					Value: &objects.Value{
 						Type: &objects.Value_StringValue{
-							StringValue: "mushu",
+							StringValue: "tyutyuctyutu",
 						},
 					},
 				},
 				{
-					Type: "first_name",
-					Value: &objects.Value{
-						Type: &objects.Value_StringValue{
-							StringValue: "barnabebe",
+					Type: "echo",
+					ExternalValue: &knowledgeobjects.ExternalValue{
+						Resolver: &knowledgeobjects.ExternalValue_Id{
+							Id: "gid:AAAAIVGYmNsbJEiFnV91GnXklOc",
 						},
 					},
 				},
 			},
-			Tags: []string{"Sitea", "Siteb"},
+			Tags: []string{},
 		}
 
 		nodes := []*knowledgeobjects.Node{
