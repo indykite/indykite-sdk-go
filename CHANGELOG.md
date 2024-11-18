@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.47.0](https://github.com/indykite/indykite-sdk-go/compare/v0.46.0...v0.47.0) (2024-11-18)
+
+
+### Features
+
+* add IKG tests and update function ([5ad1863](https://github.com/indykite/indykite-sdk-go/commit/5ad1863da8ac4b78b95f3caa4b1d3b6958761e2d))
+* remove bad resolver tests ([0e675bd](https://github.com/indykite/indykite-sdk-go/commit/0e675bd175769e91852a0b59a46bed4c51d9e35d))
+
+
+### Miscellaneous Chores
+
+* **deps:** update codecov/codecov-action action to v5 ([60f04f0](https://github.com/indykite/indykite-sdk-go/commit/60f04f0627706ffa154d0b9be6459557d85a837a))
+* **deps:** update everything ([9179254](https://github.com/indykite/indykite-sdk-go/commit/917925414a3bde3340b6c73ef31f1f3f1e3ec063))
+
 ## [0.46.0](https://github.com/indykite/indykite-sdk-go/compare/v0.45.1...v0.46.0) (2024-11-11)
 
 
