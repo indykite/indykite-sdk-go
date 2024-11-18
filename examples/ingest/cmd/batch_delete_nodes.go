@@ -33,8 +33,8 @@ var batchDeleteNodesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		nodeMatch1 := &ingestpb.NodeMatch{
-			ExternalId: "tyUjk78Hnm",
-			Type:       "Asset",
+			ExternalId: "Truck5",
+			Type:       "Truck",
 		}
 
 		nodes := []*ingestpb.NodeMatch{

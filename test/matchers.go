@@ -274,32 +274,6 @@ type MatchJSONMatcher struct {
 	types.GomegaMatcher
 }
 
-// MatchJSON uses the expected value to build a value matcher.
-func MatchJSON(expected any) types.GomegaMatcher {
-	var (
-		m   any
-		err error
-	)
-	switch v := expected.(type) {
-	case string:
-		err = json.Unmarshal([]byte(v), &m)
-	case fmt.Stringer:
-		err = json.Unmarshal([]byte(v.String()), &m)
-	case []byte:
-		err = json.Unmarshal(v, &m)
-	case json.RawMessage:
-		err = json.Unmarshal(v, &m)
-	case types.GomegaMatcher:
-		return &MatchJSONMatcher{GomegaMatcher: v}
-	default:
-		err = fmt.Errorf("unsupported exptected type value %T", expected)
-	}
-	if err != nil {
-		panic(err)
-	}
-	return &MatchJSONMatcher{GomegaMatcher: valueMatcher(m)}
-}
-
 func (matcher *MatchJSONMatcher) Match(actual any) (bool, error) {
 	var aval any
 	var err error
@@ -321,6 +295,7 @@ func (matcher *MatchJSONMatcher) Match(actual any) (bool, error) {
 	return matcher.GomegaMatcher.Match(aval)
 }
 
+//nolint:unused //will cause error
 func valueMatcher(v any) types.GomegaMatcher {
 	switch jv := v.(type) {
 	case nil:

@@ -20,12 +20,15 @@ import (
 	"os"
 
 	"github.com/google/uuid"
+	"github.com/onsi/gomega"
+	"github.com/onsi/gomega/gstruct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	authorizationpb "github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1"
 	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
+	knowledgepb "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2"
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
@@ -218,16 +221,17 @@ var (
 
 	ExternalIDGood = "TrSFiLuoSLGiCIo"
 
-	Asset1  = "HQKzkgPnGJDiaGo"
-	Asset2  = "pFlpMtkWqCPXVue"
-	Asset3  = "zojWwtKbBLmAXCO"
-	Asset4  = "paLtQSpEcTvzeuC"
-	Asset5  = "dLZVTSllFCdZfXC"
-	Car1    = "gid:AAAAHMjQZuF-L0F6lliyCVGfIRc"
-	Car1Ext = "9658744"
-	Car2    = "gid:AAAAHM1Lc0CS5EJxpM5QuRUAnrc"
-	Car2Ext = "963258"
-	Truck1  = "Truck1"
+	Asset1   = "HQKzkgPnGJDiaGo"
+	Asset2   = "pFlpMtkWqCPXVue"
+	Asset3   = "zojWwtKbBLmAXCO"
+	Asset4   = "paLtQSpEcTvzeuC"
+	Asset5   = "dLZVTSllFCdZfXC"
+	Car1     = "gid:AAAAHMjQZuF-L0F6lliyCVGfIRc"
+	Car1Ext  = "9658744"
+	Car2     = "gid:AAAAHM1Lc0CS5EJxpM5QuRUAnrc"
+	Car2Ext  = "963258"
+	Truck1   = "Truck1"
+	Truck1Id = "gid:AAAAHMtQUEbcWkgHkjAQPM9MOyo"
 
 	Subject1   = "dilZWYdFcmXiojC"
 	Subject2   = "fVcaUxJqmOkyOTX"
@@ -274,6 +278,79 @@ var (
 	}
 	NodeFilter3 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
 		SourceNodeTypes: []string{"Employee"},
+	}
+	Query1 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck) 
+	WHERE n.external_id=$external_id AND n.type=$type`
+	Query2 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)-[:HAS]->(p:Property:External)
+	 WHERE n.external_id=$external_id AND n.type=$type`
+	Query3  = "MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)"
+	Query4  = "MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)-[:HAS]->(p:Property:External)"
+	Query5  = "MATCH (n:Resource)-[:HAS]->(p:Property) WHERE p.type=$type and p.value=$value"
+	Query6  = "MATCH (n:Resource)-[:HAS]->(p:Property:External) WHERE p.type=$type and p.value=$value"
+	Query7  = "Person "
+	Params1 = map[string]*objects.Value{
+		"external_id": {
+			Type: &objects.Value_StringValue{StringValue: Subject2},
+		},
+		"type": {
+			Type: &objects.Value_StringValue{StringValue: "Person"},
+		},
+	}
+	Params2 = map[string]*objects.Value{
+		"type": {
+			Type: &objects.Value_StringValue{StringValue: "first_name"},
+		},
+		"value": {
+			Type: &objects.Value_StringValue{StringValue: "darna"},
+		},
+	}
+	Params3 = map[string]*objects.Value{}
+	Params4 = map[string]*objects.Value{
+		"type": {
+			Type: &objects.Value_StringValue{StringValue: "color"},
+		},
+		"value": {
+			Type: &objects.Value_StringValue{StringValue: "blue"},
+		},
+	}
+	Params5 = map[string]*objects.Value{
+		"type": {
+			Type: &objects.Value_StringValue{StringValue: "echo"},
+		},
+		"value": {
+			Type: &objects.Value_StringValue{StringValue: "2024"},
+		},
+	}
+	Returns1 = []*knowledgepb.Return{
+		{
+			Variable: "n",
+		},
+	}
+	Matcher1 = gstruct.Fields{
+		"Nodes": gomega.ContainElement(gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
+			"Id":         gomega.Equal(Node2),
+			"ExternalId": gomega.Equal(Subject2),
+			"Type":       gomega.Equal("Person"),
+		}))),
+		"Relationships": gomega.BeEmpty(),
+	}
+	Matcher2 = gstruct.Fields{
+		"Nodes": gomega.ContainElement(gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
+			"Id":         gomega.Equal(Truck1Id),
+			"ExternalId": gomega.Equal(Truck1),
+			"Type":       gomega.Equal("Truck"),
+		}))),
+		"Relationships": gomega.BeEmpty(),
+	}
+	Matcher3 = gstruct.Fields{
+		"Id":         gomega.Equal(Truck1Id),
+		"ExternalId": gomega.Equal(Truck1),
+		"Type":       gomega.Equal("Truck"),
+	}
+	Matcher4 = gstruct.Fields{
+		"Id":         gomega.Equal(Node2),
+		"ExternalId": gomega.Equal(Subject2),
+		"Type":       gomega.Equal("Person"),
 	}
 )
 

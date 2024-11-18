@@ -33,13 +33,13 @@ var readCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		query := "MATCH (n:Person)-[r:CAN_SEE]->(a:Asset) WHERE n.external_id=$external_id AND n.type=$type"
+		query := "MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)-[:HAS]->(p:Property:External) WHERE n.external_id=$external_id AND n.type=$type"
 		params := map[string]*objects.Value{
 			"external_id": {
-				Type: &objects.Value_StringValue{StringValue: "1234"},
+				Type: &objects.Value_StringValue{StringValue: "fVcaUxJqmOkyOTX"},
 			},
 			"type": {
-				Type: &objects.Value_StringValue{StringValue: "store"},
+				Type: &objects.Value_StringValue{StringValue: "Person"},
 			},
 		}
 		returns := []*knowledgepb.Return{
