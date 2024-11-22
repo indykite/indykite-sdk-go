@@ -147,8 +147,8 @@ var _ = Describe("Knowledge", func() {
 				Expect(err).To(Succeed())
 				Expect(len(resp)).Should(BeNumerically(">=", 2))
 			},
-			Entry("Get all nodes", "Resource"),
-			Entry("Get all identities", "DigitalTwin"),
+			Entry("Get all nodes", "Truck"),
+			Entry("Get all identities", "Person"),
 		)
 	})
 })
