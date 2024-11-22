@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.0](https://github.com/indykite/indykite-sdk-go/compare/v0.47.0...v0.48.0) (2024-11-22)
+
+
+### Features
+
+* remove system labels in queries ([8f7b131](https://github.com/indykite/indykite-sdk-go/commit/8f7b1311fd6280ddd333e17cea35016d4d2fa7c3))
+
 ## [0.47.0](https://github.com/indykite/indykite-sdk-go/compare/v0.46.0...v0.47.0) (2024-11-18)
 
 
