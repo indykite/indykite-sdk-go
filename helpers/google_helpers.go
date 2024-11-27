@@ -102,16 +102,27 @@ func getFilterFields(filter *FilterFields) string {
 	return f.String()
 }
 
-// getTableName sets the bigquery table name. Each environment has different table name.
-// The default points to the develop audit log table. Currently only develop and staging is allowed.
+// getTableName sets the bigquery table name. Each environment can have different table name. The default name is
+// `<env>_audit_log` if it was called differently, it can be configured with an environment variable
+// `SDK_AUDIT_TABLE_NAME`.
+// Later, there is no need to have the `<env>_audit_log` format (when we switch to the new projects).
 func getTableName() string {
-	projectID := getProjectID()
-	env := "stg"
-	runEnv := os.Getenv("RUN_ENV")
-	if runEnv == "develop" {
-		env = "dev"
+	var (
+		auditTableName = "audit_log"
+		projectID      = getProjectID()
+	)
+
+	if name := os.Getenv("SDK_AUDIT_TABLE_NAME"); name != "" {
+		auditTableName = name
+	} else {
+		env := "stg"
+		runEnv := os.Getenv("RUN_ENV")
+		if runEnv == "develop" {
+			env = "dev"
+		}
+		auditTableName = fmt.Sprintf("%s_%s", env, auditTableName)
 	}
-	return projectID + "." + env + "_audit_log." + env + "_audit_log"
+	return projectID + "." + auditTableName + "." + auditTableName
 }
 
 func processBqResults(iter *bigquery.RowIterator) (ReturnValues, error) {
