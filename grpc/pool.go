@@ -23,7 +23,6 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"math"
 	"sync/atomic"
 
 	"google.golang.org/grpc"
@@ -77,15 +76,11 @@ func (p *roundRobinConnPool) Num() int {
 func (p *roundRobinConnPool) Conn() *grpc.ClientConn {
 	i := atomic.AddUint32(&p.idx, 1)
 	v := len(p.conns)
-	// Check for negative values
-	if v < 0 {
+	result, err := Uint32(v)
+	if err != nil {
 		return nil
 	}
-	// Check for overflow
-	if v > int(math.MaxUint32) {
-		return nil
-	}
-	return p.conns[i%uint32(v)]
+	return p.conns[i%result]
 }
 
 func (p *roundRobinConnPool) Close() error {
