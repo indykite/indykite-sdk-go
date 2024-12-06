@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.1](https://github.com/indykite/indykite-sdk-go/compare/v0.48.0...v0.48.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* fix pool issue ([7e938aa](https://github.com/indykite/indykite-sdk-go/commit/7e938aa01326dbad569a5864c0dae442a6d77464))
+
 ## [0.48.0](https://github.com/indykite/indykite-sdk-go/compare/v0.47.0...v0.48.0) (2024-11-22)
 
 
