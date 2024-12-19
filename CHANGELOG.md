@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.2](https://github.com/indykite/indykite-sdk-go/compare/v0.48.1...v0.48.2) (2024-12-19)
+
+
+### Bug Fixes
+
+* recreate ikg ([98c0acd](https://github.com/indykite/indykite-sdk-go/commit/98c0acd904f11d92ed6f2c76c8d4aee09befad63))
+
 ## [0.48.1](https://github.com/indykite/indykite-sdk-go/compare/v0.48.0...v0.48.1) (2024-12-06)
 
 
