@@ -728,7 +728,7 @@ var _ = Describe("Authorized", func() {
 				}
 			},
 			Entry("Who Authorized", integration.ResourceWho1,
-				[]string{integration.Subject1, integration.Subject3, integration.Subject2}, []string{}, ""),
+				[]string{integration.Subject3, integration.Subject2, integration.Subject1}, []string{}, ""),
 			Entry("Who Authorized Resource Not Valid", integration.ResourceWho2, []string{}, []string{},
 				"invalid WhoAuthorizedRequest_Resource.ExternalId: value length must be between 2 and 50 runes"),
 			Entry("Who Authorized Resource Not In DB", integration.ResourceWho3, []string{}, []string{}, ""),

@@ -1119,6 +1119,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
+	case *ConfigDetail_TrustScoreProfileConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetTrustScoreProfileConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "TrustScoreProfileConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "TrustScoreProfileConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetTrustScoreProfileConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "TrustScoreProfileConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *ConfigDetail_ConsentConfig:
 		if v == nil {
 			err := ConfigDetailValidationError{
@@ -3056,6 +3097,252 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = EntityMatchingPipelineConfigValidationError{}
+
+// Validate checks the field values on TrustScoreDimension with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TrustScoreDimension) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TrustScoreDimension with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TrustScoreDimensionMultiError, or nil if none found.
+func (m *TrustScoreDimension) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TrustScoreDimension) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for Weight
+
+	if len(errors) > 0 {
+		return TrustScoreDimensionMultiError(errors)
+	}
+
+	return nil
+}
+
+// TrustScoreDimensionMultiError is an error wrapping multiple validation
+// errors returned by TrustScoreDimension.ValidateAll() if the designated
+// constraints aren't met.
+type TrustScoreDimensionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TrustScoreDimensionMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TrustScoreDimensionMultiError) AllErrors() []error { return m }
+
+// TrustScoreDimensionValidationError is the validation error returned by
+// TrustScoreDimension.Validate if the designated constraints aren't met.
+type TrustScoreDimensionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TrustScoreDimensionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TrustScoreDimensionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TrustScoreDimensionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TrustScoreDimensionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TrustScoreDimensionValidationError) ErrorName() string {
+	return "TrustScoreDimensionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TrustScoreDimensionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTrustScoreDimension.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TrustScoreDimensionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TrustScoreDimensionValidationError{}
+
+// Validate checks the field values on TrustScoreProfileConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *TrustScoreProfileConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TrustScoreProfileConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// TrustScoreProfileConfigMultiError, or nil if none found.
+func (m *TrustScoreProfileConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TrustScoreProfileConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for NodeClassification
+
+	for idx, item := range m.GetDimensions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, TrustScoreProfileConfigValidationError{
+						field:  fmt.Sprintf("Dimensions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, TrustScoreProfileConfigValidationError{
+						field:  fmt.Sprintf("Dimensions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return TrustScoreProfileConfigValidationError{
+					field:  fmt.Sprintf("Dimensions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Schedule
+
+	if len(errors) > 0 {
+		return TrustScoreProfileConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// TrustScoreProfileConfigMultiError is an error wrapping multiple validation
+// errors returned by TrustScoreProfileConfig.ValidateAll() if the designated
+// constraints aren't met.
+type TrustScoreProfileConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TrustScoreProfileConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TrustScoreProfileConfigMultiError) AllErrors() []error { return m }
+
+// TrustScoreProfileConfigValidationError is the validation error returned by
+// TrustScoreProfileConfig.Validate if the designated constraints aren't met.
+type TrustScoreProfileConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TrustScoreProfileConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TrustScoreProfileConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TrustScoreProfileConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TrustScoreProfileConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TrustScoreProfileConfigValidationError) ErrorName() string {
+	return "TrustScoreProfileConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TrustScoreProfileConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTrustScoreProfileConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TrustScoreProfileConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TrustScoreProfileConfigValidationError{}
 
 // Validate checks the field values on CreatedConfig_Location with the rules
 // defined in the proto definition for this message. If any rules are
