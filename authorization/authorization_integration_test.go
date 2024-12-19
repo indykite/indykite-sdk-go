@@ -462,7 +462,7 @@ var _ = Describe("Authorized", func() {
 				}
 			},
 			Entry("What authorized DT", integration.Node1, integration.ResourceType1,
-				[]string{integration.Asset4, integration.Asset3, integration.Asset1,
+				[]string{integration.Asset4, integration.Asset1, integration.Asset3,
 					integration.Asset2, integration.Asset5}, []string{}, ""),
 			Entry("What Authorized DT Resource Non Valid", integration.Node1, integration.ResourceType2,
 				[]string{}, []string{},
@@ -547,7 +547,7 @@ var _ = Describe("Authorized", func() {
 				}
 			},
 			Entry("What Authorized Property", "email", integration.EmailGood2, integration.ResourceType1,
-				[]string{integration.Asset4, integration.Asset3, integration.Asset1}, []string{}, ""),
+				[]string{integration.Asset4, integration.Asset1, integration.Asset3}, []string{}, ""),
 			Entry("What Authorized Property Not In DB", "email", integration.EmailBad, integration.ResourceType1,
 				[]string{}, []string{}, ""),
 			Entry("What Authorized Property With External Property", "email", integration.EmailWhat,
@@ -621,7 +621,7 @@ var _ = Describe("Authorized", func() {
 				}
 			},
 			Entry("What Authorized External ID", "Person", integration.Subject4, integration.ResourceType1,
-				[]string{integration.Asset4, integration.Asset3, integration.Asset1}, []string{}, ""),
+				[]string{integration.Asset4, integration.Asset1, integration.Asset3}, []string{}, ""),
 			Entry("What Authorized External ID Not In DB", "Person", "SomethingWrong", integration.ResourceType1,
 				[]string{}, []string{}, ""),
 			Entry("What Authorized External ID With External Property", "Person", integration.Subject5,
