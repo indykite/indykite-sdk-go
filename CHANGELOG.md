@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.48.3](https://github.com/indykite/indykite-sdk-go/compare/v0.48.2...v0.48.3) (2024-12-19)
+
+
+### Bug Fixes
+
+* update dependencies ([991ddcf](https://github.com/indykite/indykite-sdk-go/commit/991ddcf18d8544d2cf99ad96fa810b20cae9e094))
+
 ## [0.48.2](https://github.com/indykite/indykite-sdk-go/compare/v0.48.1...v0.48.2) (2024-12-19)
 
 

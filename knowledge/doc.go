@@ -17,4 +17,4 @@ Package knowledge implements the IndyKite Identity Knowledge API Client.
 */
 package knowledge
 
-const versionClient = "v0.48.2" // x-release-please-version
+const versionClient = "v0.48.3" // x-release-please-version
