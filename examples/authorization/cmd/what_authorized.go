@@ -109,8 +109,7 @@ var whatWithPropertyCmd = &cobra.Command{
 		fmt.Scanln(&propertyValue)
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
-			{Type: "TypeA"},
-			{Type: "TypeB", Actions: []string{"ACTION"}},
+			{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 		}
 
 		property := &authorizationpb.Property{

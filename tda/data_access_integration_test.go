@@ -225,7 +225,7 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"PropertiesGrantedCount": Equal(uint64(2)),
+			"PropertiesGrantedCount": Equal(uint64(1)),
 		})))
 
 		resp3, err := tdaClient.DataAccess(
@@ -309,7 +309,7 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-			"PropertiesGrantedCount": Equal(uint64(2)),
+			"PropertiesGrantedCount": Equal(uint64(1)),
 		})))
 
 		resp3, err := tdaClient.DataAccess(
