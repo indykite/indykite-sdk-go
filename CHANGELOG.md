@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.0](https://github.com/indykite/indykite-sdk-go/compare/v0.48.3...v0.49.0) (2024-12-20)
+
+
+### Features
+
+* remove bookmarks ([73e6b11](https://github.com/indykite/indykite-sdk-go/commit/73e6b11afa9aeeef9adf0f937b63eac6617dd5eb))
+
 ## [0.48.3](https://github.com/indykite/indykite-sdk-go/compare/v0.48.2...v0.48.3) (2024-12-19)
 
 
