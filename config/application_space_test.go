@@ -188,7 +188,6 @@ var _ = Describe("AppSpace", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateApplicationSpace(
@@ -262,7 +261,6 @@ var _ = Describe("AppSpace", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateApplicationSpace(
@@ -438,9 +436,7 @@ var _ = Describe("AppSpace", func() {
 				Id:   "gid:like-real-app-space-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteApplicationSpaceResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteApplicationSpaceResponse{}
 
 			mockClient.EXPECT().DeleteApplicationSpace(
 				gomock.Any(),
