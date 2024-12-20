@@ -185,7 +185,6 @@ var _ = Describe("Application", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateApplication(
@@ -259,7 +258,6 @@ var _ = Describe("Application", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateApplication(
@@ -436,9 +434,7 @@ var _ = Describe("Application", func() {
 				Id:   "gid:like-real-application-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteApplicationResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteApplicationResponse{}
 
 			mockClient.EXPECT().DeleteApplication(
 				gomock.Any(),

@@ -188,7 +188,6 @@ var _ = Describe("ApplicationAgent", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateApplicationAgent(
@@ -262,7 +261,6 @@ var _ = Describe("ApplicationAgent", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateApplicationAgent(
@@ -440,9 +438,7 @@ var _ = Describe("ApplicationAgent", func() {
 				Id:   "gid:like-real-application-agent-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteApplicationAgentResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteApplicationAgentResponse{}
 
 			mockClient.EXPECT().DeleteApplicationAgent(
 				gomock.Any(),

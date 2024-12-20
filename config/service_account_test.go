@@ -187,7 +187,6 @@ var _ = Describe("ServiceAccount", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateServiceAccount(
@@ -276,7 +275,6 @@ var _ = Describe("ServiceAccount", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateServiceAccount(
@@ -355,9 +353,7 @@ var _ = Describe("ServiceAccount", func() {
 				Id:   "gid:like-real-service-account-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteServiceAccountResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteServiceAccountResponse{}
 
 			mockClient.EXPECT().DeleteServiceAccount(
 				gomock.Any(),

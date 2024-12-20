@@ -158,22 +158,6 @@ func (x *NodeRequest) WithDescription(v string) *NodeRequest {
 	return x
 }
 
-// WithBookmarks adds received bookmarks from previous requests.
-// Overwriting previous value if calling multiple times.
-func (x *NodeRequest) WithBookmarks(bookmarks []string) *NodeRequest {
-	switch {
-	case x.create != nil:
-		x.create.Bookmarks = bookmarks
-	case x.read != nil:
-		x.read.Bookmarks = bookmarks
-	case x.update != nil:
-		x.update.Bookmarks = bookmarks
-	case x.delete != nil:
-		x.delete.Bookmarks = bookmarks
-	}
-	return x
-}
-
 func (x *NodeRequest) WithAuthorizationPolicyConfig(v *configpb.AuthorizationPolicyConfig) *NodeRequest {
 	switch {
 	case x.create != nil:

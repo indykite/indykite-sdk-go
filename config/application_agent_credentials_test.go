@@ -145,7 +145,6 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 				CreateTime:         timestamppb.Now(),
 				AgentConfig:        []byte("falwJAyAQawtoWLpIp9OUj"),
 				Kid:                "G9uMQzWWeP9lLvf7qKLhmeHabgZI_Mp8fnH7FJGRWHQ",
-				Bookmark:           "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().RegisterApplicationAgentCredential(
@@ -219,9 +218,7 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 				Id:   "gid:like-real-application-agent-id",
 				Etag: etagPb,
 			}
-			beResp := &configpb.DeleteApplicationAgentCredentialResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteApplicationAgentCredentialResponse{}
 
 			mockClient.EXPECT().DeleteApplicationAgentCredential(
 				gomock.Any(),

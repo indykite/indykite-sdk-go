@@ -123,9 +123,8 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(5 * time.Second)
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
 			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
-				Id:        appSpaceID,
-				Etag:      etagPb,
-				Bookmarks: []string{},
+				Id:   appSpaceID,
+				Etag: etagPb,
 			}
 			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
 			Expect(err).To(Succeed())
@@ -208,9 +207,8 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(5 * time.Second)
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
 			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
-				Id:        appSpaceID,
-				Etag:      etagPb,
-				Bookmarks: []string{},
+				Id:   appSpaceID,
+				Etag: etagPb,
 			}
 			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
 			Expect(err).To(Succeed())
@@ -314,9 +312,8 @@ var _ = Describe("Configuration", func() {
 			// delete appSpace
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
 			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
-				Id:        appSpaceID,
-				Etag:      etagPb,
-				Bookmarks: []string{},
+				Id:   appSpaceID,
+				Etag: etagPb,
 			}
 			var errDelAS error
 			var respDelAS *configpb.DeleteApplicationSpaceResponse
@@ -400,9 +397,8 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(5 * time.Second)
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
 			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
-				Id:        appSpaceID,
-				Etag:      etagPb,
-				Bookmarks: []string{},
+				Id:   appSpaceID,
+				Etag: etagPb,
 			}
 			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
 			Expect(err).To(Succeed())

@@ -78,7 +78,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessAuthorizationPolicy", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			jsonInput := `{
 				"person1": 10,
@@ -122,7 +121,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessConsentConfiguration", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			beResp := &configpb.ReadConfigNodeResponse{
 				ConfigNode: &configpb.ConfigNode{
@@ -167,7 +165,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessTokenIntrospectConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			beResp := &configpb.ReadConfigNodeResponse{
 				ConfigNode: &configpb.ConfigNode{
@@ -211,7 +208,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessIngestPipelineConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			beResp := &configpb.ReadConfigNodeResponse{
 				ConfigNode: &configpb.ConfigNode{
@@ -253,7 +249,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessExternalDataResolverConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			beResp := &configpb.ReadConfigNodeResponse{
 				ConfigNode: &configpb.ConfigNode{
@@ -299,7 +294,6 @@ var _ = Describe("ConfigNode", func() {
 		It("ReadSuccessEntityMatchingPipelineConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
 			configNodeRequest.WithVersion(int64(0))
 			beResp := &configpb.ReadConfigNodeResponse{
 				ConfigNode: &configpb.ConfigNode{
@@ -441,7 +435,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -488,7 +481,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -541,7 +533,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -599,7 +590,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -654,7 +644,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -719,7 +708,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwe",
 				CreatedBy:  "creator",
 				CreateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().CreateConfigNode(
@@ -880,7 +868,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -926,7 +913,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -976,7 +962,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -1033,7 +1018,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -1087,7 +1071,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -1147,7 +1130,6 @@ var _ = Describe("ConfigNode", func() {
 				Etag:       "123qwert",
 				UpdatedBy:  "creator",
 				UpdateTime: timestamppb.Now(),
-				Bookmark:   "something-like-bookmark-which-is-long-enough",
 			}
 
 			mockClient.EXPECT().UpdateConfigNode(
@@ -1268,10 +1250,7 @@ var _ = Describe("ConfigNode", func() {
 			configNodeRequest, err := config.NewDelete("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
 			configNodeRequest.WithPreCondition("qwert1234")
-			configNodeRequest.WithBookmarks([]string{"something-like-bookmark-which-is-long-enough"})
-			beResp := &configpb.DeleteConfigNodeResponse{
-				Bookmark: "something-like-bookmark-which-is-long-enough",
-			}
+			beResp := &configpb.DeleteConfigNodeResponse{}
 
 			mockClient.EXPECT().
 				DeleteConfigNode(

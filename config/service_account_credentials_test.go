@@ -189,9 +189,7 @@ var _ = Describe("Service Account Credentials", func() {
 		req := &configpb.DeleteServiceAccountCredentialRequest{
 			Id: "gid:like-real-service-account-credential-id",
 		}
-		beResp := &configpb.DeleteServiceAccountCredentialResponse{
-			Bookmark: "bookmark",
-		}
+		beResp := &configpb.DeleteServiceAccountCredentialResponse{}
 
 		mockClient.EXPECT().DeleteServiceAccountCredential(
 			gomock.Any(),
