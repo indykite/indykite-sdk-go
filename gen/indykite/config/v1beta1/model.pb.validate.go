@@ -4173,6 +4173,35 @@ func (m *TokenIntrospectConfig) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetSubClaim()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TokenIntrospectConfigValidationError{
+					field:  "SubClaim",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TokenIntrospectConfigValidationError{
+					field:  "SubClaim",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSubClaim()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TokenIntrospectConfigValidationError{
+				field:  "SubClaim",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if l := utf8.RuneCountInString(m.GetIkgNodeType()); l < 2 || l > 64 {
 		err := TokenIntrospectConfigValidationError{
 			field:  "IkgNodeType",
@@ -5946,6 +5975,17 @@ func (m *TokenIntrospectConfig_Opaque) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetHint()); l < 1 || l > 50 {
+		err := TokenIntrospectConfig_OpaqueValidationError{
+			field:  "Hint",
+			reason: "value length must be between 1 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return TokenIntrospectConfig_OpaqueMultiError(errors)

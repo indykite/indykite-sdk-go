@@ -179,7 +179,7 @@ func (m *IsAuthorizedRequest) validate(all bool) error {
 			if !_IsAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := IsAuthorizedRequestValidationError{
 					field:  fmt.Sprintf("InputParams[%v]", key),
-					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
+					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9_]+)+$\"",
 				}
 				if !all {
 					return err
@@ -345,7 +345,7 @@ var _ interface {
 	ErrorName() string
 } = IsAuthorizedRequestValidationError{}
 
-var _IsAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _IsAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9_]+)+$")
 
 var _IsAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
@@ -670,7 +670,7 @@ func (m *WhatAuthorizedRequest) validate(all bool) error {
 			if !_WhatAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := WhatAuthorizedRequestValidationError{
 					field:  fmt.Sprintf("InputParams[%v]", key),
-					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
+					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9_]+)+$\"",
 				}
 				if !all {
 					return err
@@ -836,7 +836,7 @@ var _ interface {
 	ErrorName() string
 } = WhatAuthorizedRequestValidationError{}
 
-var _WhatAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _WhatAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9_]+)+$")
 
 var _WhatAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
@@ -1121,7 +1121,7 @@ func (m *WhoAuthorizedRequest) validate(all bool) error {
 			if !_WhoAuthorizedRequest_InputParams_Pattern.MatchString(key) {
 				err := WhoAuthorizedRequestValidationError{
 					field:  fmt.Sprintf("InputParams[%v]", key),
-					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9]+)+$\"",
+					reason: "value does not match regex pattern \"^(?:[a-zA-Z][a-zA-Z0-9_]+)+$\"",
 				}
 				if !all {
 					return err
@@ -1287,7 +1287,7 @@ var _ interface {
 	ErrorName() string
 } = WhoAuthorizedRequestValidationError{}
 
-var _WhoAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9]+)+$")
+var _WhoAuthorizedRequest_InputParams_Pattern = regexp.MustCompile("^(?:[a-zA-Z][a-zA-Z0-9_]+)+$")
 
 var _WhoAuthorizedRequest_PolicyTags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
