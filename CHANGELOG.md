@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.49.1](https://github.com/indykite/indykite-sdk-go/compare/v0.49.0...v0.49.1) (2025-01-13)
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([f60ecaf](https://github.com/indykite/indykite-sdk-go/commit/f60ecaf13f0a3948fed0be1a3f41b3e92debffd5))
+* upgrade proto definitions ([fdc6f11](https://github.com/indykite/indykite-sdk-go/commit/fdc6f11eabbc84380c94de38aa9dde21d954b46c))
+
 ## [0.49.0](https://github.com/indykite/indykite-sdk-go/compare/v0.48.3...v0.49.0) (2024-12-20)
 
 
