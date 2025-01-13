@@ -279,7 +279,7 @@ var (
 	NodeFilter3 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
 		SourceNodeTypes: []string{"Employee"},
 	}
-	Query1 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck) 
+	Query1 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)
 	WHERE n.external_id=$external_id AND n.type=$type`
 	Query2 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)-[:HAS]->(p:Property:External)
 	 WHERE n.external_id=$external_id AND n.type=$type`

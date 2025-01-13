@@ -2,10 +2,10 @@ module github.com/indykite/indykite-sdk-go
 
 go 1.23.1
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.0-20241127180247-a33202765966.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.2-20241127180247-a33202765966.1
 	cloud.google.com/go/bigquery v1.65.0
 	github.com/envoyproxy/protoc-gen-validate v1.1.0
 	github.com/ghodss/yaml v1.0.0
@@ -14,26 +14,26 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0
 	github.com/lestrrat-go/jwx/v2 v2.1.3
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.22.1
-	github.com/onsi/gomega v1.36.1
+	github.com/onsi/ginkgo/v2 v2.22.2
+	github.com/onsi/gomega v1.36.2
 	github.com/pborman/uuid v1.2.1
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 	go.uber.org/mock v0.5.0
-	golang.org/x/oauth2 v0.24.0
+	golang.org/x/oauth2 v0.25.0
 	golang.org/x/text v0.21.0
-	google.golang.org/api v0.214.0
-	google.golang.org/genproto v0.0.0-20241219192143-6b3ec007d9bb
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241219192143-6b3ec007d9bb
-	google.golang.org/grpc v1.69.2
-	google.golang.org/protobuf v1.36.0
+	google.golang.org/api v0.216.0
+	google.golang.org/genproto v0.0.0-20250106144421-5f5ef82da422
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250106144421-5f5ef82da422
+	google.golang.org/grpc v1.69.4
+	google.golang.org/protobuf v1.36.2
 )
 
 require (
-	cloud.google.com/go v0.117.0 // indirect
+	cloud.google.com/go v0.118.0 // indirect
 	cloud.google.com/go/auth v0.13.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
-	cloud.google.com/go/iam v1.3.0 // indirect
+	cloud.google.com/go/iam v1.3.1 // indirect
 	github.com/apache/arrow/go/v15 v15.0.2 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
@@ -50,9 +50,9 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0 // indirect
 	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/time v0.8.0 // indirect
+	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20241219192143-6b3ec007d9bb // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250102185135-69823020774d // indirect
 )
 
 require (
