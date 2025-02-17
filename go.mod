@@ -2,12 +2,12 @@ module github.com/indykite/indykite-sdk-go
 
 go 1.23.1
 
-toolchain go1.23.4
+toolchain go1.24.0
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.2-20241127180247-a33202765966.1
-	cloud.google.com/go/bigquery v1.65.0
-	github.com/envoyproxy/protoc-gen-validate v1.1.0
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.5-20250130201111-63bb56e20495.1
+	cloud.google.com/go/bigquery v1.66.2
+	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
@@ -17,16 +17,16 @@ require (
 	github.com/onsi/ginkgo/v2 v2.22.2
 	github.com/onsi/gomega v1.36.2
 	github.com/pborman/uuid v1.2.1
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.19.0
 	go.uber.org/mock v0.5.0
-	golang.org/x/oauth2 v0.25.0
-	golang.org/x/text v0.21.0
-	google.golang.org/api v0.216.0
-	google.golang.org/genproto v0.0.0-20250106144421-5f5ef82da422
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250106144421-5f5ef82da422
-	google.golang.org/grpc v1.69.4
-	google.golang.org/protobuf v1.36.2
+	golang.org/x/oauth2 v0.26.0
+	golang.org/x/text v0.22.0
+	google.golang.org/api v0.221.0
+	google.golang.org/genproto 5a70512c5d8b
+	google.golang.org/genproto/googleapis/rpc 5a70512c5d8b
+	google.golang.org/grpc v1.70.0
+	google.golang.org/protobuf v1.36.5
 )
 
 require (
