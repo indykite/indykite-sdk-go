@@ -279,7 +279,7 @@ type IsAuthorizedRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -460,7 +460,7 @@ type IsAuthorizedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -770,7 +770,7 @@ type WhatAuthorizedRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -951,7 +951,7 @@ type WhatAuthorizedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1221,7 +1221,7 @@ type WhoAuthorizedRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1402,7 +1402,7 @@ type WhoAuthorizedResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1575,7 +1575,7 @@ type IsAuthorizedRequest_ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedRequest_ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1684,7 +1684,7 @@ type IsAuthorizedResponse_ActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedResponse_ActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1833,7 +1833,7 @@ type IsAuthorizedResponse_ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedResponse_ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1984,7 +1984,7 @@ type IsAuthorizedResponse_ResourceTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsAuthorizedResponse_ResourceTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2153,7 +2153,7 @@ type WhatAuthorizedRequest_ResourceTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedRequest_ResourceTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2262,7 +2262,7 @@ type WhatAuthorizedResponse_ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedResponse_ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2399,7 +2399,7 @@ type WhatAuthorizedResponse_ActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedResponse_ActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2550,7 +2550,7 @@ type WhatAuthorizedResponse_ResourceTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhatAuthorizedResponse_ResourceTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2728,7 +2728,7 @@ type WhoAuthorizedRequest_ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedRequest_ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2823,6 +2823,8 @@ func (m *WhoAuthorizedResponse_Subject) validate(all bool) error {
 
 	// no validation rules for ExternalId
 
+	// no validation rules for Type
+
 	if len(errors) > 0 {
 		return WhoAuthorizedResponse_SubjectMultiError(errors)
 	}
@@ -2837,7 +2839,7 @@ type WhoAuthorizedResponse_SubjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedResponse_SubjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2974,7 +2976,7 @@ type WhoAuthorizedResponse_ActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedResponse_ActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3123,7 +3125,7 @@ type WhoAuthorizedResponse_ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedResponse_ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3274,7 +3276,7 @@ type WhoAuthorizedResponse_ResourceTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WhoAuthorizedResponse_ResourceTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

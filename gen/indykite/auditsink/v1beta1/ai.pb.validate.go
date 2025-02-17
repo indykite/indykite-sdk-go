@@ -216,7 +216,7 @@ type IsChangePointMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsChangePointMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -320,7 +320,7 @@ type IsChangePoint_RequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsChangePoint_RequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -430,7 +430,7 @@ type IsChangePoint_ChangePointDetectionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsChangePoint_ChangePointDetectionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -535,7 +535,7 @@ type IsChangePoint_ResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsChangePoint_ResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

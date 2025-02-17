@@ -140,7 +140,7 @@ type RunEntityMatchingPipelineRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RunEntityMatchingPipelineRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -300,7 +300,7 @@ type RunEntityMatchingPipelineResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RunEntityMatchingPipelineResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -429,7 +429,7 @@ type ReadSuggestedPropertyMappingRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadSuggestedPropertyMappingRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -603,7 +603,7 @@ type ReadSuggestedPropertyMappingResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadSuggestedPropertyMappingResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

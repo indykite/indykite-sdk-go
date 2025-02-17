@@ -75,7 +75,7 @@ type ContainersPathMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ContainersPathMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -266,7 +266,7 @@ type CreatedConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreatedConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -454,7 +454,7 @@ type ReadConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -645,7 +645,7 @@ type UpdatedConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdatedConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -778,7 +778,7 @@ type DeletedConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeletedConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1300,7 +1300,7 @@ type ConfigDetailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ConfigDetailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1437,7 +1437,7 @@ type ApplicationAgentCredentialConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationAgentCredentialConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1575,7 +1575,7 @@ type ServiceAccountCredentialConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ServiceAccountCredentialConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1724,7 +1724,7 @@ type AuditSinkConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuditSinkConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1838,7 +1838,7 @@ type ExternalDataResolverConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExternalDataResolverConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1944,7 +1944,7 @@ type AuthorizationPolicyConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthorizationPolicyConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2058,7 +2058,7 @@ type AssignConfigPermissionsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AssignConfigPermissionsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2172,7 +2172,7 @@ type RevokeConfigPermissionsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RevokeConfigPermissionsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2497,7 +2497,7 @@ type TokenIntrospectConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2609,7 +2609,7 @@ type ConsentConfigurationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ConsentConfigurationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2713,7 +2713,7 @@ type IngestPipelineConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IngestPipelineConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3031,7 +3031,7 @@ type EntityMatchingPipelineConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EntityMatchingPipelineConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3138,7 +3138,7 @@ type TrustScoreDimensionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustScoreDimensionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3278,7 +3278,7 @@ type TrustScoreProfileConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustScoreProfileConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3384,7 +3384,7 @@ type CreatedConfig_LocationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreatedConfig_LocationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3494,7 +3494,7 @@ type ReadConfig_NameIdentifierMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReadConfig_NameIdentifierMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3606,7 +3606,7 @@ type AuditSinkConfig_KafkaMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuditSinkConfig_KafkaMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3712,7 +3712,7 @@ type TokenIntrospectConfig_JWTMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfig_JWTMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3814,7 +3814,7 @@ type TokenIntrospectConfig_OpaqueMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfig_OpaqueMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3917,7 +3917,7 @@ type TokenIntrospectConfig_OfflineMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfig_OfflineMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4051,7 +4051,7 @@ type TokenIntrospectConfig_OnlineMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfig_OnlineMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4156,7 +4156,7 @@ type TokenIntrospectConfig_ClaimMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TokenIntrospectConfig_ClaimMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4262,7 +4262,7 @@ type EntityMatchingPipelineConfig_NodeFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EntityMatchingPipelineConfig_NodeFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4378,7 +4378,7 @@ type EntityMatchingPipelineConfig_PropertyMappingMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EntityMatchingPipelineConfig_PropertyMappingMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

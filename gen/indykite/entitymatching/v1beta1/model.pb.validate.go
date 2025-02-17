@@ -94,7 +94,7 @@ type PropertyMappingMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PropertyMappingMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -198,7 +198,7 @@ type CustomPropertyMappingsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CustomPropertyMappingsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

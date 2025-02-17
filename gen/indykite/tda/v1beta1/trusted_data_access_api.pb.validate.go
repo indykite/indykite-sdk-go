@@ -137,7 +137,7 @@ type ListConsentsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListConsentsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -275,7 +275,7 @@ type ListConsentsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListConsentsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -454,7 +454,7 @@ type DataAccessRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataAccessRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -594,7 +594,7 @@ type DataAccessResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataAccessResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -760,7 +760,7 @@ type GrantConsentRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantConsentRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -866,7 +866,7 @@ type GrantConsentResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantConsentResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1030,7 +1030,7 @@ type RevokeConsentRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RevokeConsentRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1134,7 +1134,7 @@ type RevokeConsentResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RevokeConsentResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

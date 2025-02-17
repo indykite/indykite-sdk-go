@@ -104,7 +104,7 @@ type PolicyBuilderConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PolicyBuilderConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -274,7 +274,7 @@ type PolicyBuilderConditionsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PolicyBuilderConditionsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -407,7 +407,7 @@ type PolicyBuilderNodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PolicyBuilderNodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -546,7 +546,7 @@ type PolicyBuilderRelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PolicyBuilderRelationshipMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -774,7 +774,7 @@ type FilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -902,7 +902,7 @@ type NotFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NotFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1034,7 +1034,7 @@ type SimpleFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SimpleFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1170,7 +1170,7 @@ type ComplexFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ComplexFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1405,7 +1405,7 @@ type PropertyValueTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PropertyValueTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

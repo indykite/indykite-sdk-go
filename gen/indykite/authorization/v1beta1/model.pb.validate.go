@@ -268,7 +268,7 @@ type SubjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SubjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -389,7 +389,7 @@ type DigitalTwinMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DigitalTwinMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -541,7 +541,7 @@ type PropertyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PropertyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -673,7 +673,7 @@ type ExternalIDMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExternalIDMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1021,7 +1021,7 @@ type InputParamMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InputParamMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

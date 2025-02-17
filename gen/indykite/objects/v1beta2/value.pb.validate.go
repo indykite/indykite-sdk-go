@@ -318,7 +318,7 @@ type ValueMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ValueMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -450,7 +450,7 @@ type ArrayMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ArrayMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -594,7 +594,7 @@ type MapMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MapMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
