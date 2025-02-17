@@ -105,7 +105,7 @@ type BatchUpsertNodesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchUpsertNodesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -239,7 +239,7 @@ type BatchUpsertRelationshipsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchUpsertRelationshipsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -375,7 +375,7 @@ type BatchDeleteNodesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchDeleteNodesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -509,7 +509,7 @@ type BatchDeleteRelationshipsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchDeleteRelationshipsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -645,7 +645,7 @@ type BatchDeleteNodePropertiesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchDeleteNodePropertiesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -783,7 +783,7 @@ type BatchDeleteRelationshipPropertiesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchDeleteRelationshipPropertiesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -920,7 +920,7 @@ type BatchDeleteNodeTagsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m BatchDeleteNodeTagsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1108,7 +1108,7 @@ type UpsertDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpsertDataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1417,7 +1417,7 @@ type DeleteDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1522,7 +1522,7 @@ type DigitalTwinMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DigitalTwinMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1625,7 +1625,7 @@ type ResourceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResourceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1731,7 +1731,7 @@ type NodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1890,7 +1890,7 @@ type RelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationshipMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1993,7 +1993,7 @@ type NodeMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NodeMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2122,7 +2122,7 @@ type DeleteData_NodeTagMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_NodeTagMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2255,7 +2255,7 @@ type DeleteData_NodePropertyMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_NodePropertyMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2422,7 +2422,7 @@ type DeleteData_RelationshipPropertyMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_RelationshipPropertyMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

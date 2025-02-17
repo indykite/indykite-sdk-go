@@ -180,7 +180,7 @@ type RecordMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RecordMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -379,7 +379,7 @@ type UpsertDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpsertDataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -704,7 +704,7 @@ type DeleteDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteDataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -950,7 +950,7 @@ type RelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationshipMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1084,7 +1084,7 @@ type NodeMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NodeMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1187,7 +1187,7 @@ type RecordErrorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RecordErrorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1319,7 +1319,7 @@ type InfoMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InfoMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1421,7 +1421,7 @@ type ChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1603,7 +1603,7 @@ type DeleteData_NodeTagMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_NodeTagMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1773,7 +1773,7 @@ type DeleteData_NodePropertyMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_NodePropertyMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2008,7 +2008,7 @@ type DeleteData_RelationshipPropertyMatchMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteData_RelationshipPropertyMatchMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

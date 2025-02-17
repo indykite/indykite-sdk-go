@@ -87,7 +87,6 @@ linters-settings:
         checks: [all]
 
     govet:
-        check-shadowing: true
         enable-all: true
 
     gocritic:
@@ -208,7 +207,6 @@ linters-settings:
 
     usestdlibvars:
         default-rpc-path: true
-        os-dev-null: true
         sql-isolation-level: true
 
 issues:

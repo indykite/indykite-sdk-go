@@ -286,7 +286,7 @@ type NodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -501,7 +501,7 @@ type RelationshipMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RelationshipMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -667,7 +667,7 @@ type ExternalValueMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExternalValueMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -875,7 +875,7 @@ type PropertyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PropertyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1077,7 +1077,7 @@ type MetadataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1362,7 +1362,7 @@ type UserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1497,7 +1497,7 @@ type User_ExternalIDMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m User_ExternalIDMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1650,7 +1650,7 @@ type User_PropertyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m User_PropertyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

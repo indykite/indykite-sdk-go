@@ -796,6 +796,7 @@ func CreateBatchNodesNoResolver(
 	return node
 }
 
+//revive:disable
 func BatchNodesType( //nolint:gocritic // nonamedreturns against unnamedResult
 	typeNode string) ([]*knowledgeobjects.Node, string, string) {
 	node1, externalID1 := CreateBatchNodes(typeNode)

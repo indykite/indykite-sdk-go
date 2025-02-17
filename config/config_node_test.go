@@ -180,7 +180,9 @@ var _ = Describe("ConfigNode", func() {
 					Config: &configpb.ConfigNode_TokenIntrospectConfig{
 						TokenIntrospectConfig: &configpb.TokenIntrospectConfig{
 							TokenMatcher: &configpb.TokenIntrospectConfig_Opaque_{
-								Opaque: &configpb.TokenIntrospectConfig_Opaque{}},
+								Opaque: &configpb.TokenIntrospectConfig_Opaque{
+									Hint: "hint",
+								}},
 							Validation: &configpb.TokenIntrospectConfig_Online_{
 								Online: &configpb.TokenIntrospectConfig_Online{
 									UserinfoEndpoint: "https://data.example.com/userinfo",
@@ -750,6 +752,59 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("CreateTrustScoreProfileConfig", func() {
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Employee",
+				Dimensions: []*configpb.TrustScoreDimension{
+					{
+						Name:   configpb.TrustScoreDimension_NAME_FRESHNESS,
+						Weight: 0.9,
+					},
+				},
+				Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithTrustScoreProfileConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"TrustScoreProfileConfig": test.EqualProto(
+							&configpb.TrustScoreProfileConfig{
+								NodeClassification: "Employee",
+								Dimensions: []*configpb.TrustScoreDimension{
+									{
+										Name:   configpb.TrustScoreDimension_NAME_FRESHNESS,
+										Weight: 0.9,
+									},
+								},
+								Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
+							},
+						),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("CreateNonValid", func() {
 			configuration := &configpb.ConsentConfiguration{
 				Purpose: "Taking control",
@@ -1155,6 +1210,58 @@ var _ = Describe("ConfigNode", func() {
 								LastRunTime:   now,
 								ReportUrl:     wrapperspb.String("gs://some-otherpath"),
 								ReportType:    wrapperspb.String("csv"),
+							},
+						),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateTrustScoreProfileConfig", func() {
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Employee",
+				Dimensions: []*configpb.TrustScoreDimension{
+					{
+						Name:   configpb.TrustScoreDimension_NAME_COMPLETENESS,
+						Weight: 0.9,
+					},
+				},
+				Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
+			}
+
+			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.EmptyDisplayName()
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
+			configNodeRequest.WithTrustScoreProfileConfig(configuration)
+
+			beResp := &configpb.UpdateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwert",
+				UpdatedBy:  "creator",
+				UpdateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().UpdateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal("gid:like-real-config-node-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"TrustScoreProfileConfig": test.EqualProto(
+							&configpb.TrustScoreProfileConfig{
+								NodeClassification: "Employee",
+								Dimensions: []*configpb.TrustScoreDimension{
+									{
+										Name:   configpb.TrustScoreDimension_NAME_COMPLETENESS,
+										Weight: 0.9,
+									},
+								},
+								Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
 							},
 						),
 					})),
