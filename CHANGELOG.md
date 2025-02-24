@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.50.0](https://github.com/indykite/indykite-sdk-go/compare/v0.49.1...v0.50.0) (2025-02-24)
+
+
+### Features
+
+* add trust score config ([57769c0](https://github.com/indykite/indykite-sdk-go/commit/57769c08333657e6d6f2fef4be5b036cfb9ea082))
+* modify update trust score profile ([91b13c5](https://github.com/indykite/indykite-sdk-go/commit/91b13c589fb4c654546da5259ed22b83b6eee7ee))
+
 ## [0.49.1](https://github.com/indykite/indykite-sdk-go/compare/v0.49.0...v0.49.1) (2025-01-13)
 
 
