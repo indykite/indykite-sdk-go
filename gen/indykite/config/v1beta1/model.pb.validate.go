@@ -5656,26 +5656,19 @@ func (m *TrustScoreProfileConfig) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetNodeClassification()) < 2 {
-		err := TrustScoreProfileConfigValidationError{
-			field:  "NodeClassification",
-			reason: "value length must be at least 2 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	if m.GetNodeClassification() != "" {
 
-	if !_TrustScoreProfileConfig_NodeClassification_Pattern.MatchString(m.GetNodeClassification()) {
-		err := TrustScoreProfileConfigValidationError{
-			field:  "NodeClassification",
-			reason: "value does not match regex pattern \"^([A-Z][a-z]+)+$\"",
+		if !_TrustScoreProfileConfig_NodeClassification_Pattern.MatchString(m.GetNodeClassification()) {
+			err := TrustScoreProfileConfigValidationError{
+				field:  "NodeClassification",
+				reason: "value does not match regex pattern \"^([A-Z][a-z]+)+$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
 		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
+
 	}
 
 	for idx, item := range m.GetDimensions() {
