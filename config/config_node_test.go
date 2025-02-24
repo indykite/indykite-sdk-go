@@ -1224,11 +1224,10 @@ var _ = Describe("ConfigNode", func() {
 
 		It("UpdateTrustScoreProfileConfig", func() {
 			configuration := &configpb.TrustScoreProfileConfig{
-				NodeClassification: "Employee",
 				Dimensions: []*configpb.TrustScoreDimension{
 					{
 						Name:   configpb.TrustScoreDimension_NAME_COMPLETENESS,
-						Weight: 0.9,
+						Weight: 0.92,
 					},
 				},
 				Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
@@ -1254,11 +1253,10 @@ var _ = Describe("ConfigNode", func() {
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"TrustScoreProfileConfig": test.EqualProto(
 							&configpb.TrustScoreProfileConfig{
-								NodeClassification: "Employee",
 								Dimensions: []*configpb.TrustScoreDimension{
 									{
 										Name:   configpb.TrustScoreDimension_NAME_COMPLETENESS,
-										Weight: 0.9,
+										Weight: 0.92,
 									},
 								},
 								Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
