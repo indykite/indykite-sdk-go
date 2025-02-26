@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.51.0](https://github.com/indykite/indykite-sdk-go/compare/v0.50.0...v0.51.0) (2025-02-26)
+
+
+### Features
+
+* support knowledge query configuration ([ad2d568](https://github.com/indykite/indykite-sdk-go/commit/ad2d568a0e853c9ad2a826174f27b1f08815a943))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([f35ac66](https://github.com/indykite/indykite-sdk-go/commit/f35ac669d4d2ee2d2ee248c8155ebfe9ba36af4d))
+
 ## [0.50.0](https://github.com/indykite/indykite-sdk-go/compare/v0.49.1...v0.50.0) (2025-02-24)
 
 
