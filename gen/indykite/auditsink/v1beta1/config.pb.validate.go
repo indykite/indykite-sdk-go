@@ -1283,6 +1283,47 @@ func (m *ConfigDetail) validate(all bool) error {
 			}
 		}
 
+	case *ConfigDetail_KnowledgeQueryConfig:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeQueryConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeQueryConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "KnowledgeQueryConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -3343,6 +3384,114 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = TrustScoreProfileConfigValidationError{}
+
+// Validate checks the field values on KnowledgeQueryConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *KnowledgeQueryConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KnowledgeQueryConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// KnowledgeQueryConfigMultiError, or nil if none found.
+func (m *KnowledgeQueryConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KnowledgeQueryConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Query
+
+	// no validation rules for Status
+
+	// no validation rules for PolicyId
+
+	if len(errors) > 0 {
+		return KnowledgeQueryConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// KnowledgeQueryConfigMultiError is an error wrapping multiple validation
+// errors returned by KnowledgeQueryConfig.ValidateAll() if the designated
+// constraints aren't met.
+type KnowledgeQueryConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KnowledgeQueryConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KnowledgeQueryConfigMultiError) AllErrors() []error { return m }
+
+// KnowledgeQueryConfigValidationError is the validation error returned by
+// KnowledgeQueryConfig.Validate if the designated constraints aren't met.
+type KnowledgeQueryConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KnowledgeQueryConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KnowledgeQueryConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KnowledgeQueryConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KnowledgeQueryConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KnowledgeQueryConfigValidationError) ErrorName() string {
+	return "KnowledgeQueryConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e KnowledgeQueryConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKnowledgeQueryConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KnowledgeQueryConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KnowledgeQueryConfigValidationError{}
 
 // Validate checks the field values on CreatedConfig_Location with the rules
 // defined in the proto definition for this message. If any rules are

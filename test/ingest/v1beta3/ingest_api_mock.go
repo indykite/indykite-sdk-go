@@ -39,7 +39,6 @@ import (
 type MockIngestAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockIngestAPIClientMockRecorder
-	isgomock struct{}
 }
 
 // MockIngestAPIClientMockRecorder is the mock recorder for MockIngestAPIClient.
@@ -60,10 +59,10 @@ func (m *MockIngestAPIClient) EXPECT() *MockIngestAPIClientMockRecorder {
 }
 
 // BatchDeleteNodeProperties mocks base method.
-func (m *MockIngestAPIClient) BatchDeleteNodeProperties(ctx context.Context, in *ingestv1beta3.BatchDeleteNodePropertiesRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodePropertiesResponse, error) {
+func (m *MockIngestAPIClient) BatchDeleteNodeProperties(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteNodePropertiesRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodePropertiesResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchDeleteNodeProperties", varargs...)
@@ -73,17 +72,17 @@ func (m *MockIngestAPIClient) BatchDeleteNodeProperties(ctx context.Context, in 
 }
 
 // BatchDeleteNodeProperties indicates an expected call of BatchDeleteNodeProperties.
-func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeProperties(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeProperties(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteNodeProperties", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteNodeProperties), varargs...)
 }
 
 // BatchDeleteNodeTags mocks base method.
-func (m *MockIngestAPIClient) BatchDeleteNodeTags(ctx context.Context, in *ingestv1beta3.BatchDeleteNodeTagsRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodeTagsResponse, error) {
+func (m *MockIngestAPIClient) BatchDeleteNodeTags(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteNodeTagsRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodeTagsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchDeleteNodeTags", varargs...)
@@ -93,17 +92,17 @@ func (m *MockIngestAPIClient) BatchDeleteNodeTags(ctx context.Context, in *inges
 }
 
 // BatchDeleteNodeTags indicates an expected call of BatchDeleteNodeTags.
-func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeTags(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodeTags(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteNodeTags", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteNodeTags), varargs...)
 }
 
 // BatchDeleteNodes mocks base method.
-func (m *MockIngestAPIClient) BatchDeleteNodes(ctx context.Context, in *ingestv1beta3.BatchDeleteNodesRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodesResponse, error) {
+func (m *MockIngestAPIClient) BatchDeleteNodes(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteNodesRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteNodesResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchDeleteNodes", varargs...)
@@ -113,17 +112,17 @@ func (m *MockIngestAPIClient) BatchDeleteNodes(ctx context.Context, in *ingestv1
 }
 
 // BatchDeleteNodes indicates an expected call of BatchDeleteNodes.
-func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodes(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteNodes(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteNodes", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteNodes), varargs...)
 }
 
 // BatchDeleteRelationshipProperties mocks base method.
-func (m *MockIngestAPIClient) BatchDeleteRelationshipProperties(ctx context.Context, in *ingestv1beta3.BatchDeleteRelationshipPropertiesRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchDeleteRelationshipPropertiesResponse, error) {
+func (m *MockIngestAPIClient) BatchDeleteRelationshipProperties(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteRelationshipPropertiesRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteRelationshipPropertiesResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchDeleteRelationshipProperties", varargs...)
@@ -133,17 +132,17 @@ func (m *MockIngestAPIClient) BatchDeleteRelationshipProperties(ctx context.Cont
 }
 
 // BatchDeleteRelationshipProperties indicates an expected call of BatchDeleteRelationshipProperties.
-func (mr *MockIngestAPIClientMockRecorder) BatchDeleteRelationshipProperties(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteRelationshipProperties(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteRelationshipProperties", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteRelationshipProperties), varargs...)
 }
 
 // BatchDeleteRelationships mocks base method.
-func (m *MockIngestAPIClient) BatchDeleteRelationships(ctx context.Context, in *ingestv1beta3.BatchDeleteRelationshipsRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchDeleteRelationshipsResponse, error) {
+func (m *MockIngestAPIClient) BatchDeleteRelationships(arg0 context.Context, arg1 *ingestv1beta3.BatchDeleteRelationshipsRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchDeleteRelationshipsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchDeleteRelationships", varargs...)
@@ -153,17 +152,17 @@ func (m *MockIngestAPIClient) BatchDeleteRelationships(ctx context.Context, in *
 }
 
 // BatchDeleteRelationships indicates an expected call of BatchDeleteRelationships.
-func (mr *MockIngestAPIClientMockRecorder) BatchDeleteRelationships(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchDeleteRelationships(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteRelationships", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchDeleteRelationships), varargs...)
 }
 
 // BatchUpsertNodes mocks base method.
-func (m *MockIngestAPIClient) BatchUpsertNodes(ctx context.Context, in *ingestv1beta3.BatchUpsertNodesRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchUpsertNodesResponse, error) {
+func (m *MockIngestAPIClient) BatchUpsertNodes(arg0 context.Context, arg1 *ingestv1beta3.BatchUpsertNodesRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchUpsertNodesResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchUpsertNodes", varargs...)
@@ -173,17 +172,17 @@ func (m *MockIngestAPIClient) BatchUpsertNodes(ctx context.Context, in *ingestv1
 }
 
 // BatchUpsertNodes indicates an expected call of BatchUpsertNodes.
-func (mr *MockIngestAPIClientMockRecorder) BatchUpsertNodes(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchUpsertNodes(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchUpsertNodes", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchUpsertNodes), varargs...)
 }
 
 // BatchUpsertRelationships mocks base method.
-func (m *MockIngestAPIClient) BatchUpsertRelationships(ctx context.Context, in *ingestv1beta3.BatchUpsertRelationshipsRequest, opts ...grpc.CallOption) (*ingestv1beta3.BatchUpsertRelationshipsResponse, error) {
+func (m *MockIngestAPIClient) BatchUpsertRelationships(arg0 context.Context, arg1 *ingestv1beta3.BatchUpsertRelationshipsRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.BatchUpsertRelationshipsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "BatchUpsertRelationships", varargs...)
@@ -193,17 +192,17 @@ func (m *MockIngestAPIClient) BatchUpsertRelationships(ctx context.Context, in *
 }
 
 // BatchUpsertRelationships indicates an expected call of BatchUpsertRelationships.
-func (mr *MockIngestAPIClientMockRecorder) BatchUpsertRelationships(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) BatchUpsertRelationships(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchUpsertRelationships", reflect.TypeOf((*MockIngestAPIClient)(nil).BatchUpsertRelationships), varargs...)
 }
 
 // IngestRecord mocks base method.
-func (m *MockIngestAPIClient) IngestRecord(ctx context.Context, in *ingestv1beta3.IngestRecordRequest, opts ...grpc.CallOption) (*ingestv1beta3.IngestRecordResponse, error) {
+func (m *MockIngestAPIClient) IngestRecord(arg0 context.Context, arg1 *ingestv1beta3.IngestRecordRequest, arg2 ...grpc.CallOption) (*ingestv1beta3.IngestRecordResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "IngestRecord", varargs...)
@@ -213,17 +212,17 @@ func (m *MockIngestAPIClient) IngestRecord(ctx context.Context, in *ingestv1beta
 }
 
 // IngestRecord indicates an expected call of IngestRecord.
-func (mr *MockIngestAPIClientMockRecorder) IngestRecord(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) IngestRecord(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IngestRecord", reflect.TypeOf((*MockIngestAPIClient)(nil).IngestRecord), varargs...)
 }
 
 // StreamRecords mocks base method.
-func (m *MockIngestAPIClient) StreamRecords(ctx context.Context, opts ...grpc.CallOption) (ingestv1beta3.IngestAPI_StreamRecordsClient, error) {
+func (m *MockIngestAPIClient) StreamRecords(arg0 context.Context, arg1 ...grpc.CallOption) (ingestv1beta3.IngestAPI_StreamRecordsClient, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx}
-	for _, a := range opts {
+	varargs := []any{arg0}
+	for _, a := range arg1 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "StreamRecords", varargs...)
@@ -233,9 +232,9 @@ func (m *MockIngestAPIClient) StreamRecords(ctx context.Context, opts ...grpc.Ca
 }
 
 // StreamRecords indicates an expected call of StreamRecords.
-func (mr *MockIngestAPIClientMockRecorder) StreamRecords(ctx any, opts ...any) *gomock.Call {
+func (mr *MockIngestAPIClientMockRecorder) StreamRecords(arg0 any, arg1 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx}, opts...)
+	varargs := append([]any{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StreamRecords", reflect.TypeOf((*MockIngestAPIClient)(nil).StreamRecords), varargs...)
 }
 
@@ -243,7 +242,6 @@ func (mr *MockIngestAPIClientMockRecorder) StreamRecords(ctx any, opts ...any) *
 type MockIngestAPI_StreamRecordsClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockIngestAPI_StreamRecordsClientMockRecorder
-	isgomock struct{}
 }
 
 // MockIngestAPI_StreamRecordsClientMockRecorder is the mock recorder for MockIngestAPI_StreamRecordsClient.
@@ -322,17 +320,17 @@ func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) Recv() *gomock.Call {
 }
 
 // RecvMsg mocks base method.
-func (m_2 *MockIngestAPI_StreamRecordsClient) RecvMsg(m any) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
+func (m *MockIngestAPI_StreamRecordsClient) RecvMsg(arg0 any) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RecvMsg", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) RecvMsg(m any) *gomock.Call {
+func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) RecvMsg(arg0 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).RecvMsg), m)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).RecvMsg), arg0)
 }
 
 // Send mocks base method.
@@ -350,17 +348,17 @@ func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) Send(arg0 any) *gomock.
 }
 
 // SendMsg mocks base method.
-func (m_2 *MockIngestAPI_StreamRecordsClient) SendMsg(m any) error {
-	m_2.ctrl.T.Helper()
-	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
+func (m *MockIngestAPI_StreamRecordsClient) SendMsg(arg0 any) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SendMsg", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SendMsg indicates an expected call of SendMsg.
-func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) SendMsg(m any) *gomock.Call {
+func (mr *MockIngestAPI_StreamRecordsClientMockRecorder) SendMsg(arg0 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).SendMsg), m)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockIngestAPI_StreamRecordsClient)(nil).SendMsg), arg0)
 }
 
 // Trailer mocks base method.

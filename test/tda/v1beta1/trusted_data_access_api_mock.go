@@ -38,7 +38,6 @@ import (
 type MockTrustedDataAccessAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockTrustedDataAccessAPIClientMockRecorder
-	isgomock struct{}
 }
 
 // MockTrustedDataAccessAPIClientMockRecorder is the mock recorder for MockTrustedDataAccessAPIClient.
@@ -59,10 +58,10 @@ func (m *MockTrustedDataAccessAPIClient) EXPECT() *MockTrustedDataAccessAPIClien
 }
 
 // DataAccess mocks base method.
-func (m *MockTrustedDataAccessAPIClient) DataAccess(ctx context.Context, in *tdav1beta1.DataAccessRequest, opts ...grpc.CallOption) (*tdav1beta1.DataAccessResponse, error) {
+func (m *MockTrustedDataAccessAPIClient) DataAccess(arg0 context.Context, arg1 *tdav1beta1.DataAccessRequest, arg2 ...grpc.CallOption) (*tdav1beta1.DataAccessResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DataAccess", varargs...)
@@ -72,17 +71,17 @@ func (m *MockTrustedDataAccessAPIClient) DataAccess(ctx context.Context, in *tda
 }
 
 // DataAccess indicates an expected call of DataAccess.
-func (mr *MockTrustedDataAccessAPIClientMockRecorder) DataAccess(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockTrustedDataAccessAPIClientMockRecorder) DataAccess(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DataAccess", reflect.TypeOf((*MockTrustedDataAccessAPIClient)(nil).DataAccess), varargs...)
 }
 
 // GrantConsent mocks base method.
-func (m *MockTrustedDataAccessAPIClient) GrantConsent(ctx context.Context, in *tdav1beta1.GrantConsentRequest, opts ...grpc.CallOption) (*tdav1beta1.GrantConsentResponse, error) {
+func (m *MockTrustedDataAccessAPIClient) GrantConsent(arg0 context.Context, arg1 *tdav1beta1.GrantConsentRequest, arg2 ...grpc.CallOption) (*tdav1beta1.GrantConsentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "GrantConsent", varargs...)
@@ -92,17 +91,17 @@ func (m *MockTrustedDataAccessAPIClient) GrantConsent(ctx context.Context, in *t
 }
 
 // GrantConsent indicates an expected call of GrantConsent.
-func (mr *MockTrustedDataAccessAPIClientMockRecorder) GrantConsent(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockTrustedDataAccessAPIClientMockRecorder) GrantConsent(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GrantConsent", reflect.TypeOf((*MockTrustedDataAccessAPIClient)(nil).GrantConsent), varargs...)
 }
 
 // ListConsents mocks base method.
-func (m *MockTrustedDataAccessAPIClient) ListConsents(ctx context.Context, in *tdav1beta1.ListConsentsRequest, opts ...grpc.CallOption) (*tdav1beta1.ListConsentsResponse, error) {
+func (m *MockTrustedDataAccessAPIClient) ListConsents(arg0 context.Context, arg1 *tdav1beta1.ListConsentsRequest, arg2 ...grpc.CallOption) (*tdav1beta1.ListConsentsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListConsents", varargs...)
@@ -112,17 +111,17 @@ func (m *MockTrustedDataAccessAPIClient) ListConsents(ctx context.Context, in *t
 }
 
 // ListConsents indicates an expected call of ListConsents.
-func (mr *MockTrustedDataAccessAPIClientMockRecorder) ListConsents(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockTrustedDataAccessAPIClientMockRecorder) ListConsents(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConsents", reflect.TypeOf((*MockTrustedDataAccessAPIClient)(nil).ListConsents), varargs...)
 }
 
 // RevokeConsent mocks base method.
-func (m *MockTrustedDataAccessAPIClient) RevokeConsent(ctx context.Context, in *tdav1beta1.RevokeConsentRequest, opts ...grpc.CallOption) (*tdav1beta1.RevokeConsentResponse, error) {
+func (m *MockTrustedDataAccessAPIClient) RevokeConsent(arg0 context.Context, arg1 *tdav1beta1.RevokeConsentRequest, arg2 ...grpc.CallOption) (*tdav1beta1.RevokeConsentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, in}
-	for _, a := range opts {
+	varargs := []any{arg0, arg1}
+	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RevokeConsent", varargs...)
@@ -132,8 +131,8 @@ func (m *MockTrustedDataAccessAPIClient) RevokeConsent(ctx context.Context, in *
 }
 
 // RevokeConsent indicates an expected call of RevokeConsent.
-func (mr *MockTrustedDataAccessAPIClientMockRecorder) RevokeConsent(ctx, in any, opts ...any) *gomock.Call {
+func (mr *MockTrustedDataAccessAPIClientMockRecorder) RevokeConsent(arg0, arg1 any, arg2 ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, in}, opts...)
+	varargs := append([]any{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeConsent", reflect.TypeOf((*MockTrustedDataAccessAPIClient)(nil).RevokeConsent), varargs...)
 }

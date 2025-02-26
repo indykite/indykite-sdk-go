@@ -9293,6 +9293,59 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			}
 		}
 
+	case *CreateConfigNodeRequest_KnowledgeQueryConfig:
+		if v == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetKnowledgeQueryConfig() == nil {
+			err := CreateConfigNodeRequestValidationError{
+				field:  "KnowledgeQueryConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeQueryConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateConfigNodeRequestValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeQueryConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateConfigNodeRequestValidationError{
+					field:  "KnowledgeQueryConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -10386,6 +10439,58 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
 					field:  "TrustScoreProfileConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *UpdateConfigNodeRequest_KnowledgeQueryConfig:
+		if v == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if m.GetKnowledgeQueryConfig() == nil {
+			err := UpdateConfigNodeRequestValidationError{
+				field:  "KnowledgeQueryConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeQueryConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateConfigNodeRequestValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeQueryConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UpdateConfigNodeRequestValidationError{
+					field:  "KnowledgeQueryConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
