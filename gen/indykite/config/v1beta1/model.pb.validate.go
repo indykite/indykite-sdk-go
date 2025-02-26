@@ -3221,6 +3221,59 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 
+	case *ConfigNode_KnowledgeQueryConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetKnowledgeQueryConfig() == nil {
+			err := ConfigNodeValidationError{
+				field:  "KnowledgeQueryConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKnowledgeQueryConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "KnowledgeQueryConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKnowledgeQueryConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "KnowledgeQueryConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -4758,10 +4811,10 @@ func (m *IngestPipelineConfig) validate(all bool) error {
 
 	}
 
-	if l := len(m.GetOperations()); l < 1 || l > 6 {
+	if len(m.GetOperations()) > 6 {
 		err := IngestPipelineConfigValidationError{
 			field:  "Operations",
-			reason: "value must contain between 1 and 6 items, inclusive",
+			reason: "value must contain no more than 6 item(s)",
 		}
 		if !all {
 			return err
@@ -5812,6 +5865,169 @@ var _TrustScoreProfileConfig_NodeClassification_Pattern = regexp.MustCompile("^(
 var _TrustScoreProfileConfig_Schedule_NotInLookup = map[TrustScoreProfileConfig_UpdateFrequency]struct{}{
 	0: {},
 }
+
+// Validate checks the field values on KnowledgeQueryConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *KnowledgeQueryConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on KnowledgeQueryConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// KnowledgeQueryConfigMultiError, or nil if none found.
+func (m *KnowledgeQueryConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *KnowledgeQueryConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(m.GetQuery()) > 512000 {
+		err := KnowledgeQueryConfigValidationError{
+			field:  "Query",
+			reason: "value length must be at most 512000 bytes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := _KnowledgeQueryConfig_Status_NotInLookup[m.GetStatus()]; ok {
+		err := KnowledgeQueryConfigValidationError{
+			field:  "Status",
+			reason: "value must not be in list [STATUS_INVALID]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := KnowledgeQueryConfig_Status_name[int32(m.GetStatus())]; !ok {
+		err := KnowledgeQueryConfigValidationError{
+			field:  "Status",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetPolicyId()); l < 22 || l > 254 {
+		err := KnowledgeQueryConfigValidationError{
+			field:  "PolicyId",
+			reason: "value length must be between 22 and 254 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_KnowledgeQueryConfig_PolicyId_Pattern.MatchString(m.GetPolicyId()) {
+		err := KnowledgeQueryConfigValidationError{
+			field:  "PolicyId",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return KnowledgeQueryConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// KnowledgeQueryConfigMultiError is an error wrapping multiple validation
+// errors returned by KnowledgeQueryConfig.ValidateAll() if the designated
+// constraints aren't met.
+type KnowledgeQueryConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m KnowledgeQueryConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m KnowledgeQueryConfigMultiError) AllErrors() []error { return m }
+
+// KnowledgeQueryConfigValidationError is the validation error returned by
+// KnowledgeQueryConfig.Validate if the designated constraints aren't met.
+type KnowledgeQueryConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e KnowledgeQueryConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e KnowledgeQueryConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e KnowledgeQueryConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e KnowledgeQueryConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e KnowledgeQueryConfigValidationError) ErrorName() string {
+	return "KnowledgeQueryConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e KnowledgeQueryConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sKnowledgeQueryConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = KnowledgeQueryConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = KnowledgeQueryConfigValidationError{}
+
+var _KnowledgeQueryConfig_Status_NotInLookup = map[KnowledgeQueryConfig_Status]struct{}{
+	0: {},
+}
+
+var _KnowledgeQueryConfig_PolicyId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are

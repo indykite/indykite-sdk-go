@@ -310,6 +310,26 @@ func (x *NodeRequest) WithTrustScoreProfileConfig(v *configpb.TrustScoreProfileC
 	return x
 }
 
+func (x *NodeRequest) WithKnowledgeQueryConfig(v *configpb.KnowledgeQueryConfig) *NodeRequest {
+	switch {
+	case x.create != nil:
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_KnowledgeQueryConfig{
+				KnowledgeQueryConfig: v,
+			}
+		}
+	case x.update != nil:
+		x.update.Config = nil
+		if v != nil {
+			x.update.Config = &configpb.UpdateConfigNodeRequest_KnowledgeQueryConfig{
+				KnowledgeQueryConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
 	if x.read != nil {
 		x.read.Version = version
