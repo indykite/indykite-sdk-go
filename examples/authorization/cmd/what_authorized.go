@@ -69,7 +69,7 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 	Long:  "List resources based on provided type for a subject based on digital twin id",
 	Run: func(cmd *cobra.Command, args []string) {
 		var digitalTwinID string
-		fmt.Print("Enter digital_twin_id: ")
+		fmt.Print("Enter node id: ")
 		fmt.Scanln(&digitalTwinID)
 
 		digitalTwin := &authorizationpb.DigitalTwin{
@@ -145,7 +145,7 @@ var whatWithExternalIDCmd = &cobra.Command{
 	Long:  "List resources based on provided type for a subject based on external id",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var externalID authorizationpb.ExternalID
-		fmt.Print("Enter digital twin type: ")
+		fmt.Print("Enter type: ")
 		fmt.Scanln(&(externalID.Type))
 		fmt.Print("Enter external id value: ")
 		fmt.Scanln(&(externalID.ExternalId))

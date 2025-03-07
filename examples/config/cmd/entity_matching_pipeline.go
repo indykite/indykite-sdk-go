@@ -42,22 +42,22 @@ var createEntityMatchingPipelineConfigCmd = &cobra.Command{
 				SourceNodeTypes: []string{"employee"},
 				TargetNodeTypes: []string{"user"},
 			},
-			SimilarityScoreCutoff: 0.9,
-			PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
-			EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
-			PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
-				{
-					SourceNodeType:        "employee",
-					SourceNodeProperty:    "email",
-					TargetNodeType:        "user",
-					TargetNodeProperty:    "city",
-					SimilarityScoreCutoff: 0.8,
-				},
-			},
-			RerunInterval: "1 day",
-			LastRunTime:   timestamppb.New(time.Now()),
-			ReportUrl:     wrapperspb.String("gs://some-path"),
-			ReportType:    wrapperspb.String("csv"),
+			//SimilarityScoreCutoff: 0.9,
+			//PropertyMappingStatus: configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS,
+			//EntityMatchingStatus:  configpb.EntityMatchingPipelineConfig_STATUS_PENDING,
+			//PropertyMappings: []*configpb.EntityMatchingPipelineConfig_PropertyMapping{
+			//	{
+			//		SourceNodeType:        "employee",
+			//		SourceNodeProperty:    "email",
+			//		TargetNodeType:        "user",
+			//		TargetNodeProperty:    "city",
+			//		SimilarityScoreCutoff: 0.8,
+			//	},
+			//},
+			//RerunInterval: "1 day",
+			//LastRunTime:   timestamppb.New(time.Now()),
+			//ReportUrl:     wrapperspb.String("gs://some-path"),
+			//ReportType:    wrapperspb.String("csv"),
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-name3")
 		createReq.ForLocation("gid:AAAAApkaja7LKUQot5UCGh6_Zc4")

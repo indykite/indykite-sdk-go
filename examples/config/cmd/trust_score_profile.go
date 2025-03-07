@@ -35,18 +35,22 @@ var createTrustScoreProfileConfigCmd = &cobra.Command{
 	Short: "Create TrustScoreProfile config",
 	Run: func(cmd *cobra.Command, args []string) {
 		configuration := &configpb.TrustScoreProfileConfig{
-			NodeClassification: "Person",
+			NodeClassification: "Agent",
 			Dimensions: []*configpb.TrustScoreDimension{
 				{
-					Name:   configpb.TrustScoreDimension_NAME_FRESHNESS,
-					Weight: 0.9,
+					Name:   configpb.TrustScoreDimension_NAME_VERIFICATION,
+					Weight: 0.5,
+				},
+				{
+					Name:   configpb.TrustScoreDimension_NAME_ORIGIN,
+					Weight: 0.5,
 				},
 			},
-			Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
+			Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_THREE_HOURS,
 		}
-		createReq, _ := config.NewCreate("like-real-config-node-name-ts")
-		createReq.ForLocation("gid:AAAAAiOpnZsjRkIVid6bET5RRE4")
-		createReq.WithDisplayName("Like real ConfigNode Name TS")
+		createReq, _ := config.NewCreate("like-real-config-node-name-ts3")
+		createReq.ForLocation("gid:AAAAAguDnEIQ1UIIvJEulLwUnnE")
+		createReq.WithDisplayName("Like real ConfigNode Name TS3")
 		createReq.WithTrustScoreProfileConfig(configuration)
 
 		resp, err := client.CreateConfigNode(context.Background(), createReq)
@@ -71,13 +75,17 @@ var updateTrustScoreProfileConfigCmd = &cobra.Command{
 		configuration := &configpb.TrustScoreProfileConfig{
 			Dimensions: []*configpb.TrustScoreDimension{
 				{
-					Name:   configpb.TrustScoreDimension_NAME_COMPLETENESS,
-					Weight: 0.92,
+					Name:   configpb.TrustScoreDimension_NAME_VERIFICATION,
+					Weight: 0.5,
+				},
+				{
+					Name:   configpb.TrustScoreDimension_NAME_ORIGIN,
+					Weight: 0.5,
 				},
 			},
-			Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_DAILY,
+			Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_THREE_HOURS,
 		}
-		updateReq, _ := config.NewUpdate("gid:AAAAIsOrnjcZNUNrmuXxnWoJS6s")
+		updateReq, _ := config.NewUpdate("gid:AAAAIqXIQQKcXE9cjN8bvd0gBTQ")
 		updateReq.WithTrustScoreProfileConfig(configuration)
 
 		resp, err := client.UpdateConfigNode(context.Background(), updateReq)
@@ -99,7 +107,7 @@ var deleteTrustScoreProfileConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete TrustScoreProfile configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:AAAAIsOrnjcZNUNrmuXxnWoJS6s")
+		deleteReq, _ := config.NewDelete("gid:AAAAIgH5ofrmdE8NqGeRdw1AEow")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)

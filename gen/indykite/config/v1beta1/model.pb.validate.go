@@ -3274,6 +3274,112 @@ func (m *ConfigNode) validate(all bool) error {
 			}
 		}
 
+	case *ConfigNode_CapturePipelineConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetCapturePipelineConfig() == nil {
+			err := ConfigNodeValidationError{
+				field:  "CapturePipelineConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCapturePipelineConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "CapturePipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "CapturePipelineConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCapturePipelineConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "CapturePipelineConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *ConfigNode_CapturePipelineTopicConfig:
+		if v == nil {
+			err := ConfigNodeValidationError{
+				field:  "Config",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofConfigPresent = true
+
+		if m.GetCapturePipelineTopicConfig() == nil {
+			err := ConfigNodeValidationError{
+				field:  "CapturePipelineTopicConfig",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetCapturePipelineTopicConfig()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "CapturePipelineTopicConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigNodeValidationError{
+						field:  "CapturePipelineTopicConfig",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCapturePipelineTopicConfig()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigNodeValidationError{
+					field:  "CapturePipelineTopicConfig",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -6029,6 +6135,650 @@ var _KnowledgeQueryConfig_Status_NotInLookup = map[KnowledgeQueryConfig_Status]s
 
 var _KnowledgeQueryConfig_PolicyId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
 
+// Validate checks the field values on RegisterCapturePipelineConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RegisterCapturePipelineConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RegisterCapturePipelineConfig with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// RegisterCapturePipelineConfigMultiError, or nil if none found.
+func (m *RegisterCapturePipelineConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RegisterCapturePipelineConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if !_RegisterCapturePipelineConfig_AppAgentToken_Pattern.MatchString(m.GetAppAgentToken()) {
+		err := RegisterCapturePipelineConfigValidationError{
+			field:  "AppAgentToken",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_]+?\\\\.[A-Za-z0-9-_]+?\\\\.[A-Za-z0-9-_]+?$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return RegisterCapturePipelineConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// RegisterCapturePipelineConfigMultiError is an error wrapping multiple
+// validation errors returned by RegisterCapturePipelineConfig.ValidateAll()
+// if the designated constraints aren't met.
+type RegisterCapturePipelineConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RegisterCapturePipelineConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RegisterCapturePipelineConfigMultiError) AllErrors() []error { return m }
+
+// RegisterCapturePipelineConfigValidationError is the validation error
+// returned by RegisterCapturePipelineConfig.Validate if the designated
+// constraints aren't met.
+type RegisterCapturePipelineConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RegisterCapturePipelineConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RegisterCapturePipelineConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RegisterCapturePipelineConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RegisterCapturePipelineConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RegisterCapturePipelineConfigValidationError) ErrorName() string {
+	return "RegisterCapturePipelineConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RegisterCapturePipelineConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRegisterCapturePipelineConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RegisterCapturePipelineConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RegisterCapturePipelineConfigValidationError{}
+
+var _RegisterCapturePipelineConfig_AppAgentToken_Pattern = regexp.MustCompile("^[A-Za-z0-9-_]+?\\.[A-Za-z0-9-_]+?\\.[A-Za-z0-9-_]+?$")
+
+// Validate checks the field values on CapturePipelineConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CapturePipelineConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CapturePipelineConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CapturePipelineConfigMultiError, or nil if none found.
+func (m *CapturePipelineConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CapturePipelineConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetApiKeyId()) < 1 {
+		err := CapturePipelineConfigValidationError{
+			field:  "ApiKeyId",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetApiKeySecret()) < 1 {
+		err := CapturePipelineConfigValidationError{
+			field:  "ApiKeySecret",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return CapturePipelineConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// CapturePipelineConfigMultiError is an error wrapping multiple validation
+// errors returned by CapturePipelineConfig.ValidateAll() if the designated
+// constraints aren't met.
+type CapturePipelineConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CapturePipelineConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CapturePipelineConfigMultiError) AllErrors() []error { return m }
+
+// CapturePipelineConfigValidationError is the validation error returned by
+// CapturePipelineConfig.Validate if the designated constraints aren't met.
+type CapturePipelineConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CapturePipelineConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CapturePipelineConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CapturePipelineConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CapturePipelineConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CapturePipelineConfigValidationError) ErrorName() string {
+	return "CapturePipelineConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CapturePipelineConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCapturePipelineConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CapturePipelineConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CapturePipelineConfigValidationError{}
+
+// Validate checks the field values on RegisterCapturePipelineTopicConfig with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *RegisterCapturePipelineTopicConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on RegisterCapturePipelineTopicConfig
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// RegisterCapturePipelineTopicConfigMultiError, or nil if none found.
+func (m *RegisterCapturePipelineTopicConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RegisterCapturePipelineTopicConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetCapturePipelineId()); l < 22 || l > 254 {
+		err := RegisterCapturePipelineTopicConfigValidationError{
+			field:  "CapturePipelineId",
+			reason: "value length must be between 22 and 254 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_RegisterCapturePipelineTopicConfig_CapturePipelineId_Pattern.MatchString(m.GetCapturePipelineId()) {
+		err := RegisterCapturePipelineTopicConfigValidationError{
+			field:  "CapturePipelineId",
+			reason: "value does not match regex pattern \"^[A-Za-z0-9-_:]{22,254}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetScript()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, RegisterCapturePipelineTopicConfigValidationError{
+					field:  "Script",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, RegisterCapturePipelineTopicConfigValidationError{
+					field:  "Script",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetScript()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return RegisterCapturePipelineTopicConfigValidationError{
+				field:  "Script",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return RegisterCapturePipelineTopicConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// RegisterCapturePipelineTopicConfigMultiError is an error wrapping multiple
+// validation errors returned by
+// RegisterCapturePipelineTopicConfig.ValidateAll() if the designated
+// constraints aren't met.
+type RegisterCapturePipelineTopicConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RegisterCapturePipelineTopicConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RegisterCapturePipelineTopicConfigMultiError) AllErrors() []error { return m }
+
+// RegisterCapturePipelineTopicConfigValidationError is the validation error
+// returned by RegisterCapturePipelineTopicConfig.Validate if the designated
+// constraints aren't met.
+type RegisterCapturePipelineTopicConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RegisterCapturePipelineTopicConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RegisterCapturePipelineTopicConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RegisterCapturePipelineTopicConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RegisterCapturePipelineTopicConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RegisterCapturePipelineTopicConfigValidationError) ErrorName() string {
+	return "RegisterCapturePipelineTopicConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RegisterCapturePipelineTopicConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRegisterCapturePipelineTopicConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RegisterCapturePipelineTopicConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RegisterCapturePipelineTopicConfigValidationError{}
+
+var _RegisterCapturePipelineTopicConfig_CapturePipelineId_Pattern = regexp.MustCompile("^[A-Za-z0-9-_:]{22,254}$")
+
+// Validate checks the field values on CapturePipelineTopicConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CapturePipelineTopicConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CapturePipelineTopicConfig with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CapturePipelineTopicConfigMultiError, or nil if none found.
+func (m *CapturePipelineTopicConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CapturePipelineTopicConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TopicInputName
+
+	// no validation rules for TopicInputEndpoint
+
+	// no validation rules for TopicErrorName
+
+	// no validation rules for TopicSuccessName
+
+	if all {
+		switch v := interface{}(m.GetScript()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CapturePipelineTopicConfigValidationError{
+					field:  "Script",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CapturePipelineTopicConfigValidationError{
+					field:  "Script",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetScript()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CapturePipelineTopicConfigValidationError{
+				field:  "Script",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CapturePipelineTopicConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// CapturePipelineTopicConfigMultiError is an error wrapping multiple
+// validation errors returned by CapturePipelineTopicConfig.ValidateAll() if
+// the designated constraints aren't met.
+type CapturePipelineTopicConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CapturePipelineTopicConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CapturePipelineTopicConfigMultiError) AllErrors() []error { return m }
+
+// CapturePipelineTopicConfigValidationError is the validation error returned
+// by CapturePipelineTopicConfig.Validate if the designated constraints aren't met.
+type CapturePipelineTopicConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CapturePipelineTopicConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CapturePipelineTopicConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CapturePipelineTopicConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CapturePipelineTopicConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CapturePipelineTopicConfigValidationError) ErrorName() string {
+	return "CapturePipelineTopicConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CapturePipelineTopicConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCapturePipelineTopicConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CapturePipelineTopicConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CapturePipelineTopicConfigValidationError{}
+
+// Validate checks the field values on CapturePipelineTopicScriptConfig with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *CapturePipelineTopicScriptConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CapturePipelineTopicScriptConfig with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// CapturePipelineTopicScriptConfigMultiError, or nil if none found.
+func (m *CapturePipelineTopicScriptConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CapturePipelineTopicScriptConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Content
+
+	if len(errors) > 0 {
+		return CapturePipelineTopicScriptConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// CapturePipelineTopicScriptConfigMultiError is an error wrapping multiple
+// validation errors returned by
+// CapturePipelineTopicScriptConfig.ValidateAll() if the designated
+// constraints aren't met.
+type CapturePipelineTopicScriptConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CapturePipelineTopicScriptConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CapturePipelineTopicScriptConfigMultiError) AllErrors() []error { return m }
+
+// CapturePipelineTopicScriptConfigValidationError is the validation error
+// returned by CapturePipelineTopicScriptConfig.Validate if the designated
+// constraints aren't met.
+type CapturePipelineTopicScriptConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CapturePipelineTopicScriptConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CapturePipelineTopicScriptConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CapturePipelineTopicScriptConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CapturePipelineTopicScriptConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CapturePipelineTopicScriptConfigValidationError) ErrorName() string {
+	return "CapturePipelineTopicScriptConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CapturePipelineTopicScriptConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCapturePipelineTopicScriptConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CapturePipelineTopicScriptConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CapturePipelineTopicScriptConfigValidationError{}
+
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -7256,3 +8006,111 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ExternalDataResolverConfig_HeaderValidationError{}
+
+// Validate checks the field values on
+// RegisterCapturePipelineTopicConfig_Script with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *RegisterCapturePipelineTopicConfig_Script) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// RegisterCapturePipelineTopicConfig_Script with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// RegisterCapturePipelineTopicConfig_ScriptMultiError, or nil if none found.
+func (m *RegisterCapturePipelineTopicConfig_Script) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *RegisterCapturePipelineTopicConfig_Script) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Content
+
+	if len(errors) > 0 {
+		return RegisterCapturePipelineTopicConfig_ScriptMultiError(errors)
+	}
+
+	return nil
+}
+
+// RegisterCapturePipelineTopicConfig_ScriptMultiError is an error wrapping
+// multiple validation errors returned by
+// RegisterCapturePipelineTopicConfig_Script.ValidateAll() if the designated
+// constraints aren't met.
+type RegisterCapturePipelineTopicConfig_ScriptMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m RegisterCapturePipelineTopicConfig_ScriptMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m RegisterCapturePipelineTopicConfig_ScriptMultiError) AllErrors() []error { return m }
+
+// RegisterCapturePipelineTopicConfig_ScriptValidationError is the validation
+// error returned by RegisterCapturePipelineTopicConfig_Script.Validate if the
+// designated constraints aren't met.
+type RegisterCapturePipelineTopicConfig_ScriptValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) ErrorName() string {
+	return "RegisterCapturePipelineTopicConfig_ScriptValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e RegisterCapturePipelineTopicConfig_ScriptValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sRegisterCapturePipelineTopicConfig_Script.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = RegisterCapturePipelineTopicConfig_ScriptValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = RegisterCapturePipelineTopicConfig_ScriptValidationError{}

@@ -102,9 +102,70 @@ var deleteAuthorizationPolicyConfigCmd = &cobra.Command{
 	},
 }
 
+var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
+	Use:   "create2",
+	Short: "Create AuthorizationPolicy config",
+	Run: func(cmd *cobra.Command, args []string) {
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},"actions":["CAN_USE"],"resource":{"type":"Sensor"},"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
+		configuration := &configpb.AuthorizationPolicyConfig{
+			Policy: jsonInput,
+			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+			Tags:   []string{},
+		}
+		createReq, _ := config.NewCreate("like-real-config-node-score")
+		createReq.ForLocation("gid:AAAAAguDnEIQ1UIIvJEulLwUnnE")
+		createReq.WithDisplayName("Like real ConfigNode Name")
+		createReq.WithAuthorizationPolicyConfig(configuration)
+
+		resp, err := client.CreateConfigNode(context.Background(), createReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
+var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
+	Use:   "update2",
+	Short: "Update AuthorizationPolicy config",
+	Run: func(cmd *cobra.Command, args []string) {
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},"actions":["CAN_USE"],"resource":{"type":"Sensor"},"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
+		configuration := &configpb.AuthorizationPolicyConfig{
+			Policy: jsonInput,
+			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+			Tags:   []string{},
+		}
+		updateReq, _ := config.NewUpdate("gid:AAAAFlj3-0Ixw0zmo_c83L5R60k")
+		updateReq.WithAuthorizationPolicyConfig(configuration)
+		updateReq.WithDescription("Desc1")
+
+		resp, err := client.UpdateConfigNode(context.Background(), updateReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(authorizationPolicyConfigCmd)
 	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfigCmd)
 	authorizationPolicyConfigCmd.AddCommand(updateAuthorizationPolicyConfigCmd)
 	authorizationPolicyConfigCmd.AddCommand(deleteAuthorizationPolicyConfigCmd)
+	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfig2Cmd)
+	authorizationPolicyConfigCmd.AddCommand(updateAuthorizationPolicyConfig2Cmd)
 }

@@ -367,6 +367,8 @@ var _ = Describe("Authorized", func() {
 				integration.Resource14, []string{}, true, ""),
 			Entry("External ID with external property against policy", "Person", integration.Subject2,
 				integration.Resource11, []string{}, false, ""),
+			Entry("External ID with external property against policy with trust score", "Agent", integration.Agent1,
+				integration.Resources15, []string{}, true, ""),
 		)
 	})
 
@@ -626,6 +628,8 @@ var _ = Describe("Authorized", func() {
 				[]string{}, []string{}, ""),
 			Entry("What Authorized External ID With External Property", "Person", integration.Subject5,
 				integration.ResourceType4, []string{integration.Truck1}, []string{}, ""),
+			Entry("What Authorized External ID with trust score", "Agent", integration.Agent1,
+				integration.ResourceType5, []string{integration.Sensor1}, []string{}, ""),
 		)
 	})
 
@@ -734,6 +738,8 @@ var _ = Describe("Authorized", func() {
 			Entry("Who Authorized Resource Not In DB", integration.ResourceWho3, []string{}, []string{}, ""),
 			Entry("Who Authorized With External Property", integration.ResourceWho4,
 				[]string{integration.Subject5, integration.Subject1}, []string{}, ""),
+			Entry("Who Authorized", integration.ResourceWho5,
+				[]string{integration.Agent1, integration.Agent2, integration.Agent3}, []string{}, ""),
 		)
 	})
 })
