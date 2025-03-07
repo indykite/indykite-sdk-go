@@ -72,6 +72,12 @@ var _ = Describe("Knowledge", func() {
 				integration.Returns1, "", integration.Matcher2),
 			Entry("Read single subject error", integration.Query7, integration.Params3,
 				integration.Returns1, "invalid cypher syntax", integration.Matcher4),
+			Entry("Read trust score by node label", integration.Query8, integration.Params3,
+				integration.Returns2, "", integration.Matcher5),
+			Entry("Read match the Trust Score profile name", integration.Query9, integration.Params6,
+				integration.Returns3, "", integration.Matcher6),
+			Entry("Read specific dimensions from all Trust Scores", integration.Query10, integration.Params3,
+				integration.Returns4, "", integration.Matcher7),
 		)
 
 		DescribeTable("GetByID",

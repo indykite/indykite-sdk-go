@@ -188,10 +188,49 @@ var withExternalIDCmd = &cobra.Command{
 	},
 }
 
+var withExternalID2Cmd = &cobra.Command{
+	Use:   "with_trust_score",
+	Short: "Is Authorized with trust score",
+	Long:  "Check if a digital twin is authorized to perform action based on external id",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		var externalID authorizationpb.ExternalID
+		fmt.Print("Enter node type: ")
+		fmt.Scanln(&(externalID.Type))
+		fmt.Print("Enter external id value: ")
+		fmt.Scanln(&(externalID.ExternalId))
+
+		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
+			{
+				ExternalId: "Sensor1",
+				Type:       "Sensor",
+				Actions:    []string{"CAN_USE"},
+			},
+		}
+		inputParams := map[string]*authorizationpb.InputParam{}
+		var policyTags []string
+
+		resp, err := client.IsAuthorizedByExternalID(
+			cmd.Context(),
+			&externalID,
+			resources,
+			inputParams,
+			policyTags,
+			retry.WithMax(2),
+		)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(jsonp.Format(resp))
+		return nil
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(isAuthorizedCmd)
 	isAuthorizedCmd.AddCommand(withTokenCmd)
 	isAuthorizedCmd.AddCommand(withDigitalTwinCmd)
 	isAuthorizedCmd.AddCommand(withPropertyCmd)
 	isAuthorizedCmd.AddCommand(withExternalIDCmd)
+	isAuthorizedCmd.AddCommand(withExternalID2Cmd)
 }

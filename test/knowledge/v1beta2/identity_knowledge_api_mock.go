@@ -38,6 +38,7 @@ import (
 type MockIdentityKnowledgeAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockIdentityKnowledgeAPIClientMockRecorder
+	isgomock struct{}
 }
 
 // MockIdentityKnowledgeAPIClientMockRecorder is the mock recorder for MockIdentityKnowledgeAPIClient.
@@ -58,10 +59,10 @@ func (m *MockIdentityKnowledgeAPIClient) EXPECT() *MockIdentityKnowledgeAPIClien
 }
 
 // IdentityKnowledgeRead mocks base method.
-func (m *MockIdentityKnowledgeAPIClient) IdentityKnowledgeRead(arg0 context.Context, arg1 *knowledgev1beta2.IdentityKnowledgeReadRequest, arg2 ...grpc.CallOption) (*knowledgev1beta2.IdentityKnowledgeReadResponse, error) {
+func (m *MockIdentityKnowledgeAPIClient) IdentityKnowledgeRead(ctx context.Context, in *knowledgev1beta2.IdentityKnowledgeReadRequest, opts ...grpc.CallOption) (*knowledgev1beta2.IdentityKnowledgeReadResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "IdentityKnowledgeRead", varargs...)
@@ -71,8 +72,8 @@ func (m *MockIdentityKnowledgeAPIClient) IdentityKnowledgeRead(arg0 context.Cont
 }
 
 // IdentityKnowledgeRead indicates an expected call of IdentityKnowledgeRead.
-func (mr *MockIdentityKnowledgeAPIClientMockRecorder) IdentityKnowledgeRead(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockIdentityKnowledgeAPIClientMockRecorder) IdentityKnowledgeRead(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IdentityKnowledgeRead", reflect.TypeOf((*MockIdentityKnowledgeAPIClient)(nil).IdentityKnowledgeRead), varargs...)
 }

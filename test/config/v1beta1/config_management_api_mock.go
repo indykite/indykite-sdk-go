@@ -39,6 +39,7 @@ import (
 type MockConfigManagementAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockConfigManagementAPIClientMockRecorder
+	isgomock struct{}
 }
 
 // MockConfigManagementAPIClientMockRecorder is the mock recorder for MockConfigManagementAPIClient.
@@ -59,10 +60,10 @@ func (m *MockConfigManagementAPIClient) EXPECT() *MockConfigManagementAPIClientM
 }
 
 // AssignPermissions mocks base method.
-func (m *MockConfigManagementAPIClient) AssignPermissions(arg0 context.Context, arg1 *configv1beta1.AssignPermissionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.AssignPermissionsResponse, error) {
+func (m *MockConfigManagementAPIClient) AssignPermissions(ctx context.Context, in *configv1beta1.AssignPermissionsRequest, opts ...grpc.CallOption) (*configv1beta1.AssignPermissionsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "AssignPermissions", varargs...)
@@ -72,17 +73,17 @@ func (m *MockConfigManagementAPIClient) AssignPermissions(arg0 context.Context, 
 }
 
 // AssignPermissions indicates an expected call of AssignPermissions.
-func (mr *MockConfigManagementAPIClientMockRecorder) AssignPermissions(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) AssignPermissions(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssignPermissions", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).AssignPermissions), varargs...)
 }
 
 // CreateApplication mocks base method.
-func (m *MockConfigManagementAPIClient) CreateApplication(arg0 context.Context, arg1 *configv1beta1.CreateApplicationRequest, arg2 ...grpc.CallOption) (*configv1beta1.CreateApplicationResponse, error) {
+func (m *MockConfigManagementAPIClient) CreateApplication(ctx context.Context, in *configv1beta1.CreateApplicationRequest, opts ...grpc.CallOption) (*configv1beta1.CreateApplicationResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateApplication", varargs...)
@@ -92,17 +93,17 @@ func (m *MockConfigManagementAPIClient) CreateApplication(arg0 context.Context, 
 }
 
 // CreateApplication indicates an expected call of CreateApplication.
-func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplication(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplication(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateApplication", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).CreateApplication), varargs...)
 }
 
 // CreateApplicationAgent mocks base method.
-func (m *MockConfigManagementAPIClient) CreateApplicationAgent(arg0 context.Context, arg1 *configv1beta1.CreateApplicationAgentRequest, arg2 ...grpc.CallOption) (*configv1beta1.CreateApplicationAgentResponse, error) {
+func (m *MockConfigManagementAPIClient) CreateApplicationAgent(ctx context.Context, in *configv1beta1.CreateApplicationAgentRequest, opts ...grpc.CallOption) (*configv1beta1.CreateApplicationAgentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateApplicationAgent", varargs...)
@@ -112,17 +113,17 @@ func (m *MockConfigManagementAPIClient) CreateApplicationAgent(arg0 context.Cont
 }
 
 // CreateApplicationAgent indicates an expected call of CreateApplicationAgent.
-func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplicationAgent(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplicationAgent(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateApplicationAgent", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).CreateApplicationAgent), varargs...)
 }
 
 // CreateApplicationSpace mocks base method.
-func (m *MockConfigManagementAPIClient) CreateApplicationSpace(arg0 context.Context, arg1 *configv1beta1.CreateApplicationSpaceRequest, arg2 ...grpc.CallOption) (*configv1beta1.CreateApplicationSpaceResponse, error) {
+func (m *MockConfigManagementAPIClient) CreateApplicationSpace(ctx context.Context, in *configv1beta1.CreateApplicationSpaceRequest, opts ...grpc.CallOption) (*configv1beta1.CreateApplicationSpaceResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateApplicationSpace", varargs...)
@@ -132,17 +133,17 @@ func (m *MockConfigManagementAPIClient) CreateApplicationSpace(arg0 context.Cont
 }
 
 // CreateApplicationSpace indicates an expected call of CreateApplicationSpace.
-func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplicationSpace(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) CreateApplicationSpace(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).CreateApplicationSpace), varargs...)
 }
 
 // CreateConfigNode mocks base method.
-func (m *MockConfigManagementAPIClient) CreateConfigNode(arg0 context.Context, arg1 *configv1beta1.CreateConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.CreateConfigNodeResponse, error) {
+func (m *MockConfigManagementAPIClient) CreateConfigNode(ctx context.Context, in *configv1beta1.CreateConfigNodeRequest, opts ...grpc.CallOption) (*configv1beta1.CreateConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateConfigNode", varargs...)
@@ -152,17 +153,17 @@ func (m *MockConfigManagementAPIClient) CreateConfigNode(arg0 context.Context, a
 }
 
 // CreateConfigNode indicates an expected call of CreateConfigNode.
-func (mr *MockConfigManagementAPIClientMockRecorder) CreateConfigNode(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) CreateConfigNode(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConfigNode", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).CreateConfigNode), varargs...)
 }
 
 // CreateServiceAccount mocks base method.
-func (m *MockConfigManagementAPIClient) CreateServiceAccount(arg0 context.Context, arg1 *configv1beta1.CreateServiceAccountRequest, arg2 ...grpc.CallOption) (*configv1beta1.CreateServiceAccountResponse, error) {
+func (m *MockConfigManagementAPIClient) CreateServiceAccount(ctx context.Context, in *configv1beta1.CreateServiceAccountRequest, opts ...grpc.CallOption) (*configv1beta1.CreateServiceAccountResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "CreateServiceAccount", varargs...)
@@ -172,17 +173,17 @@ func (m *MockConfigManagementAPIClient) CreateServiceAccount(arg0 context.Contex
 }
 
 // CreateServiceAccount indicates an expected call of CreateServiceAccount.
-func (mr *MockConfigManagementAPIClientMockRecorder) CreateServiceAccount(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) CreateServiceAccount(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateServiceAccount", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).CreateServiceAccount), varargs...)
 }
 
 // DeleteApplication mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteApplication(arg0 context.Context, arg1 *configv1beta1.DeleteApplicationRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteApplicationResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteApplication(ctx context.Context, in *configv1beta1.DeleteApplicationRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteApplicationResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteApplication", varargs...)
@@ -192,17 +193,17 @@ func (m *MockConfigManagementAPIClient) DeleteApplication(arg0 context.Context, 
 }
 
 // DeleteApplication indicates an expected call of DeleteApplication.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplication(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplication(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplication", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteApplication), varargs...)
 }
 
 // DeleteApplicationAgent mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteApplicationAgent(arg0 context.Context, arg1 *configv1beta1.DeleteApplicationAgentRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteApplicationAgentResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteApplicationAgent(ctx context.Context, in *configv1beta1.DeleteApplicationAgentRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteApplicationAgentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteApplicationAgent", varargs...)
@@ -212,17 +213,17 @@ func (m *MockConfigManagementAPIClient) DeleteApplicationAgent(arg0 context.Cont
 }
 
 // DeleteApplicationAgent indicates an expected call of DeleteApplicationAgent.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationAgent(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationAgent(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplicationAgent", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteApplicationAgent), varargs...)
 }
 
 // DeleteApplicationAgentCredential mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteApplicationAgentCredential(arg0 context.Context, arg1 *configv1beta1.DeleteApplicationAgentCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteApplicationAgentCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteApplicationAgentCredential(ctx context.Context, in *configv1beta1.DeleteApplicationAgentCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteApplicationAgentCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteApplicationAgentCredential", varargs...)
@@ -232,17 +233,17 @@ func (m *MockConfigManagementAPIClient) DeleteApplicationAgentCredential(arg0 co
 }
 
 // DeleteApplicationAgentCredential indicates an expected call of DeleteApplicationAgentCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationAgentCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationAgentCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplicationAgentCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteApplicationAgentCredential), varargs...)
 }
 
 // DeleteApplicationSpace mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteApplicationSpace(arg0 context.Context, arg1 *configv1beta1.DeleteApplicationSpaceRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteApplicationSpaceResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteApplicationSpace(ctx context.Context, in *configv1beta1.DeleteApplicationSpaceRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteApplicationSpaceResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteApplicationSpace", varargs...)
@@ -252,17 +253,17 @@ func (m *MockConfigManagementAPIClient) DeleteApplicationSpace(arg0 context.Cont
 }
 
 // DeleteApplicationSpace indicates an expected call of DeleteApplicationSpace.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationSpace(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteApplicationSpace(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteApplicationSpace), varargs...)
 }
 
 // DeleteConfigNode mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteConfigNode(arg0 context.Context, arg1 *configv1beta1.DeleteConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteConfigNodeResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteConfigNode(ctx context.Context, in *configv1beta1.DeleteConfigNodeRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteConfigNode", varargs...)
@@ -272,17 +273,17 @@ func (m *MockConfigManagementAPIClient) DeleteConfigNode(arg0 context.Context, a
 }
 
 // DeleteConfigNode indicates an expected call of DeleteConfigNode.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteConfigNode(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteConfigNode(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteConfigNode", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteConfigNode), varargs...)
 }
 
 // DeleteServiceAccount mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteServiceAccount(arg0 context.Context, arg1 *configv1beta1.DeleteServiceAccountRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteServiceAccountResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteServiceAccount(ctx context.Context, in *configv1beta1.DeleteServiceAccountRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteServiceAccountResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteServiceAccount", varargs...)
@@ -292,17 +293,17 @@ func (m *MockConfigManagementAPIClient) DeleteServiceAccount(arg0 context.Contex
 }
 
 // DeleteServiceAccount indicates an expected call of DeleteServiceAccount.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteServiceAccount(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteServiceAccount(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteServiceAccount", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteServiceAccount), varargs...)
 }
 
 // DeleteServiceAccountCredential mocks base method.
-func (m *MockConfigManagementAPIClient) DeleteServiceAccountCredential(arg0 context.Context, arg1 *configv1beta1.DeleteServiceAccountCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.DeleteServiceAccountCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) DeleteServiceAccountCredential(ctx context.Context, in *configv1beta1.DeleteServiceAccountCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.DeleteServiceAccountCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "DeleteServiceAccountCredential", varargs...)
@@ -312,17 +313,17 @@ func (m *MockConfigManagementAPIClient) DeleteServiceAccountCredential(arg0 cont
 }
 
 // DeleteServiceAccountCredential indicates an expected call of DeleteServiceAccountCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) DeleteServiceAccountCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) DeleteServiceAccountCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteServiceAccountCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).DeleteServiceAccountCredential), varargs...)
 }
 
 // ListApplicationAgents mocks base method.
-func (m *MockConfigManagementAPIClient) ListApplicationAgents(arg0 context.Context, arg1 *configv1beta1.ListApplicationAgentsRequest, arg2 ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationAgentsClient, error) {
+func (m *MockConfigManagementAPIClient) ListApplicationAgents(ctx context.Context, in *configv1beta1.ListApplicationAgentsRequest, opts ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationAgentsClient, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListApplicationAgents", varargs...)
@@ -332,17 +333,17 @@ func (m *MockConfigManagementAPIClient) ListApplicationAgents(arg0 context.Conte
 }
 
 // ListApplicationAgents indicates an expected call of ListApplicationAgents.
-func (mr *MockConfigManagementAPIClientMockRecorder) ListApplicationAgents(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ListApplicationAgents(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationAgents", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListApplicationAgents), varargs...)
 }
 
 // ListApplicationSpaces mocks base method.
-func (m *MockConfigManagementAPIClient) ListApplicationSpaces(arg0 context.Context, arg1 *configv1beta1.ListApplicationSpacesRequest, arg2 ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationSpacesClient, error) {
+func (m *MockConfigManagementAPIClient) ListApplicationSpaces(ctx context.Context, in *configv1beta1.ListApplicationSpacesRequest, opts ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationSpacesClient, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListApplicationSpaces", varargs...)
@@ -352,17 +353,17 @@ func (m *MockConfigManagementAPIClient) ListApplicationSpaces(arg0 context.Conte
 }
 
 // ListApplicationSpaces indicates an expected call of ListApplicationSpaces.
-func (mr *MockConfigManagementAPIClientMockRecorder) ListApplicationSpaces(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ListApplicationSpaces(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationSpaces", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListApplicationSpaces), varargs...)
 }
 
 // ListApplications mocks base method.
-func (m *MockConfigManagementAPIClient) ListApplications(arg0 context.Context, arg1 *configv1beta1.ListApplicationsRequest, arg2 ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationsClient, error) {
+func (m *MockConfigManagementAPIClient) ListApplications(ctx context.Context, in *configv1beta1.ListApplicationsRequest, opts ...grpc.CallOption) (configv1beta1.ConfigManagementAPI_ListApplicationsClient, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListApplications", varargs...)
@@ -372,17 +373,17 @@ func (m *MockConfigManagementAPIClient) ListApplications(arg0 context.Context, a
 }
 
 // ListApplications indicates an expected call of ListApplications.
-func (mr *MockConfigManagementAPIClientMockRecorder) ListApplications(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ListApplications(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplications", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListApplications), varargs...)
 }
 
 // ListConfigNodeVersions mocks base method.
-func (m *MockConfigManagementAPIClient) ListConfigNodeVersions(arg0 context.Context, arg1 *configv1beta1.ListConfigNodeVersionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.ListConfigNodeVersionsResponse, error) {
+func (m *MockConfigManagementAPIClient) ListConfigNodeVersions(ctx context.Context, in *configv1beta1.ListConfigNodeVersionsRequest, opts ...grpc.CallOption) (*configv1beta1.ListConfigNodeVersionsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListConfigNodeVersions", varargs...)
@@ -392,17 +393,17 @@ func (m *MockConfigManagementAPIClient) ListConfigNodeVersions(arg0 context.Cont
 }
 
 // ListConfigNodeVersions indicates an expected call of ListConfigNodeVersions.
-func (mr *MockConfigManagementAPIClientMockRecorder) ListConfigNodeVersions(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ListConfigNodeVersions(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigNodeVersions", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListConfigNodeVersions), varargs...)
 }
 
 // ListPermissions mocks base method.
-func (m *MockConfigManagementAPIClient) ListPermissions(arg0 context.Context, arg1 *configv1beta1.ListPermissionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.ListPermissionsResponse, error) {
+func (m *MockConfigManagementAPIClient) ListPermissions(ctx context.Context, in *configv1beta1.ListPermissionsRequest, opts ...grpc.CallOption) (*configv1beta1.ListPermissionsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ListPermissions", varargs...)
@@ -412,17 +413,17 @@ func (m *MockConfigManagementAPIClient) ListPermissions(arg0 context.Context, ar
 }
 
 // ListPermissions indicates an expected call of ListPermissions.
-func (mr *MockConfigManagementAPIClientMockRecorder) ListPermissions(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ListPermissions(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPermissions", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ListPermissions), varargs...)
 }
 
 // ReadApplication mocks base method.
-func (m *MockConfigManagementAPIClient) ReadApplication(arg0 context.Context, arg1 *configv1beta1.ReadApplicationRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadApplicationResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadApplication(ctx context.Context, in *configv1beta1.ReadApplicationRequest, opts ...grpc.CallOption) (*configv1beta1.ReadApplicationResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadApplication", varargs...)
@@ -432,17 +433,17 @@ func (m *MockConfigManagementAPIClient) ReadApplication(arg0 context.Context, ar
 }
 
 // ReadApplication indicates an expected call of ReadApplication.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplication(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplication(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplication", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplication), varargs...)
 }
 
 // ReadApplicationAgent mocks base method.
-func (m *MockConfigManagementAPIClient) ReadApplicationAgent(arg0 context.Context, arg1 *configv1beta1.ReadApplicationAgentRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadApplicationAgentResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadApplicationAgent(ctx context.Context, in *configv1beta1.ReadApplicationAgentRequest, opts ...grpc.CallOption) (*configv1beta1.ReadApplicationAgentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadApplicationAgent", varargs...)
@@ -452,17 +453,17 @@ func (m *MockConfigManagementAPIClient) ReadApplicationAgent(arg0 context.Contex
 }
 
 // ReadApplicationAgent indicates an expected call of ReadApplicationAgent.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationAgent(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationAgent(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplicationAgent", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplicationAgent), varargs...)
 }
 
 // ReadApplicationAgentCredential mocks base method.
-func (m *MockConfigManagementAPIClient) ReadApplicationAgentCredential(arg0 context.Context, arg1 *configv1beta1.ReadApplicationAgentCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadApplicationAgentCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadApplicationAgentCredential(ctx context.Context, in *configv1beta1.ReadApplicationAgentCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.ReadApplicationAgentCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadApplicationAgentCredential", varargs...)
@@ -472,17 +473,17 @@ func (m *MockConfigManagementAPIClient) ReadApplicationAgentCredential(arg0 cont
 }
 
 // ReadApplicationAgentCredential indicates an expected call of ReadApplicationAgentCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationAgentCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationAgentCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplicationAgentCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplicationAgentCredential), varargs...)
 }
 
 // ReadApplicationSpace mocks base method.
-func (m *MockConfigManagementAPIClient) ReadApplicationSpace(arg0 context.Context, arg1 *configv1beta1.ReadApplicationSpaceRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadApplicationSpaceResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadApplicationSpace(ctx context.Context, in *configv1beta1.ReadApplicationSpaceRequest, opts ...grpc.CallOption) (*configv1beta1.ReadApplicationSpaceResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadApplicationSpace", varargs...)
@@ -492,17 +493,17 @@ func (m *MockConfigManagementAPIClient) ReadApplicationSpace(arg0 context.Contex
 }
 
 // ReadApplicationSpace indicates an expected call of ReadApplicationSpace.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationSpace(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadApplicationSpace(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadApplicationSpace), varargs...)
 }
 
 // ReadConfigNode mocks base method.
-func (m *MockConfigManagementAPIClient) ReadConfigNode(arg0 context.Context, arg1 *configv1beta1.ReadConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadConfigNodeResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadConfigNode(ctx context.Context, in *configv1beta1.ReadConfigNodeRequest, opts ...grpc.CallOption) (*configv1beta1.ReadConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadConfigNode", varargs...)
@@ -512,17 +513,17 @@ func (m *MockConfigManagementAPIClient) ReadConfigNode(arg0 context.Context, arg
 }
 
 // ReadConfigNode indicates an expected call of ReadConfigNode.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadConfigNode(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadConfigNode(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadConfigNode", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadConfigNode), varargs...)
 }
 
 // ReadCustomer mocks base method.
-func (m *MockConfigManagementAPIClient) ReadCustomer(arg0 context.Context, arg1 *configv1beta1.ReadCustomerRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadCustomerResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadCustomer(ctx context.Context, in *configv1beta1.ReadCustomerRequest, opts ...grpc.CallOption) (*configv1beta1.ReadCustomerResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadCustomer", varargs...)
@@ -532,17 +533,17 @@ func (m *MockConfigManagementAPIClient) ReadCustomer(arg0 context.Context, arg1 
 }
 
 // ReadCustomer indicates an expected call of ReadCustomer.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadCustomer(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadCustomer(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadCustomer", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadCustomer), varargs...)
 }
 
 // ReadServiceAccount mocks base method.
-func (m *MockConfigManagementAPIClient) ReadServiceAccount(arg0 context.Context, arg1 *configv1beta1.ReadServiceAccountRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadServiceAccountResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadServiceAccount(ctx context.Context, in *configv1beta1.ReadServiceAccountRequest, opts ...grpc.CallOption) (*configv1beta1.ReadServiceAccountResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadServiceAccount", varargs...)
@@ -552,17 +553,17 @@ func (m *MockConfigManagementAPIClient) ReadServiceAccount(arg0 context.Context,
 }
 
 // ReadServiceAccount indicates an expected call of ReadServiceAccount.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadServiceAccount(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadServiceAccount(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadServiceAccount", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadServiceAccount), varargs...)
 }
 
 // ReadServiceAccountCredential mocks base method.
-func (m *MockConfigManagementAPIClient) ReadServiceAccountCredential(arg0 context.Context, arg1 *configv1beta1.ReadServiceAccountCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.ReadServiceAccountCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) ReadServiceAccountCredential(ctx context.Context, in *configv1beta1.ReadServiceAccountCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.ReadServiceAccountCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadServiceAccountCredential", varargs...)
@@ -572,17 +573,17 @@ func (m *MockConfigManagementAPIClient) ReadServiceAccountCredential(arg0 contex
 }
 
 // ReadServiceAccountCredential indicates an expected call of ReadServiceAccountCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) ReadServiceAccountCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) ReadServiceAccountCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadServiceAccountCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).ReadServiceAccountCredential), varargs...)
 }
 
 // RegisterApplicationAgentCredential mocks base method.
-func (m *MockConfigManagementAPIClient) RegisterApplicationAgentCredential(arg0 context.Context, arg1 *configv1beta1.RegisterApplicationAgentCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.RegisterApplicationAgentCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) RegisterApplicationAgentCredential(ctx context.Context, in *configv1beta1.RegisterApplicationAgentCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.RegisterApplicationAgentCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RegisterApplicationAgentCredential", varargs...)
@@ -592,17 +593,17 @@ func (m *MockConfigManagementAPIClient) RegisterApplicationAgentCredential(arg0 
 }
 
 // RegisterApplicationAgentCredential indicates an expected call of RegisterApplicationAgentCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) RegisterApplicationAgentCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) RegisterApplicationAgentCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterApplicationAgentCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).RegisterApplicationAgentCredential), varargs...)
 }
 
 // RegisterServiceAccountCredential mocks base method.
-func (m *MockConfigManagementAPIClient) RegisterServiceAccountCredential(arg0 context.Context, arg1 *configv1beta1.RegisterServiceAccountCredentialRequest, arg2 ...grpc.CallOption) (*configv1beta1.RegisterServiceAccountCredentialResponse, error) {
+func (m *MockConfigManagementAPIClient) RegisterServiceAccountCredential(ctx context.Context, in *configv1beta1.RegisterServiceAccountCredentialRequest, opts ...grpc.CallOption) (*configv1beta1.RegisterServiceAccountCredentialResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RegisterServiceAccountCredential", varargs...)
@@ -612,17 +613,17 @@ func (m *MockConfigManagementAPIClient) RegisterServiceAccountCredential(arg0 co
 }
 
 // RegisterServiceAccountCredential indicates an expected call of RegisterServiceAccountCredential.
-func (mr *MockConfigManagementAPIClientMockRecorder) RegisterServiceAccountCredential(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) RegisterServiceAccountCredential(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterServiceAccountCredential", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).RegisterServiceAccountCredential), varargs...)
 }
 
 // RevokePermissions mocks base method.
-func (m *MockConfigManagementAPIClient) RevokePermissions(arg0 context.Context, arg1 *configv1beta1.RevokePermissionsRequest, arg2 ...grpc.CallOption) (*configv1beta1.RevokePermissionsResponse, error) {
+func (m *MockConfigManagementAPIClient) RevokePermissions(ctx context.Context, in *configv1beta1.RevokePermissionsRequest, opts ...grpc.CallOption) (*configv1beta1.RevokePermissionsResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RevokePermissions", varargs...)
@@ -632,17 +633,17 @@ func (m *MockConfigManagementAPIClient) RevokePermissions(arg0 context.Context, 
 }
 
 // RevokePermissions indicates an expected call of RevokePermissions.
-func (mr *MockConfigManagementAPIClientMockRecorder) RevokePermissions(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) RevokePermissions(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokePermissions", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).RevokePermissions), varargs...)
 }
 
 // UpdateApplication mocks base method.
-func (m *MockConfigManagementAPIClient) UpdateApplication(arg0 context.Context, arg1 *configv1beta1.UpdateApplicationRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateApplicationResponse, error) {
+func (m *MockConfigManagementAPIClient) UpdateApplication(ctx context.Context, in *configv1beta1.UpdateApplicationRequest, opts ...grpc.CallOption) (*configv1beta1.UpdateApplicationResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdateApplication", varargs...)
@@ -652,17 +653,17 @@ func (m *MockConfigManagementAPIClient) UpdateApplication(arg0 context.Context, 
 }
 
 // UpdateApplication indicates an expected call of UpdateApplication.
-func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplication(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplication(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplication", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateApplication), varargs...)
 }
 
 // UpdateApplicationAgent mocks base method.
-func (m *MockConfigManagementAPIClient) UpdateApplicationAgent(arg0 context.Context, arg1 *configv1beta1.UpdateApplicationAgentRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateApplicationAgentResponse, error) {
+func (m *MockConfigManagementAPIClient) UpdateApplicationAgent(ctx context.Context, in *configv1beta1.UpdateApplicationAgentRequest, opts ...grpc.CallOption) (*configv1beta1.UpdateApplicationAgentResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdateApplicationAgent", varargs...)
@@ -672,17 +673,17 @@ func (m *MockConfigManagementAPIClient) UpdateApplicationAgent(arg0 context.Cont
 }
 
 // UpdateApplicationAgent indicates an expected call of UpdateApplicationAgent.
-func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationAgent(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationAgent(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplicationAgent", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateApplicationAgent), varargs...)
 }
 
 // UpdateApplicationSpace mocks base method.
-func (m *MockConfigManagementAPIClient) UpdateApplicationSpace(arg0 context.Context, arg1 *configv1beta1.UpdateApplicationSpaceRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateApplicationSpaceResponse, error) {
+func (m *MockConfigManagementAPIClient) UpdateApplicationSpace(ctx context.Context, in *configv1beta1.UpdateApplicationSpaceRequest, opts ...grpc.CallOption) (*configv1beta1.UpdateApplicationSpaceResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdateApplicationSpace", varargs...)
@@ -692,17 +693,17 @@ func (m *MockConfigManagementAPIClient) UpdateApplicationSpace(arg0 context.Cont
 }
 
 // UpdateApplicationSpace indicates an expected call of UpdateApplicationSpace.
-func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationSpace(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateApplicationSpace(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplicationSpace", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateApplicationSpace), varargs...)
 }
 
 // UpdateConfigNode mocks base method.
-func (m *MockConfigManagementAPIClient) UpdateConfigNode(arg0 context.Context, arg1 *configv1beta1.UpdateConfigNodeRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateConfigNodeResponse, error) {
+func (m *MockConfigManagementAPIClient) UpdateConfigNode(ctx context.Context, in *configv1beta1.UpdateConfigNodeRequest, opts ...grpc.CallOption) (*configv1beta1.UpdateConfigNodeResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdateConfigNode", varargs...)
@@ -712,17 +713,17 @@ func (m *MockConfigManagementAPIClient) UpdateConfigNode(arg0 context.Context, a
 }
 
 // UpdateConfigNode indicates an expected call of UpdateConfigNode.
-func (mr *MockConfigManagementAPIClientMockRecorder) UpdateConfigNode(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateConfigNode(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateConfigNode", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateConfigNode), varargs...)
 }
 
 // UpdateServiceAccount mocks base method.
-func (m *MockConfigManagementAPIClient) UpdateServiceAccount(arg0 context.Context, arg1 *configv1beta1.UpdateServiceAccountRequest, arg2 ...grpc.CallOption) (*configv1beta1.UpdateServiceAccountResponse, error) {
+func (m *MockConfigManagementAPIClient) UpdateServiceAccount(ctx context.Context, in *configv1beta1.UpdateServiceAccountRequest, opts ...grpc.CallOption) (*configv1beta1.UpdateServiceAccountResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "UpdateServiceAccount", varargs...)
@@ -732,9 +733,9 @@ func (m *MockConfigManagementAPIClient) UpdateServiceAccount(arg0 context.Contex
 }
 
 // UpdateServiceAccount indicates an expected call of UpdateServiceAccount.
-func (mr *MockConfigManagementAPIClientMockRecorder) UpdateServiceAccount(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockConfigManagementAPIClientMockRecorder) UpdateServiceAccount(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateServiceAccount", reflect.TypeOf((*MockConfigManagementAPIClient)(nil).UpdateServiceAccount), varargs...)
 }
 
@@ -742,6 +743,7 @@ func (mr *MockConfigManagementAPIClientMockRecorder) UpdateServiceAccount(arg0, 
 type MockConfigManagementAPI_ListApplicationSpacesClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder
+	isgomock struct{}
 }
 
 // MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder is the mock recorder for MockConfigManagementAPI_ListApplicationSpacesClient.
@@ -820,31 +822,31 @@ func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) Recv(
 }
 
 // RecvMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationSpacesClient) RecvMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RecvMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationSpacesClient) RecvMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) RecvMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) RecvMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationSpacesClient)(nil).RecvMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationSpacesClient)(nil).RecvMsg), m)
 }
 
 // SendMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationSpacesClient) SendMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationSpacesClient) SendMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SendMsg indicates an expected call of SendMsg.
-func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) SendMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) SendMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationSpacesClient)(nil).SendMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationSpacesClient)(nil).SendMsg), m)
 }
 
 // Trailer mocks base method.
@@ -865,6 +867,7 @@ func (mr *MockConfigManagementAPI_ListApplicationSpacesClientMockRecorder) Trail
 type MockConfigManagementAPI_ListApplicationsClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockConfigManagementAPI_ListApplicationsClientMockRecorder
+	isgomock struct{}
 }
 
 // MockConfigManagementAPI_ListApplicationsClientMockRecorder is the mock recorder for MockConfigManagementAPI_ListApplicationsClient.
@@ -943,31 +946,31 @@ func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) Recv() *go
 }
 
 // RecvMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationsClient) RecvMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RecvMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationsClient) RecvMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) RecvMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) RecvMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationsClient)(nil).RecvMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationsClient)(nil).RecvMsg), m)
 }
 
 // SendMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationsClient) SendMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationsClient) SendMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SendMsg indicates an expected call of SendMsg.
-func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) SendMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) SendMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationsClient)(nil).SendMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationsClient)(nil).SendMsg), m)
 }
 
 // Trailer mocks base method.
@@ -988,6 +991,7 @@ func (mr *MockConfigManagementAPI_ListApplicationsClientMockRecorder) Trailer() 
 type MockConfigManagementAPI_ListApplicationAgentsClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder
+	isgomock struct{}
 }
 
 // MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder is the mock recorder for MockConfigManagementAPI_ListApplicationAgentsClient.
@@ -1066,31 +1070,31 @@ func (mr *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder) Recv(
 }
 
 // RecvMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationAgentsClient) RecvMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RecvMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationAgentsClient) RecvMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "RecvMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RecvMsg indicates an expected call of RecvMsg.
-func (mr *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder) RecvMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder) RecvMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationAgentsClient)(nil).RecvMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecvMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationAgentsClient)(nil).RecvMsg), m)
 }
 
 // SendMsg mocks base method.
-func (m *MockConfigManagementAPI_ListApplicationAgentsClient) SendMsg(arg0 any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendMsg", arg0)
+func (m_2 *MockConfigManagementAPI_ListApplicationAgentsClient) SendMsg(m any) error {
+	m_2.ctrl.T.Helper()
+	ret := m_2.ctrl.Call(m_2, "SendMsg", m)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SendMsg indicates an expected call of SendMsg.
-func (mr *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder) SendMsg(arg0 any) *gomock.Call {
+func (mr *MockConfigManagementAPI_ListApplicationAgentsClientMockRecorder) SendMsg(m any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationAgentsClient)(nil).SendMsg), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMsg", reflect.TypeOf((*MockConfigManagementAPI_ListApplicationAgentsClient)(nil).SendMsg), m)
 }
 
 // Trailer mocks base method.

@@ -37,8 +37,10 @@ var _ = Describe("Configuration", func() {
 	Describe("ExternalDataResolver", func() {
 		It("CreateExternalDataResolver", func() {
 			var (
-				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -56,6 +58,21 @@ var _ = Describe("Configuration", func() {
 			Expect(respAppSpace).NotTo(BeNil())
 			appSpaceID := respAppSpace.Id
 			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
 
 			configuration := &configpb.ExternalDataResolverConfig{
 				Url:              integration.URL,
@@ -166,8 +183,10 @@ var _ = Describe("Configuration", func() {
 
 		It("CreateExternalDataResolverWrongMethod", func() {
 			var (
-				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -185,6 +204,21 @@ var _ = Describe("Configuration", func() {
 			Expect(respAppSpace).NotTo(BeNil())
 			appSpaceID := respAppSpace.Id
 			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
 
 			configuration := &configpb.ExternalDataResolverConfig{
 				Url:              integration.URL,
@@ -243,6 +277,21 @@ var _ = Describe("Configuration", func() {
 			Expect(respAppSpace).NotTo(BeNil())
 			appSpaceID := respAppSpace.Id
 			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
 
 			// create config node
 			configuration := &configpb.EntityMatchingPipelineConfig{
@@ -360,8 +409,10 @@ var _ = Describe("Configuration", func() {
 
 		It("CreateEntityMatchingPipelineWrongNodeFilter", func() {
 			var (
-				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -380,6 +431,21 @@ var _ = Describe("Configuration", func() {
 			appSpaceID := respAppSpace.Id
 			appSpaceEtag := respAppSpace.Etag
 
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
+
 			configuration := &configpb.EntityMatchingPipelineConfig{
 				NodeFilter: integration.NodeFilter3,
 			}
@@ -392,6 +458,286 @@ var _ = Describe("Configuration", func() {
 			Expect(err).To(MatchError(ContainSubstring(
 				"invalid EntityMatchingPipelineConfig_NodeFilter.TargetNodeTypes: " +
 					"value must contain at least 1 item(s)")))
+			Expect(resp).To(BeNil())
+
+			time.Sleep(5 * time.Second)
+			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
+			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
+				Id:   appSpaceID,
+				Etag: etagPb,
+			}
+			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+			Expect(err).To(Succeed())
+			Expect(respDelAS).NotTo(BeNil())
+			err = configClient.Close()
+			Expect(err).To(Succeed())
+		})
+	})
+
+	Describe("TrustScoreProfile", func() {
+		It("CreateTrustScoreProfile", func() {
+			var (
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
+			)
+
+			configClient, err := integration.InitConfigConfig()
+			Expect(err).To(Succeed())
+
+			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
+			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
+				CustomerId:  integration.CustomerID,
+				Name:        "appspace-" + timeNow,
+				DisplayName: displayNamePb,
+				Region:      "europe-west1",
+			}
+			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
+			Expect(err).To(Succeed())
+			Expect(respAppSpace).NotTo(BeNil())
+			appSpaceID := respAppSpace.Id
+			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
+
+			// create config node
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Agent",
+				Dimensions:         integration.Dimensions1,
+				Schedule:           integration.Schedule1,
+			}
+			createReq, _ := config.NewCreate("trust-score-profile-" + timeNow)
+			createReq.ForLocation(appSpaceID)
+			createReq.WithDisplayName("TrustScoreProfile" + timeNow)
+			createReq.WithTrustScoreProfileConfig(configuration)
+
+			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
+			if err != nil {
+				log.Fatalf("failed to invoke operation on IndyKite creation config node %v", err)
+			}
+			Expect(resp).NotTo(BeNil())
+			configID := resp.Id
+			configEtag := resp.Etag
+			Expect(resp.LocationId).To(Equal(appSpaceID))
+
+			// read config node
+			readReq, _ := config.NewRead(configID)
+			respRead, err := configClient.ReadConfigNode(context.Background(), readReq)
+			Expect(err).To(Succeed())
+			Expect(respRead).NotTo(BeNil())
+			configNode := respRead.ConfigNode
+			Expect(configNode).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id":   Equal(configID),
+				"Name": Equal("trust-score-profile-" + timeNow),
+				"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+					"TrustScoreProfileConfig": integration.EqualProto(configuration),
+				})),
+			})))
+
+			// update config node
+			configurationUpd := &configpb.TrustScoreProfileConfig{
+				Dimensions: integration.Dimensions1,
+				Schedule:   integration.Schedule2,
+			}
+			updateReq, _ := config.NewUpdate(configID)
+			updateReq.WithDisplayName("TrustScoreProfile2" + timeNow)
+			updateReq.WithTrustScoreProfileConfig(configurationUpd)
+			respUpd, err := configClient.UpdateConfigNode(context.Background(), updateReq)
+			if err != nil {
+				log.Fatalf("failed to invoke operation on IndyKite update config node Client %v", err)
+			}
+			Expect(respUpd).NotTo(BeNil())
+			configUpdEtag := respUpd.Etag
+			Expect(respUpd.Id).To(Equal(configID))
+			Expect(respUpd.LocationId).To(Equal(appSpaceID))
+			Expect(configUpdEtag).NotTo(Equal(configEtag))
+
+			// delete config node
+			deleteReq, _ := config.NewDelete(configID)
+			var respDel *configpb.DeleteConfigNodeResponse
+			var errDel error
+			for i := 0; i < maxRetries; i++ {
+				respDel, errDel = configClient.DeleteConfigNode(context.Background(), deleteReq)
+				if errDel == nil {
+					Expect(respDel).NotTo(BeNil())
+					break // Exit the loop if error is nil
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errDel).To(Succeed())
+
+			time.Sleep(5 * time.Second)
+			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
+			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
+				Id:   appSpaceID,
+				Etag: etagPb,
+			}
+			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+			Expect(err).To(Succeed())
+			Expect(respDelAS).NotTo(BeNil())
+			err = configClient.Close()
+			Expect(err).To(Succeed())
+		})
+
+		It("CreateTrustScoreProfileErrorLocation", func() {
+			var (
+				err     error
+				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+			)
+
+			configClient, err := integration.InitConfigConfig()
+			Expect(err).To(Succeed())
+
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Agent",
+				Dimensions:         integration.Dimensions1,
+				Schedule:           integration.Schedule1,
+			}
+			createReq, _ := config.NewCreate("trust-score-profile-" + timeNow)
+			createReq.ForLocation(integration.WrongAppSpace)
+			createReq.WithDisplayName("TrustScoreProfile" + timeNow)
+			createReq.WithTrustScoreProfileConfig(configuration)
+
+			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
+			Expect(err).To(MatchError(ContainSubstring(
+				"insufficient permission to perform requested action")))
+			Expect(resp).To(BeNil())
+			err = configClient.Close()
+			Expect(err).To(Succeed())
+		})
+
+		It("CreateTrustScoreProfileNoDimension", func() {
+			var (
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
+			)
+
+			configClient, err := integration.InitConfigConfig()
+			Expect(err).To(Succeed())
+
+			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
+			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
+				CustomerId:  integration.CustomerID,
+				Name:        "appspace-" + timeNow,
+				DisplayName: displayNamePb,
+				Region:      "europe-west1",
+			}
+			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
+			Expect(err).To(Succeed())
+			Expect(respAppSpace).NotTo(BeNil())
+			appSpaceID := respAppSpace.Id
+			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
+
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Agent",
+				Schedule:           integration.Schedule1,
+			}
+			createReq, _ := config.NewCreate("trust-score-profile-" + timeNow)
+			createReq.ForLocation(appSpaceID)
+			createReq.WithDisplayName("TrustScoreProfile" + timeNow)
+			createReq.WithTrustScoreProfileConfig(configuration)
+
+			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
+			Expect(err).To(MatchError(ContainSubstring(
+				"InvalidArgument desc = at least one dimension with weight greater than 0 is required")))
+			Expect(resp).To(BeNil())
+
+			time.Sleep(5 * time.Second)
+			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
+			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
+				Id:   appSpaceID,
+				Etag: etagPb,
+			}
+			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+			Expect(err).To(Succeed())
+			Expect(respDelAS).NotTo(BeNil())
+			err = configClient.Close()
+			Expect(err).To(Succeed())
+		})
+
+		It("CreateTrustScoreProfileWrongFrequency", func() {
+			var (
+				err        error
+				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				maxRetries = 5
+				retryDelay = time.Second * 5
+			)
+
+			configClient, err := integration.InitConfigConfig()
+			Expect(err).To(Succeed())
+
+			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
+			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
+				CustomerId:  integration.CustomerID,
+				Name:        "appspace-" + timeNow,
+				DisplayName: displayNamePb,
+				Region:      "europe-west1",
+			}
+			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
+			Expect(err).To(Succeed())
+			Expect(respAppSpace).NotTo(BeNil())
+			appSpaceID := respAppSpace.Id
+			appSpaceEtag := respAppSpace.Etag
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for i := 0; i < maxRetries; i++ {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
+
+			configuration := &configpb.TrustScoreProfileConfig{
+				NodeClassification: "Agent",
+				Dimensions:         integration.Dimensions1,
+				Schedule:           integration.Schedule3,
+			}
+			createReq, _ := config.NewCreate("trust-score-profile-" + timeNow)
+			createReq.ForLocation(appSpaceID)
+			createReq.WithDisplayName("TrustScoreProfile" + timeNow)
+			createReq.WithTrustScoreProfileConfig(configuration)
+
+			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
+			Expect(err).To(MatchError(ContainSubstring(
+				"value must not be in list [UPDATE_FREQUENCY_INVALID]")))
 			Expect(resp).To(BeNil())
 
 			time.Sleep(5 * time.Second)

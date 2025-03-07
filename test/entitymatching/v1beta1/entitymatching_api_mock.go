@@ -38,6 +38,7 @@ import (
 type MockEntityMatchingAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockEntityMatchingAPIClientMockRecorder
+	isgomock struct{}
 }
 
 // MockEntityMatchingAPIClientMockRecorder is the mock recorder for MockEntityMatchingAPIClient.
@@ -58,10 +59,10 @@ func (m *MockEntityMatchingAPIClient) EXPECT() *MockEntityMatchingAPIClientMockR
 }
 
 // ReadSuggestedPropertyMapping mocks base method.
-func (m *MockEntityMatchingAPIClient) ReadSuggestedPropertyMapping(arg0 context.Context, arg1 *entitymatchingv1beta1.ReadSuggestedPropertyMappingRequest, arg2 ...grpc.CallOption) (*entitymatchingv1beta1.ReadSuggestedPropertyMappingResponse, error) {
+func (m *MockEntityMatchingAPIClient) ReadSuggestedPropertyMapping(ctx context.Context, in *entitymatchingv1beta1.ReadSuggestedPropertyMappingRequest, opts ...grpc.CallOption) (*entitymatchingv1beta1.ReadSuggestedPropertyMappingResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "ReadSuggestedPropertyMapping", varargs...)
@@ -71,17 +72,17 @@ func (m *MockEntityMatchingAPIClient) ReadSuggestedPropertyMapping(arg0 context.
 }
 
 // ReadSuggestedPropertyMapping indicates an expected call of ReadSuggestedPropertyMapping.
-func (mr *MockEntityMatchingAPIClientMockRecorder) ReadSuggestedPropertyMapping(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockEntityMatchingAPIClientMockRecorder) ReadSuggestedPropertyMapping(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadSuggestedPropertyMapping", reflect.TypeOf((*MockEntityMatchingAPIClient)(nil).ReadSuggestedPropertyMapping), varargs...)
 }
 
 // RunEntityMatchingPipeline mocks base method.
-func (m *MockEntityMatchingAPIClient) RunEntityMatchingPipeline(arg0 context.Context, arg1 *entitymatchingv1beta1.RunEntityMatchingPipelineRequest, arg2 ...grpc.CallOption) (*entitymatchingv1beta1.RunEntityMatchingPipelineResponse, error) {
+func (m *MockEntityMatchingAPIClient) RunEntityMatchingPipeline(ctx context.Context, in *entitymatchingv1beta1.RunEntityMatchingPipelineRequest, opts ...grpc.CallOption) (*entitymatchingv1beta1.RunEntityMatchingPipelineResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "RunEntityMatchingPipeline", varargs...)
@@ -91,8 +92,8 @@ func (m *MockEntityMatchingAPIClient) RunEntityMatchingPipeline(arg0 context.Con
 }
 
 // RunEntityMatchingPipeline indicates an expected call of RunEntityMatchingPipeline.
-func (mr *MockEntityMatchingAPIClientMockRecorder) RunEntityMatchingPipeline(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockEntityMatchingAPIClientMockRecorder) RunEntityMatchingPipeline(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunEntityMatchingPipeline", reflect.TypeOf((*MockEntityMatchingAPIClient)(nil).RunEntityMatchingPipeline), varargs...)
 }

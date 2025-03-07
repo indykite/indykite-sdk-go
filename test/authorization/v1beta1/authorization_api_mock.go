@@ -38,6 +38,7 @@ import (
 type MockAuthorizationAPIClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockAuthorizationAPIClientMockRecorder
+	isgomock struct{}
 }
 
 // MockAuthorizationAPIClientMockRecorder is the mock recorder for MockAuthorizationAPIClient.
@@ -58,10 +59,10 @@ func (m *MockAuthorizationAPIClient) EXPECT() *MockAuthorizationAPIClientMockRec
 }
 
 // IsAuthorized mocks base method.
-func (m *MockAuthorizationAPIClient) IsAuthorized(arg0 context.Context, arg1 *authorizationv1beta1.IsAuthorizedRequest, arg2 ...grpc.CallOption) (*authorizationv1beta1.IsAuthorizedResponse, error) {
+func (m *MockAuthorizationAPIClient) IsAuthorized(ctx context.Context, in *authorizationv1beta1.IsAuthorizedRequest, opts ...grpc.CallOption) (*authorizationv1beta1.IsAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "IsAuthorized", varargs...)
@@ -71,17 +72,17 @@ func (m *MockAuthorizationAPIClient) IsAuthorized(arg0 context.Context, arg1 *au
 }
 
 // IsAuthorized indicates an expected call of IsAuthorized.
-func (mr *MockAuthorizationAPIClientMockRecorder) IsAuthorized(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockAuthorizationAPIClientMockRecorder) IsAuthorized(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsAuthorized", reflect.TypeOf((*MockAuthorizationAPIClient)(nil).IsAuthorized), varargs...)
 }
 
 // WhatAuthorized mocks base method.
-func (m *MockAuthorizationAPIClient) WhatAuthorized(arg0 context.Context, arg1 *authorizationv1beta1.WhatAuthorizedRequest, arg2 ...grpc.CallOption) (*authorizationv1beta1.WhatAuthorizedResponse, error) {
+func (m *MockAuthorizationAPIClient) WhatAuthorized(ctx context.Context, in *authorizationv1beta1.WhatAuthorizedRequest, opts ...grpc.CallOption) (*authorizationv1beta1.WhatAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "WhatAuthorized", varargs...)
@@ -91,17 +92,17 @@ func (m *MockAuthorizationAPIClient) WhatAuthorized(arg0 context.Context, arg1 *
 }
 
 // WhatAuthorized indicates an expected call of WhatAuthorized.
-func (mr *MockAuthorizationAPIClientMockRecorder) WhatAuthorized(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockAuthorizationAPIClientMockRecorder) WhatAuthorized(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WhatAuthorized", reflect.TypeOf((*MockAuthorizationAPIClient)(nil).WhatAuthorized), varargs...)
 }
 
 // WhoAuthorized mocks base method.
-func (m *MockAuthorizationAPIClient) WhoAuthorized(arg0 context.Context, arg1 *authorizationv1beta1.WhoAuthorizedRequest, arg2 ...grpc.CallOption) (*authorizationv1beta1.WhoAuthorizedResponse, error) {
+func (m *MockAuthorizationAPIClient) WhoAuthorized(ctx context.Context, in *authorizationv1beta1.WhoAuthorizedRequest, opts ...grpc.CallOption) (*authorizationv1beta1.WhoAuthorizedResponse, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
+	varargs := []any{ctx, in}
+	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "WhoAuthorized", varargs...)
@@ -111,8 +112,8 @@ func (m *MockAuthorizationAPIClient) WhoAuthorized(arg0 context.Context, arg1 *a
 }
 
 // WhoAuthorized indicates an expected call of WhoAuthorized.
-func (mr *MockAuthorizationAPIClientMockRecorder) WhoAuthorized(arg0, arg1 any, arg2 ...any) *gomock.Call {
+func (mr *MockAuthorizationAPIClientMockRecorder) WhoAuthorized(ctx, in any, opts ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
+	varargs := append([]any{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WhoAuthorized", reflect.TypeOf((*MockAuthorizationAPIClient)(nil).WhoAuthorized), varargs...)
 }

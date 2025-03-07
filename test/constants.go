@@ -54,6 +54,24 @@ var (
 				(resource:Asset) "
 			}
 		}
+		policy trust score
+		{
+		"meta": {
+			"policyVersion": "1.0-indykite"
+		},
+		"subject": {
+			"type": "Agent"
+		},
+		"actions": [
+			"CAN_USE"
+		],
+		"resource": {
+			"type": "Sensor"
+		},
+		"condition": {
+			"cypher": "MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:USE]->(resource)"
+		}
+		}
 	*/
 
 	Resource1 = []*authorizationpb.IsAuthorizedRequest_Resource{
@@ -172,6 +190,14 @@ var (
 		},
 	}
 
+	Resources15 = []*authorizationpb.IsAuthorizedRequest_Resource{
+		{
+			ExternalId: "Sensor1",
+			Type:       "Sensor",
+			Actions:    []string{"CAN_USE"},
+		},
+	}
+
 	ResourceType1 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Asset", Actions: []string{"SUBSCRIBES_TO"}},
 	}
@@ -188,6 +214,10 @@ var (
 		{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 	}
 
+	ResourceType5 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
+		{Type: "Sensor", Actions: []string{"CAN_USE"}},
+	}
+
 	ResourceWho1 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
@@ -202,6 +232,10 @@ var (
 
 	ResourceWho4 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "Truck1", Type: "Truck", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
+	}
+
+	ResourceWho5 = []*authorizationpb.WhoAuthorizedRequest_Resource{
+		{ExternalId: "Sensor1", Type: "Sensor", Actions: []string{"CAN_USE"}},
 	}
 
 	NodeBad     = "id"
@@ -232,6 +266,11 @@ var (
 	Car2Ext  = "963258"
 	Truck1   = "Truck1"
 	Truck1Id = "gid:AAAAHPUWEuZveU5ggLkQe_ige2w"
+	Agent1   = "nemo"
+	Agent2   = "barracuda"
+	Agent3   = "ozzy"
+	Agent1Id = "gid:AAAAHAhop0O2Mk_qux4RXxZFYCY"
+	Sensor1  = "Sensor1"
 
 	Subject1   = "dilZWYdFcmXiojC" // gid:AAAAHJwDOghFkk5MgOpl1bUEnIM
 	Subject2   = "fVcaUxJqmOkyOTX" // gid:AAAAHPeCE5y5IEpelyyeCXrwyLk
@@ -270,6 +309,7 @@ var (
 
 	CustomerID    = os.Getenv("CUSTOMER_ID")
 	WrongAppSpace = "gid:AAAAAgDRZxyY6Ecrjhj2GMCtgVI"
+	TestAppSpace  = "gid:AAAAAvLdMmzCWEE-hyrJDXVGgOk"
 	Tags          = []string{"Sitea", "Siteb"}
 
 	NodeFilter1 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
@@ -279,7 +319,20 @@ var (
 	NodeFilter3 = &configpb.EntityMatchingPipelineConfig_NodeFilter{
 		SourceNodeTypes: []string{"Employee"},
 	}
-	Query1 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)
+	Dimensions1 = []*configpb.TrustScoreDimension{
+		{
+			Name:   configpb.TrustScoreDimension_NAME_VERIFICATION,
+			Weight: 0.5,
+		},
+		{
+			Name:   configpb.TrustScoreDimension_NAME_ORIGIN,
+			Weight: 0.5,
+		},
+	}
+	Schedule1 = configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_THREE_HOURS
+	Schedule2 = configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_SIX_HOURS
+	Schedule3 = configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_INVALID
+	Query1    = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)
 	WHERE n.external_id=$external_id AND n.type=$type`
 	Query2 = `MATCH (n:Person)-[:BELONGS_TO]->(o:Organization)-[:OWNS]->(t:Truck)-[:HAS]->(p:Property:External)
 	 WHERE n.external_id=$external_id AND n.type=$type`
@@ -288,6 +341,9 @@ var (
 	Query5  = "MATCH (n:Resource)-[:HAS]->(p:Property) WHERE p.type=$type and p.value=$value"
 	Query6  = "MATCH (n:Resource)-[:HAS]->(p:Property:External) WHERE p.type=$type and p.value=$value"
 	Query7  = "Person "
+	Query8  = "MATCH (a:Agent)-[r:_HAS]->(t:_TrustScore)"
+	Query9  = "MATCH(t:_TrustScore {_ingress: $profile})"
+	Query10 = "MATCH (t:_TrustScore)"
 	Params1 = map[string]*objects.Value{
 		"external_id": {
 			Type: &objects.Value_StringValue{StringValue: Subject2},
@@ -321,9 +377,35 @@ var (
 			Type: &objects.Value_StringValue{StringValue: "2024"},
 		},
 	}
+	Params6 = map[string]*objects.Value{
+		"profile": {
+			Type: &objects.Value_StringValue{StringValue: "like-real-config-node-name-ts3"},
+		},
+	}
 	Returns1 = []*knowledgepb.Return{
 		{
 			Variable: "n",
+		},
+	}
+	Returns2 = []*knowledgepb.Return{
+		{
+			Variable:   "a",
+			Properties: []string{},
+		},
+		{
+			Variable:   "t",
+			Properties: []string{},
+		},
+	}
+	Returns3 = []*knowledgepb.Return{
+		{
+			Variable: "t",
+		},
+	}
+	Returns4 = []*knowledgepb.Return{
+		{
+			Variable:   "t",
+			Properties: []string{"_origin", "_verification"},
 		},
 	}
 	Matcher1 = gstruct.Fields{
@@ -351,6 +433,26 @@ var (
 		"Id":         gomega.Equal(Node2),
 		"ExternalId": gomega.Equal(Subject2),
 		"Type":       gomega.Equal("Person"),
+	}
+	Matcher5 = gstruct.Fields{
+		"Nodes": gomega.ContainElement(gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
+			"Id":         gomega.Equal(Agent1Id),
+			"ExternalId": gomega.Equal(Agent1),
+			"Type":       gomega.Equal("Agent"),
+		}))),
+		"Relationships": gomega.BeEmpty(),
+	}
+	Matcher6 = gstruct.Fields{
+		"Nodes": gomega.ContainElement(gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
+			"Type": gomega.Equal("_TrustScore"),
+		}))),
+		"Relationships": gomega.BeEmpty(),
+	}
+	Matcher7 = gstruct.Fields{
+		"Nodes": gomega.ContainElement(gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
+			"Type": gomega.Equal("_TrustScore"),
+		}))),
+		"Relationships": gomega.BeEmpty(),
 	}
 )
 
