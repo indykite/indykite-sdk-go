@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.52.0](https://github.com/indykite/indykite-sdk-go/compare/v0.51.0...v0.52.0) (2025-03-10)
+
+
+### Features
+
+* fix release ([e93fc9f](https://github.com/indykite/indykite-sdk-go/commit/e93fc9ff256db167c2e1213ca64f755e4a0b2b7d))
+* update dep and add examples and tests ([66ea986](https://github.com/indykite/indykite-sdk-go/commit/66ea9865fc15b51dcd2e7a64a24640f161e34f30))
+
 ## [0.51.0](https://github.com/indykite/indykite-sdk-go/compare/v0.50.0...v0.51.0) (2025-02-26)
 
 
