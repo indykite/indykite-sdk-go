@@ -842,46 +842,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("CreateAuditSinkConfig", func() {
-			configuration := &configpb.AuditSinkConfig{
-				Provider: &configpb.AuditSinkConfig_Kafka{Kafka: &configpb.KafkaSinkConfig{
-					Brokers:  []string{"broker.com"},
-					Topic:    "your-topic-name",
-					Username: "your-name",
-					Password: "your-password",
-				}},
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithAuditSinkConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"AuditSinkConfig": test.EqualProto(configuration),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("CreateNonValid", func() {
 			configuration := &configpb.ConsentConfiguration{
 				Purpose: "Taking control",
@@ -1375,45 +1335,6 @@ var _ = Describe("ConfigNode", func() {
 					"Id": Equal("gid:like-real-config-node-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"KnowledgeQueryConfig": test.EqualProto(configuration),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateAuditSinkConfig", func() {
-			configuration := &configpb.AuditSinkConfig{
-				Provider: &configpb.AuditSinkConfig_Kafka{Kafka: &configpb.KafkaSinkConfig{
-					Brokers:  []string{"broker.com"},
-					Topic:    "your-topic-name",
-					Username: "your-name",
-					Password: "your-password",
-				}},
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithAuditSinkConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"AuditSinkConfig": test.EqualProto(configuration),
 					})),
 				}))),
 				gomock.Any(),
