@@ -1646,6 +1646,115 @@ var _IsAuthorizedRequest_Resource_Type_Pattern = regexp.MustCompile("^(?:[A-Z][a
 
 var _IsAuthorizedRequest_Resource_Actions_Pattern = regexp.MustCompile("^[a-zA-Z0-9.:_\\-\\/]{2,}$")
 
+// Validate checks the field values on IsAuthorizedResponse_Advice with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *IsAuthorizedResponse_Advice) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on IsAuthorizedResponse_Advice with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// IsAuthorizedResponse_AdviceMultiError, or nil if none found.
+func (m *IsAuthorizedResponse_Advice) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IsAuthorizedResponse_Advice) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Error
+
+	// no validation rules for Description
+
+	// no validation rules for Values
+
+	if len(errors) > 0 {
+		return IsAuthorizedResponse_AdviceMultiError(errors)
+	}
+
+	return nil
+}
+
+// IsAuthorizedResponse_AdviceMultiError is an error wrapping multiple
+// validation errors returned by IsAuthorizedResponse_Advice.ValidateAll() if
+// the designated constraints aren't met.
+type IsAuthorizedResponse_AdviceMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IsAuthorizedResponse_AdviceMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IsAuthorizedResponse_AdviceMultiError) AllErrors() []error { return m }
+
+// IsAuthorizedResponse_AdviceValidationError is the validation error returned
+// by IsAuthorizedResponse_Advice.Validate if the designated constraints
+// aren't met.
+type IsAuthorizedResponse_AdviceValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IsAuthorizedResponse_AdviceValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IsAuthorizedResponse_AdviceValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IsAuthorizedResponse_AdviceValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IsAuthorizedResponse_AdviceValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IsAuthorizedResponse_AdviceValidationError) ErrorName() string {
+	return "IsAuthorizedResponse_AdviceValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IsAuthorizedResponse_AdviceValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIsAuthorizedResponse_Advice.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IsAuthorizedResponse_AdviceValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IsAuthorizedResponse_AdviceValidationError{}
+
 // Validate checks the field values on IsAuthorizedResponse_Action with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1669,6 +1778,40 @@ func (m *IsAuthorizedResponse_Action) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Allow
+
+	for idx, item := range m.GetAdvices() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IsAuthorizedResponse_ActionValidationError{
+						field:  fmt.Sprintf("Advices[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IsAuthorizedResponse_ActionValidationError{
+						field:  fmt.Sprintf("Advices[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IsAuthorizedResponse_ActionValidationError{
+					field:  fmt.Sprintf("Advices[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
 
 	if len(errors) > 0 {
 		return IsAuthorizedResponse_ActionMultiError(errors)

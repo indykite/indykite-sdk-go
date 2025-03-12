@@ -102,6 +102,7 @@ var deleteAuthorizationPolicyConfigCmd = &cobra.Command{
 	},
 }
 
+// policy for trust score
 var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	Use:   "create2",
 	Short: "Create AuthorizationPolicy config",
