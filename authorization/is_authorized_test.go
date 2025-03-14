@@ -109,6 +109,43 @@ var _ = Describe("IsAuthorized", func() {
 				},
 			},
 		}
+		beRespAdvices = &authorizationpb.IsAuthorizedResponse{
+			DecisionTime: timestamppb.New(time.Date(2023, 1, 1, 1, 1, 1, 1, time.UTC)),
+			Decisions: map[string]*authorizationpb.IsAuthorizedResponse_ResourceType{
+				"Resource": {
+					Resources: map[string]*authorizationpb.IsAuthorizedResponse_Resource{
+						"external_id_value": {
+							Actions: map[string]*authorizationpb.IsAuthorizedResponse_Action{
+								"ACTION1": {
+									Allow: true,
+									Advices: []*authorizationpb.IsAuthorizedResponse_Advice{
+										{
+											Error:       "insufficient_user_authentication",
+											Description: "A different authentication level is required",
+											Values: map[string]string{
+												"acr_values": "whatever",
+											},
+										},
+									},
+								},
+								"ACTION2": {
+									Allow: false,
+									Advices: []*authorizationpb.IsAuthorizedResponse_Advice{
+										{
+											Error:       "insufficient_user_authentication",
+											Description: "A different authentication level is required",
+											Values: map[string]string{
+												"acr_values": "whatever",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}
 	)
 
 	BeforeEach(func() {
@@ -264,6 +301,42 @@ var _ = Describe("IsAuthorized", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("IsAuthorizedExternalIDAdvices", func() {
+			externalID := &authorizationpb.ExternalID{
+				Type:       "Person",
+				ExternalId: "576eb486-28f6-4756-95be-ba6da362b2a7",
+			}
+
+			req := &authorizationpb.IsAuthorizedRequest{
+				Subject: &authorizationpb.Subject{
+					Subject: &authorizationpb.Subject_ExternalId{
+						ExternalId: externalID,
+					},
+				},
+				Resources:   resourceExample,
+				InputParams: inputParamTime,
+				PolicyTags:  policyTags,
+			}
+
+			beRespAdvices := beRespAdvices
+			mockClient.EXPECT().
+				IsAuthorized(
+					gomock.Any(),
+					test.WrapMatcher(test.EqualProto(req)),
+					gomock.Any(),
+				).Return(beRespAdvices, nil)
+
+			respAdvices, err := authorizationClient.IsAuthorizedByExternalID(
+				ctx,
+				externalID,
+				resourceExample,
+				inputParamTime,
+				policyTags,
+			)
+			Expect(err).To(Succeed())
+			Expect(respAdvices).To(test.EqualProto(beRespAdvices))
 		})
 
 		It("IsAuthorizedToken", func() {
