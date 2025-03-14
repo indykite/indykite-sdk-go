@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.53.0](https://github.com/indykite/indykite-sdk-go/compare/v0.52.0...v0.53.0) (2025-03-14)
+
+
+### Features
+
+* deprecate credentials public key ([333db25](https://github.com/indykite/indykite-sdk-go/commit/333db2596394c481a46b725961a7a1d686b65a56))
+* remove auditsink tests ([efb5251](https://github.com/indykite/indykite-sdk-go/commit/efb5251f8bb59242c9af247957ded11d6c0e75f6))
+
 ## [0.52.0](https://github.com/indykite/indykite-sdk-go/compare/v0.51.0...v0.52.0) (2025-03-10)
 
 
