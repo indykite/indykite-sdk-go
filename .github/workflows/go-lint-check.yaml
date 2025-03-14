@@ -19,7 +19,7 @@ jobs:
                   go-version-file: go.mod
 
             - name: Run GolangCI-Lint Scanner
-              uses: golangci/golangci-lint-action@v6.5.0
+              uses: golangci/golangci-lint-action@v6.5.1
               with:
                   # Required: the version of golangci-lint is required and must be specified without patch version.
                   version: v1.64
