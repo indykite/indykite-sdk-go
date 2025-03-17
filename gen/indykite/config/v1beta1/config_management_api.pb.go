@@ -3461,7 +3461,7 @@ type CreateConfigNodeRequest struct {
 	Description *wrapperspb.StringValue `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
 	// Types that are valid to be assigned to Config:
 	//
-	//	*CreateConfigNodeRequest_AuditSinkConfig
+	//	*CreateConfigNodeRequest_EventSinkConfig
 	//	*CreateConfigNodeRequest_AuthorizationPolicyConfig
 	//	*CreateConfigNodeRequest_ConsentConfig
 	//	*CreateConfigNodeRequest_TokenIntrospectConfig
@@ -3542,10 +3542,10 @@ func (x *CreateConfigNodeRequest) GetConfig() isCreateConfigNodeRequest_Config {
 	return nil
 }
 
-func (x *CreateConfigNodeRequest) GetAuditSinkConfig() *AuditSinkConfig {
+func (x *CreateConfigNodeRequest) GetEventSinkConfig() *EventSinkConfig {
 	if x != nil {
-		if x, ok := x.Config.(*CreateConfigNodeRequest_AuditSinkConfig); ok {
-			return x.AuditSinkConfig
+		if x, ok := x.Config.(*CreateConfigNodeRequest_EventSinkConfig); ok {
+			return x.EventSinkConfig
 		}
 	}
 	return nil
@@ -3645,8 +3645,8 @@ type isCreateConfigNodeRequest_Config interface {
 	isCreateConfigNodeRequest_Config()
 }
 
-type CreateConfigNodeRequest_AuditSinkConfig struct {
-	AuditSinkConfig *AuditSinkConfig `protobuf:"bytes,28,opt,name=audit_sink_config,json=auditSinkConfig,proto3,oneof"`
+type CreateConfigNodeRequest_EventSinkConfig struct {
+	EventSinkConfig *EventSinkConfig `protobuf:"bytes,28,opt,name=event_sink_config,json=eventSinkConfig,proto3,oneof"`
 }
 
 type CreateConfigNodeRequest_AuthorizationPolicyConfig struct {
@@ -3689,7 +3689,7 @@ type CreateConfigNodeRequest_CapturePipelineTopicConfig struct {
 	CapturePipelineTopicConfig *RegisterCapturePipelineTopicConfig `protobuf:"bytes,37,opt,name=capture_pipeline_topic_config,json=capturePipelineTopicConfig,proto3,oneof"`
 }
 
-func (*CreateConfigNodeRequest_AuditSinkConfig) isCreateConfigNodeRequest_Config() {}
+func (*CreateConfigNodeRequest_EventSinkConfig) isCreateConfigNodeRequest_Config() {}
 
 func (*CreateConfigNodeRequest_AuthorizationPolicyConfig) isCreateConfigNodeRequest_Config() {}
 
@@ -3923,7 +3923,7 @@ type UpdateConfigNodeRequest struct {
 	Description *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	// Types that are valid to be assigned to Config:
 	//
-	//	*UpdateConfigNodeRequest_AuditSinkConfig
+	//	*UpdateConfigNodeRequest_EventSinkConfig
 	//	*UpdateConfigNodeRequest_AuthorizationPolicyConfig
 	//	*UpdateConfigNodeRequest_ConsentConfig
 	//	*UpdateConfigNodeRequest_TokenIntrospectConfig
@@ -4002,10 +4002,10 @@ func (x *UpdateConfigNodeRequest) GetConfig() isUpdateConfigNodeRequest_Config {
 	return nil
 }
 
-func (x *UpdateConfigNodeRequest) GetAuditSinkConfig() *AuditSinkConfig {
+func (x *UpdateConfigNodeRequest) GetEventSinkConfig() *EventSinkConfig {
 	if x != nil {
-		if x, ok := x.Config.(*UpdateConfigNodeRequest_AuditSinkConfig); ok {
-			return x.AuditSinkConfig
+		if x, ok := x.Config.(*UpdateConfigNodeRequest_EventSinkConfig); ok {
+			return x.EventSinkConfig
 		}
 	}
 	return nil
@@ -4087,8 +4087,8 @@ type isUpdateConfigNodeRequest_Config interface {
 	isUpdateConfigNodeRequest_Config()
 }
 
-type UpdateConfigNodeRequest_AuditSinkConfig struct {
-	AuditSinkConfig *AuditSinkConfig `protobuf:"bytes,28,opt,name=audit_sink_config,json=auditSinkConfig,proto3,oneof"`
+type UpdateConfigNodeRequest_EventSinkConfig struct {
+	EventSinkConfig *EventSinkConfig `protobuf:"bytes,28,opt,name=event_sink_config,json=eventSinkConfig,proto3,oneof"`
 }
 
 type UpdateConfigNodeRequest_AuthorizationPolicyConfig struct {
@@ -4123,7 +4123,7 @@ type UpdateConfigNodeRequest_KnowledgeQueryConfig struct {
 	KnowledgeQueryConfig *KnowledgeQueryConfig `protobuf:"bytes,36,opt,name=knowledge_query_config,json=knowledgeQueryConfig,proto3,oneof"`
 }
 
-func (*UpdateConfigNodeRequest_AuditSinkConfig) isUpdateConfigNodeRequest_Config() {}
+func (*UpdateConfigNodeRequest_EventSinkConfig) isUpdateConfigNodeRequest_Config() {}
 
 func (*UpdateConfigNodeRequest_AuthorizationPolicyConfig) isUpdateConfigNodeRequest_Config() {}
 
@@ -5636,12 +5636,12 @@ var file_indykite_config_v1beta1_config_management_api_proto_rawDesc = string([]
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x53, 0x74, 0x72, 0x69, 0x6e,
 	0x67, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x42, 0x0d, 0xfa, 0x42, 0x0a, 0x72, 0x08, 0x10, 0x02, 0x18,
 	0xfe, 0x01, 0xd0, 0x01, 0x01, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x60, 0x0a, 0x11, 0x61, 0x75, 0x64, 0x69, 0x74, 0x5f, 0x73, 0x69, 0x6e, 0x6b,
+	0x6f, 0x6e, 0x12, 0x60, 0x0a, 0x11, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x73, 0x69, 0x6e, 0x6b,
 	0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x1c, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e,
 	0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e,
-	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x74, 0x53, 0x69, 0x6e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x6e,
 	0x6b, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10,
-	0x01, 0x48, 0x00, 0x52, 0x0f, 0x61, 0x75, 0x64, 0x69, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f,
+	0x01, 0x48, 0x00, 0x52, 0x0f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f,
 	0x6e, 0x66, 0x69, 0x67, 0x12, 0x7e, 0x0a, 0x1b, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a,
 	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x6e,
 	0x66, 0x69, 0x67, 0x18, 0x19, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x32, 0x2e, 0x69, 0x6e, 0x64, 0x79,
@@ -5778,12 +5778,12 @@ var file_indykite_config_v1beta1_config_management_api_proto_rawDesc = string([]
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x56, 0x61,
 	0x6c, 0x75, 0x65, 0x42, 0x0d, 0xfa, 0x42, 0x0a, 0x72, 0x08, 0x10, 0x02, 0x18, 0xfe, 0x01, 0xd0,
 	0x01, 0x01, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
-	0x60, 0x0a, 0x11, 0x61, 0x75, 0x64, 0x69, 0x74, 0x5f, 0x73, 0x69, 0x6e, 0x6b, 0x5f, 0x63, 0x6f,
+	0x60, 0x0a, 0x11, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x73, 0x69, 0x6e, 0x6b, 0x5f, 0x63, 0x6f,
 	0x6e, 0x66, 0x69, 0x67, 0x18, 0x1c, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x69, 0x6e, 0x64,
 	0x79, 0x6b, 0x69, 0x74, 0x65, 0x2e, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x2e, 0x76, 0x31, 0x62,
-	0x65, 0x74, 0x61, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f,
 	0x6e, 0x66, 0x69, 0x67, 0x42, 0x08, 0xfa, 0x42, 0x05, 0x8a, 0x01, 0x02, 0x10, 0x01, 0x48, 0x00,
-	0x52, 0x0f, 0x61, 0x75, 0x64, 0x69, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x52, 0x0f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x6e, 0x6b, 0x43, 0x6f, 0x6e, 0x66, 0x69,
 	0x67, 0x12, 0x7e, 0x0a, 0x1b, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x7a, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x5f, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
 	0x18, 0x19, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x32, 0x2e, 0x69, 0x6e, 0x64, 0x79, 0x6b, 0x69, 0x74,
@@ -6387,7 +6387,7 @@ var file_indykite_config_v1beta1_config_management_api_proto_goTypes = []any{
 	(*ApplicationAgentCredential)(nil),                 // 78: indykite.config.v1beta1.ApplicationAgentCredential
 	(*ServiceAccount)(nil),                             // 79: indykite.config.v1beta1.ServiceAccount
 	(*ServiceAccountCredential)(nil),                   // 80: indykite.config.v1beta1.ServiceAccountCredential
-	(*AuditSinkConfig)(nil),                            // 81: indykite.config.v1beta1.AuditSinkConfig
+	(*EventSinkConfig)(nil),                            // 81: indykite.config.v1beta1.EventSinkConfig
 	(*AuthorizationPolicyConfig)(nil),                  // 82: indykite.config.v1beta1.AuthorizationPolicyConfig
 	(*ConsentConfiguration)(nil),                       // 83: indykite.config.v1beta1.ConsentConfiguration
 	(*TokenIntrospectConfig)(nil),                      // 84: indykite.config.v1beta1.TokenIntrospectConfig
@@ -6465,7 +6465,7 @@ var file_indykite_config_v1beta1_config_management_api_proto_depIdxs = []int32{
 	72,  // 61: indykite.config.v1beta1.DeleteServiceAccountCredentialRequest.etag:type_name -> google.protobuf.StringValue
 	72,  // 62: indykite.config.v1beta1.CreateConfigNodeRequest.display_name:type_name -> google.protobuf.StringValue
 	72,  // 63: indykite.config.v1beta1.CreateConfigNodeRequest.description:type_name -> google.protobuf.StringValue
-	81,  // 64: indykite.config.v1beta1.CreateConfigNodeRequest.audit_sink_config:type_name -> indykite.config.v1beta1.AuditSinkConfig
+	81,  // 64: indykite.config.v1beta1.CreateConfigNodeRequest.event_sink_config:type_name -> indykite.config.v1beta1.EventSinkConfig
 	82,  // 65: indykite.config.v1beta1.CreateConfigNodeRequest.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
 	83,  // 66: indykite.config.v1beta1.CreateConfigNodeRequest.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
 	84,  // 67: indykite.config.v1beta1.CreateConfigNodeRequest.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
@@ -6482,7 +6482,7 @@ var file_indykite_config_v1beta1_config_management_api_proto_depIdxs = []int32{
 	72,  // 78: indykite.config.v1beta1.UpdateConfigNodeRequest.etag:type_name -> google.protobuf.StringValue
 	72,  // 79: indykite.config.v1beta1.UpdateConfigNodeRequest.display_name:type_name -> google.protobuf.StringValue
 	72,  // 80: indykite.config.v1beta1.UpdateConfigNodeRequest.description:type_name -> google.protobuf.StringValue
-	81,  // 81: indykite.config.v1beta1.UpdateConfigNodeRequest.audit_sink_config:type_name -> indykite.config.v1beta1.AuditSinkConfig
+	81,  // 81: indykite.config.v1beta1.UpdateConfigNodeRequest.event_sink_config:type_name -> indykite.config.v1beta1.EventSinkConfig
 	82,  // 82: indykite.config.v1beta1.UpdateConfigNodeRequest.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
 	83,  // 83: indykite.config.v1beta1.UpdateConfigNodeRequest.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
 	84,  // 84: indykite.config.v1beta1.UpdateConfigNodeRequest.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
@@ -6609,7 +6609,7 @@ func file_indykite_config_v1beta1_config_management_api_proto_init() {
 		(*RegisterServiceAccountCredentialRequest_Pem)(nil),
 	}
 	file_indykite_config_v1beta1_config_management_api_proto_msgTypes[52].OneofWrappers = []any{
-		(*CreateConfigNodeRequest_AuditSinkConfig)(nil),
+		(*CreateConfigNodeRequest_EventSinkConfig)(nil),
 		(*CreateConfigNodeRequest_AuthorizationPolicyConfig)(nil),
 		(*CreateConfigNodeRequest_ConsentConfig)(nil),
 		(*CreateConfigNodeRequest_TokenIntrospectConfig)(nil),
@@ -6622,7 +6622,7 @@ func file_indykite_config_v1beta1_config_management_api_proto_init() {
 		(*CreateConfigNodeRequest_CapturePipelineTopicConfig)(nil),
 	}
 	file_indykite_config_v1beta1_config_management_api_proto_msgTypes[56].OneofWrappers = []any{
-		(*UpdateConfigNodeRequest_AuditSinkConfig)(nil),
+		(*UpdateConfigNodeRequest_EventSinkConfig)(nil),
 		(*UpdateConfigNodeRequest_AuthorizationPolicyConfig)(nil),
 		(*UpdateConfigNodeRequest_ConsentConfig)(nil),
 		(*UpdateConfigNodeRequest_TokenIntrospectConfig)(nil),

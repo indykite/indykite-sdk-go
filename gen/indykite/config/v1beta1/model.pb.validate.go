@@ -2797,7 +2797,7 @@ func (m *ConfigNode) validate(all bool) error {
 
 	oneofConfigPresent := false
 	switch v := m.Config.(type) {
-	case *ConfigNode_AuditSinkConfig:
+	case *ConfigNode_EventSinkConfig:
 		if v == nil {
 			err := ConfigNodeValidationError{
 				field:  "Config",
@@ -2810,9 +2810,9 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
-		if m.GetAuditSinkConfig() == nil {
+		if m.GetEventSinkConfig() == nil {
 			err := ConfigNodeValidationError{
-				field:  "AuditSinkConfig",
+				field:  "EventSinkConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -2822,11 +2822,11 @@ func (m *ConfigNode) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetAuditSinkConfig()).(type) {
+			switch v := interface{}(m.GetEventSinkConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ConfigNodeValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -2834,16 +2834,16 @@ func (m *ConfigNode) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ConfigNodeValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetAuditSinkConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEventSinkConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ConfigNodeValidationError{
-					field:  "AuditSinkConfig",
+					field:  "EventSinkConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -3680,111 +3680,122 @@ var _ interface {
 
 var _AuthorizationPolicyConfig_Tags_Pattern = regexp.MustCompile("^[a-zA-Z0-9]+$")
 
-// Validate checks the field values on AuditSinkConfig with the rules defined
+// Validate checks the field values on EventSinkConfig with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *AuditSinkConfig) Validate() error {
+func (m *EventSinkConfig) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on AuditSinkConfig with the rules
+// ValidateAll checks the field values on EventSinkConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// AuditSinkConfigMultiError, or nil if none found.
-func (m *AuditSinkConfig) ValidateAll() error {
+// EventSinkConfigMultiError, or nil if none found.
+func (m *EventSinkConfig) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *AuditSinkConfig) validate(all bool) error {
+func (m *EventSinkConfig) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	oneofProviderPresent := false
-	switch v := m.Provider.(type) {
-	case *AuditSinkConfig_Kafka:
-		if v == nil {
-			err := AuditSinkConfigValidationError{
-				field:  "Provider",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+	{
+		sorted_keys := make([]string, len(m.GetProviders()))
+		i := 0
+		for key := range m.GetProviders() {
+			sorted_keys[i] = key
+			i++
 		}
-		oneofProviderPresent = true
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetProviders()[key]
+			_ = val
 
-		if m.GetKafka() == nil {
-			err := AuditSinkConfigValidationError{
-				field:  "Kafka",
-				reason: "value is required",
+			// no validation rules for Providers[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, EventSinkConfigValidationError{
+							field:  fmt.Sprintf("Providers[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, EventSinkConfigValidationError{
+							field:  fmt.Sprintf("Providers[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Providers[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
 			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
+
 		}
+	}
+
+	for idx, item := range m.GetRoutes() {
+		_, _ = idx, item
 
 		if all {
-			switch v := interface{}(m.GetKafka()).(type) {
+			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, AuditSinkConfigValidationError{
-						field:  "Kafka",
+					errors = append(errors, EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Routes[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, AuditSinkConfigValidationError{
-						field:  "Kafka",
+					errors = append(errors, EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Routes[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetKafka()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return AuditSinkConfigValidationError{
-					field:  "Kafka",
+				return EventSinkConfigValidationError{
+					field:  fmt.Sprintf("Routes[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
 			}
 		}
 
-	default:
-		_ = v // ensures v is used
-	}
-	if !oneofProviderPresent {
-		err := AuditSinkConfigValidationError{
-			field:  "Provider",
-			reason: "value is required",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
-		return AuditSinkConfigMultiError(errors)
+		return EventSinkConfigMultiError(errors)
 	}
 
 	return nil
 }
 
-// AuditSinkConfigMultiError is an error wrapping multiple validation errors
-// returned by AuditSinkConfig.ValidateAll() if the designated constraints
+// EventSinkConfigMultiError is an error wrapping multiple validation errors
+// returned by EventSinkConfig.ValidateAll() if the designated constraints
 // aren't met.
-type AuditSinkConfigMultiError []error
+type EventSinkConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m AuditSinkConfigMultiError) Error() string {
+func (m EventSinkConfigMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -3793,11 +3804,11 @@ func (m AuditSinkConfigMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m AuditSinkConfigMultiError) AllErrors() []error { return m }
+func (m EventSinkConfigMultiError) AllErrors() []error { return m }
 
-// AuditSinkConfigValidationError is the validation error returned by
-// AuditSinkConfig.Validate if the designated constraints aren't met.
-type AuditSinkConfigValidationError struct {
+// EventSinkConfigValidationError is the validation error returned by
+// EventSinkConfig.Validate if the designated constraints aren't met.
+type EventSinkConfigValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -3805,22 +3816,22 @@ type AuditSinkConfigValidationError struct {
 }
 
 // Field function returns field value.
-func (e AuditSinkConfigValidationError) Field() string { return e.field }
+func (e EventSinkConfigValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e AuditSinkConfigValidationError) Reason() string { return e.reason }
+func (e EventSinkConfigValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e AuditSinkConfigValidationError) Cause() error { return e.cause }
+func (e EventSinkConfigValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e AuditSinkConfigValidationError) Key() bool { return e.key }
+func (e EventSinkConfigValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e AuditSinkConfigValidationError) ErrorName() string { return "AuditSinkConfigValidationError" }
+func (e EventSinkConfigValidationError) ErrorName() string { return "EventSinkConfigValidationError" }
 
 // Error satisfies the builtin error interface
-func (e AuditSinkConfigValidationError) Error() string {
+func (e EventSinkConfigValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -3832,14 +3843,14 @@ func (e AuditSinkConfigValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sAuditSinkConfig.%s: %s%s",
+		"invalid %sEventSinkConfig.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = AuditSinkConfigValidationError{}
+var _ error = EventSinkConfigValidationError{}
 
 var _ interface {
 	Field() string
@@ -3847,7 +3858,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = AuditSinkConfigValidationError{}
+} = EventSinkConfigValidationError{}
 
 // Validate checks the field values on KafkaSinkConfig with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -6778,6 +6789,512 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CapturePipelineTopicScriptConfigValidationError{}
+
+// Validate checks the field values on EventSinkConfig_Provider with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *EventSinkConfig_Provider) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on EventSinkConfig_Provider with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// EventSinkConfig_ProviderMultiError, or nil if none found.
+func (m *EventSinkConfig_Provider) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_Provider) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	oneofProviderPresent := false
+	switch v := m.Provider.(type) {
+	case *EventSinkConfig_Provider_Kafka:
+		if v == nil {
+			err := EventSinkConfig_ProviderValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofProviderPresent = true
+
+		if m.GetKafka() == nil {
+			err := EventSinkConfig_ProviderValidationError{
+				field:  "Kafka",
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetKafka()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "Kafka",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "Kafka",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetKafka()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EventSinkConfig_ProviderValidationError{
+					field:  "Kafka",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+	if !oneofProviderPresent {
+		err := EventSinkConfig_ProviderValidationError{
+			field:  "Provider",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return EventSinkConfig_ProviderMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_ProviderMultiError is an error wrapping multiple validation
+// errors returned by EventSinkConfig_Provider.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_ProviderMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_ProviderMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_ProviderMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_ProviderValidationError is the validation error returned by
+// EventSinkConfig_Provider.Validate if the designated constraints aren't met.
+type EventSinkConfig_ProviderValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_ProviderValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_ProviderValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_ProviderValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_ProviderValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_ProviderValidationError) ErrorName() string {
+	return "EventSinkConfig_ProviderValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_ProviderValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_Provider.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_ProviderValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_ProviderValidationError{}
+
+// Validate checks the field values on EventSinkConfig_Route with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *EventSinkConfig_Route) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on EventSinkConfig_Route with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// EventSinkConfig_RouteMultiError, or nil if none found.
+func (m *EventSinkConfig_Route) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_Route) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetProviderId()); l < 2 || l > 63 {
+		err := EventSinkConfig_RouteValidationError{
+			field:  "ProviderId",
+			reason: "value length must be between 2 and 63 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_EventSinkConfig_Route_ProviderId_Pattern.MatchString(m.GetProviderId()) {
+		err := EventSinkConfig_RouteValidationError{
+			field:  "ProviderId",
+			reason: "value does not match regex pattern \"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for StopProcessing
+
+	oneofFilterPresent := false
+	switch v := m.Filter.(type) {
+	case *EventSinkConfig_Route_EventType:
+		if v == nil {
+			err := EventSinkConfig_RouteValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
+
+		if utf8.RuneCountInString(m.GetEventType()) < 1 {
+			err := EventSinkConfig_RouteValidationError{
+				field:  "EventType",
+				reason: "value length must be at least 1 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	case *EventSinkConfig_Route_ContextKeyValue:
+		if v == nil {
+			err := EventSinkConfig_RouteValidationError{
+				field:  "Filter",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+		oneofFilterPresent = true
+
+		if all {
+			switch v := interface{}(m.GetContextKeyValue()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EventSinkConfig_RouteValidationError{
+						field:  "ContextKeyValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EventSinkConfig_RouteValidationError{
+						field:  "ContextKeyValue",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetContextKeyValue()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EventSinkConfig_RouteValidationError{
+					field:  "ContextKeyValue",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	default:
+		_ = v // ensures v is used
+	}
+	if !oneofFilterPresent {
+		err := EventSinkConfig_RouteValidationError{
+			field:  "Filter",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return EventSinkConfig_RouteMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_RouteMultiError is an error wrapping multiple validation
+// errors returned by EventSinkConfig_Route.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_RouteMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_RouteMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_RouteMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_RouteValidationError is the validation error returned by
+// EventSinkConfig_Route.Validate if the designated constraints aren't met.
+type EventSinkConfig_RouteValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_RouteValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_RouteValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_RouteValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_RouteValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_RouteValidationError) ErrorName() string {
+	return "EventSinkConfig_RouteValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_RouteValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_Route.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_RouteValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_RouteValidationError{}
+
+var _EventSinkConfig_Route_ProviderId_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
+// Validate checks the field values on EventSinkConfig_Route_KeyValue with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *EventSinkConfig_Route_KeyValue) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on EventSinkConfig_Route_KeyValue with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// EventSinkConfig_Route_KeyValueMultiError, or nil if none found.
+func (m *EventSinkConfig_Route_KeyValue) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetKey()) < 1 {
+		err := EventSinkConfig_Route_KeyValueValidationError{
+			field:  "Key",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetValue()) < 1 {
+		err := EventSinkConfig_Route_KeyValueValidationError{
+			field:  "Value",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return EventSinkConfig_Route_KeyValueMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_Route_KeyValueMultiError is an error wrapping multiple
+// validation errors returned by EventSinkConfig_Route_KeyValue.ValidateAll()
+// if the designated constraints aren't met.
+type EventSinkConfig_Route_KeyValueMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_Route_KeyValueMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_Route_KeyValueMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_Route_KeyValueValidationError is the validation error
+// returned by EventSinkConfig_Route_KeyValue.Validate if the designated
+// constraints aren't met.
+type EventSinkConfig_Route_KeyValueValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_Route_KeyValueValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_Route_KeyValueValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_Route_KeyValueValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_Route_KeyValueValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_Route_KeyValueValidationError) ErrorName() string {
+	return "EventSinkConfig_Route_KeyValueValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_Route_KeyValueValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_Route_KeyValue.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_Route_KeyValueValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_Route_KeyValueValidationError{}
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are

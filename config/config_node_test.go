@@ -842,6 +842,61 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("CreateEventSinkConfig", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"kafka": {
+						Provider: &configpb.EventSinkConfig_Provider_Kafka{
+							Kafka: &configpb.KafkaSinkConfig{
+								Brokers:  []string{"broker.com"},
+								Topic:    "your-topic-name",
+								Username: "your-name",
+								Password: "your-password",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.create",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("CreateNonValid", func() {
 			configuration := &configpb.ConsentConfiguration{
 				Purpose: "Taking control",
@@ -1335,6 +1390,60 @@ var _ = Describe("ConfigNode", func() {
 					"Id": Equal("gid:like-real-config-node-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"KnowledgeQueryConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateEventSinkConfig", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"kafka": {
+						Provider: &configpb.EventSinkConfig_Provider_Kafka{
+							Kafka: &configpb.KafkaSinkConfig{
+								Brokers:  []string{"broker.com"},
+								Topic:    "your-topic-name",
+								Username: "your-name-update",
+								Password: "your-password-update",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.update",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.EmptyDisplayName()
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.UpdateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwert",
+				UpdatedBy:  "creator",
+				UpdateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().UpdateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal("gid:like-real-config-node-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
 					})),
 				}))),
 				gomock.Any(),

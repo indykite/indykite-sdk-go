@@ -47,7 +47,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
 			Expect(err).To(Succeed())
-			filter.ChangeType = ""
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.IsAuthorized"
 			filter.EventSource = "AuthorizationService"
 			filter.EventType = "indykite.audit.authorization.isauthorized"
 			filter.AuditLogIdentifier = auditLogIdentifier
@@ -385,7 +385,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
 			Expect(err).To(Succeed())
-			filter.ChangeType = ""
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.WhatAuthorized"
 			filter.EventSource = "AuthorizationService"
 			filter.EventType = "indykite.audit.authorization.whatauthorized"
 			filter.AuditLogIdentifier = auditLogIdentifier
@@ -646,7 +646,7 @@ var _ = Describe("Authorized", func() {
 			Expect(err).To(Succeed())
 			filter, err := googlehelper.FillFilterFieldsFromEnvironment()
 			Expect(err).To(Succeed())
-			filter.ChangeType = ""
+			filter.ChangeType = "type.googleapis.com/indykite.auditsink.v1beta1.WhoAuthorized"
 			filter.EventSource = "AuthorizationService"
 			filter.EventType = "indykite.audit.authorization.whoauthorized"
 			filter.AuditLogIdentifier = auditLogIdentifier
