@@ -8869,7 +8869,7 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 
 	oneofConfigPresent := false
 	switch v := m.Config.(type) {
-	case *CreateConfigNodeRequest_AuditSinkConfig:
+	case *CreateConfigNodeRequest_EventSinkConfig:
 		if v == nil {
 			err := CreateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -8882,9 +8882,9 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 		oneofConfigPresent = true
 
-		if m.GetAuditSinkConfig() == nil {
+		if m.GetEventSinkConfig() == nil {
 			err := CreateConfigNodeRequestValidationError{
-				field:  "AuditSinkConfig",
+				field:  "EventSinkConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -8894,11 +8894,11 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetAuditSinkConfig()).(type) {
+			switch v := interface{}(m.GetEventSinkConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -8906,16 +8906,16 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, CreateConfigNodeRequestValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetAuditSinkConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEventSinkConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return CreateConfigNodeRequestValidationError{
-					field:  "AuditSinkConfig",
+					field:  "EventSinkConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -10135,7 +10135,7 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 	}
 
 	switch v := m.Config.(type) {
-	case *UpdateConfigNodeRequest_AuditSinkConfig:
+	case *UpdateConfigNodeRequest_EventSinkConfig:
 		if v == nil {
 			err := UpdateConfigNodeRequestValidationError{
 				field:  "Config",
@@ -10147,9 +10147,9 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-		if m.GetAuditSinkConfig() == nil {
+		if m.GetEventSinkConfig() == nil {
 			err := UpdateConfigNodeRequestValidationError{
-				field:  "AuditSinkConfig",
+				field:  "EventSinkConfig",
 				reason: "value is required",
 			}
 			if !all {
@@ -10159,11 +10159,11 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 		}
 
 		if all {
-			switch v := interface{}(m.GetAuditSinkConfig()).(type) {
+			switch v := interface{}(m.GetEventSinkConfig()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -10171,16 +10171,16 @@ func (m *UpdateConfigNodeRequest) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, UpdateConfigNodeRequestValidationError{
-						field:  "AuditSinkConfig",
+						field:  "EventSinkConfig",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetAuditSinkConfig()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetEventSinkConfig()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return UpdateConfigNodeRequestValidationError{
-					field:  "AuditSinkConfig",
+					field:  "EventSinkConfig",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
