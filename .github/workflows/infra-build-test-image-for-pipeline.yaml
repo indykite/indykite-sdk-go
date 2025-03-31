@@ -1,0 +1,47 @@
+---
+name: Infra images build for pipeline
+on:
+    push:
+        paths:
+            - docker/infra/**
+permissions:
+    contents: read
+    id-token: write
+jobs:
+    build:
+        name: Build and publish Test image
+        env:
+            ARTIFACT_REGISTRY_URL: europe-west1-docker.pkg.dev
+            GCP_PROJECT_ID_MGMT: ${{ secrets.GCP_PROJECT_ID_MGMT }}
+            IMAGE_NAME: go-sdk-tests
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
+            - name: Setup ENV variables
+              id: setup_env_vars
+              run: |
+                  echo "NOW=$(date -u +%Y-%m-%dT%H:%M:%S)" >> $GITHUB_ENV
+                  echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+                  echo "VERSION=$(cat docker/infra/.version)" >> $GITHUB_OUTPUT
+            - name: setup buildx
+              id: buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Setup GCP Auth
+              id: authentication
+              uses: google-github-actions/auth@v2
+              with:
+                  workload_identity_provider: projects/581343830490/locations/global/workloadIdentityPools/github-mgmt/providers/github-mgmt-provider
+                  service_account: github@${{ env.GCP_PROJECT_ID_MGMT }}.iam.gserviceaccount.com
+            - name: login to docker hub
+              run: |
+                  gcloud auth configure-docker ${{ env.ARTIFACT_REGISTRY_URL }} -q
+            - name: Build, Tag and Publish docker image
+              run: |
+                  cd docker/infra
+                  docker buildx build --push \
+                  --tag ${{ env.ARTIFACT_REGISTRY_URL }}/${{ env.GCP_PROJECT_ID_MGMT }}/indykite/${{ env.IMAGE_NAME }}:latest \
+                  --tag ${{ env.ARTIFACT_REGISTRY_URL }}/${{ env.GCP_PROJECT_ID_MGMT }}/indykite/${{ env.IMAGE_NAME }}:${{ steps.setup_env_vars.outputs.VERSION }} \
+                  --platform linux/amd64,linux/arm64,linux/arm/v7 .
