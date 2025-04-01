@@ -7033,6 +7033,17 @@ func (m *EventSinkConfig_Route) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
+		if !_EventSinkConfig_Route_EventType_Pattern.MatchString(m.GetEventType()) {
+			err := EventSinkConfig_RouteValidationError{
+				field:  "EventType",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_*\\\\.]+$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
 	case *EventSinkConfig_Route_ContextKeyValue:
 		if v == nil {
 			err := EventSinkConfig_RouteValidationError{
@@ -7171,6 +7182,8 @@ var _ interface {
 
 var _EventSinkConfig_Route_ProviderId_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
+var _EventSinkConfig_Route_EventType_Pattern = regexp.MustCompile("^[a-zA-Z0-9_*\\.]+$")
+
 // Validate checks the field values on EventSinkConfig_Route_KeyValue with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -7197,6 +7210,17 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 		err := EventSinkConfig_Route_KeyValueValidationError{
 			field:  "Key",
 			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if !_EventSinkConfig_Route_KeyValue_Key_Pattern.MatchString(m.GetKey()) {
+		err := EventSinkConfig_Route_KeyValueValidationError{
+			field:  "Key",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9*]+$\"",
 		}
 		if !all {
 			return err
@@ -7295,6 +7319,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = EventSinkConfig_Route_KeyValueValidationError{}
+
+var _EventSinkConfig_Route_KeyValue_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*]+$")
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are
