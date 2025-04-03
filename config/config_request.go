@@ -330,6 +330,30 @@ func (x *NodeRequest) WithKnowledgeQueryConfig(v *configpb.KnowledgeQueryConfig)
 	return x
 }
 
+func (x *NodeRequest) WithCapturePipelineConfig(v *configpb.RegisterCapturePipelineConfig) *NodeRequest {
+	if x.create != nil {
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_CapturePipelineConfig{
+				CapturePipelineConfig: v,
+			}
+		}
+	}
+	return x
+}
+
+func (x *NodeRequest) WithCapturePipelineTopicConfig(v *configpb.RegisterCapturePipelineTopicConfig) *NodeRequest {
+	if x.create != nil {
+		x.create.Config = nil
+		if v != nil {
+			x.create.Config = &configpb.CreateConfigNodeRequest_CapturePipelineTopicConfig{
+				CapturePipelineTopicConfig: v,
+			}
+		}
+	}
+	return x
+}
+
 func (x *NodeRequest) WithVersion(version int64) *NodeRequest {
 	if x.read != nil {
 		x.read.Version = version

@@ -133,6 +133,49 @@ var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	},
 }
 
+// policy for knowledge query
+var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
+	Use:   "create3",
+	Short: "Create AuthorizationPolicy config",
+	Run: func(cmd *cobra.Command, args []string) {
+		jsonInput := `{"meta":{"policy_version":"1.0-ciq"},
+		"subject":{"type":"Person"},
+		"condition":{
+		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", "operator" : "=", "value" : "$lastname" }]
+		},
+		"upsert_nodes" : [],
+	    "upsert_relationships" : [],
+	    "allowed_reads" : {
+		  "nodes" : ["resource"],
+		"relationships" : ["r2"]
+	  }
+		}`
+		configuration := &configpb.AuthorizationPolicyConfig{
+			Policy: jsonInput,
+			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+			Tags:   []string{},
+		}
+		createReq, _ := config.NewCreate("like-real-config-node-ciq")
+		createReq.ForLocation("gid:AAAAAj5b-2lRaklbny8iL8PAkng")
+		createReq.WithDisplayName("Like real ConfigNode Name")
+		createReq.WithAuthorizationPolicyConfig(configuration)
+
+		resp, err := client.CreateConfigNode(context.Background(), createReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
 var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	Use:   "update2",
 	Short: "Update AuthorizationPolicy config",
@@ -162,6 +205,27 @@ var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	},
 }
 
+var readAuthorizationPolicyConfigCmd = &cobra.Command{
+	Use:   "read",
+	Short: "Read Authorization Policy by ID",
+	Run: func(cmd *cobra.Command, args []string) {
+		var entityID string
+
+		fmt.Print("Enter Authorization Policy ID in gid format: ")
+		fmt.Scanln(&entityID)
+
+		configNodeRequest, err := config.NewRead(entityID)
+		if err != nil {
+			log.Fatalf("failed to create request %v", err)
+		}
+		resp, err := client.ReadConfigNode(context.Background(), configNodeRequest)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(authorizationPolicyConfigCmd)
 	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfigCmd)
@@ -169,4 +233,6 @@ func init() {
 	authorizationPolicyConfigCmd.AddCommand(deleteAuthorizationPolicyConfigCmd)
 	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfig2Cmd)
 	authorizationPolicyConfigCmd.AddCommand(updateAuthorizationPolicyConfig2Cmd)
+	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfig3Cmd)
+	authorizationPolicyConfigCmd.AddCommand(readAuthorizationPolicyConfigCmd)
 }

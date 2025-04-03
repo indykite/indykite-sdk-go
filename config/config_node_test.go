@@ -348,6 +348,226 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("ReadSuccessTrustScoreProfileConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_TrustScoreProfileConfig{
+						TrustScoreProfileConfig: &configpb.TrustScoreProfileConfig{
+							NodeClassification: "Agent",
+							Dimensions: []*configpb.TrustScoreDimension{
+								{
+									Name:   configpb.TrustScoreDimension_NAME_VERIFICATION,
+									Weight: 0.5,
+								},
+								{
+									Name:   configpb.TrustScoreDimension_NAME_ORIGIN,
+									Weight: 0.5,
+								},
+							},
+							Schedule: configpb.TrustScoreProfileConfig_UPDATE_FREQUENCY_THREE_HOURS,
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadSuccessKnowledgeQueryConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_KnowledgeQueryConfig{
+						KnowledgeQueryConfig: &configpb.KnowledgeQueryConfig{
+							Query:    `{"something":["like", "query"]}`,
+							Status:   configpb.KnowledgeQueryConfig_STATUS_ACTIVE,
+							PolicyId: "1 day",
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadSuccessEventSinkConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_EventSinkConfig{
+						EventSinkConfig: &configpb.EventSinkConfig{
+							Providers: map[string]*configpb.EventSinkConfig_Provider{
+								"kafka": {
+									Provider: &configpb.EventSinkConfig_Provider_Kafka{
+										Kafka: &configpb.KafkaSinkConfig{
+											Brokers:  []string{"broker.com"},
+											Topic:    "your-topic-name",
+											Username: "your-name",
+											Password: "your-password",
+										},
+									},
+								},
+							},
+							Routes: []*configpb.EventSinkConfig_Route{
+								{
+									ProviderId:     "kafka",
+									StopProcessing: true,
+									Filter: &configpb.EventSinkConfig_Route_EventType{
+										EventType: "indykite.eventsink.config.create",
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadCapturePipelineConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_CapturePipelineConfig{
+						CapturePipelineConfig: &configpb.CapturePipelineConfig{
+							ApiKeyId:     "something-like-a key",
+							ApiKeySecret: "secret-key",
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadCapturePipelineTopicConfig", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_CapturePipelineTopicConfig{
+						CapturePipelineTopicConfig: &configpb.CapturePipelineTopicConfig{
+							TopicInputName:     "topic-name",
+							TopicInputEndpoint: "https://example.com/topic-endpoint",
+							TopicErrorName:     "topic-error",
+							TopicSuccessName:   "topic-success",
+							Script: &configpb.CapturePipelineTopicScriptConfig{
+								Content: "content of the script",
+							},
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("ReadError", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -887,6 +1107,79 @@ var _ = Describe("ConfigNode", func() {
 					"Location": Equal("gid:like-real-customer-id"),
 					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
 						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("RegisterCapturePipelineConfig", func() {
+			configuration := &configpb.RegisterCapturePipelineConfig{
+				AppAgentToken: "eyJhbGciOiJIIkpXVCJ9.eyJpc3MiOiJnaWQkwMjJ9.39Kc7pL8Vjf1S4Oo5Rw",
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithCapturePipelineConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"CapturePipelineConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("RegisterCapturePipelineTopicConfig", func() {
+			configuration := &configpb.RegisterCapturePipelineTopicConfig{
+				CapturePipelineId: "gid:AAAAG3FQqyfhzEiUrpVHvab4ct4",
+				Script: &configpb.RegisterCapturePipelineTopicConfig_Script{
+					Content: "content of the script",
+				},
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithCapturePipelineTopicConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"CapturePipelineTopicConfig": test.EqualProto(configuration),
 					})),
 				}))),
 				gomock.Any(),
