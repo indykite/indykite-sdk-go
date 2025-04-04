@@ -2,7 +2,7 @@ module github.com/indykite/indykite-sdk-go
 
 go 1.23.3
 
-toolchain go1.23.4
+toolchain go1.24.2
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250307204501-0409229c3780.1
@@ -15,7 +15,7 @@ require (
 	github.com/lestrrat-go/jwx/v2 v2.1.4
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/onsi/ginkgo/v2 v2.23.3
-	github.com/onsi/gomega v1.36.3
+	github.com/onsi/gomega v1.37.0
 	github.com/pborman/uuid v1.2.1
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
@@ -23,8 +23,8 @@ require (
 	golang.org/x/oauth2 v0.28.0
 	golang.org/x/text v0.23.0
 	google.golang.org/api v0.228.0
-	google.golang.org/genproto v0.0.0-20250324211829-b45e905df463
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250324211829-b45e905df463
+	google.golang.org/genproto v0.0.0-20250404141209-ee84b53bf3d0
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250404141209-ee84b53bf3d0
 	google.golang.org/grpc v1.71.1
 	google.golang.org/protobuf v1.36.6
 )
