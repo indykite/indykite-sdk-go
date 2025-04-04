@@ -44,7 +44,7 @@ integration:
 	go clean -testcache && go test --tags=integration ./...
 
 report:
-	go clean -testcache && go test -json --tags=integration ./... | go-test-report -o  test-report.html -t "Go SDK Tests report"
+	go clean -testcache && go test -v -json --tags=integration ./... | go-test-report -o  test-report.html -t "Go SDK Tests report"
 
 cover: test
 	@echo "==> generate test coverage..."
