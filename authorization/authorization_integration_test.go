@@ -391,6 +391,7 @@ var _ = Describe("Authorized", func() {
 			filter.AuditLogIdentifier = auditLogIdentifier
 			res, err := googlehelper.QueryAuditLog(ctx, client, &filter)
 			Expect(err).To(Succeed())
+			time.Sleep(time.Second * 3)
 			if noAuditLogEntry {
 				Expect(res.Data).To(BeEmpty())
 			} else {

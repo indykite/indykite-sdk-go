@@ -70,7 +70,7 @@ var updateAuthorizationPolicyConfigCmd = &cobra.Command{
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
 			Tags:   []string{"TagA", "TagB"},
 		}
-		updateReq, _ := config.NewUpdate("gid:AAAAFo7ukfFQHkBjtiQQZiE2zb8")
+		updateReq, _ := config.NewUpdate("gid:AAAAAguDnAAAAAAAAAAAAAAA")
 		updateReq.WithAuthorizationPolicyConfig(configuration)
 		updateReq.WithDescription("Desc1")
 
@@ -93,7 +93,7 @@ var deleteAuthorizationPolicyConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete AuthorizationPolicy configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:AAAAFvTeAqwrRUinglaK7B891aI")
+		deleteReq, _ := config.NewDelete("gid:AAAAAguDnAAAAAAAAAAAAAAA")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -114,7 +114,7 @@ var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 			Tags:   []string{},
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-score")
-		createReq.ForLocation("gid:AAAAAguDnEIQ1UIIvJEulLwUnnE")
+		createReq.ForLocation("gid:AAAAAguDnAAAAAAAAAAAAAAA")
 		createReq.WithDisplayName("Like real ConfigNode Name")
 		createReq.WithAuthorizationPolicyConfig(configuration)
 
@@ -157,7 +157,7 @@ var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
 			Tags:   []string{},
 		}
 		createReq, _ := config.NewCreate("like-real-config-node-ciq")
-		createReq.ForLocation("gid:AAAAAj5b-2lRaklbny8iL8PAkng")
+		createReq.ForLocation("gid:AAAAAguDnAAAAAAAAAAAAAAA")
 		createReq.WithDisplayName("Like real ConfigNode Name")
 		createReq.WithAuthorizationPolicyConfig(configuration)
 
@@ -186,7 +186,48 @@ var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
 			Tags:   []string{},
 		}
-		updateReq, _ := config.NewUpdate("gid:AAAAFlj3-0Ixw0zmo_c83L5R60k")
+		updateReq, _ := config.NewUpdate("gid:AAAAAguDnAAAAAAAAAAAAAAA")
+		updateReq.WithAuthorizationPolicyConfig(configuration)
+		updateReq.WithDescription("Desc1")
+
+		resp, err := client.UpdateConfigNode(context.Background(), updateReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
+var updateAuthorizationPolicyConfig3Cmd = &cobra.Command{
+	Use:   "update3",
+	Short: "Update AuthorizationPolicy config",
+	Run: func(cmd *cobra.Command, args []string) {
+		jsonInput := `{"meta":{"policy_version":"1.0-ciq"},
+		"subject":{"type":"Person"},
+		"condition":{
+		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", "operator" : "=", "value" : "$lastname" }]
+		},
+		"upsert_nodes" : [],
+	    "upsert_relationships" : [],
+	    "allowed_reads" : {
+		  "nodes" : ["resource.property.value", "resource.property.transferrable", "resource.external_id"],
+		"relationships" : ["r2"]
+	  }
+		}`
+		configuration := &configpb.AuthorizationPolicyConfig{
+			Policy: jsonInput,
+			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
+			Tags:   []string{},
+		}
+		updateReq, _ := config.NewUpdate("gid:AAAAAguDnAAAAAAAAAAAAAAA")
 		updateReq.WithAuthorizationPolicyConfig(configuration)
 		updateReq.WithDescription("Desc1")
 
@@ -234,5 +275,6 @@ func init() {
 	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfig2Cmd)
 	authorizationPolicyConfigCmd.AddCommand(updateAuthorizationPolicyConfig2Cmd)
 	authorizationPolicyConfigCmd.AddCommand(createAuthorizationPolicyConfig3Cmd)
+	authorizationPolicyConfigCmd.AddCommand(updateAuthorizationPolicyConfig3Cmd)
 	authorizationPolicyConfigCmd.AddCommand(readAuthorizationPolicyConfigCmd)
 }
