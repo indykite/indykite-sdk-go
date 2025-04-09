@@ -489,6 +489,114 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
+		It("ReadSuccessEventSinkConfigGrid", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_EventSinkConfig{
+						EventSinkConfig: &configpb.EventSinkConfig{
+							Providers: map[string]*configpb.EventSinkConfig_Provider{
+								"azureeventgrid": {
+									Provider: &configpb.EventSinkConfig_Provider_AzureEventGrid{
+										AzureEventGrid: &configpb.AzureEventGridSinkConfig{
+											TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
+											AccessKey:     "your-access-key",
+										},
+									},
+								},
+							},
+							Routes: []*configpb.EventSinkConfig_Route{
+								{
+									ProviderId:     "azureeventgrid",
+									StopProcessing: true,
+									Filter: &configpb.EventSinkConfig_Route_EventType{
+										EventType: "indykite.eventsink.config.create",
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("ReadSuccessEventSinkConfigBus", func() {
+			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.WithVersion(int64(0))
+			beResp := &configpb.ReadConfigNodeResponse{
+				ConfigNode: &configpb.ConfigNode{
+					Id:          "gid:like-real-config-node-id",
+					Name:        "like-real-config-node-name",
+					DisplayName: "Like Real Config-Node Name",
+					CreatedBy:   "creator",
+					CreateTime:  timestamppb.Now(),
+					CustomerId:  "gid:like-real-customer-id",
+					AppSpaceId:  "gid:like-real-app-space-id",
+					Etag:        "123qwe",
+					Version:     0,
+					Config: &configpb.ConfigNode_EventSinkConfig{
+						EventSinkConfig: &configpb.EventSinkConfig{
+							Providers: map[string]*configpb.EventSinkConfig_Provider{
+								"azureservicebus": {
+									Provider: &configpb.EventSinkConfig_Provider_AzureServiceBus{
+										AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
+											ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
+											QueueOrTopicName: "your-queue",
+										},
+									},
+								},
+							},
+							Routes: []*configpb.EventSinkConfig_Route{
+								{
+									ProviderId:     "azureservicebus",
+									StopProcessing: true,
+									Filter: &configpb.EventSinkConfig_Route_EventType{
+										EventType: "indykite.eventsink.config.create",
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			mockClient.EXPECT().
+				ReadConfigNode(
+					gomock.Any(),
+					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+						"Id": Equal("gid:like-real-config-node-id"),
+					}))),
+					gomock.Any(),
+				).Return(beResp, nil)
+
+			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
 		It("ReadCapturePipelineConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -1079,6 +1187,112 @@ var _ = Describe("ConfigNode", func() {
 				Routes: []*configpb.EventSinkConfig_Route{
 					{
 						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.create",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("CreateEventSinkConfigGrid", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"azureeventgrid": {
+						Provider: &configpb.EventSinkConfig_Provider_AzureEventGrid{
+							AzureEventGrid: &configpb.AzureEventGridSinkConfig{
+								TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
+								AccessKey:     "your-access-key",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "azureeventgrid",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.create",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
+			Ω(err).To(Succeed())
+			configNodeRequest.ForLocation("gid:like-real-customer-id")
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.CreateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwe",
+				CreatedBy:  "creator",
+				CreateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().CreateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Name":     Equal("like-real-config-node-name"),
+					"Location": Equal("gid:like-real-customer-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("CreateEventSinkConfigBus", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"azureservicebus": {
+						Provider: &configpb.EventSinkConfig_Provider_AzureServiceBus{
+							AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
+								ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
+								QueueOrTopicName: "your-queue",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "azureservicebus",
 						StopProcessing: true,
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.create",
@@ -1710,6 +1924,110 @@ var _ = Describe("ConfigNode", func() {
 				Routes: []*configpb.EventSinkConfig_Route{
 					{
 						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.update",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.EmptyDisplayName()
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.UpdateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwert",
+				UpdatedBy:  "creator",
+				UpdateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().UpdateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal("gid:like-real-config-node-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateEventSinkConfigGrid", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"azureeventgrid": {
+						Provider: &configpb.EventSinkConfig_Provider_AzureEventGrid{
+							AzureEventGrid: &configpb.AzureEventGridSinkConfig{
+								TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
+								AccessKey:     "your-access-key",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "azureeventgrid",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "indykite.eventsink.config.update",
+						},
+					},
+				},
+			}
+
+			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
+			Ω(err).To(Succeed())
+			configNodeRequest.EmptyDisplayName()
+			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
+			configNodeRequest.WithEventSinkConfig(configuration)
+
+			beResp := &configpb.UpdateConfigNodeResponse{
+				Id:         "gid:like-real-config-node-id",
+				Etag:       "123qwert",
+				UpdatedBy:  "creator",
+				UpdateTime: timestamppb.Now(),
+			}
+
+			mockClient.EXPECT().UpdateConfigNode(
+				gomock.Any(),
+				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
+					"Id": Equal("gid:like-real-config-node-id"),
+					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+						"EventSinkConfig": test.EqualProto(configuration),
+					})),
+				}))),
+				gomock.Any(),
+			).Return(beResp, nil)
+
+			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
+			Expect(err).To(Succeed())
+			Expect(resp).To(test.EqualProto(beResp))
+		})
+
+		It("UpdateEventSinkConfigBus", func() {
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"azureservicebus": {
+						Provider: &configpb.EventSinkConfig_Provider_AzureServiceBus{
+							AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
+								ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
+								QueueOrTopicName: "your-queue",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "azureservicebus",
 						StopProcessing: true,
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.update",
