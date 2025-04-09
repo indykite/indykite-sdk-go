@@ -122,11 +122,101 @@ var updateEventSinkConfigCmd = &cobra.Command{
 	},
 }
 
+var createEventSinkConfigGridCmd = &cobra.Command{
+	Use:   "create2",
+	Short: "Create EventSink config",
+	Run: func(cmd *cobra.Command, args []string) {
+		configuration := &configpb.EventSinkConfig{
+			Providers: map[string]*configpb.EventSinkConfig_Provider{
+				"azureeventgrid": {
+					Provider: &configpb.EventSinkConfig_Provider_AzureEventGrid{
+						AzureEventGrid: &configpb.AzureEventGridSinkConfig{
+							TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
+							AccessKey:     "your-access-key",
+						},
+					},
+				},
+			},
+			Routes: []*configpb.EventSinkConfig_Route{
+				{
+					ProviderId:     "azureeventgrid",
+					StopProcessing: true,
+					Filter: &configpb.EventSinkConfig_Route_EventType{
+						EventType: "indykite.eventsink.config.create",
+					},
+				},
+			},
+		}
+		createReq, _ := config.NewCreate("like-real-config-node-name-ts3")
+		createReq.ForLocation("gid:AAAAAgZQ3QPgJ0gAkbNQ-IjGvXQ")
+		createReq.WithDisplayName("Like real ConfigNode Name TS3")
+		createReq.WithEventSinkConfig(configuration)
+
+		resp, err := client.CreateConfigNode(context.Background(), createReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
+var createEventSinkConfigBusCmd = &cobra.Command{
+	Use:   "create3",
+	Short: "Create EventSink config",
+	Run: func(cmd *cobra.Command, args []string) {
+		configuration := &configpb.EventSinkConfig{
+			Providers: map[string]*configpb.EventSinkConfig_Provider{
+				"azureservicebus": {
+					Provider: &configpb.EventSinkConfig_Provider_AzureServiceBus{
+						AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
+							ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root",
+							QueueOrTopicName: "your-queue",
+						},
+					},
+				},
+			},
+			Routes: []*configpb.EventSinkConfig_Route{
+				{
+					ProviderId:     "azureservicebus",
+					StopProcessing: true,
+					Filter: &configpb.EventSinkConfig_Route_EventType{
+						EventType: "indykite.eventsink.config.create",
+					},
+				},
+			},
+		}
+		createReq, _ := config.NewCreate("like-real-config-node-name-ts3")
+		createReq.ForLocation("gid:AAAAAgZQ3QPgJ0gAkbNQ-IjGvXQ")
+		createReq.WithDisplayName("Like real ConfigNode Name TS3")
+		createReq.WithEventSinkConfig(configuration)
+
+		resp, err := client.CreateConfigNode(context.Background(), createReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(resp))
+
+		readReq, _ := config.NewRead(resp.Id)
+		readResp, err := client.ReadConfigNode(context.Background(), readReq)
+		if err != nil {
+			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
+		}
+		fmt.Println(jsonp.Format(readResp))
+	},
+}
+
 var deleteEventSinkConfigCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete EventSink configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		deleteReq, _ := config.NewDelete("gid:AAAAG3FQqyfhzEiUrpVHvab4ct4")
+		deleteReq, _ := config.NewDelete("gid:AAAAG7ub-V69fEE0kJZqHcpb1I0")
 		resp, err := client.DeleteConfigNode(context.Background(), deleteReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -160,6 +250,8 @@ func init() {
 	rootCmd.AddCommand(eventSinkConfigCmd)
 	eventSinkConfigCmd.AddCommand(createEventSinkConfigCmd)
 	eventSinkConfigCmd.AddCommand(updateEventSinkConfigCmd)
+	eventSinkConfigCmd.AddCommand(createEventSinkConfigGridCmd)
+	eventSinkConfigCmd.AddCommand(createEventSinkConfigBusCmd)
 	eventSinkConfigCmd.AddCommand(deleteEventSinkConfigCmd)
 	eventSinkConfigCmd.AddCommand(readEventSinkConfigCmd)
 }
