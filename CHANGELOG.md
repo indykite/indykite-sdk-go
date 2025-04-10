@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.54.0](https://github.com/indykite/indykite-sdk-go/compare/v0.53.0...v0.54.0) (2025-04-10)
+
+
+### Features
+
+* add azure providers in events ([cb94562](https://github.com/indykite/indykite-sdk-go/commit/cb94562535232cd6dd3dc691935f6f1825027c04))
+* add capture pipeline configs ([16c0a9f](https://github.com/indykite/indykite-sdk-go/commit/16c0a9f492f9581a68eedfce1487d216c926af11))
+* add regex in event_type and key in event sink ([f43fab7](https://github.com/indykite/indykite-sdk-go/commit/f43fab7da53d625bd9af83530ea6e07e7f24fde6))
+
+
+### Bug Fixes
+
+* add verbose and wait in tests report for audit log ([fc4b5e1](https://github.com/indykite/indykite-sdk-go/commit/fc4b5e17bf59acba964fe1315bdacfea27f9d8ef))
+
 ## [0.53.0](https://github.com/indykite/indykite-sdk-go/compare/v0.52.0...v0.53.0) (2025-03-17)
 
 
