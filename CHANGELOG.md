@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.54.1](https://github.com/indykite/indykite-sdk-go/compare/v0.54.0...v0.54.1) (2025-04-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([677c97c](https://github.com/indykite/indykite-sdk-go/commit/677c97cb5196868fa8547a45a3b6ca8e2fdfbb97))
+
 ## [0.54.0](https://github.com/indykite/indykite-sdk-go/compare/v0.53.0...v0.54.0) (2025-04-10)
 
 
