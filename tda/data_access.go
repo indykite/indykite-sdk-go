@@ -23,6 +23,7 @@ import (
 	tdapb "github.com/indykite/indykite-sdk-go/gen/indykite/tda/v1beta1"
 )
 
+// DataAccess returns resp.
 func (c *Client) DataAccess(
 	ctx context.Context,
 	req *tdapb.DataAccessRequest,
@@ -41,6 +42,7 @@ func (c *Client) DataAccess(
 	return resp, nil
 }
 
+// GrantConsent returns resp.
 func (c *Client) GrantConsent(
 	ctx context.Context,
 	req *tdapb.GrantConsentRequest,
@@ -59,6 +61,7 @@ func (c *Client) GrantConsent(
 	return resp, nil
 }
 
+// RevokeConsent returns resp.
 func (c *Client) RevokeConsent(
 	ctx context.Context,
 	req *tdapb.RevokeConsentRequest,
@@ -77,6 +80,7 @@ func (c *Client) RevokeConsent(
 	return resp, nil
 }
 
+// ListConsents returns resp.
 func (c *Client) ListConsents(
 	ctx context.Context,
 	req *tdapb.ListConsentsRequest,

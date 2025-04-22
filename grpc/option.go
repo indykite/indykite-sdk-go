@@ -25,7 +25,7 @@ import (
 
 // A ClientOption is an option for an API client.
 type ClientOption interface {
-	Apply(*internal.DialSettings)
+	Apply(*internal.DialSettings) //nolint:inamedparam // Not used.
 }
 
 // WithEndpoint returns a ClientOption that overrides the default endpoint.
@@ -35,6 +35,7 @@ func WithEndpoint(url string) ClientOption {
 
 type withEndpoint string
 
+// Apply returns endpoint.
 func (w withEndpoint) Apply(o *internal.DialSettings) {
 	o.Endpoint = string(w)
 }

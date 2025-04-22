@@ -38,12 +38,17 @@ var createAppSpaceCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var name, displayName, customerID string
 		fmt.Print("Enter CustomerID in gid format: ")
-		fmt.Scanln(&customerID)
-
+		if _, err := fmt.Scanln(&customerID); err != nil {
+			fmt.Println("Error reading customerID:", err)
+		}
 		fmt.Print("Enter name (slug): ")
-		fmt.Scanln(&name)
+		if _, err := fmt.Scanln(&name); err != nil {
+			fmt.Println("Error reading name:", err)
+		}
 		fmt.Print("Enter Display name: ")
-		fmt.Scanln(&displayName)
+		if _, err := fmt.Scanln(&displayName); err != nil {
+			fmt.Println("Error reading displayName:", err)
+		}
 		var displayNamePb *wrapperspb.StringValue
 		if len(displayName) > 0 {
 			displayNamePb = wrapperspb.String(displayName)
@@ -67,18 +72,24 @@ var updateAppSpaceCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var appSpaceID, customerID string
 		fmt.Print("Enter CustomerID in gid format: ")
-		fmt.Scanln(&customerID)
+		if _, err := fmt.Scanln(&customerID); err != nil {
+			fmt.Println("Error reading customerID:", err)
+		}
 		customerUUID := uuid.Parse(customerID)
 		if customerUUID == nil {
 			er("failed to parse digitalTwinID, not a valid UUID")
 		}
 
 		fmt.Print("Enter AppSpace ID in gid format: ")
-		fmt.Scanln(&appSpaceID)
+		if _, err := fmt.Scanln(&appSpaceID); err != nil {
+			fmt.Println("Error reading appSpaceID:", err)
+		}
 
 		fmt.Print("Enter Display name: ")
 		displayNamePb := &wrapperspb.StringValue{Value: ""}
-		fmt.Scanln(&(displayNamePb.Value))
+		if _, err := fmt.Scanln(&displayNamePb); err != nil {
+			fmt.Println("Error reading displayName:", err)
+		}
 
 		resp, err := client.UpdateApplicationSpace(context.Background(), &config.UpdateApplicationSpaceRequest{
 			Id:          appSpaceID,
@@ -98,7 +109,9 @@ var readAppSpaceCmd = &cobra.Command{
 		var appSpaceID string
 
 		fmt.Print("Enter AppSpace ID in gid format: ")
-		fmt.Scanln(&appSpaceID)
+		if _, err := fmt.Scanln(&appSpaceID); err != nil {
+			fmt.Println("Error reading appSpaceID:", err)
+		}
 
 		resp, err := client.ReadApplicationSpace(context.Background(), &config.ReadApplicationSpaceRequest{
 			Identifier: &config.ReadApplicationSpaceRequest_Id{Id: appSpaceID},

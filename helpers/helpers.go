@@ -45,8 +45,8 @@ func (c *Client) DeleteNodes(
 				Delete: &ingestpb.DeleteData{
 					Data: &ingestpb.DeleteData_Node{
 						Node: &ingestpb.NodeMatch{
-							ExternalId: node.ExternalId,
-							Type:       caser.String(node.Type),
+							ExternalId: node.GetExternalId(),
+							Type:       caser.String(node.GetType()),
 						},
 					},
 				},

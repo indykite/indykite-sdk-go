@@ -50,6 +50,8 @@ func Dial(ctx context.Context, opts ...ClientOption) (*grpc.ClientConn, *config.
 
 // DialPool returns a connection pool configured with ClientOptions.
 // If grpcConn is specified in ClientOptions, pool size is reset to 1.
+//
+//nolint:intrange // range is not expected.
 func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.CredentialsConfig, error) {
 	o := new(internal.DialSettings)
 	for _, opt := range opts {
@@ -87,7 +89,7 @@ func DialPool(ctx context.Context, opts ...ClientOption) (ConnPool, *config.Cred
 	for i := 0; i < poolSize; i++ {
 		conn, err = grpc.NewClient(o.Endpoint, dop...)
 		if err != nil {
-			defer func() { _ = pool.Close() }() //nolint:revive,gocritic // If this happen, loop is exited
+			defer func() { _ = pool.Close() }() //nolint:revive,nolintlint // If this happen, loop is exited
 			return nil, nil, err
 		}
 		pool.conns = append(pool.conns, conn)

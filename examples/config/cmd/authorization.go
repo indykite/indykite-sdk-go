@@ -34,7 +34,11 @@ var createAuthorizationPolicyConfigCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create AuthorizationPolicy config",
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Person"},"actions":["SUBSCRIBES_TO"],"resource":{"type":"Truck"},"condition":{"cypher":"MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:OWNS]->(resource:Truck)-[HAS]->(p:Property:External {type: 'echo', value: '2024'}) "}}`
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Person"},
+		"actions":["SUBSCRIBES_TO"],"resource":{"type":"Truck"},
+		"condition":{"cypher":"MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:OWNS]
+		->(resource:Truck)-[HAS]
+		->(p:Property:External {type: 'echo', value: '2024'}) "}}`
 		configuration := &configpb.AuthorizationPolicyConfig{
 			Policy: jsonInput,
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
@@ -51,7 +55,7 @@ var createAuthorizationPolicyConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -64,7 +68,10 @@ var updateAuthorizationPolicyConfigCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Update AuthorizationPolicy config",
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Person"},"actions":["SUBSCRIBES_TO"],"resource":{"type":"Asset"},"condition":{"cypher":"MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:OWNS]->(resource:Truck)-[HAS]->(Truck:Property:External {type: echo, value: '2024'}) "}}`
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Person"},
+		"actions":["SUBSCRIBES_TO"],"resource":{"type":"Asset"},
+		"condition":{"cypher":"MATCH (subject:Person)-[:BELONGS_TO]->(:Organization)-[:OWNS]
+		->(resource:Truck)-[HAS]->(Truck:Property:External {type: echo, value: '2024'}) "}}`
 		configuration := &configpb.AuthorizationPolicyConfig{
 			Policy: jsonInput,
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
@@ -80,7 +87,7 @@ var updateAuthorizationPolicyConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -102,12 +109,14 @@ var deleteAuthorizationPolicyConfigCmd = &cobra.Command{
 	},
 }
 
-// policy for trust score
+// policy for trust score.
 var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	Use:   "create2",
 	Short: "Create AuthorizationPolicy config",
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},"actions":["CAN_USE"],"resource":{"type":"Sensor"},"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},
+		"actions":["CAN_USE"],"resource":{"type":"Sensor"},
+		"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
 		configuration := &configpb.AuthorizationPolicyConfig{
 			Policy: jsonInput,
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
@@ -124,7 +133,7 @@ var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -133,7 +142,7 @@ var createAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	},
 }
 
-// policy for knowledge query
+// policy for knowledge query.
 var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
 	Use:   "create3",
 	Short: "Create AuthorizationPolicy config",
@@ -142,7 +151,8 @@ var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		"subject":{"type":"Person"},
 		"condition":{
 		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
-		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", "operator" : "=", "value" : "$lastname" }]
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", 
+		"operator" : "=", "value" : "$lastname" }]
 		},
 		"upsert_nodes" : [],
 	    "upsert_relationships" : [],
@@ -167,7 +177,7 @@ var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -180,7 +190,9 @@ var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
 	Use:   "update2",
 	Short: "Update AuthorizationPolicy config",
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},"actions":["CAN_USE"],"resource":{"type":"Sensor"},"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
+		jsonInput := `{"meta":{"policyVersion":"1.0-indykite"},"subject":{"type":"Agent"},
+		"actions":["CAN_USE"],"resource":{"type":"Sensor"},
+		"condition":{"cypher":"MATCH (:_TrustScore)<-[:_HAS]-(subject)-[:CAN_USE]->(resource)"}}`
 		configuration := &configpb.AuthorizationPolicyConfig{
 			Policy: jsonInput,
 			Status: configpb.AuthorizationPolicyConfig_STATUS_ACTIVE,
@@ -196,7 +208,7 @@ var updateAuthorizationPolicyConfig2Cmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -213,7 +225,8 @@ var updateAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		"subject":{"type":"Person"},
 		"condition":{
 		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
-		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", "operator" : "=", "value" : "$lastname" }]
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", 
+		"operator" : "=", "value" : "$lastname" }]
 		},
 		"upsert_nodes" : [],
 	    "upsert_relationships" : [],
@@ -237,7 +250,7 @@ var updateAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -253,7 +266,9 @@ var readAuthorizationPolicyConfigCmd = &cobra.Command{
 		var entityID string
 
 		fmt.Print("Enter Authorization Policy ID in gid format: ")
-		fmt.Scanln(&entityID)
+		if _, err := fmt.Scanln(&entityID); err != nil {
+			fmt.Println("Error reading entityID:", err)
+		}
 
 		configNodeRequest, err := config.NewRead(entityID)
 		if err != nil {

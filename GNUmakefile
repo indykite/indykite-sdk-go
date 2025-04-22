@@ -14,7 +14,7 @@ gci:
 
 lint:
 	@echo "==> Checking source code against linters..."
-	golangci-lint run --timeout 3m0s ./...
+	golangci-lint run --path-mode=abs --timeout 3m0s ./...
 
 lint_fix:
 	@echo "==> Fixing source code against linters..."

@@ -1,19 +1,16 @@
 ---
+version: '2'
 run:
     # GolangCI will not check files with build tags, unless specified here.
     build-tags:
         - integration
-# All rules here were written in the time of GolangCI lint v1.54.1
 linters:
     enable:
         # By Default
         - errcheck
-        - gosimple
         - govet
         - ineffassign
         - staticcheck
-        - stylecheck
-        - typecheck # Not in the linter list, but keep it https://golangci-lint.run/usage/faq/#why-do-you-have-typecheck-errors
         - unused
 
         # Extra
@@ -23,6 +20,7 @@ linters:
         - bodyclose
         - containedctx
         - contextcheck
+        - copyloopvar
         - dogsled
         - dupword
         - durationcheck
@@ -31,17 +29,17 @@ linters:
         - errorlint
         - exhaustive
         - forbidigo
-        - gci
         - ginkgolinter
         - gocheckcompilerdirectives
         - gocritic
         - godot
         # - goerr113 # As this is public SDK, would be nice to follow new error patterns
-        - gofmt
         - goheader
         - gosec
         - gosmopolitan
         - grouper
+        - inamedparam
+        - intrange
         - lll
         - loggercheck
         - makezero
@@ -54,8 +52,10 @@ linters:
         - nolintlint
         - nonamedreturns
         - nosprintfhostport
+        - perfsprint
         - prealloc
         - predeclared
+        - protogetter
         - reassign
         - revive
         - tagalign
@@ -66,167 +66,263 @@ linters:
         - wastedassign
         - whitespace
 
-linters-settings:
-    lll:
-        line-length: 120
-        tab-width: 4
+    settings:
+        exhaustive:
+            check:
+                - switch
+                - map
+            default-signifies-exhaustive: true
 
-    gci:
-        # Keep in sync with GNUMakefile
-        sections:
-            - standard
-            - default
-            - prefix(github.com/indykite/indykite-sdk-go)
-            - blank
-            - dot
+        ginkgolinter:
+            forbid-focus-container: true
 
-    staticcheck:
-        checks: [all]
+        gocritic:
+            enabled-tags:
+                - diagnostic
+                - style
+                - performance
+                - experimental
+                - opinionated
+            disabled-checks:
+                - whyNoLint # Is checked by nolintlint with excluding lll much easier
+                - deferInLoop # Checked by revive already
+                - dupBranchBody # Checked by revive already
 
-    stylecheck:
-        checks: [all]
+        goheader:
+            values:
+                regexp:
+                    # As long we decide which format of YEAR in copyright we want, add this hack
+                    our_year: 202[2-5] # Just change to 202[2-3] or other when changed
+            template: |-
+                Copyright (c) {{OUR_YEAR}} IndyKite
 
-    govet:
-        enable-all: true
+                Licensed under the Apache License, Version 2.0 (the "License");
+                you may not use this file except in compliance with the License.
+                You may obtain a copy of the License at
 
-    gocritic:
-        enabled-tags:
-            - diagnostic
-            - style
-            - performance
-            - experimental
-            - opinionated
-        disabled-checks:
-            - whyNoLint # Is checked by nolintlint with excluding lll much easier
+                http://www.apache.org/licenses/LICENSE-2.0
 
-    goheader:
-        values:
-            regexp:
-                # As long we decide which format of YEAR in copyright we want, add this hack
-                our_year: 202[0-4] # Just change to 202[2-3] or other when changed
-        template: |-
-            Copyright (c) {{OUR_YEAR}} IndyKite
+                Unless required by applicable law or agreed to in writing, software
+                distributed under the License is distributed on an "AS IS" BASIS,
+                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                See the License for the specific language governing permissions and
+                limitations under the License.
 
-            Licensed under the Apache License, Version 2.0 (the "License");
-            you may not use this file except in compliance with the License.
-            You may obtain a copy of the License at
+        gosec:
+            excludes:
+                - G115 # Integer overflow by conversion**
 
-            http://www.apache.org/licenses/LICENSE-2.0
+        govet:
+            enable-all: true
 
-            Unless required by applicable law or agreed to in writing, software
-            distributed under the License is distributed on an "AS IS" BASIS,
-            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-            See the License for the specific language governing permissions and
-            limitations under the License.
+        lll:
+            line-length: 120
+            tab-width: 4
 
-    nakedret:
-        max-func-lines: 8 # Counting also declaration, not just body
+        nakedret:
+            max-func-lines: 8 # Counting also declaration, not just body
 
-    nolintlint:
-        allow-no-explanation: [lll]
-        require-explanation: true
-        require-specific: true
+        nolintlint:
+            allow-no-explanation: [lll]
+            require-explanation: true
+            require-specific: true
 
-    exhaustive:
-        check:
-            - switch
-            - map
-        default-signifies-exhaustive: true
+        revive:
+            # When listed some additional rules, it overrides defaults as well.
+            # Put manually all default ones from https://github.com/mgechev/revive/blob/master/defaults.toml
+            rules:
+                # Default ones sorted as are in defaults.toml
+                - name: blank-imports
+                - name: context-as-argument
+                - name: context-keys-type
+                - name: dot-imports
+                - name: empty-block
+                - name: error-naming
+                - name: error-return
+                - name: error-strings
+                - name: errorf
+                - name: exported
+                  arguments: [checkPublicInterface]
+                - name: increment-decrement
+                - name: indent-error-flow
+                - name: package-comments
+                - name: range
+                - name: receiver-naming
+                - name: redefines-builtin-id
+                - name: superfluous-else
+                - name: time-naming
+                - name: unexported-return
+                - name: unreachable-code
+                - name: unused-parameter
+                - name: var-declaration
+                - name: var-naming
 
-    revive:
-        # When listed some additional rules, it overrides defaults as well.
-        # Put manually all default ones from https://github.com/mgechev/revive/blob/master/defaults.toml
+                # Extra ones
+                - name: atomic
+                - name: bare-return
+                - name: bool-literal-in-expr
+                - name: comment-spacings
+                - name: confusing-naming
+                - name: confusing-results
+                - name: constant-logical-expr
+                - name: datarace
+                - name: deep-exit
+                - name: defer
+                - name: duplicated-imports
+                - name: early-return
+                - name: empty-lines
+                - name: get-return
+                - name: identical-branches
+                - name: if-return
+                - name: import-alias-naming
+                  arguments:
+                      - ^([a-z][a-z0-9]{0,}|\.)$
+                - name: import-shadowing
+                - name: modifies-parameter
+                - name: modifies-value-receiver
+                - name: nested-structs
+                - name: optimize-operands-order
+                - name: range-val-address
+                - name: range-val-in-closure
+                - name: redundant-import-alias
+                - name: string-of-int
+                - name: struct-tag
+                - name: time-equal
+                # - name: unchecked-type-assertion # Probably not in TF providers
+                - name: unconditional-recursion
+                - name: unexported-naming
+                - name: unhandled-error # It is OK not to check errors from some specific cases
+                  arguments:
+                      - fmt.Println
+                - name: unnecessary-stmt
+                - name: unused-receiver
+                - name: use-any
+                - name: useless-break
+                - name: waitgroup-by-value
+
+        staticcheck:
+            checks: [all]
+
+        usestdlibvars:
+            default-rpc-path: true
+            sql-isolation-level: true
+
+    exclusions:
+        paths:
+            - third_party$
+            - builtin$
+            - examples$
+            - gen$
         rules:
-            # Default ones sorted as are in defaults.toml
-            - name: blank-imports
-            - name: context-as-argument
-            - name: context-keys-type
-            - name: dot-imports
-            - name: empty-block
-            - name: error-naming
-            - name: error-return
-            - name: error-strings
-            - name: errorf
-            - name: exported
-            - name: increment-decrement
-            - name: indent-error-flow
-            - name: package-comments
-            - name: range
-            - name: receiver-naming
-            - name: redefines-builtin-id
-            - name: superfluous-else
-            - name: time-naming
-            - name: unexported-return
-            - name: unreachable-code
-            - name: unused-parameter
-            - name: var-declaration
-            - name: var-naming
+            # Exclude lll issues for long lines with go:generate (including the ones commented out)
+            - linters:
+                  - lll
+              source: '^(//){1,2}go:generate '
 
-            # Extra ones
-            - name: atomic
-            - name: bare-return
-            - name: bool-literal-in-expr
-            - name: comment-spacings
-            - name: confusing-naming
-            - name: confusing-results
-            - name: constant-logical-expr
-            - name: datarace
-            - name: deep-exit
-            - name: defer
-            - name: duplicated-imports
-            - name: early-return
-            - name: empty-lines
-            - name: get-return
-            - name: identical-branches
-            - name: if-return
-            - name: import-alias-naming
-              arguments:
-                  - ^([a-z][a-z0-9]{0,}|\.)$
-            - name: import-shadowing
-            - name: modifies-parameter
-            - name: modifies-value-receiver
-            - name: nested-structs
-            - name: optimize-operands-order
-            - name: range-val-address
-            - name: range-val-in-closure
-            - name: redundant-import-alias
-            - name: string-of-int
-            - name: struct-tag
-            - name: time-equal
-            - name: unchecked-type-assertion
-            - name: unconditional-recursion
-            - name: unexported-naming
-            - name: unhandled-error  # It is OK not to check errors from some specific cases
-              arguments:
-                  - fmt.Println
-            - name: unnecessary-stmt
-            - name: unused-receiver
-            - name: use-any
-            - name: useless-break
-            - name: waitgroup-by-value
+            # Exclude lll issues for long lines starting with "// @[a-zA-Z0-9]+" - these are swaggo descriptions
+            - linters:
+                  - lll
+              source: '^\/\/ @[a-zA-Z0-9]+ '
 
-    usestdlibvars:
-        default-rpc-path: true
-        sql-isolation-level: true
+            # Ignore FieldAlignment in tests, we don't care there so much about memory performance.
+            - linters:
+                  - govet
+              text: '^fieldalignment:'
+              path: .*_test.go
+
+            # Ignore forbidigo GID checks (disabled patterns) in tests and CLI.
+            - linters:
+                  - forbidigo
+              path: (^cli/cmd/)|(^pkg/test/)|.*_test.go
+              text: GID|fmt\.Print
+
+            # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
+            - linters:
+                  - revive
+              path: .*\.go
+
+            # Dupword checks for multiple words in comment or text, which sometimes happen.
+            # But there are some false positives ones, especially in Cyphers.
+            - linters:
+                  - dupword
+              text: Duplicate words \(END\) found
+              path: .*\.go
+
+            # Do not enforce doc block on const/func/structs etc. in test files and test package.
+            - linters:
+                  - revive
+                  - staticcheck
+              text: '^(exported|SA1019):'
+              path: .*\.go|.*_test.go
+            - linters:
+                  - revive
+              text: exported .* should have comment .*or be unexported # TODO fix this for proper documentation
+
+            - linters:
+                  - gocritic
+              text: 'deep-exit: calls to log.Fatalf|exitAfterDefer: log.Fatalf will exit'
+              path: .*_test.go
+
+            # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
+            - linters:
+                  - revive
+              text: '^dot-imports:'
+              source: . "github.com/onsi/(gomega|ginkgo)(/.*)?"
+              path: .*_test.go
+
+            # We remove lint on examples
+            - linters:
+                  - errcheck
+                  - forbidigo
+                  - gocritic
+                  - gosec
+                  - lll
+                  - nolintlint
+                  - revive
+                  - staticcheck
+              path: examples/.*
+            - linters:
+                  - errcheck
+                  - forbidigo
+                  - gocritic
+                  - gosec
+                  - nolintlint
+                  - perfsprint
+                  - revive
+                  - staticcheck
+              path: test/.*
+            - linters:
+                  - errcheck
+                  - forbidigo
+                  - gocritic
+                  - gosec
+                  - intrange
+                  - nolintlint
+                  - perfsprint
+                  - revive
+                  - staticcheck
+              path: gen/.*
 
 issues:
-    exclude-use-default: false # Some rules are excluded by GolangCI Linter by default, this one will prevent that
     max-issues-per-linter: 0
     max-same-issues: 0
-    exclude-rules:
-        - linters:
-              - revive
-          text: exported .* should have comment .*or be unexported # TODO fix this for proper documentation
 
-        - linters:
-              - revive
-              - gocritic
-          text: 'deep-exit: calls to log.Fatalf|exitAfterDefer: log.Fatalf will exit'
-          path: .*_test.go
-
-        # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
-        - linters:
-              - revive
-          text: '^dot-imports:'
-          source: . "github.com/onsi/(gomega|ginkgo)(/.*)?"
-          path: .*_test.go
+formatters:
+    enable:
+        - gci
+        - gofmt
+    settings:
+        gci:
+            sections:
+                - standard
+                - default
+                - prefix(github.com/indykite/terraform-provider-indykite)
+                - blank
+                - dot
+    exclusions:
+        generated: strict
+        paths:
+            - third_party$
+            - builtin$
+            - examples$
+            - .*

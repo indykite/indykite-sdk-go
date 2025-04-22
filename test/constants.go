@@ -74,6 +74,7 @@ var (
 		}
 	*/
 
+	// Resource1 initialization.
 	Resource1 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "pFlpMtkWqCPXVue",
@@ -82,6 +83,7 @@ var (
 		},
 	}
 
+	// Resource2 initialization.
 	Resource2 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "pFlpMtkWqCPXVue",
@@ -89,6 +91,7 @@ var (
 		},
 	}
 
+	// Resource3 initialization.
 	Resource3 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "pFlpMtkWqCPXVue",
@@ -97,6 +100,7 @@ var (
 		},
 	}
 
+	// Resource4 initialization.
 	Resource4 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "QovektcrVBbNmFj",
@@ -105,6 +109,7 @@ var (
 		},
 	}
 
+	// Resource5 initialization.
 	Resource5 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "HQKzkgPnGJDiaGo",
@@ -113,6 +118,7 @@ var (
 		},
 	}
 
+	// Resource6 initialization.
 	Resource6 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "XcbZruEzGNYHLic",
@@ -121,6 +127,7 @@ var (
 		},
 	}
 
+	// Resource7 initialization.
 	Resource7 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "zIDegSbXcRlBeFZ",
@@ -129,6 +136,7 @@ var (
 		},
 	}
 
+	// Resource8 initialization.
 	Resource8 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "paLtQSpEcTvzeuC",
@@ -137,6 +145,7 @@ var (
 		},
 	}
 
+	// Resource9 initialization.
 	Resource9 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "pFlpMtkWqCPXVue",
@@ -150,6 +159,7 @@ var (
 		},
 	}
 
+	// Resource10 initialization.
 	Resource10 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Truck1",
@@ -158,6 +168,7 @@ var (
 		},
 	}
 
+	// Resource11 initialization.
 	Resource11 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Truck3",
@@ -166,6 +177,7 @@ var (
 		},
 	}
 
+	// Resource12 initialization.
 	Resource12 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Truck4",
@@ -174,6 +186,7 @@ var (
 		},
 	}
 
+	// Resource13 initialization.
 	Resource13 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Truck5",
@@ -182,6 +195,7 @@ var (
 		},
 	}
 
+	// Resource14 initialization.
 	Resource14 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Truck2",
@@ -190,6 +204,7 @@ var (
 		},
 	}
 
+	// Resource15 initialization.
 	Resources15 = []*authorizationpb.IsAuthorizedRequest_Resource{
 		{
 			ExternalId: "Sensor1",
@@ -198,42 +213,52 @@ var (
 		},
 	}
 
+	// ResourceType1 initialization.
 	ResourceType1 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Asset", Actions: []string{"SUBSCRIBES_TO"}},
 	}
 
+	// ResourceType2 initialization.
 	ResourceType2 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
+	// ResourceType3 initialization.
 	ResourceType3 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Asset", Actions: []string{"DEMANDS"}},
 	}
 
+	// ResourceType4 initialization.
 	ResourceType4 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
 	}
 
+	// ResourceType5 initialization.
 	ResourceType5 = []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 		{Type: "Sensor", Actions: []string{"CAN_USE"}},
 	}
 
+	// ResourceWho1 initialization.
 	ResourceWho1 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
+	// ResourceWho2 initialization.
 	ResourceWho2 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{Type: "Asset", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
+	// ResourceWho3 initialization.
 	ResourceWho3 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "pFlpMtkWqCPXVue", Type: "Asset", Actions: []string{"DEMANDS", "REPELS"}},
 	}
 
+	// ResourceWho4 initialization.
 	ResourceWho4 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "Truck1", Type: "Truck", Actions: []string{"SUBSCRIBES_TO", "OWNS"}},
 	}
 
+	// ResourceWho5 initialization.
 	ResourceWho5 = []*authorizationpb.WhoAuthorizedRequest_Resource{
 		{ExternalId: "Sensor1", Type: "Sensor", Actions: []string{"CAN_USE"}},
 	}
@@ -456,6 +481,7 @@ var (
 	}
 )
 
+// GenerateRandomString returns random string.
 func GenerateRandomString(length int) string {
 	b := make([]byte, length)
 	_, err := rand.Read(b)
@@ -465,6 +491,7 @@ func GenerateRandomString(length int) string {
 	return base64.StdEncoding.EncodeToString(b)
 }
 
+// CreateRecordNodeIndividual returns record node individual.
 func CreateRecordNodeIndividual( //nolint:gocritic // nonamedreturns against unnamedResult
 	role string) (*ingestpb.Record, string) {
 	externalID := GenerateRandomString(10)
@@ -529,6 +556,7 @@ func CreateRecordNodeIndividual( //nolint:gocritic // nonamedreturns against unn
 	return record, externalID
 }
 
+// CreateRecordNoProperty returns record with no property.
 func CreateRecordNoProperty(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
@@ -547,6 +575,7 @@ func CreateRecordNoProperty(externalID, nodeType string) *ingestpb.Record {
 	return record
 }
 
+// DeleteRecord returns record.
 func DeleteRecord(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
@@ -564,6 +593,7 @@ func DeleteRecord(externalID, nodeType string) *ingestpb.Record {
 	return record
 }
 
+// DeleteRecordWithProperty returns record.
 func DeleteRecordWithProperty(externalID, nodeType, property string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
@@ -584,6 +614,7 @@ func DeleteRecordWithProperty(externalID, nodeType, property string) *ingestpb.R
 	return record
 }
 
+// UpsertRecordNodeAsset returns record, ecternalId.
 func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // nonamedreturns against unnamedResult
 	externalID := GenerateRandomString(10)
 	record := &ingestpb.Record{
@@ -655,6 +686,7 @@ func UpsertRecordNodeAsset() (*ingestpb.Record, string) { //nolint:gocritic // n
 	return record, externalID
 }
 
+// CreateRecordResourceNoProperty returns record.
 func CreateRecordResourceNoProperty(externalID, nodeType string) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
@@ -673,6 +705,7 @@ func CreateRecordResourceNoProperty(externalID, nodeType string) *ingestpb.Recor
 	return record
 }
 
+// CreateRecordRelationship returns record.
 func CreateRecordRelationship(
 	sourceExternalID string,
 	sourceType string,
@@ -722,6 +755,7 @@ func CreateRecordRelationship(
 	return record
 }
 
+// GetRelationship returns the relationship between two entities.
 func GetRelationship(
 	sourceExternalID string,
 	sourceType string,
@@ -742,6 +776,7 @@ func GetRelationship(
 	return relationship
 }
 
+// DeleteRecordRelationship returns record.
 func DeleteRecordRelationship(relationship *ingestpb.Relationship) *ingestpb.Record {
 	record := &ingestpb.Record{
 		Id: uuid.New().String(),
@@ -756,6 +791,7 @@ func DeleteRecordRelationship(relationship *ingestpb.Relationship) *ingestpb.Rec
 	return record
 }
 
+// DeleteRecordRelationshipProperty returns record.
 func DeleteRecordRelationshipProperty(
 	sourceExternalID string,
 	sourceType string,
@@ -787,6 +823,7 @@ func DeleteRecordRelationshipProperty(
 	return record
 }
 
+// CreateBatchNodes returns node, externalId.
 func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 	typeNode string) (*knowledgeobjects.Node, string) {
 	externalID := GenerateRandomString(10)
@@ -843,6 +880,7 @@ func CreateBatchNodes( //nolint:gocritic // nonamedreturns against unnamedResult
 	return node, externalID
 }
 
+// CreateBatchNodesError returns node.
 func CreateBatchNodesError(
 	typeNode string) *knowledgeobjects.Node {
 	externalID := GenerateRandomString(10)
@@ -877,6 +915,7 @@ func CreateBatchNodesError(
 	return node
 }
 
+// CreateBatchNodesNoResolver returns node.
 func CreateBatchNodesNoResolver(
 	typeNode string) *knowledgeobjects.Node {
 	externalID := GenerateRandomString(10)
@@ -909,6 +948,7 @@ func BatchNodesType( //nolint:gocritic // nonamedreturns against unnamedResult
 	return nodes, externalID1, externalID2
 }
 
+// BatchRelationships returns relationships.
 func BatchRelationships(
 	relationship *ingestpb.Relationship, relationship2 *ingestpb.Relationship) []*ingestpb.Relationship {
 	relationships := []*ingestpb.Relationship{
@@ -918,6 +958,7 @@ func BatchRelationships(
 	return relationships
 }
 
+// CreateBatchNodeMatch returns nodeMatch.
 func CreateBatchNodeMatch(
 	externalID string, typeNode string) *ingestpb.NodeMatch {
 	nodeMatch := &ingestpb.NodeMatch{
@@ -927,6 +968,7 @@ func CreateBatchNodeMatch(
 	return nodeMatch
 }
 
+// BatchNodesMatch returns nodes.
 func BatchNodesMatch(
 	nodeMatch *ingestpb.NodeMatch, nodeMatch2 *ingestpb.NodeMatch) []*ingestpb.NodeMatch {
 	nodes := []*ingestpb.NodeMatch{

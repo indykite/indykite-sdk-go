@@ -112,7 +112,7 @@ func createFromProtoValue(v *Value) (any, error) {
 	if v == nil || v.Value == nil {
 		return nil, nil
 	}
-	switch v := v.Value.(type) {
+	switch v := v.GetValue().(type) {
 	case *Value_NullValue:
 		return nil, nil
 	case *Value_BoolValue:
@@ -137,7 +137,7 @@ func createFromProtoValue(v *Value) (any, error) {
 		if v.ArrayValue == nil {
 			return nil, nil
 		}
-		values := v.ArrayValue.Values
+		values := v.ArrayValue.GetValues()
 		ret := make([]any, len(values))
 		for i, v := range values {
 			r, err := createFromProtoValue(v)
@@ -151,7 +151,7 @@ func createFromProtoValue(v *Value) (any, error) {
 		if v.MapValue == nil {
 			return nil, nil
 		}
-		fields := v.MapValue.Fields
+		fields := v.MapValue.GetFields()
 		ret := make(map[string]any, len(fields))
 		for k, v := range fields {
 			r, err := createFromProtoValue(v)
@@ -271,11 +271,11 @@ func mapToProtoValue(v reflect.Value) (*Value, bool, error) {
 }
 
 func (x *ArrayValue) Len() int {
-	return len(x.Values)
+	return len(x.GetValues())
 }
 
 func (x *ArrayValue) Get(i int) protoreflect.Value {
-	switch v := x.Values[i].Value.(type) {
+	switch v := x.GetValues()[i].GetValue().(type) {
 	case *Value_NullValue:
 		return protoreflect.ValueOf(v.NullValue)
 	case *Value_BoolValue:

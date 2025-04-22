@@ -37,12 +37,18 @@ var createServiceAccountCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var name, displayName, customerID string
 		fmt.Print("Enter CustomerID in gid format:")
-		fmt.Scanln(&customerID)
+		if _, err := fmt.Scanln(&customerID); err != nil {
+			fmt.Println("Error reading customerID:", err)
+		}
 
 		fmt.Print("Enter name (slug): ")
-		fmt.Scanln(&name)
+		if _, err := fmt.Scanln(&name); err != nil {
+			fmt.Println("Error reading name:", err)
+		}
 		fmt.Print("Enter Display name: ")
-		fmt.Scanln(&displayName)
+		if _, err := fmt.Scanln(&displayName); err != nil {
+			fmt.Println("Error reading displayName:", err)
+		}
 		var displayNamePb *wrapperspb.StringValue
 		if len(displayName) > 0 {
 			displayNamePb = wrapperspb.String(displayName)

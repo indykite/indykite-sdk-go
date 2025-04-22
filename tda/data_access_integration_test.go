@@ -70,7 +70,7 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp3).ToNot(BeNil())
-			result3 := resp3.Nodes[0]
+			result3 := resp3.GetNodes()[0]
 			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id": Equal(integration.Node4),
 				"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -109,7 +109,7 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp4).ToNot(BeNil())
-			Expect(resp4.Nodes).To(BeNil())
+			Expect(resp4.GetNodes()).To(BeNil())
 		})
 
 		It("GrantConsentByExternalIdSuccess", func() {
@@ -157,7 +157,7 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp3).ToNot(BeNil())
-			result3 := resp3.Nodes[0]
+			result3 := resp3.GetNodes()[0]
 			Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id": Equal(integration.Node4),
 				"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -202,7 +202,7 @@ var _ = Describe("TDA", func() {
 			)
 			Expect(err).To(Succeed())
 			Expect(resp4).ToNot(BeNil())
-			Expect(resp4.Nodes).To(BeNil())
+			Expect(resp4.GetNodes()).To(BeNil())
 		})
 	})
 	It("GrantConsentCreatedInHubByIdSuccess", func() {
@@ -243,7 +243,7 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp3).ToNot(BeNil())
-		result3 := resp3.Nodes[0]
+		result3 := resp3.GetNodes()[0]
 		Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 			"Id": Equal(integration.Node5),
 			"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -282,7 +282,7 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp4).ToNot(BeNil())
-		Expect(resp4.Nodes).To(BeNil())
+		Expect(resp4.GetNodes()).To(BeNil())
 	})
 
 	It("GrantConsentCreatedInHubByExternalIdSuccess", func() {
@@ -330,7 +330,7 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp3).ToNot(BeNil())
-		result3 := resp3.Nodes[0]
+		result3 := resp3.GetNodes()[0]
 		Expect(result3).To(PointTo(MatchFields(IgnoreExtras, Fields{
 			"Id": Equal(integration.Node5),
 			"Nodes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -375,6 +375,6 @@ var _ = Describe("TDA", func() {
 		)
 		Expect(err).To(Succeed())
 		Expect(resp4).ToNot(BeNil())
-		Expect(resp4.Nodes).To(BeNil())
+		Expect(resp4.GetNodes()).To(BeNil())
 	})
 })

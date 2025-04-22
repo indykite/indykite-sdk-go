@@ -119,7 +119,7 @@ func (c *Client) WhatAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call WhatAuthorized client endpoint")
 	}
 
-	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_AccessToken); ok {
+	if subject, ok := req.GetSubject().GetSubject().(*authorizationpb.Subject_AccessToken); ok {
 		if err := verifyTokenFormat(subject.AccessToken); err != nil {
 			return nil, err
 		}

@@ -29,7 +29,7 @@ func (c *Client) IngestRecord(
 	opts ...grpc.CallOption,
 ) (*ingestpb.IngestRecordResponse, error) {
 	ctx = insertMetadata(ctx, c.xMetadata)
-	resp, err := c.client.IngestRecord( //nolint:staticcheck // deprecated.
+	resp, err := c.client.IngestRecord(
 		ctx, &ingestpb.IngestRecordRequest{
 			Record: record,
 		}, opts...)

@@ -73,12 +73,12 @@ func (p *roundRobinConnPool) Num() int {
 	return len(p.conns)
 }
 
-//nolint:gosec // error in release
 func (p *roundRobinConnPool) Conn() *grpc.ClientConn {
 	i := atomic.AddUint32(&p.idx, 1)
 	return p.conns[i%uint32(len(p.conns))]
 }
 
+// Close returns errs.
 func (p *roundRobinConnPool) Close() error {
 	var errs multiErrors
 	for _, conn := range p.conns {
@@ -92,11 +92,13 @@ func (p *roundRobinConnPool) Close() error {
 	return errs
 }
 
+// Invoke returns Invoke.
 func (p *roundRobinConnPool) Invoke(ctx context.Context,
 	method string, args any, reply any, opts ...grpc.CallOption) error {
 	return p.Conn().Invoke(ctx, method, args, reply, opts...)
 }
 
+// NewStream returns NewStream.
 func (p *roundRobinConnPool) NewStream(ctx context.Context,
 	desc *grpc.StreamDesc, method string, opts ...grpc.CallOption) (grpc.ClientStream, error) {
 	return p.Conn().NewStream(ctx, desc, method, opts...)

@@ -24,7 +24,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// batch upsert relationships represents the command for ingesting up to 250 relationships
+// batch upsert relationships represents the command for ingesting up to 250 relationships.
 var batchUpsertRelationshipsCmd = &cobra.Command{
 	Use:   "batch_upsert_relationships",
 	Short: "Ingest bunch of records using the IndyKite Ingest API",

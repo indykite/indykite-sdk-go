@@ -37,6 +37,7 @@ type (
 	}
 )
 
+// CreateTokenSourceFromPrivateKey returns jwk.
 func CreateTokenSourceFromPrivateKey(privateKeyJWK any, clientID string) (oauth2.TokenSource, error) {
 	privateKeyJWKBytes, err := interfaceToBytes(privateKeyJWK)
 	if err != nil {
@@ -46,6 +47,7 @@ func CreateTokenSourceFromPrivateKey(privateKeyJWK any, clientID string) (oauth2
 	return JWTokenSource(privateKeyJWKBytes, false, clientID, 0)
 }
 
+// CreateTokenSource returns tokenSource.
 func CreateTokenSource(credentials *config.CredentialsConfig) (oauth2.TokenSource, error) {
 	var clientID string
 	switch {
@@ -114,6 +116,7 @@ func parseKey(secretKey []byte, pem bool) (jwk.Key, error) {
 	return jwk.ParseKey([]byte(raw))
 }
 
+// JWTokenSource returns ts.
 func JWTokenSource(secretKey []byte, pem bool, clientID string,
 	tokenLifetime time.Duration) (oauth2.TokenSource, error) {
 	key, err := parseKey(secretKey, pem)
@@ -145,6 +148,7 @@ func JWTokenSource(secretKey []byte, pem bool, clientID string,
 	return oauth2.ReuseTokenSource(nil, ts), nil
 }
 
+// Token returns token.
 func (ts *jwtAccessTokenSource) Token() (*oauth2.Token, error) {
 	iat := time.Now()
 	exp := iat.Add(ts.tokenLifetime)

@@ -18,7 +18,7 @@ import (
 	"context"
 	"net"
 
-	google_grpc "google.golang.org/grpc" //nolint:revive // TODO refactor import-alias-naming
+	google_grpc "google.golang.org/grpc" //nolint:revive,nolintlint // TODO refactor import-alias-naming
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/indykite/indykite-sdk-go/grpc"

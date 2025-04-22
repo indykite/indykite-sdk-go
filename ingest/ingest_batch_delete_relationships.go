@@ -23,6 +23,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
+// BatchDeleteRelationships returns resp.
 func (c *Client) BatchDeleteRelationships(
 	ctx context.Context,
 	relationships []*ingestpb.Relationship,

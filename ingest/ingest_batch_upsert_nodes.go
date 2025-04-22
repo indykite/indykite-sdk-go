@@ -24,6 +24,7 @@ import (
 	knowledgeobjects "github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/objects/v1beta1"
 )
 
+// BatchUpsertNodes returns resp.
 func (c *Client) BatchUpsertNodes(
 	ctx context.Context,
 	nodes []*knowledgeobjects.Node,

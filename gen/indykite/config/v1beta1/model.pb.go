@@ -3607,6 +3607,7 @@ type EventSinkConfig_Route_KeyValue struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	EventType     string                 `protobuf:"bytes,3,opt,name=event_type,json=eventType,proto3" json:"event_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3651,6 +3652,13 @@ func (x *EventSinkConfig_Route_KeyValue) GetKey() string {
 func (x *EventSinkConfig_Route_KeyValue) GetValue() string {
 	if x != nil {
 		return x.Value
+	}
+	return ""
+}
+
+func (x *EventSinkConfig_Route_KeyValue) GetEventType() string {
+	if x != nil {
+		return x.EventType
 	}
 	return ""
 }
@@ -4409,7 +4417,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x0eSTATUS_INVALID\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\x12\x13\n" +
 	"\x0fSTATUS_INACTIVE\x10\x02\x12\x10\n" +
-	"\fSTATUS_DRAFT\x10\x03\"\xd0\a\n" +
+	"\fSTATUS_DRAFT\x10\x03\"\x8e\b\n" +
 	"\x0fEventSinkConfig\x12U\n" +
 	"\tproviders\x18\x01 \x03(\v27.indykite.config.v1beta1.EventSinkConfig.ProvidersEntryR\tproviders\x12F\n" +
 	"\x06routes\x18\x02 \x03(\v2..indykite.config.v1beta1.EventSinkConfig.RouteR\x06routes\x1a\x9e\x02\n" +
@@ -4417,17 +4425,19 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x05kafka\x18\x01 \x01(\v2(.indykite.config.v1beta1.KafkaSinkConfigH\x00R\x05kafka\x12]\n" +
 	"\x10azure_event_grid\x18\x02 \x01(\v21.indykite.config.v1beta1.AzureEventGridSinkConfigH\x00R\x0eazureEventGrid\x12`\n" +
 	"\x11azure_service_bus\x18\x03 \x01(\v22.indykite.config.v1beta1.AzureServiceBusSinkConfigH\x00R\x0fazureServiceBusB\x0f\n" +
-	"\bprovider\x12\x03\xf8B\x01\x1a\x8b\x03\n" +
+	"\bprovider\x12\x03\xf8B\x01\x1a\xc9\x03\n" +
 	"\x05Route\x12N\n" +
 	"\vprovider_id\x18\x01 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\n" +
 	"providerId\x12'\n" +
 	"\x0fstop_processing\x18\x02 \x01(\bR\x0estopProcessing\x12<\n" +
 	"\n" +
 	"event_type\x18\x03 \x01(\tB\x1b\xfaB\x18r\x16\x10\x012\x12^[a-zA-Z0-9_*\\.]+$H\x00R\teventType\x12e\n" +
-	"\x11context_key_value\x18\x04 \x01(\v27.indykite.config.v1beta1.EventSinkConfig.Route.KeyValueH\x00R\x0fcontextKeyValue\x1aU\n" +
+	"\x11context_key_value\x18\x04 \x01(\v27.indykite.config.v1beta1.EventSinkConfig.Route.KeyValueH\x00R\x0fcontextKeyValue\x1a\x92\x01\n" +
 	"\bKeyValue\x12*\n" +
 	"\x03key\x18\x01 \x01(\tB\x18\xfaB\x15r\x13\x10\x012\x0f^[a-zA-Z0-9*]+$R\x03key\x12\x1d\n" +
-	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05valueB\r\n" +
+	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05value\x12;\n" +
+	"\n" +
+	"event_type\x18\x03 \x01(\tB\x1c\xfaB\x19r\x172\x12^[a-zA-Z0-9_*\\.]+$\xd0\x01\x01R\teventTypeB\r\n" +
 	"\x06filter\x12\x03\xf8B\x01\x1ao\n" +
 	"\x0eProvidersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12G\n" +

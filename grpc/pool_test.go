@@ -28,6 +28,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+//nolint:intrange // range is not expected.
 var _ = Describe("Test Connection pools", func() {
 	It("Get connections in rounds", func() {
 		conn1 := &grpc.ClientConn{}

@@ -37,10 +37,14 @@ var createServiceAccountCredentialCmd = &cobra.Command{
 		var displayName, serviceAccountID string
 
 		fmt.Print("Enter ServiceAccountID in gid format:")
-		fmt.Scanln(&serviceAccountID)
+		if _, err := fmt.Scanln(&serviceAccountID); err != nil {
+			fmt.Println("Error reading serviceAccountID:", err)
+		}
 
 		fmt.Print("Enter Display name: ")
-		fmt.Scanln(&displayName)
+		if _, err := fmt.Scanln(&displayName); err != nil {
+			fmt.Println("Error reading displayName:", err)
+		}
 
 		resp, err := client.RegisterServiceAccountCredential(context.Background(), &configpb.RegisterServiceAccountCredentialRequest{
 			ServiceAccountId: serviceAccountID,
@@ -60,7 +64,9 @@ var readServiceAccountCredentialCmd = &cobra.Command{
 		var credentialID string
 
 		fmt.Print("Enter credentialID in gid format:")
-		fmt.Scanln(&credentialID)
+		if _, err := fmt.Scanln(&credentialID); err != nil {
+			fmt.Println("Error reading credentialID:", err)
+		}
 
 		resp, err := client.ReadServiceAccountCredential(context.Background(), &configpb.ReadServiceAccountCredentialRequest{
 			Id: credentialID,
@@ -80,7 +86,9 @@ var deleteServiceAccountCredentialCmd = &cobra.Command{
 		var credentialID string
 
 		fmt.Print("Enter credentialID in gid format:")
-		fmt.Scanln(&credentialID)
+		if _, err := fmt.Scanln(&credentialID); err != nil {
+			fmt.Println("Error reading credentialID:", err)
+		}
 
 		resp, err := client.DeleteServiceAccountCredential(context.Background(), &configpb.DeleteServiceAccountCredentialRequest{
 			Id: credentialID,

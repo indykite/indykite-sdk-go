@@ -1,4 +1,4 @@
-// Copyright (c) 2023 IndyKite
+// Copyright (c) 2025 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,13 +39,13 @@ func BeBase64() types.GomegaMatcher {
 	return gomega.MatchRegexp(`^(?:[A-Za-z\d+/]{4})*(?:[A-Za-z\d+/]{3}=|[A-Za-z\d+/]{2}==)?$]`)
 }
 
+// MatchSDKStatusErrorMatcher expects code.
 type MatchSDKStatusErrorMatcher struct {
 	message  types.GomegaMatcher
 	Expected codes.Code
 }
 
 // MatchErrorCode succeeds if actual is a non-nil error that has the code the passed in error.
-//
 // Error must be google.golang.org/grpc/status.Error
 // It is an error for err to be nil or an object that does not implement the Error interface.
 func MatchErrorCode(errorCode codes.Code) types.GomegaMatcher {
@@ -85,6 +85,7 @@ func MatchStatusError(errorCode codes.Code, msg any) types.GomegaMatcher {
 	}
 }
 
+// Match returns matcher.
 func (matcher *MatchSDKStatusErrorMatcher) Match(actual any) (bool, error) {
 	sdkError, ok := actual.(*errors.StatusError)
 	if !ok {
@@ -100,12 +101,16 @@ func (matcher *MatchSDKStatusErrorMatcher) Match(actual any) (bool, error) {
 		"Details": s.Details(),
 	})
 }
+
+// FailureMessage returns matcher.
 func (matcher *MatchSDKStatusErrorMatcher) FailureMessage(actual any) string {
 	if matcher.message == nil {
 		return format.Message(status.Code(actual.(error)), "to match error", matcher.Expected)
 	}
 	return matcher.message.FailureMessage(actual)
 }
+
+// NegatedFailureMessage returns matcher.
 func (matcher *MatchSDKStatusErrorMatcher) NegatedFailureMessage(actual any) string {
 	if matcher.message == nil {
 		return format.Message(status.Code(actual.(error)), "not to match error", matcher.Expected)
@@ -113,6 +118,7 @@ func (matcher *MatchSDKStatusErrorMatcher) NegatedFailureMessage(actual any) str
 	return matcher.message.NegatedFailureMessage(actual)
 }
 
+// MatchProtoMessageMatcher expects proto.
 type MatchProtoMessageMatcher struct {
 	Expected proto.Message
 }
@@ -124,6 +130,7 @@ func MatchProtoMessage(message proto.Message) types.GomegaMatcher {
 	}
 }
 
+// Match returns proto.
 func (matcher *MatchProtoMessageMatcher) Match(actual any) (bool, error) {
 	eq := &matchers.EqualMatcher{
 		Expected: matcher.Expected,
@@ -139,9 +146,13 @@ func (matcher *MatchProtoMessageMatcher) Match(actual any) (bool, error) {
 
 	return proto.Equal(e, matcher.Expected), nil
 }
+
+// FailureMessage returns format.
 func (matcher *MatchProtoMessageMatcher) FailureMessage(actual any) string {
 	return format.Message(actual, "to equal", matcher.Expected)
 }
+
+// NegatedFailureMessage returns format.
 func (matcher *MatchProtoMessageMatcher) NegatedFailureMessage(actual any) string {
 	return format.Message(actual, "not to equal", matcher.Expected)
 }
@@ -155,16 +166,19 @@ func EqualProto(expected protoreflect.ProtoMessage) types.GomegaMatcher {
 	}
 }
 
+// EqualProtoMatcher expects proto.
 type EqualProtoMatcher struct {
 	Expected proto.Message
 }
 
+// GomegaString returns string.
 func (matcher *EqualProtoMatcher) GomegaString() string {
 	op := protojson.MarshalOptions{AllowPartial: true, Indent: "  "}
 	ex, _ := op.Marshal(matcher.Expected)
 	return string(ex)
 }
 
+// Match returns proto.
 func (matcher *EqualProtoMatcher) Match(actual any) (bool, error) {
 	if actual == nil && matcher.Expected == nil {
 		//nolint:lll
@@ -187,6 +201,7 @@ func (matcher *EqualProtoMatcher) Match(actual any) (bool, error) {
 	return proto.Equal(pa, matcher.Expected), nil
 }
 
+// FailureMessage returns format.
 func (matcher *EqualProtoMatcher) FailureMessage(actual any) string {
 	actualMessage, actualOK := actual.(proto.Message)
 	if actualOK {
@@ -205,6 +220,7 @@ func (matcher *EqualProtoMatcher) FailureMessage(actual any) string {
 	return format.Message(actual, "to equal", matcher.Expected)
 }
 
+// NegatedFailureMessage returns format.
 func (matcher *EqualProtoMatcher) NegatedFailureMessage(actual any) string {
 	actualMessage, actualOK := actual.(proto.Message)
 	if actualOK {
@@ -231,11 +247,13 @@ func EqualAnyProto(expected protoreflect.ProtoMessage) types.GomegaMatcher {
 	}
 }
 
+// EqualAnyProtoMatcher expects proto.
 type EqualAnyProtoMatcher struct {
 	Expected proto.Message
 	actual   proto.Message
 }
 
+// Match returns proto.
 func (matcher *EqualAnyProtoMatcher) Match(actual any) (bool, error) {
 	if actual == nil && matcher.Expected == nil {
 		//nolint:lll
@@ -254,6 +272,7 @@ func (matcher *EqualAnyProtoMatcher) Match(actual any) (bool, error) {
 	return proto.Equal(matcher.actual, matcher.Expected), nil
 }
 
+// FailureMessage returns format.
 func (matcher *EqualAnyProtoMatcher) FailureMessage(any) string {
 	// This function does not display if the type is different!!
 	op := protojson.MarshalOptions{AllowPartial: true}
@@ -262,6 +281,7 @@ func (matcher *EqualAnyProtoMatcher) FailureMessage(any) string {
 	return format.MessageWithDiff(string(ac), "to equal", string(ex))
 }
 
+// NegatedFailureMessage returns format.
 func (matcher *EqualAnyProtoMatcher) NegatedFailureMessage(any) string {
 	// This function does not display if the type is different!!
 	op := protojson.MarshalOptions{AllowPartial: true}
@@ -270,10 +290,12 @@ func (matcher *EqualAnyProtoMatcher) NegatedFailureMessage(any) string {
 	return format.MessageWithDiff(string(ac), "not to equal", string(ex))
 }
 
+// MatchJSONMatcher expects types.
 type MatchJSONMatcher struct {
 	types.GomegaMatcher
 }
 
+// Match returns matcher.
 func (matcher *MatchJSONMatcher) Match(actual any) (bool, error) {
 	var aval any
 	var err error
@@ -324,6 +346,7 @@ func valueMatcher(v any) types.GomegaMatcher {
 	}
 }
 
+// matcherWrapper initialization.
 type matcherWrapper struct {
 	matcher types.GomegaMatcher
 	// This is used to save variable between calls to Matches and String in case of error
@@ -331,10 +354,12 @@ type matcherWrapper struct {
 	actual any
 }
 
+// WrapMatcher returns matcher.
 func WrapMatcher(matcher types.GomegaMatcher) gomock.Matcher {
 	return &matcherWrapper{matcher: matcher}
 }
 
+// Matches returns ok.
 func (m *matcherWrapper) Matches(x any) bool {
 	m.actual = x
 	ok, err := m.matcher.Match(x)
@@ -344,6 +369,7 @@ func (m *matcherWrapper) Matches(x any) bool {
 	return ok
 }
 
+// matcherWrapper returns format.
 func (m *matcherWrapper) String() string {
-	return fmt.Sprintf("Wrapped Gomega fail message: %s", m.matcher.FailureMessage(m.actual))
+	return "Wrapped Gomega fail message: " + m.matcher.FailureMessage(m.actual)
 }

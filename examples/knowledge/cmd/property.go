@@ -26,7 +26,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// propertyCmd represents the command for making a listNodesByProperty query with the Identity Knowledge API
+// propertyCmd represents the command for making a listNodesByProperty query with the Identity Knowledge API.
 var propertyCmd = &cobra.Command{
 	Use:   "property",
 	Short: "Make a list query to the IndyKite Identity Knowledge API",
@@ -57,7 +57,7 @@ var propertyCmd = &cobra.Command{
 	},
 }
 
-// listPropertyCmd represents the command for making a listNodesByProperty query with the Identity Knowledge API
+// listPropertyCmd represents the command for making a listNodesByProperty query with the Identity Knowledge API.
 var listPropertyCmd = &cobra.Command{
 	Use:   "listproperty",
 	Short: "Make a list query to the IndyKite Identity Knowledge API",

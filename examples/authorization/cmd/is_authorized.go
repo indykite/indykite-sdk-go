@@ -39,8 +39,9 @@ var withTokenCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("Enter access_token: ")
 		var accessToken string
-		fmt.Scanln(&accessToken)
-
+		if _, err := fmt.Scanln(&accessToken); err != nil {
+			fmt.Println("Error reading accessToken:", err)
+		}
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
 				ExternalId: "resourceID",
@@ -73,7 +74,9 @@ var withDigitalTwinCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var digitalTwinID string
 		fmt.Print("Enter digital_twin_id: ")
-		fmt.Scanln(&digitalTwinID)
+		if _, err := fmt.Scanln(&digitalTwinID); err != nil {
+			fmt.Println("Error reading digitalTwinID:", err)
+		}
 
 		digitalTwin := &authorizationpb.DigitalTwin{
 			Id: digitalTwinID,
@@ -111,9 +114,13 @@ var withPropertyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var propertyType, propertyValue string
 		fmt.Print("Enter property type: ")
-		fmt.Scanln(&propertyType)
+		if _, err := fmt.Scanln(&propertyType); err != nil {
+			fmt.Println("Error reading propertyType:", err)
+		}
 		fmt.Print("Enter property value: ")
-		fmt.Scanln(&propertyValue)
+		if _, err := fmt.Scanln(&propertyValue); err != nil {
+			fmt.Println("Error reading propertyValue:", err)
+		}
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
@@ -157,9 +164,13 @@ var withExternalIDCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var externalID authorizationpb.ExternalID
 		fmt.Print("Enter digital twin type: ")
-		fmt.Scanln(&(externalID.Type))
+		if _, err := fmt.Scanln(&externalID.Type); err != nil {
+			fmt.Println("Error reading externalID:", err)
+		}
 		fmt.Print("Enter external id value: ")
-		fmt.Scanln(&(externalID.ExternalId))
+		if _, err := fmt.Scanln(&externalID.ExternalId); err != nil {
+			fmt.Println("Error reading externalID:", err)
+		}
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{
@@ -195,9 +206,13 @@ var withExternalID2Cmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var externalID authorizationpb.ExternalID
 		fmt.Print("Enter node type: ")
-		fmt.Scanln(&(externalID.Type))
+		if _, err := fmt.Scanln(&externalID.Type); err != nil {
+			fmt.Println("Error reading externalID:", err)
+		}
 		fmt.Print("Enter external id value: ")
-		fmt.Scanln(&(externalID.ExternalId))
+		if _, err := fmt.Scanln(&externalID.ExternalId); err != nil {
+			fmt.Println("Error reading externalID:", err)
+		}
 
 		resources := []*authorizationpb.IsAuthorizedRequest_Resource{
 			{

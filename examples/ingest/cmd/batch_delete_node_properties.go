@@ -24,7 +24,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// batch delete node property represents the command for deleting up to 250 nodes
+// batch delete node property represents the command for deleting up to 250 nodes.
 var batchDeleteNodePropertiesCmd = &cobra.Command{
 	Use:   "batch_delete_node_properties",
 	Short: "Delete bunch of records using the IndyKite Ingest API",

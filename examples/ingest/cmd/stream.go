@@ -27,7 +27,9 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// streamCmd represents the upload command
+// streamCmd represents the upload command.
+//
+//nolint:forbidigo // this is just for debugging.
 var streamCmd = &cobra.Command{
 	Use:   "stream",
 	Short: "Stream multiple records to the IndyKite Ingest API",
@@ -103,13 +105,13 @@ var streamCmd = &cobra.Command{
 			log.Fatalf("failed to open ingest stream %v", err)
 		}
 		for _, record := range records {
-			err := client.SendRecord(record)
-			if err != nil {
-				log.Fatalf("failed to send record %v", err)
+			err2 := client.SendRecord(record)
+			if err2 != nil {
+				log.Fatalf("failed to send record %v", err2)
 			}
-			resp, err := client.ReceiveResponse()
-			if err != nil {
-				log.Fatalf("failed to receive response %v", err)
+			resp, err2 := client.ReceiveResponse()
+			if err2 != nil {
+				log.Fatalf("failed to receive response %v", err2)
 			}
 			fmt.Println(jsonp.Format(resp))
 		}

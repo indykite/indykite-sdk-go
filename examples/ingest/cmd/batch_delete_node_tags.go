@@ -24,7 +24,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// batch delete node tag represents the command for deleting up to 10 tags
+// batch delete node tag represents the command for deleting up to 10 tags.
 var batchDeleteNodeTagsCmd = &cobra.Command{
 	Use:   "batch_delete_node_tags",
 	Short: "Delete bunch of records using the IndyKite Ingest API",

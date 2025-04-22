@@ -21,7 +21,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// deleteCmd represents the command for deleting the nodes in a KG
+// deleteCmd represents the command for deleting the nodes in a KG.
 var deleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete nodes in the IndyKite Knowledge API",

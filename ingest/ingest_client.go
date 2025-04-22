@@ -26,6 +26,7 @@ import (
 	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
+// Client initializes Client.
 type Client struct {
 	// Closing handler of connection pool of gRPC connections to the service.
 	closeHandler func() error
@@ -84,6 +85,7 @@ func insertMetadata(ctx context.Context, mds ...metadata.MD) context.Context {
 	}
 	return metadata.NewOutgoingContext(ctx, out)
 }
+
 func defaultClientOptions() []api.ClientOption {
 	return []api.ClientOption{
 		api.WithGRPCDialOption(grpc.WithDisableServiceConfig()),

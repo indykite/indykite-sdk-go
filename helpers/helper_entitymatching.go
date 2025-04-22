@@ -46,7 +46,7 @@ func (c *Client) CreateAndRunEntityMatching(
 	if err != nil {
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "failed to Create ConfigNode on IndyKite Client")
 	}
-	idPipeline := resp.Id
+	idPipeline := resp.GetId()
 
 	// call ReadSuggestedPropertyMapping with interval until success
 	if !readSuggestedPropertyMappingWithInterval(ctx, c, idPipeline, duration) {
@@ -67,7 +67,7 @@ func (c *Client) CreateAndRunEntityMatching(
 			"failed to run RunEntityMatchingPipeline on IndyKite Client")
 	}
 
-	if respRun.Id != idPipeline {
+	if respRun.GetId() != idPipeline {
 		return nil, errors.NewInvalidArgumentError(
 			"failed to retrieve id from  RunEntityMatchingPipeline on IndyKite Client")
 	}
@@ -100,7 +100,7 @@ func readSuggestedPropertyMappingWithInterval(ctx context.Context, c *Client, id
 			if err != nil {
 				return false
 			}
-			if respPropertyMapping.PropertyMappingStatus ==
+			if respPropertyMapping.GetPropertyMappingStatus() ==
 				entitymatchingpb.PipelineStatus_PIPELINE_STATUS_STATUS_SUCCESS {
 				return true
 			}
@@ -128,7 +128,7 @@ func readConfigNodeWithInterval(ctx context.Context, c *Client, id string, inter
 			if err != nil {
 				return false
 			}
-			if configNodeResponse.ConfigNode.GetEntityMatchingPipelineConfig().EntityMatchingStatus ==
+			if configNodeResponse.GetConfigNode().GetEntityMatchingPipelineConfig().GetEntityMatchingStatus() ==
 				configpb.EntityMatchingPipelineConfig_STATUS_SUCCESS {
 				return true
 			}

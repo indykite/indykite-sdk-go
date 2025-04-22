@@ -30,6 +30,7 @@ import (
 	. "github.com/onsi/gomega/gstruct"
 )
 
+//nolint:protogetter // this is just for testing.
 var _ = Describe("Ingestion", func() {
 	Describe("IngestBatchUpsertNodes", func() {
 		It("UpsertNodes", func() {

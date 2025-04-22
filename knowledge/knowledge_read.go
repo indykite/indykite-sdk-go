@@ -120,38 +120,38 @@ func (c *Client) ListNodesByProperty(
 	query = fmt.Sprintf(
 		"%s WHERE p.type='%s' and p.value=$%s",
 		query,
-		property.Type,
-		property.Type,
+		property.GetType(),
+		property.GetType(),
 	)
 
 	params := make(map[string]*objects.Value)
-	switch property.Value.Type.(type) {
+	switch property.GetValue().GetType().(type) {
 	case *objects.Value_IntegerValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_IntegerValue{
 				IntegerValue: property.GetValue().GetIntegerValue()}}
 	case *objects.Value_StringValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_StringValue{
 				StringValue: property.GetValue().GetStringValue()}}
 	case *objects.Value_BoolValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_BoolValue{
 				BoolValue: property.GetValue().GetBoolValue()}}
 	case *objects.Value_DoubleValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_DoubleValue{
 				DoubleValue: property.GetValue().GetDoubleValue()}}
 	case *objects.Value_TimeValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_TimeValue{
 				TimeValue: property.GetValue().GetTimeValue()}}
 	case *objects.Value_DurationValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_DurationValue{
 				DurationValue: property.GetValue().GetDurationValue()}}
 	case *objects.Value_ArrayValue:
-		params[property.Type] = &objects.Value{
+		params[property.GetType()] = &objects.Value{
 			Type: &objects.Value_ArrayValue{
 				ArrayValue: property.GetValue().GetArrayValue()}}
 	default:
@@ -172,6 +172,7 @@ func (c *Client) ListNodesByProperty(
 	return resp.GetNodes(), nil
 }
 
+// GetNodeByID returns nodes.
 func (c *Client) GetNodeByID(
 	ctx context.Context,
 	id string,
@@ -209,6 +210,7 @@ func (c *Client) GetNodeByID(
 	return ParseSingleNodeFromNodes(resp.GetNodes())
 }
 
+// GetNodeByIdentifier returns nodes.
 func (c *Client) GetNodeByIdentifier(ctx context.Context,
 	identifier *Identifier,
 	isIdentity bool,
@@ -250,6 +252,7 @@ func (c *Client) GetNodeByIdentifier(ctx context.Context,
 	return ParseSingleNodeFromNodes(resp.GetNodes())
 }
 
+// ParseSingleNodeFromNodes returns nodes.
 func ParseSingleNodeFromNodes(nodes []*knowledgeobjects.Node) (*knowledgeobjects.Node, error) {
 	switch len(nodes) {
 	case 0:
