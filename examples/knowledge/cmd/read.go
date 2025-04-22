@@ -25,7 +25,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// readCmd represents the command for making a read query with the Identity Knowledge API
+// readCmd represents the command for making a read query with the Identity Knowledge API.
 var readCmd = &cobra.Command{
 	Use:   "read",
 	Short: "Make a read query to the IndyKite Identity Knowledge API",
@@ -56,7 +56,7 @@ var readCmd = &cobra.Command{
 	},
 }
 
-// readScoreCmd represents the command for making a read query with the Identity Knowledge API with trust score info
+// readScoreCmd represents the command for making a read query with the Identity Knowledge API with trust score info.
 var readScoreCmd = &cobra.Command{
 	Use:   "read-score",
 	Short: "Make a read query with trust score to the IndyKite Identity Knowledge API",
@@ -85,7 +85,7 @@ var readScoreCmd = &cobra.Command{
 	},
 }
 
-// readScore2Cmd represents all trust score that match the Trust Score profile name
+// readScore2Cmd represents all trust score that match the Trust Score profile name.
 var readScore2Cmd = &cobra.Command{
 	Use:   "read-score2",
 	Short: "Make a read query with trust score to the IndyKite Identity Knowledge API",
@@ -113,7 +113,7 @@ var readScore2Cmd = &cobra.Command{
 	},
 }
 
-// readScore3Cmd represents specific dimensions from all Trust Scores
+// readScore3Cmd represents specific dimensions from all Trust Scores.
 var readScore3Cmd = &cobra.Command{
 	Use:   "read-score3",
 	Short: "Make a read query with trust score to the IndyKite Identity Knowledge API",

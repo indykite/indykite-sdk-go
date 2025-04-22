@@ -24,7 +24,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
-// batch delete relationships represents the command for ingesting up to 250 relationships
+// batch delete relationships represents the command for ingesting up to 250 relationships.
 var batchDeleteRelationshipPropertiesCmd = &cobra.Command{
 	Use:   "batch_delete_relationship_properties",
 	Short: "Delete bunch of records using the IndyKite Ingest API",

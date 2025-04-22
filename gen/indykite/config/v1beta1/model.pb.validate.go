@@ -7581,6 +7581,21 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetEventType() != "" {
+
+		if !_EventSinkConfig_Route_KeyValue_EventType_Pattern.MatchString(m.GetEventType()) {
+			err := EventSinkConfig_Route_KeyValueValidationError{
+				field:  "EventType",
+				reason: "value does not match regex pattern \"^[a-zA-Z0-9_*\\\\.]+$\"",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return EventSinkConfig_Route_KeyValueMultiError(errors)
 	}
@@ -7663,6 +7678,8 @@ var _ interface {
 } = EventSinkConfig_Route_KeyValueValidationError{}
 
 var _EventSinkConfig_Route_KeyValue_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*]+$")
+
+var _EventSinkConfig_Route_KeyValue_EventType_Pattern = regexp.MustCompile("^[a-zA-Z0-9_*\\.]+$")
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are

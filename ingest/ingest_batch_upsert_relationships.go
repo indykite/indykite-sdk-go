@@ -23,6 +23,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
+// BatchUpsertRelationships returns resp.
 func (c *Client) BatchUpsertRelationships(
 	ctx context.Context,
 	relationships []*ingestpb.Relationship,

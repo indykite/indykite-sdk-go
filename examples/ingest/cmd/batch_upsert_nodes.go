@@ -25,7 +25,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// batch upsert node represents the command for ingesting up to 250 nodes
+// batch upsert node represents the command for ingesting up to 250 nodes.
 var batchUpsertNodesCmd = &cobra.Command{
 	Use:   "batch_upsert_nodes",
 	Short: "Ingest bunch of records using the IndyKite Ingest API",

@@ -27,7 +27,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// single represents the command for ingesting a single record
+// single represents the command for ingesting a single record.
 var singleCmd = &cobra.Command{
 	Use:   "single",
 	Short: "Ingest a single record using the IndyKite Ingest API",

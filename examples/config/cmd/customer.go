@@ -37,7 +37,9 @@ var readCustomerIDCmd = &cobra.Command{
 		var customerID string
 
 		fmt.Print("Enter Customer ID in gid format: ")
-		fmt.Scanln(&customerID)
+		if _, err := fmt.Scanln(&customerID); err != nil {
+			fmt.Println("Error reading customerID:", err)
+		}
 
 		resp, err := client.ReadCustomer(context.Background(), &config.ReadCustomerRequest{
 			Identifier: &config.ReadCustomerRequest_Id{Id: customerID},
@@ -56,7 +58,9 @@ var readCustomerNameCmd = &cobra.Command{
 		var customerName string
 
 		fmt.Print("Enter Customer Name: ")
-		fmt.Scanln(&customerName)
+		if _, err := fmt.Scanln(&customerName); err != nil {
+			fmt.Println("Error reading customerName:", err)
+		}
 
 		resp, err := client.ReadCustomer(context.Background(), &config.ReadCustomerRequest{
 			Identifier: &config.ReadCustomerRequest_Name{Name: customerName},

@@ -19,16 +19,10 @@ jobs:
                   go-version-file: go.mod
 
             - name: Run GolangCI-Lint Scanner
-              uses: golangci/golangci-lint-action@v6.5.2
+              uses: golangci/golangci-lint-action@v7
               with:
                   # Required: the version of golangci-lint is required and must be specified without patch version.
-                  version: v1.64
-
-                  # Optional: working directory, useful for monorepos
-                  # working-directory: ./...
+                  version: v2.0
 
                   # Optional: golangci-lint command line arguments.
-                  args: --timeout 3m00s
-
-                  # Optional: show only new issues if it's a pull request. The default value is `false`.
-                  # only-new-issues: true
+                  args: --config=.golangci.yml --timeout 3m00s

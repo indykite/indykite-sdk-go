@@ -19,6 +19,7 @@ package authorization_test
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/retry"
@@ -39,7 +40,7 @@ var _ = Describe("Authorized", func() {
 		var noAuditLogEntry bool
 		BeforeEach(func() {
 			noAuditLogEntry = false
-			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+			auditLogIdentifier = strconv.FormatInt(time.Now().UnixNano(), 10)
 		})
 		AfterEach(func(ctx SpecContext) {
 			// Check that the audit log is present in BigQuery
@@ -101,9 +102,9 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resources[0].Type
-					resource := resources[0].ExternalId
-					action := resources[0].Actions[0]
+					decision := resources[0].GetType()
+					resource := resources[0].GetExternalId()
+					action := resources[0].GetActions()[0]
 
 					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 						"DecisionTime": Not(BeNil()),
@@ -195,11 +196,11 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resources[0].Type
-					resource := resources[0].ExternalId
-					action := resources[0].Actions[0]
-					resource1 := resources[1].ExternalId
-					action1 := resources[1].Actions[0]
+					decision := resources[0].GetType()
+					resource := resources[0].GetExternalId()
+					action := resources[0].GetActions()[0]
+					resource1 := resources[1].GetExternalId()
+					action1 := resources[1].GetActions()[0]
 					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 						"DecisionTime": Not(BeNil()),
 						"Decisions": MatchAllKeys(Keys{
@@ -269,9 +270,9 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resources[0].Type
-					resource := resources[0].ExternalId
-					action := resources[0].Actions[0]
+					decision := resources[0].GetType()
+					resource := resources[0].GetExternalId()
+					action := resources[0].GetActions()[0]
 					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 						"DecisionTime": Not(BeNil()),
 						"Decisions": MatchAllKeys(Keys{
@@ -338,9 +339,9 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resources[0].Type
-					resource := resources[0].ExternalId
-					action := resources[0].Actions[0]
+					decision := resources[0].GetType()
+					resource := resources[0].GetExternalId()
+					action := resources[0].GetActions()[0]
 					Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
 						"DecisionTime": Not(BeNil()),
 						"Decisions": MatchAllKeys(Keys{
@@ -376,7 +377,7 @@ var _ = Describe("Authorized", func() {
 		var auditLogIdentifier string
 		var noAuditLogEntry bool
 		BeforeEach(func() {
-			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+			auditLogIdentifier = strconv.FormatInt(time.Now().UnixNano(), 10)
 			noAuditLogEntry = false
 		})
 		AfterEach(func(ctx SpecContext) {
@@ -438,13 +439,13 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resourcesTypes[0].Type
-					action := resourcesTypes[0].Actions[0]
+					decision := resourcesTypes[0].GetType()
+					action := resourcesTypes[0].GetActions()[0]
 					resourceMatcher := BeEmpty() // Default to empty if no results
 					if len(results) > 0 {
 						elements := Elements{}
 						for i, result := range results {
-							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+							elements[strconv.Itoa(i)] = PointTo(MatchFields(IgnoreExtras, Fields{
 								"ExternalId": Equal(result),
 							}))
 						}
@@ -523,13 +524,13 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resourcesTypes[0].Type
-					action := resourcesTypes[0].Actions[0]
+					decision := resourcesTypes[0].GetType()
+					action := resourcesTypes[0].GetActions()[0]
 					resourceMatcher := BeEmpty() // Default to empty if no results
 					if len(results) > 0 {
 						elements := Elements{}
 						for i, result := range results {
-							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+							elements[strconv.Itoa(i)] = PointTo(MatchFields(IgnoreExtras, Fields{
 								"ExternalId": Equal(result),
 							}))
 						}
@@ -597,13 +598,13 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resourcesTypes[0].Type
-					action := resourcesTypes[0].Actions[0]
+					decision := resourcesTypes[0].GetType()
+					action := resourcesTypes[0].GetActions()[0]
 					resourceMatcher := BeEmpty() // Default to empty if no results
 					if len(results) > 0 {
 						elements := Elements{}
 						for i, result := range results {
-							elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+							elements[strconv.Itoa(i)] = PointTo(MatchFields(IgnoreExtras, Fields{
 								"ExternalId": Equal(result),
 							}))
 						}
@@ -638,7 +639,7 @@ var _ = Describe("Authorized", func() {
 		var auditLogIdentifier string
 		var noAuditLogEntry bool
 		BeforeEach(func() {
-			auditLogIdentifier = fmt.Sprintf("%v", time.Now().UnixNano())
+			auditLogIdentifier = strconv.FormatInt(time.Now().UnixNano(), 10)
 			noAuditLogEntry = false
 		})
 		AfterEach(func(ctx SpecContext) {
@@ -697,9 +698,9 @@ var _ = Describe("Authorized", func() {
 					Expect(err).To(Succeed())
 					Expect(resp).NotTo(BeNil())
 
-					decision := resources[0].Type
-					resource := resources[0].ExternalId
-					actions := resources[0].Actions
+					decision := resources[0].GetType()
+					resource := resources[0].GetExternalId()
+					actions := resources[0].GetActions()
 					actionMatchers := Keys{}
 					for i, action := range actions {
 						// First action with specific subject matches
@@ -707,7 +708,7 @@ var _ = Describe("Authorized", func() {
 						if i == 0 && len(subjects) > 0 {
 							elements := Elements{}
 							for i, subject := range subjects {
-								elements[fmt.Sprintf("%d", i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+								elements[strconv.Itoa(i)] = PointTo(MatchFields(IgnoreExtras, Fields{
 									"ExternalId": Equal(subject),
 								}))
 							}

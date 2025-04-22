@@ -17,7 +17,7 @@ package ingest_test
 import (
 	"context"
 	"errors"
-	"fmt"
+	"strconv"
 	"time"
 
 	"go.uber.org/mock/gomock"
@@ -217,7 +217,7 @@ var _ = Describe("Ingest", func() {
 		mockClient.EXPECT().IngestRecord(gomock.Any(), gomock.Eq(&ingestpb.IngestRecordRequest{
 			Record: record1,
 		}), gomock.Any()).Return(&ingestpb.IngestRecordResponse{
-			RecordId: record1.Id,
+			RecordId: record1.GetId(),
 			Info: &ingestpb.Info{Changes: []*ingestpb.Change{
 				{
 					Id:       "gid:...",
@@ -290,7 +290,7 @@ var _ = Describe("Ingest", func() {
 			resp, err = client.ReceiveResponse()
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
+				"RecordId":    Equal(strconv.Itoa(i + 1)),
 				"RecordIndex": Equal(uint32(i)),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -347,7 +347,7 @@ var _ = Describe("Ingest", func() {
 		}
 		for i, response := range responses {
 			Expect(response).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
+				"RecordId":    Equal(strconv.Itoa(i + 1)),
 				"RecordIndex": Equal(uint32(i)),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{
@@ -765,7 +765,7 @@ var _ = Describe("Retry client", func() {
 			resp, err = client.ReceiveResponse()
 			Expect(err).To(Succeed())
 			Expect(resp).To(PointTo(MatchFields(IgnoreExtras, Fields{
-				"RecordId":    Equal(fmt.Sprintf("%d", i+1)),
+				"RecordId":    Equal(strconv.Itoa(i + 1)),
 				"RecordIndex": Equal(uint32(i)),
 				"Info": PointTo(MatchFields(IgnoreExtras, Fields{
 					"Changes": ContainElement(PointTo(MatchFields(IgnoreExtras, Fields{

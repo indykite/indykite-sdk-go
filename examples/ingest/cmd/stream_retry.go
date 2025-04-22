@@ -26,7 +26,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// streamRetryCmd represents the command for streaming records with retry on disconnect
+// streamRetryCmd represents the command for streaming records with retry on disconnect.
 var streamRetryCmd = &cobra.Command{
 	Use:   "stream_retry",
 	Short: "Stream multiple records to the IndyKite Ingest API with retry on disconnect",
@@ -101,13 +101,13 @@ var streamRetryCmd = &cobra.Command{
 		}
 
 		for _, record := range records {
-			err := retryClient.SendRecord(record)
-			if err != nil {
-				log.Fatalf("failed to send record %v", err)
+			err2 := retryClient.SendRecord(record)
+			if err2 != nil {
+				log.Fatalf("failed to send record %v", err2)
 			}
-			resp, err := retryClient.ReceiveResponse()
-			if err != nil {
-				log.Fatalf("failed to receive response %v", err)
+			resp, err2 := retryClient.ReceiveResponse()
+			if err2 != nil {
+				log.Fatalf("failed to receive response %v", err2)
 			}
 			log.Println(jsonp.Format(resp))
 		}

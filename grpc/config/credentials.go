@@ -39,6 +39,7 @@ type (
 	CredentialsLoader func(ctx context.Context) (*CredentialsConfig, error)
 )
 
+// DefaultEnvironmentLoader returns data.
 func DefaultEnvironmentLoader(_ context.Context) (*CredentialsConfig, error) {
 	data, err := lookupEnvCredentialVariables("INDYKITE_APPLICATION_CREDENTIALS")
 	if err != nil {
@@ -47,6 +48,7 @@ func DefaultEnvironmentLoader(_ context.Context) (*CredentialsConfig, error) {
 	return UnmarshalCredentialConfig(data)
 }
 
+// DefaultEnvironmentLoaderConfig returns data.
 func DefaultEnvironmentLoaderConfig(_ context.Context) (*CredentialsConfig, error) {
 	data, err := lookupEnvCredentialVariables("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS")
 	if err != nil {
@@ -55,12 +57,14 @@ func DefaultEnvironmentLoaderConfig(_ context.Context) (*CredentialsConfig, erro
 	return UnmarshalCredentialConfig(data)
 }
 
+// StaticCredentialsJSON returns credentialsJSON.
 func StaticCredentialsJSON(credentialsJSON []byte) CredentialsLoader {
 	return func(_ context.Context) (*CredentialsConfig, error) {
 		return UnmarshalCredentialConfig(credentialsJSON)
 	}
 }
 
+// UnmarshalCredentialConfig returns cfg.
 func UnmarshalCredentialConfig(credentialJSON []byte) (*CredentialsConfig, error) {
 	if len(credentialJSON) > 0 {
 		var cfg = &CredentialsConfig{}
@@ -73,6 +77,9 @@ func UnmarshalCredentialConfig(credentialJSON []byte) (*CredentialsConfig, error
 	return nil, nil
 }
 
+// DefaultEnvironmentLoaderConfig returns data.
+//
+//nolint:staticcheck // unhandled ST1020.
 func StaticCredentialConfig(config *CredentialsConfig) CredentialsLoader {
 	return func(_ context.Context) (*CredentialsConfig, error) {
 		return config, nil

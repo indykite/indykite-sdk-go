@@ -38,15 +38,15 @@ type (
 func (x *NodeRequest) String() string {
 	switch {
 	case x.create != nil:
-		return fmt.Sprintf("Create %s configuration", x.create.Name)
+		return fmt.Sprintf("Create %s configuration", x.create.GetName())
 	case x.read != nil:
-		return fmt.Sprintf("Read %s configuration", x.read.Id)
+		return fmt.Sprintf("Read %s configuration", x.read.GetId())
 	case x.update != nil:
-		return fmt.Sprintf("Update %s configuration", x.update.Id)
+		return fmt.Sprintf("Update %s configuration", x.update.GetId())
 	case x.delete != nil:
-		return fmt.Sprintf("Delete %s configuration", x.delete.Id)
+		return fmt.Sprintf("Delete %s configuration", x.delete.GetId())
 	case x.listVersions != nil:
-		return fmt.Sprintf("ListVersions of %s configuration", x.listVersions.Id)
+		return fmt.Sprintf("ListVersions of %s configuration", x.listVersions.GetId())
 	default:
 		return "Invalid empty request"
 	}

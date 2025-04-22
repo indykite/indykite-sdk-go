@@ -59,7 +59,7 @@ var createTrustScoreProfileConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -94,7 +94,7 @@ var updateTrustScoreProfileConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -123,7 +123,9 @@ var readTrustScoreProfileConfigCmd = &cobra.Command{
 		var entityID string
 
 		fmt.Print("Enter TrustScoreProfile ID in gid format: ")
-		fmt.Scanln(&entityID)
+		if _, err := fmt.Scanln(&entityID); err != nil {
+			fmt.Println("Error reading entityID:", err)
+		}
 
 		configNodeRequest, err := config.NewRead(entityID)
 		if err != nil {

@@ -39,7 +39,9 @@ var whatWithTokenCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("Enter access_token: ")
 		var accessToken string
-		fmt.Scanln(&accessToken)
+		if _, err := fmt.Scanln(&accessToken); err != nil {
+			fmt.Println("Error reading externalID:", err)
+		}
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 			{Type: "TypeA"},
@@ -70,7 +72,9 @@ var whatWithDigitalTwinCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var digitalTwinID string
 		fmt.Print("Enter node id: ")
-		fmt.Scanln(&digitalTwinID)
+		if _, err := fmt.Scanln(&digitalTwinID); err != nil {
+			fmt.Println("Error reading digitalTwinID:", err)
+		}
 
 		digitalTwin := &authorizationpb.DigitalTwin{
 			Id: digitalTwinID,
@@ -104,9 +108,13 @@ var whatWithPropertyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var propertyType, propertyValue string
 		fmt.Print("Enter property type: ")
-		fmt.Scanln(&propertyType)
+		if _, err := fmt.Scanln(&propertyType); err != nil {
+			fmt.Println("Error reading propertyType:", err)
+		}
 		fmt.Print("Enter property value: ")
-		fmt.Scanln(&propertyValue)
+		if _, err := fmt.Scanln(&propertyValue); err != nil {
+			fmt.Println("Error reading propertyValue:", err)
+		}
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 			{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},
@@ -146,9 +154,13 @@ var whatWithExternalIDCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var externalID authorizationpb.ExternalID
 		fmt.Print("Enter type: ")
-		fmt.Scanln(&(externalID.Type))
+		if _, err := fmt.Scanln(&externalID.Type); err != nil {
+			fmt.Println("Error reading type:", err)
+		}
 		fmt.Print("Enter external id value: ")
-		fmt.Scanln(&(externalID.ExternalId))
+		if _, err := fmt.Scanln(&externalID.ExternalId); err != nil {
+			fmt.Println("Error reading externalId:", err)
+		}
 
 		resourceTypes := []*authorizationpb.WhatAuthorizedRequest_ResourceType{
 			{Type: "Truck", Actions: []string{"SUBSCRIBES_TO"}},

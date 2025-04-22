@@ -25,7 +25,7 @@ import (
 	objects "github.com/indykite/indykite-sdk-go/gen/indykite/objects/v1beta2"
 )
 
-// listCmd represents the command for making a listNodes query with the Identity Knowledge API
+// listCmd represents the command for making a listNodes query with the Identity Knowledge API.
 var listCmd = &cobra.Command{
 	Use:   "listNodes",
 	Short: "Make a list query to the IndyKite Identity Knowledge API",

@@ -62,22 +62,6 @@ or request one from your point of contact at IndyKite.
   "privateKeyPKCS8": "-----BEGIN PRIVATE KEY-----\nM\n-----END PRIVATE KEY-----"
 }
 ```
-A token lifetime is 1h by default.
-You can change this time (from 2 minutes to 24h) by adding a tokenLifetime parameter.
-
-It will have to be valid with: https://pkg.go.dev/time#ParseDuration.
-
-Examples: 30m, 1.5h, 2h45m
-
-Example in the json file:
-```json
-{
- ...
-  "privateKeyPKCS8": "-----BEGIN PRIVATE KEY-----\nM\n-----END PRIVATE KEY-----",
-  "tokenLifetime": "30m"
-}
-```
-
 
 Conditionally optional parameters:
 

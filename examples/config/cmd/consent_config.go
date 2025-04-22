@@ -56,7 +56,7 @@ var createConsentConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)
@@ -87,7 +87,7 @@ var updateConsentConfigCmd = &cobra.Command{
 		}
 		fmt.Println(jsonp.Format(resp))
 
-		readReq, _ := config.NewRead(resp.Id)
+		readReq, _ := config.NewRead(resp.GetId())
 		readResp, err := client.ReadConfigNode(context.Background(), readReq)
 		if err != nil {
 			log.Fatalf("failed to invoke operation on IndyKite Client %v", err)

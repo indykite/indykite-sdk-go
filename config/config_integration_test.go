@@ -18,8 +18,8 @@ package config_test
 
 import (
 	"context"
-	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -38,7 +38,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateExternalDataResolver", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -56,8 +56,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -65,7 +65,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -93,15 +93,15 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite creation config node %v", err)
 			}
 			Expect(resp).NotTo(BeNil())
-			configID := resp.Id
-			configEtag := resp.Etag
-			Expect(resp.LocationId).To(Equal(appSpaceID))
+			configID := resp.GetId()
+			configEtag := resp.GetEtag()
+			Expect(resp.GetLocationId()).To(Equal(appSpaceID))
 
 			readReq, _ := config.NewRead(configID)
 			respRead, err := configClient.ReadConfigNode(context.Background(), readReq)
 			Expect(err).To(Succeed())
 			Expect(respRead).NotTo(BeNil())
-			configNode := respRead.ConfigNode
+			configNode := respRead.GetConfigNode()
 			Expect(configNode).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":   Equal(configID),
 				"Name": Equal("resolver-" + timeNow),
@@ -127,9 +127,9 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite update config node Client %v", err)
 			}
 			Expect(respUpd).NotTo(BeNil())
-			configUpdEtag := respUpd.Etag
-			Expect(respUpd.Id).To(Equal(configID))
-			Expect(respUpd.LocationId).To(Equal(appSpaceID))
+			configUpdEtag := respUpd.GetEtag()
+			Expect(respUpd.GetId()).To(Equal(configID))
+			Expect(respUpd.GetLocationId()).To(Equal(appSpaceID))
 			Expect(configUpdEtag).NotTo(Equal(configEtag))
 
 			deleteReq, _ := config.NewDelete(configID)
@@ -153,7 +153,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateExternalDataResolverErrorLocation", func() {
 			var (
 				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow = strconv.FormatInt(time.Now().UnixNano(), 10)
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -184,7 +184,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateExternalDataResolverWrongMethod", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -202,8 +202,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -211,7 +211,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -256,7 +256,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateEntityMatchingPipeline", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -275,8 +275,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -284,7 +284,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -307,16 +307,16 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite creation config node %v", err)
 			}
 			Expect(resp).NotTo(BeNil())
-			configID := resp.Id
-			configEtag := resp.Etag
-			Expect(resp.LocationId).To(Equal(appSpaceID))
+			configID := resp.GetId()
+			configEtag := resp.GetEtag()
+			Expect(resp.GetLocationId()).To(Equal(appSpaceID))
 
 			// read config node
 			readReq, _ := config.NewRead(configID)
 			respRead, err := configClient.ReadConfigNode(context.Background(), readReq)
 			Expect(err).To(Succeed())
 			Expect(respRead).NotTo(BeNil())
-			configNode := respRead.ConfigNode
+			configNode := respRead.GetConfigNode()
 			Expect(configNode).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":   Equal(configID),
 				"Name": Equal("entitymatching-" + timeNow),
@@ -339,16 +339,16 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite update config node Client %v", err)
 			}
 			Expect(respUpd).NotTo(BeNil())
-			configUpdEtag := respUpd.Etag
-			Expect(respUpd.Id).To(Equal(configID))
-			Expect(respUpd.LocationId).To(Equal(appSpaceID))
+			configUpdEtag := respUpd.GetEtag()
+			Expect(respUpd.GetId()).To(Equal(configID))
+			Expect(respUpd.GetLocationId()).To(Equal(appSpaceID))
 			Expect(configUpdEtag).NotTo(Equal(configEtag))
 
 			// delete config node
 			deleteReq, _ := config.NewDelete(configID)
 			var respDel *configpb.DeleteConfigNodeResponse
 			var errDel error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respDel, errDel = configClient.DeleteConfigNode(context.Background(), deleteReq)
 				if errDel == nil {
 					Expect(respDel).NotTo(BeNil())
@@ -366,7 +366,7 @@ var _ = Describe("Configuration", func() {
 			}
 			var errDelAS error
 			var respDelAS *configpb.DeleteApplicationSpaceResponse
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respDelAS, errDelAS = configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
 				if errDelAS == nil {
 					Expect(respDelAS).NotTo(BeNil())
@@ -382,7 +382,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateEntityMatchingPipelineErrorLocation", func() {
 			var (
 				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow = strconv.FormatInt(time.Now().UnixNano(), 10)
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -410,7 +410,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateEntityMatchingPipelineWrongNodeFilter", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -428,8 +428,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -437,7 +437,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -478,7 +478,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateTrustScoreProfile", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -496,8 +496,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -505,7 +505,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -530,16 +530,16 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite creation config node %v", err)
 			}
 			Expect(resp).NotTo(BeNil())
-			configID := resp.Id
-			configEtag := resp.Etag
-			Expect(resp.LocationId).To(Equal(appSpaceID))
+			configID := resp.GetId()
+			configEtag := resp.GetEtag()
+			Expect(resp.GetLocationId()).To(Equal(appSpaceID))
 
 			// read config node
 			readReq, _ := config.NewRead(configID)
 			respRead, err := configClient.ReadConfigNode(context.Background(), readReq)
 			Expect(err).To(Succeed())
 			Expect(respRead).NotTo(BeNil())
-			configNode := respRead.ConfigNode
+			configNode := respRead.GetConfigNode()
 			Expect(configNode).To(PointTo(MatchFields(IgnoreExtras, Fields{
 				"Id":   Equal(configID),
 				"Name": Equal("trust-score-profile-" + timeNow),
@@ -561,16 +561,16 @@ var _ = Describe("Configuration", func() {
 				log.Fatalf("failed to invoke operation on IndyKite update config node Client %v", err)
 			}
 			Expect(respUpd).NotTo(BeNil())
-			configUpdEtag := respUpd.Etag
-			Expect(respUpd.Id).To(Equal(configID))
-			Expect(respUpd.LocationId).To(Equal(appSpaceID))
+			configUpdEtag := respUpd.GetEtag()
+			Expect(respUpd.GetId()).To(Equal(configID))
+			Expect(respUpd.GetLocationId()).To(Equal(appSpaceID))
 			Expect(configUpdEtag).NotTo(Equal(configEtag))
 
 			// delete config node
 			deleteReq, _ := config.NewDelete(configID)
 			var respDel *configpb.DeleteConfigNodeResponse
 			var errDel error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respDel, errDel = configClient.DeleteConfigNode(context.Background(), deleteReq)
 				if errDel == nil {
 					Expect(respDel).NotTo(BeNil())
@@ -596,7 +596,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateTrustScoreProfileErrorLocation", func() {
 			var (
 				err     error
-				timeNow = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow = strconv.FormatInt(time.Now().UnixNano(), 10)
 			)
 
 			configClient, err := integration.InitConfigConfig()
@@ -623,7 +623,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateTrustScoreProfileNoDimension", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -641,8 +641,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -650,7 +650,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -689,7 +689,7 @@ var _ = Describe("Configuration", func() {
 		It("CreateTrustScoreProfileWrongFrequency", func() {
 			var (
 				err        error
-				timeNow    = fmt.Sprintf("%v", time.Now().UnixNano())
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
 				maxRetries = 5
 				retryDelay = time.Second * 5
 			)
@@ -707,8 +707,8 @@ var _ = Describe("Configuration", func() {
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
 			Expect(respAppSpace).NotTo(BeNil())
-			appSpaceID := respAppSpace.Id
-			appSpaceEtag := respAppSpace.Etag
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
 
 			reqReadAS := &configpb.ReadApplicationSpaceRequest{
 				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
@@ -716,7 +716,7 @@ var _ = Describe("Configuration", func() {
 			time.Sleep(retryDelay)
 			var respReadAS *configpb.ReadApplicationSpaceResponse
 			var errReadAS error
-			for i := 0; i < maxRetries; i++ {
+			for range maxRetries {
 				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
 				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
 					break // Exit the loop if active
@@ -739,6 +739,185 @@ var _ = Describe("Configuration", func() {
 			Expect(err).To(MatchError(ContainSubstring(
 				"value must not be in list [UPDATE_FREQUENCY_INVALID]")))
 			Expect(resp).To(BeNil())
+
+			time.Sleep(5 * time.Second)
+			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}
+			reqDelAS := &configpb.DeleteApplicationSpaceRequest{
+				Id:   appSpaceID,
+				Etag: etagPb,
+			}
+			respDelAS, err := configClient.DeleteApplicationSpace(context.Background(), reqDelAS)
+			Expect(err).To(Succeed())
+			Expect(respDelAS).NotTo(BeNil())
+			err = configClient.Close()
+			Expect(err).To(Succeed())
+		})
+	})
+
+	Describe("EventSink", func() {
+		It("CreateEventSink", func() {
+			var (
+				err        error
+				timeNow    = strconv.FormatInt(time.Now().UnixNano(), 10)
+				maxRetries = 5
+				retryDelay = time.Second * 5
+			)
+
+			configClient, err := integration.InitConfigConfig()
+			Expect(err).To(Succeed())
+
+			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
+			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
+				CustomerId:  integration.CustomerID,
+				Name:        "appspace-" + timeNow,
+				DisplayName: displayNamePb,
+				Region:      "europe-west1",
+			}
+			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
+			Expect(err).To(Succeed())
+			Expect(respAppSpace).NotTo(BeNil())
+			appSpaceID := respAppSpace.GetId()
+			appSpaceEtag := respAppSpace.GetEtag()
+
+			reqReadAS := &configpb.ReadApplicationSpaceRequest{
+				Identifier: &configpb.ReadApplicationSpaceRequest_Id{Id: appSpaceID},
+			}
+			time.Sleep(retryDelay)
+			var respReadAS *configpb.ReadApplicationSpaceResponse
+			var errReadAS error
+			for range maxRetries {
+				respReadAS, errReadAS = configClient.ReadApplicationSpace(context.Background(), reqReadAS)
+				if respReadAS.GetAppSpace().GetIkgStatus() == 2 {
+					break // Exit the loop if active
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errReadAS).To(Succeed())
+
+			// create config node
+			configuration := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"kafka": {
+						Provider: &configpb.EventSinkConfig_Provider_Kafka{
+							Kafka: &configpb.KafkaSinkConfig{
+								Brokers:  []string{"broker.com"},
+								Topic:    "your-topic-name",
+								Username: "your-name",
+								Password: "your-password",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "create",
+						},
+					},
+				},
+			}
+			configurationResp := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"kafka": {
+						Provider: &configpb.EventSinkConfig_Provider_Kafka{
+							Kafka: &configpb.KafkaSinkConfig{
+								Brokers:  []string{"broker.com"},
+								Topic:    "your-topic-name",
+								Username: "your-name",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "create",
+						},
+					},
+				},
+			}
+			createReq, _ := config.NewCreate("event-sink-" + timeNow)
+			createReq.ForLocation(appSpaceID)
+			createReq.WithDisplayName("EventSink" + timeNow)
+			createReq.WithEventSinkConfig(configuration)
+
+			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
+			if err != nil {
+				log.Fatalf("failed to invoke operation on IndyKite creation config node %v", err)
+			}
+			Expect(resp).NotTo(BeNil())
+			configID := resp.GetId()
+			configEtag := resp.GetEtag()
+			Expect(resp.GetLocationId()).To(Equal(appSpaceID))
+
+			// read config node
+			readReq, _ := config.NewRead(configID)
+			respRead, err := configClient.ReadConfigNode(context.Background(), readReq)
+			Expect(err).To(Succeed())
+			Expect(respRead).NotTo(BeNil())
+			configNode := respRead.GetConfigNode()
+			Expect(configNode).To(PointTo(MatchFields(IgnoreExtras, Fields{
+				"Id":   Equal(configID),
+				"Name": Equal("event-sink-" + timeNow),
+				"Config": PointTo(MatchFields(IgnoreExtras, Fields{
+					"EventSinkConfig": integration.EqualProto(configurationResp),
+				})),
+			})))
+
+			// update config node
+			configurationUpd := &configpb.EventSinkConfig{
+				Providers: map[string]*configpb.EventSinkConfig_Provider{
+					"kafka": {
+						Provider: &configpb.EventSinkConfig_Provider_Kafka{
+							Kafka: &configpb.KafkaSinkConfig{
+								Brokers:  []string{"broker.com"},
+								Topic:    "your-topic-name",
+								Username: "your-name",
+								Password: "your-password",
+							},
+						},
+					},
+				},
+				Routes: []*configpb.EventSinkConfig_Route{
+					{
+						ProviderId:     "kafka",
+						StopProcessing: true,
+						Filter: &configpb.EventSinkConfig_Route_EventType{
+							EventType: "create",
+						},
+					},
+				},
+			}
+			updateReq, _ := config.NewUpdate(configID)
+			updateReq.WithDisplayName("EventSink" + timeNow)
+			updateReq.WithEventSinkConfig(configurationUpd)
+			respUpd, err := configClient.UpdateConfigNode(context.Background(), updateReq)
+			if err != nil {
+				log.Fatalf("failed to invoke operation on IndyKite update config node Client %v", err)
+			}
+			Expect(respUpd).NotTo(BeNil())
+			configUpdEtag := respUpd.GetEtag()
+			Expect(respUpd.GetId()).To(Equal(configID))
+			Expect(respUpd.GetLocationId()).To(Equal(appSpaceID))
+			Expect(configUpdEtag).NotTo(Equal(configEtag))
+
+			// delete config node
+			deleteReq, _ := config.NewDelete(configID)
+			var respDel *configpb.DeleteConfigNodeResponse
+			var errDel error
+			for range maxRetries {
+				respDel, errDel = configClient.DeleteConfigNode(context.Background(), deleteReq)
+				if errDel == nil {
+					Expect(respDel).NotTo(BeNil())
+					break // Exit the loop if error is nil
+				}
+				time.Sleep(retryDelay) // Wait before retrying
+			}
+			Expect(errDel).To(Succeed())
 
 			time.Sleep(5 * time.Second)
 			etagPb := &wrapperspb.StringValue{Value: appSpaceEtag}

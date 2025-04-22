@@ -116,7 +116,7 @@ func (c *Client) IsAuthorizedWithRawRequest(
 		return nil, errors.NewInvalidArgumentErrorWithCause(err, "unable to call IsAuthorized client endpoint")
 	}
 
-	if subject, ok := req.GetSubject().Subject.(*authorizationpb.Subject_AccessToken); ok {
+	if subject, ok := req.GetSubject().GetSubject().(*authorizationpb.Subject_AccessToken); ok {
 		if err := verifyTokenFormat(subject.AccessToken); err != nil {
 			return nil, err
 		}

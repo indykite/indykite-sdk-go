@@ -33,7 +33,7 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 	ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 	defer cancel()
 
-	stream, err := c.client.StreamRecords(ctx) //nolint:staticcheck // deprecated.
+	stream, err := c.client.StreamRecords(ctx)
 	if err != nil {
 		return nil, sdkerrors.FromError(err)
 	}
@@ -64,7 +64,7 @@ func (c *Client) StreamRecords(records []*ingestpb.Record) (
 
 // OpenStreamClient is deprecated and will be removed: use Batch functions.
 func (c *Client) OpenStreamClient(ctx context.Context) error {
-	stream, err := c.client.StreamRecords(ctx) //nolint:staticcheck // deprecated.
+	stream, err := c.client.StreamRecords(ctx)
 	if err != nil {
 		return sdkerrors.FromError(err)
 	}

@@ -26,7 +26,7 @@ import (
 	tdapb "github.com/indykite/indykite-sdk-go/gen/indykite/tda/v1beta1"
 )
 
-// planCmd represents the plan command
+// planCmd represents the plan command.
 var consentCmd = &cobra.Command{
 	Use:   "consent",
 	Short: "Consent operation",
@@ -42,11 +42,15 @@ var grantConsent = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Print("Enter User ID (identity node gid): ")
 		var userId string
-		fmt.Scanln(&userId)
+		if _, err := fmt.Scanln(&userId); err != nil {
+			fmt.Println("Error reading userId:", err)
+		}
 
 		fmt.Print("Enter Consent ID (Consentconfig node gid): ")
 		var consentId string
-		fmt.Scanln(&consentId)
+		if _, err := fmt.Scanln(&consentId); err != nil {
+			fmt.Println("Error reading consentId:", err)
+		}
 
 		resp, err := client.GrantConsent(
 			context.Background(),

@@ -23,6 +23,7 @@ import (
 	ingestpb "github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3"
 )
 
+// BatchDeleteNodeTags returns resp.
 func (c *Client) BatchDeleteNodeTags(
 	ctx context.Context,
 	nodeTags []*ingestpb.DeleteData_NodeTagMatch,
