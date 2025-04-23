@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.55.0](https://github.com/indykite/indykite-sdk-go/compare/v0.54.0...v0.55.0) (2025-04-23)
+
+
+### Features
+
+* add eventType in keyValue in eventsink + tests ([de98554](https://github.com/indykite/indykite-sdk-go/commit/de985544b102f35f86cbdd4b17bff91a3c822337))
+
+
+### Miscellaneous Chores
+
+* **deps:** update everything ([677c97c](https://github.com/indykite/indykite-sdk-go/commit/677c97cb5196868fa8547a45a3b6ca8e2fdfbb97))
+
 ## [0.54.0](https://github.com/indykite/indykite-sdk-go/compare/v0.53.0...v0.54.0) (2025-04-10)
 
 
