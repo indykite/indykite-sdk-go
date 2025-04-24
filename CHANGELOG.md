@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.56.0](https://github.com/indykite/indykite-sdk-go/compare/v0.55.0...v0.56.0) (2025-04-24)
+
+
+### Features
+
+* add display name and id in eventSink config ([ab836e7](https://github.com/indykite/indykite-sdk-go/commit/ab836e760b404b9dc5e34764c4df2b3ae9ed2f76))
+
 ## [0.55.0](https://github.com/indykite/indykite-sdk-go/compare/v0.54.0...v0.55.0) (2025-04-23)
 
 
