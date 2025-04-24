@@ -20,6 +20,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/indykite/indykite-sdk-go/config"
 	configpb "github.com/indykite/indykite-sdk-go/gen/indykite/config/v1beta1"
@@ -39,10 +40,11 @@ var createEventSinkConfigCmd = &cobra.Command{
 				"kafka": {
 					Provider: &configpb.EventSinkConfig_Provider_Kafka{
 						Kafka: &configpb.KafkaSinkConfig{
-							Brokers:  []string{"broker.com"},
-							Topic:    "your-topic-name",
-							Username: "your-name",
-							Password: "your-password",
+							Brokers:     []string{"broker.com"},
+							Topic:       "your-topic-name",
+							Username:    "your-name",
+							Password:    "your-password",
+							DisplayName: wrapperspb.String("like-real-provider-name"),
 						},
 					},
 				},
@@ -54,6 +56,8 @@ var createEventSinkConfigCmd = &cobra.Command{
 					Filter: &configpb.EventSinkConfig_Route_EventType{
 						EventType: "indykite.eventsink.config.create",
 					},
+					DisplayName: wrapperspb.String("like-real-provider-name"),
+					Id:          wrapperspb.String("like-real-provider-id"),
 				},
 			},
 		}
@@ -86,10 +90,11 @@ var updateEventSinkConfigCmd = &cobra.Command{
 				"kafka": {
 					Provider: &configpb.EventSinkConfig_Provider_Kafka{
 						Kafka: &configpb.KafkaSinkConfig{
-							Brokers:  []string{"broker.com"},
-							Topic:    "your-topic-name",
-							Username: "your-name-update",
-							Password: "your-password-update",
+							Brokers:     []string{"broker.com"},
+							Topic:       "your-topic-name",
+							Username:    "your-name-update",
+							Password:    "your-password-update",
+							DisplayName: wrapperspb.String("like-real-provider-name"),
 						},
 					},
 				},
@@ -101,6 +106,8 @@ var updateEventSinkConfigCmd = &cobra.Command{
 					Filter: &configpb.EventSinkConfig_Route_EventType{
 						EventType: "indykite.eventsink.config.update",
 					},
+					DisplayName: wrapperspb.String("like-real-route-name"),
+					Id:          wrapperspb.String("like-real-route-id"),
 				},
 			},
 		}
@@ -133,6 +140,7 @@ var createEventSinkConfigGridCmd = &cobra.Command{
 						AzureEventGrid: &configpb.AzureEventGridSinkConfig{
 							TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
 							AccessKey:     "your-access-key",
+							DisplayName:   wrapperspb.String("like-real-provider-name"),
 						},
 					},
 				},
@@ -144,6 +152,8 @@ var createEventSinkConfigGridCmd = &cobra.Command{
 					Filter: &configpb.EventSinkConfig_Route_EventType{
 						EventType: "indykite.eventsink.config.create",
 					},
+					DisplayName: wrapperspb.String("like-real-route-name"),
+					Id:          wrapperspb.String("like-real-route-id"),
 				},
 			},
 		}
@@ -178,6 +188,7 @@ var createEventSinkConfigBusCmd = &cobra.Command{
 						AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
 							ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root",
 							QueueOrTopicName: "your-queue",
+							DisplayName:      wrapperspb.String("like-real-provider-name"),
 						},
 					},
 				},
@@ -189,6 +200,8 @@ var createEventSinkConfigBusCmd = &cobra.Command{
 					Filter: &configpb.EventSinkConfig_Route_EventType{
 						EventType: "indykite.eventsink.config.create",
 					},
+					DisplayName: wrapperspb.String("like-real-route-name"),
+					Id:          wrapperspb.String("like-real-route-id"),
 				},
 			},
 		}

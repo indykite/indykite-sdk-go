@@ -454,10 +454,11 @@ var _ = Describe("ConfigNode", func() {
 								"kafka": {
 									Provider: &configpb.EventSinkConfig_Provider_Kafka{
 										Kafka: &configpb.KafkaSinkConfig{
-											Brokers:  []string{"broker.com"},
-											Topic:    "your-topic-name",
-											Username: "your-name",
-											Password: "your-password",
+											Brokers:     []string{"broker.com"},
+											Topic:       "your-topic-name",
+											Username:    "your-name",
+											Password:    "your-password",
+											DisplayName: wrapperspb.String("like-real-provider-name"),
 										},
 									},
 								},
@@ -469,6 +470,8 @@ var _ = Describe("ConfigNode", func() {
 									Filter: &configpb.EventSinkConfig_Route_EventType{
 										EventType: "indykite.eventsink.config.create",
 									},
+									DisplayName: wrapperspb.String("like-real-route-name"),
+									Id:          wrapperspb.String("like-real-route-id"),
 								},
 							},
 						},
@@ -512,6 +515,7 @@ var _ = Describe("ConfigNode", func() {
 										AzureEventGrid: &configpb.AzureEventGridSinkConfig{
 											TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
 											AccessKey:     "your-access-key",
+											DisplayName:   wrapperspb.String("like-real-provider-name"),
 										},
 									},
 								},
@@ -523,6 +527,8 @@ var _ = Describe("ConfigNode", func() {
 									Filter: &configpb.EventSinkConfig_Route_EventType{
 										EventType: "indykite.eventsink.config.create",
 									},
+									DisplayName: wrapperspb.String("like-real-route-name"),
+									Id:          wrapperspb.String("like-real-route-id"),
 								},
 							},
 						},
@@ -566,6 +572,7 @@ var _ = Describe("ConfigNode", func() {
 										AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
 											ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
 											QueueOrTopicName: "your-queue",
+											DisplayName:      wrapperspb.String("like-real-provider-name"),
 										},
 									},
 								},
@@ -577,6 +584,8 @@ var _ = Describe("ConfigNode", func() {
 									Filter: &configpb.EventSinkConfig_Route_EventType{
 										EventType: "indykite.eventsink.config.create",
 									},
+									DisplayName: wrapperspb.String("like-real-route-name"),
+									Id:          wrapperspb.String("like-real-route-id"),
 								},
 							},
 						},
@@ -1176,10 +1185,11 @@ var _ = Describe("ConfigNode", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:  []string{"broker.com"},
-								Topic:    "your-topic-name",
-								Username: "your-name",
-								Password: "your-password",
+								Brokers:     []string{"broker.com"},
+								Topic:       "your-topic-name",
+								Username:    "your-name",
+								Password:    "your-password",
+								DisplayName: wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -1191,6 +1201,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.create",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
@@ -1233,6 +1245,7 @@ var _ = Describe("ConfigNode", func() {
 							AzureEventGrid: &configpb.AzureEventGridSinkConfig{
 								TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
 								AccessKey:     "your-access-key",
+								DisplayName:   wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -1244,6 +1257,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.create",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
@@ -1286,6 +1301,7 @@ var _ = Describe("ConfigNode", func() {
 							AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
 								ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
 								QueueOrTopicName: "your-queue",
+								DisplayName:      wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -1297,6 +1313,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.create",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
@@ -1913,10 +1931,11 @@ var _ = Describe("ConfigNode", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:  []string{"broker.com"},
-								Topic:    "your-topic-name",
-								Username: "your-name-update",
-								Password: "your-password-update",
+								Brokers:     []string{"broker.com"},
+								Topic:       "your-topic-name",
+								Username:    "your-name-update",
+								Password:    "your-password-update",
+								DisplayName: wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -1928,6 +1947,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.update",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
@@ -1969,6 +1990,7 @@ var _ = Describe("ConfigNode", func() {
 							AzureEventGrid: &configpb.AzureEventGridSinkConfig{
 								TopicEndpoint: "https://ik-test.eventgrid.azure.net/api/events",
 								AccessKey:     "your-access-key",
+								DisplayName:   wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -1980,6 +2002,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.update",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
@@ -2021,6 +2045,7 @@ var _ = Describe("ConfigNode", func() {
 							AzureServiceBus: &configpb.AzureServiceBusSinkConfig{
 								ConnectionString: "Endpoint=sb://ik-test.servicebus.windows.net/;SharedAccessKeyName=Root", //nolint:lll // easier to read not cut
 								QueueOrTopicName: "your-queue",
+								DisplayName:      wrapperspb.String("like-real-provider-name"),
 							},
 						},
 					},
@@ -2032,6 +2057,8 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "indykite.eventsink.config.update",
 						},
+						DisplayName: wrapperspb.String("like-real-route-name"),
+						Id:          wrapperspb.String("like-real-route-id"),
 					},
 				},
 			}
