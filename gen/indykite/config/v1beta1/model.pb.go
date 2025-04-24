@@ -2150,9 +2150,10 @@ type KafkaSinkConfig struct {
 	// DisableTLS can force using non-secure connection.
 	DisableTls bool `protobuf:"varint,3,opt,name=disable_tls,json=disableTls,proto3" json:"disable_tls,omitempty"`
 	// TLSSkipVerify defines whenever not to verify TLS certificate. Ignored if TLS is disabled.
-	TlsSkipVerify bool   `protobuf:"varint,4,opt,name=tls_skip_verify,json=tlsSkipVerify,proto3" json:"tls_skip_verify,omitempty"`
-	Username      string `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
-	Password      string `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	TlsSkipVerify bool                    `protobuf:"varint,4,opt,name=tls_skip_verify,json=tlsSkipVerify,proto3" json:"tls_skip_verify,omitempty"`
+	Username      string                  `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                  `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	DisplayName   *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2229,11 +2230,19 @@ func (x *KafkaSinkConfig) GetPassword() string {
 	return ""
 }
 
+func (x *KafkaSinkConfig) GetDisplayName() *wrapperspb.StringValue {
+	if x != nil {
+		return x.DisplayName
+	}
+	return nil
+}
+
 type AzureEventGridSinkConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TopicEndpoint string                 `protobuf:"bytes,1,opt,name=topic_endpoint,json=topicEndpoint,proto3" json:"topic_endpoint,omitempty"`
 	// TopicKey is the key to access the Azure Event Grid topic.
-	AccessKey     string `protobuf:"bytes,2,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	AccessKey     string                  `protobuf:"bytes,2,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	DisplayName   *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2282,12 +2291,20 @@ func (x *AzureEventGridSinkConfig) GetAccessKey() string {
 	return ""
 }
 
+func (x *AzureEventGridSinkConfig) GetDisplayName() *wrapperspb.StringValue {
+	if x != nil {
+		return x.DisplayName
+	}
+	return nil
+}
+
 type AzureServiceBusSinkConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ConnectionString is the connection string to the Azure Service Bus.
 	ConnectionString string `protobuf:"bytes,1,opt,name=connection_string,json=connectionString,proto3" json:"connection_string,omitempty"`
 	// QueueName is the name of the queue to send messages to.
-	QueueOrTopicName string `protobuf:"bytes,2,opt,name=queue_or_topic_name,json=queueOrTopicName,proto3" json:"queue_or_topic_name,omitempty"`
+	QueueOrTopicName string                  `protobuf:"bytes,2,opt,name=queue_or_topic_name,json=queueOrTopicName,proto3" json:"queue_or_topic_name,omitempty"`
+	DisplayName      *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2334,6 +2351,13 @@ func (x *AzureServiceBusSinkConfig) GetQueueOrTopicName() string {
 		return x.QueueOrTopicName
 	}
 	return ""
+}
+
+func (x *AzureServiceBusSinkConfig) GetDisplayName() *wrapperspb.StringValue {
+	if x != nil {
+		return x.DisplayName
+	}
+	return nil
 }
 
 type ConsentConfiguration struct {
@@ -3513,7 +3537,10 @@ type EventSinkConfig_Route struct {
 	//
 	//	*EventSinkConfig_Route_EventType
 	//	*EventSinkConfig_Route_ContextKeyValue
-	Filter        isEventSinkConfig_Route_Filter `protobuf_oneof:"filter"`
+	Filter      isEventSinkConfig_Route_Filter `protobuf_oneof:"filter"`
+	DisplayName *wrapperspb.StringValue        `protobuf:"bytes,5,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// optional, because UI needs that for some reason
+	Id            *wrapperspb.StringValue `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3583,6 +3610,20 @@ func (x *EventSinkConfig_Route) GetContextKeyValue() *EventSinkConfig_Route_KeyV
 		if x, ok := x.Filter.(*EventSinkConfig_Route_ContextKeyValue); ok {
 			return x.ContextKeyValue
 		}
+	}
+	return nil
+}
+
+func (x *EventSinkConfig_Route) GetDisplayName() *wrapperspb.StringValue {
+	if x != nil {
+		return x.DisplayName
+	}
+	return nil
+}
+
+func (x *EventSinkConfig_Route) GetId() *wrapperspb.StringValue {
+	if x != nil {
+		return x.Id
 	}
 	return nil
 }
@@ -4417,7 +4458,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x0eSTATUS_INVALID\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\x12\x13\n" +
 	"\x0fSTATUS_INACTIVE\x10\x02\x12\x10\n" +
-	"\fSTATUS_DRAFT\x10\x03\"\x8e\b\n" +
+	"\fSTATUS_DRAFT\x10\x03\"\x9a\t\n" +
 	"\x0fEventSinkConfig\x12U\n" +
 	"\tproviders\x18\x01 \x03(\v27.indykite.config.v1beta1.EventSinkConfig.ProvidersEntryR\tproviders\x12F\n" +
 	"\x06routes\x18\x02 \x03(\v2..indykite.config.v1beta1.EventSinkConfig.RouteR\x06routes\x1a\x9e\x02\n" +
@@ -4425,14 +4466,17 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x05kafka\x18\x01 \x01(\v2(.indykite.config.v1beta1.KafkaSinkConfigH\x00R\x05kafka\x12]\n" +
 	"\x10azure_event_grid\x18\x02 \x01(\v21.indykite.config.v1beta1.AzureEventGridSinkConfigH\x00R\x0eazureEventGrid\x12`\n" +
 	"\x11azure_service_bus\x18\x03 \x01(\v22.indykite.config.v1beta1.AzureServiceBusSinkConfigH\x00R\x0fazureServiceBusB\x0f\n" +
-	"\bprovider\x12\x03\xf8B\x01\x1a\xc9\x03\n" +
+	"\bprovider\x12\x03\xf8B\x01\x1a\xd5\x04\n" +
 	"\x05Route\x12N\n" +
 	"\vprovider_id\x18\x01 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\n" +
 	"providerId\x12'\n" +
 	"\x0fstop_processing\x18\x02 \x01(\bR\x0estopProcessing\x12<\n" +
 	"\n" +
 	"event_type\x18\x03 \x01(\tB\x1b\xfaB\x18r\x16\x10\x012\x12^[a-zA-Z0-9_*\\.]+$H\x00R\teventType\x12e\n" +
-	"\x11context_key_value\x18\x04 \x01(\v27.indykite.config.v1beta1.EventSinkConfig.Route.KeyValueH\x00R\x0fcontextKeyValue\x1a\x92\x01\n" +
+	"\x11context_key_value\x18\x04 \x01(\v27.indykite.config.v1beta1.EventSinkConfig.Route.KeyValueH\x00R\x0fcontextKeyValue\x12N\n" +
+	"\fdisplay_name\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12:\n" +
+	"\x02id\x18\x06 \x01(\v2\x1c.google.protobuf.StringValueB\f\xfaB\tr\a\x10\x02\x18?\xd0\x01\x01R\x02id\x1a\x92\x01\n" +
 	"\bKeyValue\x12*\n" +
 	"\x03key\x18\x01 \x01(\tB\x18\xfaB\x15r\x13\x10\x012\x0f^[a-zA-Z0-9*]+$R\x03key\x12\x1d\n" +
 	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05value\x12;\n" +
@@ -4441,7 +4485,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x06filter\x12\x03\xf8B\x01\x1ao\n" +
 	"\x0eProvidersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12G\n" +
-	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\xf6\x01\n" +
+	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\xc6\x02\n" +
 	"\x0fKafkaSinkConfig\x12-\n" +
 	"\abrokers\x18\x01 \x03(\tB\x13\xfaB\x10\x92\x01\r\x18\x01\"\ar\x05\x10\b\x90\x01\x01(\x01R\abrokers\x123\n" +
 	"\x05topic\x18\x02 \x01(\tB\x1d\xfaB\x1ar\x18\x10\x01\x18\xf9\x012\x11^[a-zA-Z0-9._-]+$R\x05topic\x12\x1f\n" +
@@ -4449,18 +4493,24 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"disableTls\x12&\n" +
 	"\x0ftls_skip_verify\x18\x04 \x01(\bR\rtlsSkipVerify\x12\x1a\n" +
 	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x06 \x01(\tR\bpassword\"{\n" +
+	"\bpassword\x18\x06 \x01(\tR\bpassword\x12N\n" +
+	"\fdisplay_name\x18\a \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xcb\x01\n" +
 	"\x18AzureEventGridSinkConfig\x124\n" +
 	"\x0etopic_endpoint\x18\x01 \x01(\tB\r\xfaB\n" +
 	"r\b\x10\x01\x18\x80\b\x88\x01\x01R\rtopicEndpoint\x12)\n" +
 	"\n" +
 	"access_key\x18\x02 \x01(\tB\n" +
-	"\xfaB\ar\x05\x10\x01\x18\x80\bR\taccessKey\"\x8f\x01\n" +
+	"\xfaB\ar\x05\x10\x01\x18\x80\bR\taccessKey\x12N\n" +
+	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xdf\x01\n" +
 	"\x19AzureServiceBusSinkConfig\x127\n" +
 	"\x11connection_string\x18\x01 \x01(\tB\n" +
 	"\xfaB\ar\x05\x10\x01\x18\x80\bR\x10connectionString\x129\n" +
 	"\x13queue_or_topic_name\x18\x02 \x01(\tB\n" +
-	"\xfaB\ar\x05\x10\x01\x18\x80\bR\x10queueOrTopicName\"\xfa\x02\n" +
+	"\xfaB\ar\x05\x10\x01\x18\x80\bR\x10queueOrTopicName\x12N\n" +
+	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xfa\x02\n" +
 	"\x14ConsentConfiguration\x12\"\n" +
 	"\apurpose\x18\x01 \x01(\tB\b\xfaB\x05r\x03\x18\x80\bR\apurpose\x127\n" +
 	"\vdata_points\x18\x02 \x03(\tB\x16\xfaB\x13\x92\x01\x10\b\x01\x18\x01\"\n" +
@@ -4777,46 +4827,51 @@ var file_indykite_config_v1beta1_model_proto_depIdxs = []int32{
 	55, // 49: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
 	39, // 50: indykite.config.v1beta1.EventSinkConfig.providers:type_name -> indykite.config.v1beta1.EventSinkConfig.ProvidersEntry
 	38, // 51: indykite.config.v1beta1.EventSinkConfig.routes:type_name -> indykite.config.v1beta1.EventSinkConfig.Route
-	1,  // 52: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
-	41, // 53: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	42, // 54: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	43, // 55: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	44, // 56: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
-	46, // 57: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	45, // 58: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	47, // 59: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
-	2,  // 60: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
-	48, // 61: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
-	4,  // 62: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	53, // 63: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
-	4,  // 64: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	53, // 65: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
-	49, // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	54, // 67: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
-	53, // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
-	53, // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
-	51, // 70: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
-	5,  // 71: indykite.config.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
-	5,  // 72: indykite.config.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
-	6,  // 73: indykite.config.v1beta1.TrustScoreDimension.name:type_name -> indykite.config.v1beta1.TrustScoreDimension.Name
-	29, // 74: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.config.v1beta1.TrustScoreDimension
-	7,  // 75: indykite.config.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.UpdateFrequency
-	8,  // 76: indykite.config.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig.Status
-	52, // 77: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
-	36, // 78: indykite.config.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.CapturePipelineTopicScriptConfig
-	20, // 79: indykite.config.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
-	21, // 80: indykite.config.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.config.v1beta1.AzureEventGridSinkConfig
-	22, // 81: indykite.config.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.config.v1beta1.AzureServiceBusSinkConfig
-	40, // 82: indykite.config.v1beta1.EventSinkConfig.Route.context_key_value:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValue
-	37, // 83: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.config.v1beta1.EventSinkConfig.Provider
-	56, // 84: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
-	45, // 85: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	50, // 86: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
-	87, // [87:87] is the sub-list for method output_type
-	87, // [87:87] is the sub-list for method input_type
-	87, // [87:87] is the sub-list for extension type_name
-	87, // [87:87] is the sub-list for extension extendee
-	0,  // [0:87] is the sub-list for field type_name
+	53, // 52: indykite.config.v1beta1.KafkaSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	53, // 53: indykite.config.v1beta1.AzureEventGridSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	53, // 54: indykite.config.v1beta1.AzureServiceBusSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	1,  // 55: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
+	41, // 56: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	42, // 57: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	43, // 58: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	44, // 59: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
+	46, // 60: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	45, // 61: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	47, // 62: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
+	2,  // 63: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
+	48, // 64: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	4,  // 65: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
+	53, // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
+	4,  // 67: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
+	53, // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
+	49, // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	54, // 70: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
+	53, // 71: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
+	53, // 72: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
+	51, // 73: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	5,  // 74: indykite.config.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
+	5,  // 75: indykite.config.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
+	6,  // 76: indykite.config.v1beta1.TrustScoreDimension.name:type_name -> indykite.config.v1beta1.TrustScoreDimension.Name
+	29, // 77: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.config.v1beta1.TrustScoreDimension
+	7,  // 78: indykite.config.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.UpdateFrequency
+	8,  // 79: indykite.config.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig.Status
+	52, // 80: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
+	36, // 81: indykite.config.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.CapturePipelineTopicScriptConfig
+	20, // 82: indykite.config.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
+	21, // 83: indykite.config.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.config.v1beta1.AzureEventGridSinkConfig
+	22, // 84: indykite.config.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.config.v1beta1.AzureServiceBusSinkConfig
+	40, // 85: indykite.config.v1beta1.EventSinkConfig.Route.context_key_value:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValue
+	53, // 86: indykite.config.v1beta1.EventSinkConfig.Route.display_name:type_name -> google.protobuf.StringValue
+	53, // 87: indykite.config.v1beta1.EventSinkConfig.Route.id:type_name -> google.protobuf.StringValue
+	37, // 88: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.config.v1beta1.EventSinkConfig.Provider
+	56, // 89: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
+	45, // 90: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	50, // 91: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
+	92, // [92:92] is the sub-list for method output_type
+	92, // [92:92] is the sub-list for method input_type
+	92, // [92:92] is the sub-list for extension type_name
+	92, // [92:92] is the sub-list for extension extendee
+	0,  // [0:92] is the sub-list for field type_name
 }
 
 func init() { file_indykite_config_v1beta1_model_proto_init() }

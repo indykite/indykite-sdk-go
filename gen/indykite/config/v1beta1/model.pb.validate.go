@@ -3959,6 +3959,25 @@ func (m *KafkaSinkConfig) validate(all bool) error {
 
 	// no validation rules for Password
 
+	if wrapper := m.GetDisplayName(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 254 {
+				err := KafkaSinkConfigValidationError{
+					field:  "DisplayName",
+					reason: "value length must be between 2 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return KafkaSinkConfigMultiError(errors)
 	}
@@ -4104,6 +4123,25 @@ func (m *AzureEventGridSinkConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if wrapper := m.GetDisplayName(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 254 {
+				err := AzureEventGridSinkConfigValidationError{
+					field:  "DisplayName",
+					reason: "value length must be between 2 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return AzureEventGridSinkConfigMultiError(errors)
 	}
@@ -4226,6 +4264,25 @@ func (m *AzureServiceBusSinkConfig) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if wrapper := m.GetDisplayName(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 254 {
+				err := AzureServiceBusSinkConfigValidationError{
+					field:  "DisplayName",
+					reason: "value length must be between 2 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -7348,6 +7405,44 @@ func (m *EventSinkConfig_Route) validate(all bool) error {
 	}
 
 	// no validation rules for StopProcessing
+
+	if wrapper := m.GetDisplayName(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 254 {
+				err := EventSinkConfig_RouteValidationError{
+					field:  "DisplayName",
+					reason: "value length must be between 2 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if wrapper := m.GetId(); wrapper != nil {
+
+		if wrapper.GetValue() != "" {
+
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 63 {
+				err := EventSinkConfig_RouteValidationError{
+					field:  "Id",
+					reason: "value length must be between 2 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
 
 	oneofFilterPresent := false
 	switch v := m.Filter.(type) {

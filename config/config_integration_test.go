@@ -800,10 +800,11 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:  []string{"broker.com"},
-								Topic:    "your-topic-name",
-								Username: "your-name",
-								Password: "your-password",
+								Brokers:     []string{"broker.com"},
+								Topic:       "your-topic-name",
+								Username:    "your-name",
+								Password:    "your-password",
+								DisplayName: wrapperspb.String("provider-display-name"),
 							},
 						},
 					},
@@ -815,6 +816,8 @@ var _ = Describe("Configuration", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "create",
 						},
+						DisplayName: wrapperspb.String("route-display-name"),
+						Id:          wrapperspb.String("route-id"),
 					},
 				},
 			}
@@ -823,9 +826,10 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:  []string{"broker.com"},
-								Topic:    "your-topic-name",
-								Username: "your-name",
+								Brokers:     []string{"broker.com"},
+								Topic:       "your-topic-name",
+								Username:    "your-name",
+								DisplayName: wrapperspb.String("provider-display-name"),
 							},
 						},
 					},
@@ -837,6 +841,8 @@ var _ = Describe("Configuration", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "create",
 						},
+						DisplayName: wrapperspb.String("route-display-name"),
+						Id:          wrapperspb.String("route-id"),
 					},
 				},
 			}
@@ -874,10 +880,11 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:  []string{"broker.com"},
-								Topic:    "your-topic-name",
-								Username: "your-name",
-								Password: "your-password",
+								Brokers:     []string{"broker.com"},
+								Topic:       "your-topic-name",
+								Username:    "your-name",
+								Password:    "your-password",
+								DisplayName: wrapperspb.String("provider-display-name"),
 							},
 						},
 					},
@@ -889,6 +896,8 @@ var _ = Describe("Configuration", func() {
 						Filter: &configpb.EventSinkConfig_Route_EventType{
 							EventType: "create",
 						},
+						DisplayName: wrapperspb.String("route-display-name"),
+						Id:          wrapperspb.String("route-id"),
 					},
 				},
 			}
