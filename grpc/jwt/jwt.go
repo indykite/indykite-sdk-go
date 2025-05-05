@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/v2/jwk"
-	"github.com/lestrrat-go/jwx/v2/jwt"
+	"github.com/lestrrat-go/jwx/v3/jwk"
+	"github.com/lestrrat-go/jwx/v3/jwt"
 	"golang.org/x/oauth2"
 
 	"github.com/indykite/indykite-sdk-go/grpc/config"
@@ -162,7 +162,8 @@ func (ts *jwtAccessTokenSource) Token() (*oauth2.Token, error) {
 	_ = token.Set(jwt.ExpirationKey, exp)
 	_ = token.Set(jwt.JwtIDKey, uuid.New().String())
 
-	signed, err := jwt.Sign(token, jwt.WithKey(ts.signer.Algorithm(), ts.signer))
+	algorithm, _ := ts.signer.Algorithm() // Get only the algorithm
+	signed, err := jwt.Sign(token, jwt.WithKey(algorithm, ts.signer))
 	if err != nil {
 		return nil, err
 	}

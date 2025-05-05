@@ -67,7 +67,7 @@ type bqQueryParameters struct {
 func getProjectID() string {
 	projectID := os.Getenv("PROJECT_ID")
 	if projectID == "" {
-		return "jarvis-dev-268314"
+		return "indykite-rc"
 	}
 
 	return projectID
@@ -114,13 +114,6 @@ func getTableName() string {
 
 	if name := os.Getenv("SDK_AUDIT_TABLE_NAME"); name != "" {
 		auditTableName = name
-	} else {
-		env := "stg"
-		runEnv := os.Getenv("RUN_ENV")
-		if runEnv == "develop" {
-			env = "dev"
-		}
-		auditTableName = fmt.Sprintf("%s_%s", env, auditTableName)
 	}
 	return projectID + "." + auditTableName + "." + auditTableName
 }

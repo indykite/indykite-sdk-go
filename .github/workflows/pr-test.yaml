@@ -20,7 +20,8 @@ env:
     TENANT_ID: ${{ secrets.TENANT_ID }}
     CUSTOMER_ID: ${{ secrets.CUSTOMER_ID }}
     LOCATION_ID: ${{ secrets.LOCATION_ID }}
-    PROJECT_ID: jarvis-dev-268314
+    PROJECT_ID: ${{ secrets.PROJECT_ID }}
+    SDK_AUDIT_TABLE_NAME: ${{ secrets.SDK_AUDIT_TABLE_NAME }}
     PROJ_NUMBER: 699926043561
     RUN_ENV: staging
 
@@ -63,8 +64,8 @@ jobs:
             - name: Authenticate to Google Cloud
               uses: google-github-actions/auth@v2.1.8
               with:
-                  workload_identity_provider: projects/699926043561/locations/global/workloadIdentityPools/github-dev/providers/github-dev-provider
-                  service_account: tester@jarvis-dev-268314.iam.gserviceaccount.com
+                  workload_identity_provider: projects/581343830490/locations/global/workloadIdentityPools/github-mgmt/providers/github-mgmt-provider
+                  service_account: github@${{ secrets.GCP_PROJECT_ID_MGMT }}.iam.gserviceaccount.com
 
             - name: Set up Go
               uses: actions/setup-go@v5
