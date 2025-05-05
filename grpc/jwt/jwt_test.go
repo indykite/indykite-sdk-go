@@ -35,7 +35,7 @@ var _ = Describe("CreateTokenSourceFromPrivateKey", func() {
 		resp, err := jwt.CreateTokenSourceFromPrivateKey(invalidPrivateKeyJWK, appAgentID.String())
 
 		Expect(resp).To(BeNil())
-		Expect(err).To(MatchError(ContainSubstring("failed to unmarshal JSON into key hint")))
+		Expect(err).To(MatchError(ContainSubstring("failed to unmarshal data")))
 	})
 
 	DescribeTable(

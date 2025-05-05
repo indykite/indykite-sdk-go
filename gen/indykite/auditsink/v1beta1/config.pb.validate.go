@@ -4175,6 +4175,226 @@ var _ interface {
 	ErrorName() string
 } = EventSinkConfig_KafkaSinkConfigValidationError{}
 
+// Validate checks the field values on
+// EventSinkConfig_AzureServiceBusSinkConfig with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *EventSinkConfig_AzureServiceBusSinkConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// EventSinkConfig_AzureServiceBusSinkConfig with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// EventSinkConfig_AzureServiceBusSinkConfigMultiError, or nil if none found.
+func (m *EventSinkConfig_AzureServiceBusSinkConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_AzureServiceBusSinkConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ConnectionString
+
+	// no validation rules for QueueOrTopicName
+
+	if len(errors) > 0 {
+		return EventSinkConfig_AzureServiceBusSinkConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_AzureServiceBusSinkConfigMultiError is an error wrapping
+// multiple validation errors returned by
+// EventSinkConfig_AzureServiceBusSinkConfig.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_AzureServiceBusSinkConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_AzureServiceBusSinkConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_AzureServiceBusSinkConfigMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_AzureServiceBusSinkConfigValidationError is the validation
+// error returned by EventSinkConfig_AzureServiceBusSinkConfig.Validate if the
+// designated constraints aren't met.
+type EventSinkConfig_AzureServiceBusSinkConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) ErrorName() string {
+	return "EventSinkConfig_AzureServiceBusSinkConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_AzureServiceBusSinkConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_AzureServiceBusSinkConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_AzureServiceBusSinkConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_AzureServiceBusSinkConfigValidationError{}
+
+// Validate checks the field values on EventSinkConfig_AzureEventGridSinkConfig
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *EventSinkConfig_AzureEventGridSinkConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// EventSinkConfig_AzureEventGridSinkConfig with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// EventSinkConfig_AzureEventGridSinkConfigMultiError, or nil if none found.
+func (m *EventSinkConfig_AzureEventGridSinkConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_AzureEventGridSinkConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TopicEndpoint
+
+	// no validation rules for AccessKey
+
+	if len(errors) > 0 {
+		return EventSinkConfig_AzureEventGridSinkConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_AzureEventGridSinkConfigMultiError is an error wrapping
+// multiple validation errors returned by
+// EventSinkConfig_AzureEventGridSinkConfig.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_AzureEventGridSinkConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_AzureEventGridSinkConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_AzureEventGridSinkConfigMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_AzureEventGridSinkConfigValidationError is the validation
+// error returned by EventSinkConfig_AzureEventGridSinkConfig.Validate if the
+// designated constraints aren't met.
+type EventSinkConfig_AzureEventGridSinkConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) ErrorName() string {
+	return "EventSinkConfig_AzureEventGridSinkConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_AzureEventGridSinkConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_AzureEventGridSinkConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_AzureEventGridSinkConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_AzureEventGridSinkConfigValidationError{}
+
 // Validate checks the field values on EventSinkConfig_Provider with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -4233,6 +4453,88 @@ func (m *EventSinkConfig_Provider) validate(all bool) error {
 			if err := v.Validate(); err != nil {
 				return EventSinkConfig_ProviderValidationError{
 					field:  "Kafka",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *EventSinkConfig_Provider_AzureServiceBus:
+		if v == nil {
+			err := EventSinkConfig_ProviderValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetAzureServiceBus()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "AzureServiceBus",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "AzureServiceBus",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAzureServiceBus()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EventSinkConfig_ProviderValidationError{
+					field:  "AzureServiceBus",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *EventSinkConfig_Provider_AzureEventGrid:
+		if v == nil {
+			err := EventSinkConfig_ProviderValidationError{
+				field:  "Provider",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetAzureEventGrid()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "AzureEventGrid",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EventSinkConfig_ProviderValidationError{
+						field:  "AzureEventGrid",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAzureEventGrid()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EventSinkConfig_ProviderValidationError{
+					field:  "AzureEventGrid",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
