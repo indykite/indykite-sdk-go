@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.57.0](https://github.com/indykite/indykite-sdk-go/compare/v0.56.0...v0.57.0) (2025-05-09)
+
+
+### Features
+
+* remove outdated authn methods ([fb90724](https://github.com/indykite/indykite-sdk-go/commit/fb90724a60779abf21c2ea31c5cf4bd4730f3f27))
+
+
+### Miscellaneous Chores
+
+* upgrade dependencies ([f2611a6](https://github.com/indykite/indykite-sdk-go/commit/f2611a69826f3e8bba40b0d5713c6c8a1067849e))
+
 ## [0.56.0](https://github.com/indykite/indykite-sdk-go/compare/v0.55.0...v0.56.0) (2025-04-24)
 
 
