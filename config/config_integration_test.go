@@ -814,7 +814,7 @@ var _ = Describe("Configuration", func() {
 						ProviderId:     "kafka",
 						StopProcessing: true,
 						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "create",
+							EventType: "indykite.audit.config.create",
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
@@ -839,7 +839,7 @@ var _ = Describe("Configuration", func() {
 						ProviderId:     "kafka",
 						StopProcessing: true,
 						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "create",
+							EventType: "indykite.audit.config.create",
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
@@ -894,7 +894,7 @@ var _ = Describe("Configuration", func() {
 						ProviderId:     "kafka",
 						StopProcessing: true,
 						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "create",
+							EventType: "indykite.audit.config.create",
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
