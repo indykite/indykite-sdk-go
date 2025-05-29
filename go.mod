@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.6-20250425153114-8976f5be98c1.1
-	cloud.google.com/go/bigquery v1.68.0
+	cloud.google.com/go/bigquery v1.69.0
 	github.com/envoyproxy/protoc-gen-validate v1.2.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/golang/protobuf v1.5.4
@@ -20,10 +20,10 @@ require (
 	go.uber.org/mock v0.5.2
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/text v0.25.0
-	google.golang.org/api v0.233.0
-	google.golang.org/genproto v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237
-	google.golang.org/grpc v1.72.1
+	google.golang.org/api v0.235.0
+	google.golang.org/genproto v0.0.0-20250528174236-200df99c418a
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250528174236-200df99c418a
+	google.golang.org/grpc v1.72.2
 	google.golang.org/protobuf v1.36.6
 )
 
