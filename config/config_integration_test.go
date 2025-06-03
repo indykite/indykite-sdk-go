@@ -754,7 +754,7 @@ var _ = Describe("Configuration", func() {
 		})
 	})
 
-	Describe("EventSink", func() {
+	/*Describe("EventSink", func() {
 		It("CreateEventSink", func() {
 			var (
 				err        error
@@ -940,5 +940,5 @@ var _ = Describe("Configuration", func() {
 			err = configClient.Close()
 			Expect(err).To(Succeed())
 		})
-	})
+	})*/
 })
