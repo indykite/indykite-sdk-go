@@ -467,8 +467,10 @@ var _ = Describe("ConfigNode", func() {
 								{
 									ProviderId:     "kafka",
 									StopProcessing: true,
-									Filter: &configpb.EventSinkConfig_Route_EventType{
-										EventType: "indykite.eventsink.config.create",
+									Filter: &configpb.EventSinkConfig_Route_KeysValues{
+										KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+											EventType: "indykite.audit.config.read",
+										},
 									},
 									DisplayName: wrapperspb.String("like-real-route-name"),
 									Id:          wrapperspb.String("like-real-route-id"),
@@ -524,8 +526,10 @@ var _ = Describe("ConfigNode", func() {
 								{
 									ProviderId:     "azureeventgrid",
 									StopProcessing: true,
-									Filter: &configpb.EventSinkConfig_Route_EventType{
-										EventType: "indykite.eventsink.config.create",
+									Filter: &configpb.EventSinkConfig_Route_KeysValues{
+										KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+											EventType: "indykite.audit.config.read",
+										},
 									},
 									DisplayName: wrapperspb.String("like-real-route-name"),
 									Id:          wrapperspb.String("like-real-route-id"),
@@ -581,8 +585,10 @@ var _ = Describe("ConfigNode", func() {
 								{
 									ProviderId:     "azureservicebus",
 									StopProcessing: true,
-									Filter: &configpb.EventSinkConfig_Route_EventType{
-										EventType: "indykite.eventsink.config.create",
+									Filter: &configpb.EventSinkConfig_Route_KeysValues{
+										KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+											EventType: "indykite.audit.config.read",
+										},
 									},
 									DisplayName: wrapperspb.String("like-real-route-name"),
 									Id:          wrapperspb.String("like-real-route-id"),
@@ -1198,8 +1204,10 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "kafka",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								EventType: "indykite.audit.config.create",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),
@@ -1254,8 +1262,10 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "azureeventgrid",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								EventType: "indykite.audit.config.create",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),
@@ -1310,8 +1320,10 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "azureservicebus",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								EventType: "indykite.audit.config.create",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),
@@ -1944,8 +1956,13 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "kafka",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.update",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								KeyValuePairs: []*configpb.EventSinkConfig_Route_KeyValuePair{
+									{Key: "relationshipupsert*", Value: "HAS"},
+								},
+								EventType: "iindykite.audit.ingest.*",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),
@@ -1999,8 +2016,10 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "azureeventgrid",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.update",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								EventType: "indykite.audit.config.update",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),
@@ -2054,8 +2073,10 @@ var _ = Describe("ConfigNode", func() {
 					{
 						ProviderId:     "azureservicebus",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.eventsink.config.update",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								EventType: "indykite.audit.config.update",
+							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),
 						Id:          wrapperspb.String("like-real-route-id"),

@@ -7446,42 +7446,7 @@ func (m *EventSinkConfig_Route) validate(all bool) error {
 
 	oneofFilterPresent := false
 	switch v := m.Filter.(type) {
-	case *EventSinkConfig_Route_EventType:
-		if v == nil {
-			err := EventSinkConfig_RouteValidationError{
-				field:  "Filter",
-				reason: "oneof value cannot be a typed-nil",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-		oneofFilterPresent = true
-
-		if utf8.RuneCountInString(m.GetEventType()) < 1 {
-			err := EventSinkConfig_RouteValidationError{
-				field:  "EventType",
-				reason: "value length must be at least 1 runes",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-		if !_EventSinkConfig_Route_EventType_Pattern.MatchString(m.GetEventType()) {
-			err := EventSinkConfig_RouteValidationError{
-				field:  "EventType",
-				reason: "value does not match regex pattern \"^[a-zA-Z0-9_*\\\\.]+$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	case *EventSinkConfig_Route_ContextKeyValue:
+	case *EventSinkConfig_Route_KeysValues:
 		if v == nil {
 			err := EventSinkConfig_RouteValidationError{
 				field:  "Filter",
@@ -7495,11 +7460,11 @@ func (m *EventSinkConfig_Route) validate(all bool) error {
 		oneofFilterPresent = true
 
 		if all {
-			switch v := interface{}(m.GetContextKeyValue()).(type) {
+			switch v := interface{}(m.GetKeysValues()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, EventSinkConfig_RouteValidationError{
-						field:  "ContextKeyValue",
+						field:  "KeysValues",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -7507,16 +7472,16 @@ func (m *EventSinkConfig_Route) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, EventSinkConfig_RouteValidationError{
-						field:  "ContextKeyValue",
+						field:  "KeysValues",
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
 				}
 			}
-		} else if v, ok := interface{}(m.GetContextKeyValue()).(interface{ Validate() error }); ok {
+		} else if v, ok := interface{}(m.GetKeysValues()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return EventSinkConfig_RouteValidationError{
-					field:  "ContextKeyValue",
+					field:  "KeysValues",
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -7619,24 +7584,23 @@ var _ interface {
 
 var _EventSinkConfig_Route_ProviderId_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
 
-var _EventSinkConfig_Route_EventType_Pattern = regexp.MustCompile("^[a-zA-Z0-9_*\\.]+$")
-
-// Validate checks the field values on EventSinkConfig_Route_KeyValue with the
-// rules defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *EventSinkConfig_Route_KeyValue) Validate() error {
+// Validate checks the field values on EventSinkConfig_Route_KeyValuePair with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *EventSinkConfig_Route_KeyValuePair) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on EventSinkConfig_Route_KeyValue with
-// the rules defined in the proto definition for this message. If any rules
-// are violated, the result is a list of violation errors wrapped in
-// EventSinkConfig_Route_KeyValueMultiError, or nil if none found.
-func (m *EventSinkConfig_Route_KeyValue) ValidateAll() error {
+// ValidateAll checks the field values on EventSinkConfig_Route_KeyValuePair
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// EventSinkConfig_Route_KeyValuePairMultiError, or nil if none found.
+func (m *EventSinkConfig_Route_KeyValuePair) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
+func (m *EventSinkConfig_Route_KeyValuePair) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -7644,7 +7608,7 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 	var errors []error
 
 	if utf8.RuneCountInString(m.GetKey()) < 1 {
-		err := EventSinkConfig_Route_KeyValueValidationError{
+		err := EventSinkConfig_Route_KeyValuePairValidationError{
 			field:  "Key",
 			reason: "value length must be at least 1 runes",
 		}
@@ -7654,8 +7618,8 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if !_EventSinkConfig_Route_KeyValue_Key_Pattern.MatchString(m.GetKey()) {
-		err := EventSinkConfig_Route_KeyValueValidationError{
+	if !_EventSinkConfig_Route_KeyValuePair_Key_Pattern.MatchString(m.GetKey()) {
+		err := EventSinkConfig_Route_KeyValuePairValidationError{
 			field:  "Key",
 			reason: "value does not match regex pattern \"^[a-zA-Z0-9*]+$\"",
 		}
@@ -7666,7 +7630,7 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 	}
 
 	if utf8.RuneCountInString(m.GetValue()) < 1 {
-		err := EventSinkConfig_Route_KeyValueValidationError{
+		err := EventSinkConfig_Route_KeyValuePairValidationError{
 			field:  "Value",
 			reason: "value length must be at least 1 runes",
 		}
@@ -7676,35 +7640,21 @@ func (m *EventSinkConfig_Route_KeyValue) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetEventType() != "" {
-
-		if !_EventSinkConfig_Route_KeyValue_EventType_Pattern.MatchString(m.GetEventType()) {
-			err := EventSinkConfig_Route_KeyValueValidationError{
-				field:  "EventType",
-				reason: "value does not match regex pattern \"^[a-zA-Z0-9_*\\\\.]+$\"",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		}
-
-	}
-
 	if len(errors) > 0 {
-		return EventSinkConfig_Route_KeyValueMultiError(errors)
+		return EventSinkConfig_Route_KeyValuePairMultiError(errors)
 	}
 
 	return nil
 }
 
-// EventSinkConfig_Route_KeyValueMultiError is an error wrapping multiple
-// validation errors returned by EventSinkConfig_Route_KeyValue.ValidateAll()
-// if the designated constraints aren't met.
-type EventSinkConfig_Route_KeyValueMultiError []error
+// EventSinkConfig_Route_KeyValuePairMultiError is an error wrapping multiple
+// validation errors returned by
+// EventSinkConfig_Route_KeyValuePair.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_Route_KeyValuePairMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m EventSinkConfig_Route_KeyValueMultiError) Error() string {
+func (m EventSinkConfig_Route_KeyValuePairMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -7713,12 +7663,12 @@ func (m EventSinkConfig_Route_KeyValueMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m EventSinkConfig_Route_KeyValueMultiError) AllErrors() []error { return m }
+func (m EventSinkConfig_Route_KeyValuePairMultiError) AllErrors() []error { return m }
 
-// EventSinkConfig_Route_KeyValueValidationError is the validation error
-// returned by EventSinkConfig_Route_KeyValue.Validate if the designated
+// EventSinkConfig_Route_KeyValuePairValidationError is the validation error
+// returned by EventSinkConfig_Route_KeyValuePair.Validate if the designated
 // constraints aren't met.
-type EventSinkConfig_Route_KeyValueValidationError struct {
+type EventSinkConfig_Route_KeyValuePairValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -7726,24 +7676,24 @@ type EventSinkConfig_Route_KeyValueValidationError struct {
 }
 
 // Field function returns field value.
-func (e EventSinkConfig_Route_KeyValueValidationError) Field() string { return e.field }
+func (e EventSinkConfig_Route_KeyValuePairValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e EventSinkConfig_Route_KeyValueValidationError) Reason() string { return e.reason }
+func (e EventSinkConfig_Route_KeyValuePairValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e EventSinkConfig_Route_KeyValueValidationError) Cause() error { return e.cause }
+func (e EventSinkConfig_Route_KeyValuePairValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e EventSinkConfig_Route_KeyValueValidationError) Key() bool { return e.key }
+func (e EventSinkConfig_Route_KeyValuePairValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e EventSinkConfig_Route_KeyValueValidationError) ErrorName() string {
-	return "EventSinkConfig_Route_KeyValueValidationError"
+func (e EventSinkConfig_Route_KeyValuePairValidationError) ErrorName() string {
+	return "EventSinkConfig_Route_KeyValuePairValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e EventSinkConfig_Route_KeyValueValidationError) Error() string {
+func (e EventSinkConfig_Route_KeyValuePairValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -7755,14 +7705,14 @@ func (e EventSinkConfig_Route_KeyValueValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sEventSinkConfig_Route_KeyValue.%s: %s%s",
+		"invalid %sEventSinkConfig_Route_KeyValuePair.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = EventSinkConfig_Route_KeyValueValidationError{}
+var _ error = EventSinkConfig_Route_KeyValuePairValidationError{}
 
 var _ interface {
 	Field() string
@@ -7770,11 +7720,162 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = EventSinkConfig_Route_KeyValueValidationError{}
+} = EventSinkConfig_Route_KeyValuePairValidationError{}
 
-var _EventSinkConfig_Route_KeyValue_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*]+$")
+var _EventSinkConfig_Route_KeyValuePair_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*]+$")
 
-var _EventSinkConfig_Route_KeyValue_EventType_Pattern = regexp.MustCompile("^[a-zA-Z0-9_*\\.]+$")
+// Validate checks the field values on
+// EventSinkConfig_Route_EventTypeKeysValues with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *EventSinkConfig_Route_EventTypeKeysValues) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// EventSinkConfig_Route_EventTypeKeysValues with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// EventSinkConfig_Route_EventTypeKeysValuesMultiError, or nil if none found.
+func (m *EventSinkConfig_Route_EventTypeKeysValues) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *EventSinkConfig_Route_EventTypeKeysValues) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetKeyValuePairs() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, EventSinkConfig_Route_EventTypeKeysValuesValidationError{
+						field:  fmt.Sprintf("KeyValuePairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, EventSinkConfig_Route_EventTypeKeysValuesValidationError{
+						field:  fmt.Sprintf("KeyValuePairs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return EventSinkConfig_Route_EventTypeKeysValuesValidationError{
+					field:  fmt.Sprintf("KeyValuePairs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if !_EventSinkConfig_Route_EventTypeKeysValues_EventType_Pattern.MatchString(m.GetEventType()) {
+		err := EventSinkConfig_Route_EventTypeKeysValuesValidationError{
+			field:  "EventType",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9_*.]+$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return EventSinkConfig_Route_EventTypeKeysValuesMultiError(errors)
+	}
+
+	return nil
+}
+
+// EventSinkConfig_Route_EventTypeKeysValuesMultiError is an error wrapping
+// multiple validation errors returned by
+// EventSinkConfig_Route_EventTypeKeysValues.ValidateAll() if the designated
+// constraints aren't met.
+type EventSinkConfig_Route_EventTypeKeysValuesMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m EventSinkConfig_Route_EventTypeKeysValuesMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m EventSinkConfig_Route_EventTypeKeysValuesMultiError) AllErrors() []error { return m }
+
+// EventSinkConfig_Route_EventTypeKeysValuesValidationError is the validation
+// error returned by EventSinkConfig_Route_EventTypeKeysValues.Validate if the
+// designated constraints aren't met.
+type EventSinkConfig_Route_EventTypeKeysValuesValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) ErrorName() string {
+	return "EventSinkConfig_Route_EventTypeKeysValuesValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e EventSinkConfig_Route_EventTypeKeysValuesValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sEventSinkConfig_Route_EventTypeKeysValues.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = EventSinkConfig_Route_EventTypeKeysValuesValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = EventSinkConfig_Route_EventTypeKeysValuesValidationError{}
+
+var _EventSinkConfig_Route_EventTypeKeysValues_EventType_Pattern = regexp.MustCompile("^[a-zA-Z0-9_*.]+$")
 
 // Validate checks the field values on TokenIntrospectConfig_JWT with the rules
 // defined in the proto definition for this message. If any rules are

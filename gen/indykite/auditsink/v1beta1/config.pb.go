@@ -298,7 +298,7 @@ func (x ExternalDataResolverConfig_ContentType) Number() protoreflect.EnumNumber
 
 // Deprecated: Use ExternalDataResolverConfig_ContentType.Descriptor instead.
 func (ExternalDataResolverConfig_ContentType) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{10, 0}
 }
 
 type AuthorizationPolicyConfig_Status int32
@@ -350,7 +350,7 @@ func (x AuthorizationPolicyConfig_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AuthorizationPolicyConfig_Status.Descriptor instead.
 func (AuthorizationPolicyConfig_Status) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{10, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{11, 0}
 }
 
 type EntityMatchingPipelineConfig_Status int32
@@ -405,7 +405,7 @@ func (x EntityMatchingPipelineConfig_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use EntityMatchingPipelineConfig_Status.Descriptor instead.
 func (EntityMatchingPipelineConfig_Status) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{16, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17, 0}
 }
 
 type TrustScoreDimension_Name int32
@@ -463,7 +463,7 @@ func (x TrustScoreDimension_Name) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrustScoreDimension_Name.Descriptor instead.
 func (TrustScoreDimension_Name) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{18, 0}
 }
 
 type TrustScoreProfileConfig_UpdateFrequency int32
@@ -518,7 +518,7 @@ func (x TrustScoreProfileConfig_UpdateFrequency) Number() protoreflect.EnumNumbe
 
 // Deprecated: Use TrustScoreProfileConfig_UpdateFrequency.Descriptor instead.
 func (TrustScoreProfileConfig_UpdateFrequency) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{18, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{19, 0}
 }
 
 type KnowledgeQueryConfig_Status int32
@@ -570,7 +570,7 @@ func (x KnowledgeQueryConfig_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use KnowledgeQueryConfig_Status.Descriptor instead.
 func (KnowledgeQueryConfig_Status) EnumDescriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{19, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{20, 0}
 }
 
 type ContainersPath struct {
@@ -943,6 +943,7 @@ type ConfigDetail struct {
 	Version     int64                  `protobuf:"varint,4,opt,name=version,proto3" json:"version,omitempty"`
 	// Types that are valid to be assigned to Configuration:
 	//
+	//	*ConfigDetail_ApplicationAgent
 	//	*ConfigDetail_ApplicationAgentCredential
 	//	*ConfigDetail_ServiceAccountCredential
 	//	*ConfigDetail_EventSinkConfig
@@ -1022,6 +1023,15 @@ func (x *ConfigDetail) GetVersion() int64 {
 func (x *ConfigDetail) GetConfiguration() isConfigDetail_Configuration {
 	if x != nil {
 		return x.Configuration
+	}
+	return nil
+}
+
+func (x *ConfigDetail) GetApplicationAgent() *ApplicationAgentConfig {
+	if x != nil {
+		if x, ok := x.Configuration.(*ConfigDetail_ApplicationAgent); ok {
+			return x.ApplicationAgent
+		}
 	}
 	return nil
 }
@@ -1147,6 +1157,10 @@ type isConfigDetail_Configuration interface {
 	isConfigDetail_Configuration()
 }
 
+type ConfigDetail_ApplicationAgent struct {
+	ApplicationAgent *ApplicationAgentConfig `protobuf:"bytes,27,opt,name=application_agent,json=applicationAgent,proto3,oneof"`
+}
+
 type ConfigDetail_ApplicationAgentCredential struct {
 	ApplicationAgentCredential *ApplicationAgentCredentialConfig `protobuf:"bytes,8,opt,name=application_agent_credential,json=applicationAgentCredential,proto3,oneof"`
 }
@@ -1198,6 +1212,8 @@ type ConfigDetail_CapturePipelineConfig struct {
 type ConfigDetail_CapturePipelineTopicConfig struct {
 	CapturePipelineTopicConfig *CapturePipelineTopicConfig `protobuf:"bytes,26,opt,name=capture_pipeline_topic_config,json=capturePipelineTopicConfig,proto3,oneof"`
 }
+
+func (*ConfigDetail_ApplicationAgent) isConfigDetail_Configuration() {}
 
 func (*ConfigDetail_ApplicationAgentCredential) isConfigDetail_Configuration() {}
 
@@ -1295,6 +1311,50 @@ func (x *ApplicationAgentCredentialConfig) GetExpireTime() *timestamppb.Timestam
 	return nil
 }
 
+type ApplicationAgentConfig struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ApiPermissions []string               `protobuf:"bytes,1,rep,name=api_permissions,json=apiPermissions,proto3" json:"api_permissions,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ApplicationAgentConfig) Reset() {
+	*x = ApplicationAgentConfig{}
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplicationAgentConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplicationAgentConfig) ProtoMessage() {}
+
+func (x *ApplicationAgentConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplicationAgentConfig.ProtoReflect.Descriptor instead.
+func (*ApplicationAgentConfig) Descriptor() ([]byte, []int) {
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ApplicationAgentConfig) GetApiPermissions() []string {
+	if x != nil {
+		return x.ApiPermissions
+	}
+	return nil
+}
+
 type ServiceAccountCredentialConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Kid   string                 `protobuf:"bytes,1,opt,name=kid,proto3" json:"kid,omitempty"`
@@ -1309,7 +1369,7 @@ type ServiceAccountCredentialConfig struct {
 
 func (x *ServiceAccountCredentialConfig) Reset() {
 	*x = ServiceAccountCredentialConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[7]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1321,7 +1381,7 @@ func (x *ServiceAccountCredentialConfig) String() string {
 func (*ServiceAccountCredentialConfig) ProtoMessage() {}
 
 func (x *ServiceAccountCredentialConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[7]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1334,7 +1394,7 @@ func (x *ServiceAccountCredentialConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceAccountCredentialConfig.ProtoReflect.Descriptor instead.
 func (*ServiceAccountCredentialConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{7}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ServiceAccountCredentialConfig) GetKid() string {
@@ -1375,7 +1435,7 @@ type EventSinkConfig struct {
 
 func (x *EventSinkConfig) Reset() {
 	*x = EventSinkConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[8]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1387,7 +1447,7 @@ func (x *EventSinkConfig) String() string {
 func (*EventSinkConfig) ProtoMessage() {}
 
 func (x *EventSinkConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[8]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1400,7 +1460,7 @@ func (x *EventSinkConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventSinkConfig.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *EventSinkConfig) GetProviders() map[string]*EventSinkConfig_Provider {
@@ -1434,7 +1494,7 @@ type ExternalDataResolverConfig struct {
 
 func (x *ExternalDataResolverConfig) Reset() {
 	*x = ExternalDataResolverConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[9]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1446,7 +1506,7 @@ func (x *ExternalDataResolverConfig) String() string {
 func (*ExternalDataResolverConfig) ProtoMessage() {}
 
 func (x *ExternalDataResolverConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[9]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1459,7 +1519,7 @@ func (x *ExternalDataResolverConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExternalDataResolverConfig.ProtoReflect.Descriptor instead.
 func (*ExternalDataResolverConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ExternalDataResolverConfig) GetUrl() string {
@@ -1525,7 +1585,7 @@ type AuthorizationPolicyConfig struct {
 
 func (x *AuthorizationPolicyConfig) Reset() {
 	*x = AuthorizationPolicyConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[10]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1537,7 +1597,7 @@ func (x *AuthorizationPolicyConfig) String() string {
 func (*AuthorizationPolicyConfig) ProtoMessage() {}
 
 func (x *AuthorizationPolicyConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[10]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1550,7 +1610,7 @@ func (x *AuthorizationPolicyConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthorizationPolicyConfig.ProtoReflect.Descriptor instead.
 func (*AuthorizationPolicyConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{10}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *AuthorizationPolicyConfig) GetPolicy() string {
@@ -1594,7 +1654,7 @@ type AssignConfigPermissions struct {
 
 func (x *AssignConfigPermissions) Reset() {
 	*x = AssignConfigPermissions{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[11]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1606,7 +1666,7 @@ func (x *AssignConfigPermissions) String() string {
 func (*AssignConfigPermissions) ProtoMessage() {}
 
 func (x *AssignConfigPermissions) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[11]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1619,7 +1679,7 @@ func (x *AssignConfigPermissions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignConfigPermissions.ProtoReflect.Descriptor instead.
 func (*AssignConfigPermissions) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{11}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *AssignConfigPermissions) GetTargetIdentifier() string {
@@ -1684,7 +1744,7 @@ type RevokeConfigPermissions struct {
 
 func (x *RevokeConfigPermissions) Reset() {
 	*x = RevokeConfigPermissions{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[12]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1696,7 +1756,7 @@ func (x *RevokeConfigPermissions) String() string {
 func (*RevokeConfigPermissions) ProtoMessage() {}
 
 func (x *RevokeConfigPermissions) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[12]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1709,7 +1769,7 @@ func (x *RevokeConfigPermissions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeConfigPermissions.ProtoReflect.Descriptor instead.
 func (*RevokeConfigPermissions) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{12}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *RevokeConfigPermissions) GetTargetIdentifier() string {
@@ -1787,7 +1847,7 @@ type TokenIntrospectConfig struct {
 
 func (x *TokenIntrospectConfig) Reset() {
 	*x = TokenIntrospectConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[13]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1799,7 +1859,7 @@ func (x *TokenIntrospectConfig) String() string {
 func (*TokenIntrospectConfig) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[13]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1812,7 +1872,7 @@ func (x *TokenIntrospectConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *TokenIntrospectConfig) GetTokenMatcher() isTokenIntrospectConfig_TokenMatcher {
@@ -1937,7 +1997,7 @@ type ConsentConfiguration struct {
 
 func (x *ConsentConfiguration) Reset() {
 	*x = ConsentConfiguration{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[14]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1949,7 +2009,7 @@ func (x *ConsentConfiguration) String() string {
 func (*ConsentConfiguration) ProtoMessage() {}
 
 func (x *ConsentConfiguration) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[14]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1962,7 +2022,7 @@ func (x *ConsentConfiguration) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsentConfiguration.ProtoReflect.Descriptor instead.
 func (*ConsentConfiguration) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ConsentConfiguration) GetPurpose() string {
@@ -2019,7 +2079,7 @@ type IngestPipelineConfig struct {
 
 func (x *IngestPipelineConfig) Reset() {
 	*x = IngestPipelineConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[15]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2031,7 +2091,7 @@ func (x *IngestPipelineConfig) String() string {
 func (*IngestPipelineConfig) ProtoMessage() {}
 
 func (x *IngestPipelineConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[15]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2044,7 +2104,7 @@ func (x *IngestPipelineConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestPipelineConfig.ProtoReflect.Descriptor instead.
 func (*IngestPipelineConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{15}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *IngestPipelineConfig) GetSources() []string {
@@ -2099,7 +2159,7 @@ type EntityMatchingPipelineConfig struct {
 
 func (x *EntityMatchingPipelineConfig) Reset() {
 	*x = EntityMatchingPipelineConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[16]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2111,7 +2171,7 @@ func (x *EntityMatchingPipelineConfig) String() string {
 func (*EntityMatchingPipelineConfig) ProtoMessage() {}
 
 func (x *EntityMatchingPipelineConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[16]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2124,7 +2184,7 @@ func (x *EntityMatchingPipelineConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EntityMatchingPipelineConfig.ProtoReflect.Descriptor instead.
 func (*EntityMatchingPipelineConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{16}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *EntityMatchingPipelineConfig) GetNodeFilter() *EntityMatchingPipelineConfig_NodeFilter {
@@ -2214,7 +2274,7 @@ type TrustScoreDimension struct {
 
 func (x *TrustScoreDimension) Reset() {
 	*x = TrustScoreDimension{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[17]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2226,7 +2286,7 @@ func (x *TrustScoreDimension) String() string {
 func (*TrustScoreDimension) ProtoMessage() {}
 
 func (x *TrustScoreDimension) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[17]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2239,7 +2299,7 @@ func (x *TrustScoreDimension) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrustScoreDimension.ProtoReflect.Descriptor instead.
 func (*TrustScoreDimension) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *TrustScoreDimension) GetName() TrustScoreDimension_Name {
@@ -2267,7 +2327,7 @@ type TrustScoreProfileConfig struct {
 
 func (x *TrustScoreProfileConfig) Reset() {
 	*x = TrustScoreProfileConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[18]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2279,7 +2339,7 @@ func (x *TrustScoreProfileConfig) String() string {
 func (*TrustScoreProfileConfig) ProtoMessage() {}
 
 func (x *TrustScoreProfileConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[18]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2292,7 +2352,7 @@ func (x *TrustScoreProfileConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrustScoreProfileConfig.ProtoReflect.Descriptor instead.
 func (*TrustScoreProfileConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{18}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TrustScoreProfileConfig) GetNodeClassification() string {
@@ -2330,7 +2390,7 @@ type KnowledgeQueryConfig struct {
 
 func (x *KnowledgeQueryConfig) Reset() {
 	*x = KnowledgeQueryConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[19]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2342,7 +2402,7 @@ func (x *KnowledgeQueryConfig) String() string {
 func (*KnowledgeQueryConfig) ProtoMessage() {}
 
 func (x *KnowledgeQueryConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[19]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2355,7 +2415,7 @@ func (x *KnowledgeQueryConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KnowledgeQueryConfig.ProtoReflect.Descriptor instead.
 func (*KnowledgeQueryConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{19}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *KnowledgeQueryConfig) GetQuery() string {
@@ -2388,7 +2448,7 @@ type CapturePipelineConfig struct {
 
 func (x *CapturePipelineConfig) Reset() {
 	*x = CapturePipelineConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[20]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2400,7 +2460,7 @@ func (x *CapturePipelineConfig) String() string {
 func (*CapturePipelineConfig) ProtoMessage() {}
 
 func (x *CapturePipelineConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[20]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2413,7 +2473,7 @@ func (x *CapturePipelineConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapturePipelineConfig.ProtoReflect.Descriptor instead.
 func (*CapturePipelineConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{20}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CapturePipelineConfig) GetAppAgentToken() string {
@@ -2433,7 +2493,7 @@ type CapturePipelineTopicConfig struct {
 
 func (x *CapturePipelineTopicConfig) Reset() {
 	*x = CapturePipelineTopicConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[21]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2445,7 +2505,7 @@ func (x *CapturePipelineTopicConfig) String() string {
 func (*CapturePipelineTopicConfig) ProtoMessage() {}
 
 func (x *CapturePipelineTopicConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[21]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2458,7 +2518,7 @@ func (x *CapturePipelineTopicConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapturePipelineTopicConfig.ProtoReflect.Descriptor instead.
 func (*CapturePipelineTopicConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{21}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CapturePipelineTopicConfig) GetCapturePipelineId() string {
@@ -2485,7 +2545,7 @@ type CreatedConfig_Location struct {
 
 func (x *CreatedConfig_Location) Reset() {
 	*x = CreatedConfig_Location{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[22]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2497,7 +2557,7 @@ func (x *CreatedConfig_Location) String() string {
 func (*CreatedConfig_Location) ProtoMessage() {}
 
 func (x *CreatedConfig_Location) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[22]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2540,7 +2600,7 @@ type ReadConfig_NameIdentifier struct {
 
 func (x *ReadConfig_NameIdentifier) Reset() {
 	*x = ReadConfig_NameIdentifier{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[23]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2552,7 +2612,7 @@ func (x *ReadConfig_NameIdentifier) String() string {
 func (*ReadConfig_NameIdentifier) ProtoMessage() {}
 
 func (x *ReadConfig_NameIdentifier) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[23]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2603,7 +2663,7 @@ type EventSinkConfig_KafkaSinkConfig struct {
 
 func (x *EventSinkConfig_KafkaSinkConfig) Reset() {
 	*x = EventSinkConfig_KafkaSinkConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[24]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2615,7 +2675,7 @@ func (x *EventSinkConfig_KafkaSinkConfig) String() string {
 func (*EventSinkConfig_KafkaSinkConfig) ProtoMessage() {}
 
 func (x *EventSinkConfig_KafkaSinkConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[24]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2628,7 +2688,7 @@ func (x *EventSinkConfig_KafkaSinkConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventSinkConfig_KafkaSinkConfig.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_KafkaSinkConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 0}
 }
 
 func (x *EventSinkConfig_KafkaSinkConfig) GetBrokers() []string {
@@ -2683,7 +2743,7 @@ type EventSinkConfig_AzureServiceBusSinkConfig struct {
 
 func (x *EventSinkConfig_AzureServiceBusSinkConfig) Reset() {
 	*x = EventSinkConfig_AzureServiceBusSinkConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[25]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2695,7 +2755,7 @@ func (x *EventSinkConfig_AzureServiceBusSinkConfig) String() string {
 func (*EventSinkConfig_AzureServiceBusSinkConfig) ProtoMessage() {}
 
 func (x *EventSinkConfig_AzureServiceBusSinkConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[25]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2708,7 +2768,7 @@ func (x *EventSinkConfig_AzureServiceBusSinkConfig) ProtoReflect() protoreflect.
 
 // Deprecated: Use EventSinkConfig_AzureServiceBusSinkConfig.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_AzureServiceBusSinkConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 1}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 1}
 }
 
 func (x *EventSinkConfig_AzureServiceBusSinkConfig) GetConnectionString() string {
@@ -2735,7 +2795,7 @@ type EventSinkConfig_AzureEventGridSinkConfig struct {
 
 func (x *EventSinkConfig_AzureEventGridSinkConfig) Reset() {
 	*x = EventSinkConfig_AzureEventGridSinkConfig{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[26]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2747,7 +2807,7 @@ func (x *EventSinkConfig_AzureEventGridSinkConfig) String() string {
 func (*EventSinkConfig_AzureEventGridSinkConfig) ProtoMessage() {}
 
 func (x *EventSinkConfig_AzureEventGridSinkConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[26]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2760,7 +2820,7 @@ func (x *EventSinkConfig_AzureEventGridSinkConfig) ProtoReflect() protoreflect.M
 
 // Deprecated: Use EventSinkConfig_AzureEventGridSinkConfig.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_AzureEventGridSinkConfig) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 2}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 2}
 }
 
 func (x *EventSinkConfig_AzureEventGridSinkConfig) GetTopicEndpoint() string {
@@ -2791,7 +2851,7 @@ type EventSinkConfig_Provider struct {
 
 func (x *EventSinkConfig_Provider) Reset() {
 	*x = EventSinkConfig_Provider{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[27]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2803,7 +2863,7 @@ func (x *EventSinkConfig_Provider) String() string {
 func (*EventSinkConfig_Provider) ProtoMessage() {}
 
 func (x *EventSinkConfig_Provider) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[27]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2816,7 +2876,7 @@ func (x *EventSinkConfig_Provider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventSinkConfig_Provider.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_Provider) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 3}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 3}
 }
 
 func (x *EventSinkConfig_Provider) GetProvider() isEventSinkConfig_Provider_Provider {
@@ -2890,7 +2950,7 @@ type EventSinkConfig_Route struct {
 
 func (x *EventSinkConfig_Route) Reset() {
 	*x = EventSinkConfig_Route{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[28]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2902,7 +2962,7 @@ func (x *EventSinkConfig_Route) String() string {
 func (*EventSinkConfig_Route) ProtoMessage() {}
 
 func (x *EventSinkConfig_Route) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[28]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2915,7 +2975,7 @@ func (x *EventSinkConfig_Route) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventSinkConfig_Route.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_Route) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 4}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 4}
 }
 
 func (x *EventSinkConfig_Route) GetProviderId() string {
@@ -2983,7 +3043,7 @@ type EventSinkConfig_Route_KeyValue struct {
 
 func (x *EventSinkConfig_Route_KeyValue) Reset() {
 	*x = EventSinkConfig_Route_KeyValue{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[30]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2995,7 +3055,7 @@ func (x *EventSinkConfig_Route_KeyValue) String() string {
 func (*EventSinkConfig_Route_KeyValue) ProtoMessage() {}
 
 func (x *EventSinkConfig_Route_KeyValue) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[30]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3008,7 +3068,7 @@ func (x *EventSinkConfig_Route_KeyValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EventSinkConfig_Route_KeyValue.ProtoReflect.Descriptor instead.
 func (*EventSinkConfig_Route_KeyValue) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{8, 4, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{9, 4, 0}
 }
 
 func (x *EventSinkConfig_Route_KeyValue) GetKey() string {
@@ -3038,7 +3098,7 @@ type TokenIntrospectConfig_JWT struct {
 
 func (x *TokenIntrospectConfig_JWT) Reset() {
 	*x = TokenIntrospectConfig_JWT{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[32]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3050,7 +3110,7 @@ func (x *TokenIntrospectConfig_JWT) String() string {
 func (*TokenIntrospectConfig_JWT) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_JWT) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[32]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3063,7 +3123,7 @@ func (x *TokenIntrospectConfig_JWT) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig_JWT.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig_JWT) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14, 0}
 }
 
 func (x *TokenIntrospectConfig_JWT) GetIssuer() string {
@@ -3090,7 +3150,7 @@ type TokenIntrospectConfig_Opaque struct {
 
 func (x *TokenIntrospectConfig_Opaque) Reset() {
 	*x = TokenIntrospectConfig_Opaque{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[33]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3102,7 +3162,7 @@ func (x *TokenIntrospectConfig_Opaque) String() string {
 func (*TokenIntrospectConfig_Opaque) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Opaque) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[33]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3115,7 +3175,7 @@ func (x *TokenIntrospectConfig_Opaque) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig_Opaque.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig_Opaque) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13, 1}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14, 1}
 }
 
 // Offline validation works only with JWT.
@@ -3131,7 +3191,7 @@ type TokenIntrospectConfig_Offline struct {
 
 func (x *TokenIntrospectConfig_Offline) Reset() {
 	*x = TokenIntrospectConfig_Offline{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[34]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3143,7 +3203,7 @@ func (x *TokenIntrospectConfig_Offline) String() string {
 func (*TokenIntrospectConfig_Offline) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Offline) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[34]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3156,7 +3216,7 @@ func (x *TokenIntrospectConfig_Offline) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig_Offline.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig_Offline) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13, 2}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14, 2}
 }
 
 func (x *TokenIntrospectConfig_Offline) GetPublicJwks() [][]byte {
@@ -3189,7 +3249,7 @@ type TokenIntrospectConfig_Online struct {
 
 func (x *TokenIntrospectConfig_Online) Reset() {
 	*x = TokenIntrospectConfig_Online{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[35]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3201,7 +3261,7 @@ func (x *TokenIntrospectConfig_Online) String() string {
 func (*TokenIntrospectConfig_Online) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Online) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[35]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3214,7 +3274,7 @@ func (x *TokenIntrospectConfig_Online) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig_Online.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig_Online) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13, 3}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14, 3}
 }
 
 func (x *TokenIntrospectConfig_Online) GetUserinfoEndpoint() string {
@@ -3247,7 +3307,7 @@ type TokenIntrospectConfig_Claim struct {
 
 func (x *TokenIntrospectConfig_Claim) Reset() {
 	*x = TokenIntrospectConfig_Claim{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[36]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3259,7 +3319,7 @@ func (x *TokenIntrospectConfig_Claim) String() string {
 func (*TokenIntrospectConfig_Claim) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Claim) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[36]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3272,7 +3332,7 @@ func (x *TokenIntrospectConfig_Claim) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TokenIntrospectConfig_Claim.ProtoReflect.Descriptor instead.
 func (*TokenIntrospectConfig_Claim) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{13, 4}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{14, 4}
 }
 
 func (x *TokenIntrospectConfig_Claim) GetSelector() string {
@@ -3294,7 +3354,7 @@ type EntityMatchingPipelineConfig_NodeFilter struct {
 
 func (x *EntityMatchingPipelineConfig_NodeFilter) Reset() {
 	*x = EntityMatchingPipelineConfig_NodeFilter{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[38]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3306,7 +3366,7 @@ func (x *EntityMatchingPipelineConfig_NodeFilter) String() string {
 func (*EntityMatchingPipelineConfig_NodeFilter) ProtoMessage() {}
 
 func (x *EntityMatchingPipelineConfig_NodeFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[38]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3319,7 +3379,7 @@ func (x *EntityMatchingPipelineConfig_NodeFilter) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use EntityMatchingPipelineConfig_NodeFilter.ProtoReflect.Descriptor instead.
 func (*EntityMatchingPipelineConfig_NodeFilter) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{16, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17, 0}
 }
 
 func (x *EntityMatchingPipelineConfig_NodeFilter) GetSourceNodeTypes() []string {
@@ -3354,7 +3414,7 @@ type EntityMatchingPipelineConfig_PropertyMapping struct {
 
 func (x *EntityMatchingPipelineConfig_PropertyMapping) Reset() {
 	*x = EntityMatchingPipelineConfig_PropertyMapping{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[39]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3366,7 +3426,7 @@ func (x *EntityMatchingPipelineConfig_PropertyMapping) String() string {
 func (*EntityMatchingPipelineConfig_PropertyMapping) ProtoMessage() {}
 
 func (x *EntityMatchingPipelineConfig_PropertyMapping) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[39]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3379,7 +3439,7 @@ func (x *EntityMatchingPipelineConfig_PropertyMapping) ProtoReflect() protorefle
 
 // Deprecated: Use EntityMatchingPipelineConfig_PropertyMapping.ProtoReflect.Descriptor instead.
 func (*EntityMatchingPipelineConfig_PropertyMapping) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{16, 1}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{17, 1}
 }
 
 func (x *EntityMatchingPipelineConfig_PropertyMapping) GetSourceNodeType() string {
@@ -3426,7 +3486,7 @@ type CapturePipelineTopicConfig_Script struct {
 
 func (x *CapturePipelineTopicConfig_Script) Reset() {
 	*x = CapturePipelineTopicConfig_Script{}
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[40]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3438,7 +3498,7 @@ func (x *CapturePipelineTopicConfig_Script) String() string {
 func (*CapturePipelineTopicConfig_Script) ProtoMessage() {}
 
 func (x *CapturePipelineTopicConfig_Script) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[40]
+	mi := &file_indykite_auditsink_v1beta1_config_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3451,7 +3511,7 @@ func (x *CapturePipelineTopicConfig_Script) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use CapturePipelineTopicConfig_Script.ProtoReflect.Descriptor instead.
 func (*CapturePipelineTopicConfig_Script) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{21, 0}
+	return file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP(), []int{22, 0}
 }
 
 func (x *CapturePipelineTopicConfig_Script) GetContent() string {
@@ -3502,12 +3562,13 @@ const file_indykite_auditsink_v1beta1_config_proto_rawDesc = "" +
 	"\rDeletedConfig\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12:\n" +
 	"\x04type\x18\x02 \x01(\x0e2&.indykite.auditsink.v1beta1.ConfigTypeR\x04type\x12S\n" +
-	"\x0fcontainers_path\x18\x03 \x01(\v2*.indykite.auditsink.v1beta1.ContainersPathR\x0econtainersPath\"\x84\r\n" +
+	"\x0fcontainers_path\x18\x03 \x01(\v2*.indykite.auditsink.v1beta1.ContainersPathR\x0econtainersPath\"\xe7\r\n" +
 	"\fConfigDetail\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
 	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x18\n" +
-	"\aversion\x18\x04 \x01(\x03R\aversion\x12\x80\x01\n" +
+	"\aversion\x18\x04 \x01(\x03R\aversion\x12a\n" +
+	"\x11application_agent\x18\x1b \x01(\v22.indykite.auditsink.v1beta1.ApplicationAgentConfigH\x00R\x10applicationAgent\x12\x80\x01\n" +
 	"\x1capplication_agent_credential\x18\b \x01(\v2<.indykite.auditsink.v1beta1.ApplicationAgentCredentialConfigH\x00R\x1aapplicationAgentCredential\x12z\n" +
 	"\x1aservice_account_credential\x18\t \x01(\v2:.indykite.auditsink.v1beta1.ServiceAccountCredentialConfigH\x00R\x18serviceAccountCredential\x12Y\n" +
 	"\x11event_sink_config\x18\f \x01(\v2+.indykite.auditsink.v1beta1.EventSinkConfigH\x00R\x0feventSinkConfig\x12w\n" +
@@ -3529,7 +3590,9 @@ const file_indykite_auditsink_v1beta1_config_proto_rawDesc = "" +
 	"key_format\x18\x02 \x01(\tR\tkeyFormat\x12!\n" +
 	"\foriginal_kid\x18\x03 \x01(\tR\voriginalKid\x12;\n" +
 	"\vexpire_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"expireTime\"\xb1\x01\n" +
+	"expireTime\"A\n" +
+	"\x16ApplicationAgentConfig\x12'\n" +
+	"\x0fapi_permissions\x18\x01 \x03(\tR\x0eapiPermissions\"\xb1\x01\n" +
 	"\x1eServiceAccountCredentialConfig\x12\x10\n" +
 	"\x03kid\x18\x01 \x01(\tR\x03kid\x12\x1d\n" +
 	"\n" +
@@ -3781,7 +3844,7 @@ func file_indykite_auditsink_v1beta1_config_proto_rawDescGZIP() []byte {
 }
 
 var file_indykite_auditsink_v1beta1_config_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
-var file_indykite_auditsink_v1beta1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 41)
+var file_indykite_auditsink_v1beta1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
 var file_indykite_auditsink_v1beta1_config_proto_goTypes = []any{
 	(ConfigType)(0),                                      // 0: indykite.auditsink.v1beta1.ConfigType
 	(ExternalTokenStatus)(0),                             // 1: indykite.auditsink.v1beta1.ExternalTokenStatus
@@ -3799,50 +3862,51 @@ var file_indykite_auditsink_v1beta1_config_proto_goTypes = []any{
 	(*DeletedConfig)(nil),                                // 13: indykite.auditsink.v1beta1.DeletedConfig
 	(*ConfigDetail)(nil),                                 // 14: indykite.auditsink.v1beta1.ConfigDetail
 	(*ApplicationAgentCredentialConfig)(nil),             // 15: indykite.auditsink.v1beta1.ApplicationAgentCredentialConfig
-	(*ServiceAccountCredentialConfig)(nil),               // 16: indykite.auditsink.v1beta1.ServiceAccountCredentialConfig
-	(*EventSinkConfig)(nil),                              // 17: indykite.auditsink.v1beta1.EventSinkConfig
-	(*ExternalDataResolverConfig)(nil),                   // 18: indykite.auditsink.v1beta1.ExternalDataResolverConfig
-	(*AuthorizationPolicyConfig)(nil),                    // 19: indykite.auditsink.v1beta1.AuthorizationPolicyConfig
-	(*AssignConfigPermissions)(nil),                      // 20: indykite.auditsink.v1beta1.AssignConfigPermissions
-	(*RevokeConfigPermissions)(nil),                      // 21: indykite.auditsink.v1beta1.RevokeConfigPermissions
-	(*TokenIntrospectConfig)(nil),                        // 22: indykite.auditsink.v1beta1.TokenIntrospectConfig
-	(*ConsentConfiguration)(nil),                         // 23: indykite.auditsink.v1beta1.ConsentConfiguration
-	(*IngestPipelineConfig)(nil),                         // 24: indykite.auditsink.v1beta1.IngestPipelineConfig
-	(*EntityMatchingPipelineConfig)(nil),                 // 25: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig
-	(*TrustScoreDimension)(nil),                          // 26: indykite.auditsink.v1beta1.TrustScoreDimension
-	(*TrustScoreProfileConfig)(nil),                      // 27: indykite.auditsink.v1beta1.TrustScoreProfileConfig
-	(*KnowledgeQueryConfig)(nil),                         // 28: indykite.auditsink.v1beta1.KnowledgeQueryConfig
-	(*CapturePipelineConfig)(nil),                        // 29: indykite.auditsink.v1beta1.CapturePipelineConfig
-	(*CapturePipelineTopicConfig)(nil),                   // 30: indykite.auditsink.v1beta1.CapturePipelineTopicConfig
-	(*CreatedConfig_Location)(nil),                       // 31: indykite.auditsink.v1beta1.CreatedConfig.Location
-	(*ReadConfig_NameIdentifier)(nil),                    // 32: indykite.auditsink.v1beta1.ReadConfig.NameIdentifier
-	(*EventSinkConfig_KafkaSinkConfig)(nil),              // 33: indykite.auditsink.v1beta1.EventSinkConfig.KafkaSinkConfig
-	(*EventSinkConfig_AzureServiceBusSinkConfig)(nil),    // 34: indykite.auditsink.v1beta1.EventSinkConfig.AzureServiceBusSinkConfig
-	(*EventSinkConfig_AzureEventGridSinkConfig)(nil),     // 35: indykite.auditsink.v1beta1.EventSinkConfig.AzureEventGridSinkConfig
-	(*EventSinkConfig_Provider)(nil),                     // 36: indykite.auditsink.v1beta1.EventSinkConfig.Provider
-	(*EventSinkConfig_Route)(nil),                        // 37: indykite.auditsink.v1beta1.EventSinkConfig.Route
-	nil,                                                  // 38: indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry
-	(*EventSinkConfig_Route_KeyValue)(nil),               // 39: indykite.auditsink.v1beta1.EventSinkConfig.Route.KeyValue
-	nil,                                                  // 40: indykite.auditsink.v1beta1.ExternalDataResolverConfig.HeadersEntry
-	(*TokenIntrospectConfig_JWT)(nil),                    // 41: indykite.auditsink.v1beta1.TokenIntrospectConfig.JWT
-	(*TokenIntrospectConfig_Opaque)(nil),                 // 42: indykite.auditsink.v1beta1.TokenIntrospectConfig.Opaque
-	(*TokenIntrospectConfig_Offline)(nil),                // 43: indykite.auditsink.v1beta1.TokenIntrospectConfig.Offline
-	(*TokenIntrospectConfig_Online)(nil),                 // 44: indykite.auditsink.v1beta1.TokenIntrospectConfig.Online
-	(*TokenIntrospectConfig_Claim)(nil),                  // 45: indykite.auditsink.v1beta1.TokenIntrospectConfig.Claim
-	nil,                                                  // 46: indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	(*EntityMatchingPipelineConfig_NodeFilter)(nil),      // 47: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.NodeFilter
-	(*EntityMatchingPipelineConfig_PropertyMapping)(nil), // 48: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	(*CapturePipelineTopicConfig_Script)(nil),            // 49: indykite.auditsink.v1beta1.CapturePipelineTopicConfig.Script
-	(*timestamppb.Timestamp)(nil),                        // 50: google.protobuf.Timestamp
-	(*wrapperspb.StringValue)(nil),                       // 51: google.protobuf.StringValue
-	(*durationpb.Duration)(nil),                          // 52: google.protobuf.Duration
+	(*ApplicationAgentConfig)(nil),                       // 16: indykite.auditsink.v1beta1.ApplicationAgentConfig
+	(*ServiceAccountCredentialConfig)(nil),               // 17: indykite.auditsink.v1beta1.ServiceAccountCredentialConfig
+	(*EventSinkConfig)(nil),                              // 18: indykite.auditsink.v1beta1.EventSinkConfig
+	(*ExternalDataResolverConfig)(nil),                   // 19: indykite.auditsink.v1beta1.ExternalDataResolverConfig
+	(*AuthorizationPolicyConfig)(nil),                    // 20: indykite.auditsink.v1beta1.AuthorizationPolicyConfig
+	(*AssignConfigPermissions)(nil),                      // 21: indykite.auditsink.v1beta1.AssignConfigPermissions
+	(*RevokeConfigPermissions)(nil),                      // 22: indykite.auditsink.v1beta1.RevokeConfigPermissions
+	(*TokenIntrospectConfig)(nil),                        // 23: indykite.auditsink.v1beta1.TokenIntrospectConfig
+	(*ConsentConfiguration)(nil),                         // 24: indykite.auditsink.v1beta1.ConsentConfiguration
+	(*IngestPipelineConfig)(nil),                         // 25: indykite.auditsink.v1beta1.IngestPipelineConfig
+	(*EntityMatchingPipelineConfig)(nil),                 // 26: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig
+	(*TrustScoreDimension)(nil),                          // 27: indykite.auditsink.v1beta1.TrustScoreDimension
+	(*TrustScoreProfileConfig)(nil),                      // 28: indykite.auditsink.v1beta1.TrustScoreProfileConfig
+	(*KnowledgeQueryConfig)(nil),                         // 29: indykite.auditsink.v1beta1.KnowledgeQueryConfig
+	(*CapturePipelineConfig)(nil),                        // 30: indykite.auditsink.v1beta1.CapturePipelineConfig
+	(*CapturePipelineTopicConfig)(nil),                   // 31: indykite.auditsink.v1beta1.CapturePipelineTopicConfig
+	(*CreatedConfig_Location)(nil),                       // 32: indykite.auditsink.v1beta1.CreatedConfig.Location
+	(*ReadConfig_NameIdentifier)(nil),                    // 33: indykite.auditsink.v1beta1.ReadConfig.NameIdentifier
+	(*EventSinkConfig_KafkaSinkConfig)(nil),              // 34: indykite.auditsink.v1beta1.EventSinkConfig.KafkaSinkConfig
+	(*EventSinkConfig_AzureServiceBusSinkConfig)(nil),    // 35: indykite.auditsink.v1beta1.EventSinkConfig.AzureServiceBusSinkConfig
+	(*EventSinkConfig_AzureEventGridSinkConfig)(nil),     // 36: indykite.auditsink.v1beta1.EventSinkConfig.AzureEventGridSinkConfig
+	(*EventSinkConfig_Provider)(nil),                     // 37: indykite.auditsink.v1beta1.EventSinkConfig.Provider
+	(*EventSinkConfig_Route)(nil),                        // 38: indykite.auditsink.v1beta1.EventSinkConfig.Route
+	nil,                                                  // 39: indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry
+	(*EventSinkConfig_Route_KeyValue)(nil),               // 40: indykite.auditsink.v1beta1.EventSinkConfig.Route.KeyValue
+	nil,                                                  // 41: indykite.auditsink.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	(*TokenIntrospectConfig_JWT)(nil),                    // 42: indykite.auditsink.v1beta1.TokenIntrospectConfig.JWT
+	(*TokenIntrospectConfig_Opaque)(nil),                 // 43: indykite.auditsink.v1beta1.TokenIntrospectConfig.Opaque
+	(*TokenIntrospectConfig_Offline)(nil),                // 44: indykite.auditsink.v1beta1.TokenIntrospectConfig.Offline
+	(*TokenIntrospectConfig_Online)(nil),                 // 45: indykite.auditsink.v1beta1.TokenIntrospectConfig.Online
+	(*TokenIntrospectConfig_Claim)(nil),                  // 46: indykite.auditsink.v1beta1.TokenIntrospectConfig.Claim
+	nil,                                                  // 47: indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	(*EntityMatchingPipelineConfig_NodeFilter)(nil),      // 48: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	(*EntityMatchingPipelineConfig_PropertyMapping)(nil), // 49: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	(*CapturePipelineTopicConfig_Script)(nil),            // 50: indykite.auditsink.v1beta1.CapturePipelineTopicConfig.Script
+	(*timestamppb.Timestamp)(nil),                        // 51: google.protobuf.Timestamp
+	(*wrapperspb.StringValue)(nil),                       // 52: google.protobuf.StringValue
+	(*durationpb.Duration)(nil),                          // 53: google.protobuf.Duration
 }
 var file_indykite_auditsink_v1beta1_config_proto_depIdxs = []int32{
 	0,  // 0: indykite.auditsink.v1beta1.CreatedConfig.type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	31, // 1: indykite.auditsink.v1beta1.CreatedConfig.location:type_name -> indykite.auditsink.v1beta1.CreatedConfig.Location
+	32, // 1: indykite.auditsink.v1beta1.CreatedConfig.location:type_name -> indykite.auditsink.v1beta1.CreatedConfig.Location
 	9,  // 2: indykite.auditsink.v1beta1.CreatedConfig.containers_path:type_name -> indykite.auditsink.v1beta1.ContainersPath
 	14, // 3: indykite.auditsink.v1beta1.CreatedConfig.detail:type_name -> indykite.auditsink.v1beta1.ConfigDetail
-	32, // 4: indykite.auditsink.v1beta1.ReadConfig.name:type_name -> indykite.auditsink.v1beta1.ReadConfig.NameIdentifier
+	33, // 4: indykite.auditsink.v1beta1.ReadConfig.name:type_name -> indykite.auditsink.v1beta1.ReadConfig.NameIdentifier
 	9,  // 5: indykite.auditsink.v1beta1.ReadConfig.containers_path:type_name -> indykite.auditsink.v1beta1.ContainersPath
 	0,  // 6: indykite.auditsink.v1beta1.ReadConfig.type:type_name -> indykite.auditsink.v1beta1.ConfigType
 	0,  // 7: indykite.auditsink.v1beta1.UpdatedConfig.type:type_name -> indykite.auditsink.v1beta1.ConfigType
@@ -3851,66 +3915,67 @@ var file_indykite_auditsink_v1beta1_config_proto_depIdxs = []int32{
 	14, // 10: indykite.auditsink.v1beta1.UpdatedConfig.after:type_name -> indykite.auditsink.v1beta1.ConfigDetail
 	0,  // 11: indykite.auditsink.v1beta1.DeletedConfig.type:type_name -> indykite.auditsink.v1beta1.ConfigType
 	9,  // 12: indykite.auditsink.v1beta1.DeletedConfig.containers_path:type_name -> indykite.auditsink.v1beta1.ContainersPath
-	15, // 13: indykite.auditsink.v1beta1.ConfigDetail.application_agent_credential:type_name -> indykite.auditsink.v1beta1.ApplicationAgentCredentialConfig
-	16, // 14: indykite.auditsink.v1beta1.ConfigDetail.service_account_credential:type_name -> indykite.auditsink.v1beta1.ServiceAccountCredentialConfig
-	17, // 15: indykite.auditsink.v1beta1.ConfigDetail.event_sink_config:type_name -> indykite.auditsink.v1beta1.EventSinkConfig
-	19, // 16: indykite.auditsink.v1beta1.ConfigDetail.authorization_policy_config:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicyConfig
-	22, // 17: indykite.auditsink.v1beta1.ConfigDetail.token_introspect_config:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig
-	18, // 18: indykite.auditsink.v1beta1.ConfigDetail.external_data_resolver_config:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig
-	27, // 19: indykite.auditsink.v1beta1.ConfigDetail.trust_score_profile_config:type_name -> indykite.auditsink.v1beta1.TrustScoreProfileConfig
-	23, // 20: indykite.auditsink.v1beta1.ConfigDetail.consent_config:type_name -> indykite.auditsink.v1beta1.ConsentConfiguration
-	24, // 21: indykite.auditsink.v1beta1.ConfigDetail.ingest_pipeline_config:type_name -> indykite.auditsink.v1beta1.IngestPipelineConfig
-	25, // 22: indykite.auditsink.v1beta1.ConfigDetail.entity_matching_pipeline_config:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig
-	28, // 23: indykite.auditsink.v1beta1.ConfigDetail.knowledge_query_config:type_name -> indykite.auditsink.v1beta1.KnowledgeQueryConfig
-	29, // 24: indykite.auditsink.v1beta1.ConfigDetail.capture_pipeline_config:type_name -> indykite.auditsink.v1beta1.CapturePipelineConfig
-	30, // 25: indykite.auditsink.v1beta1.ConfigDetail.capture_pipeline_topic_config:type_name -> indykite.auditsink.v1beta1.CapturePipelineTopicConfig
-	50, // 26: indykite.auditsink.v1beta1.ApplicationAgentCredentialConfig.expire_time:type_name -> google.protobuf.Timestamp
-	50, // 27: indykite.auditsink.v1beta1.ServiceAccountCredentialConfig.expire_time:type_name -> google.protobuf.Timestamp
-	38, // 28: indykite.auditsink.v1beta1.EventSinkConfig.providers:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry
-	37, // 29: indykite.auditsink.v1beta1.EventSinkConfig.routes:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Route
-	40, // 30: indykite.auditsink.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.HeadersEntry
-	3,  // 31: indykite.auditsink.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.ContentType
-	3,  // 32: indykite.auditsink.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.ContentType
-	4,  // 33: indykite.auditsink.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicyConfig.Status
-	0,  // 34: indykite.auditsink.v1beta1.AssignConfigPermissions.target_type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	0,  // 35: indykite.auditsink.v1beta1.AssignConfigPermissions.object_type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	0,  // 36: indykite.auditsink.v1beta1.RevokeConfigPermissions.target_type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	0,  // 37: indykite.auditsink.v1beta1.RevokeConfigPermissions.object_type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	41, // 38: indykite.auditsink.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.JWT
-	42, // 39: indykite.auditsink.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Opaque
-	43, // 40: indykite.auditsink.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Offline
-	44, // 41: indykite.auditsink.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Online
-	46, // 42: indykite.auditsink.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	1,  // 43: indykite.auditsink.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.auditsink.v1beta1.ExternalTokenStatus
-	2,  // 44: indykite.auditsink.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.auditsink.v1beta1.IngestPipelineOperation
-	47, // 45: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.NodeFilter
-	5,  // 46: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.Status
-	51, // 47: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
-	5,  // 48: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.Status
-	51, // 49: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
-	48, // 50: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	50, // 51: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
-	51, // 52: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
-	51, // 53: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
-	6,  // 54: indykite.auditsink.v1beta1.TrustScoreDimension.name:type_name -> indykite.auditsink.v1beta1.TrustScoreDimension.Name
-	26, // 55: indykite.auditsink.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.auditsink.v1beta1.TrustScoreDimension
-	7,  // 56: indykite.auditsink.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.auditsink.v1beta1.TrustScoreProfileConfig.UpdateFrequency
-	8,  // 57: indykite.auditsink.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.auditsink.v1beta1.KnowledgeQueryConfig.Status
-	49, // 58: indykite.auditsink.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.auditsink.v1beta1.CapturePipelineTopicConfig.Script
-	0,  // 59: indykite.auditsink.v1beta1.CreatedConfig.Location.type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	0,  // 60: indykite.auditsink.v1beta1.ReadConfig.NameIdentifier.location_type:type_name -> indykite.auditsink.v1beta1.ConfigType
-	33, // 61: indykite.auditsink.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.KafkaSinkConfig
-	34, // 62: indykite.auditsink.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.AzureServiceBusSinkConfig
-	35, // 63: indykite.auditsink.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.AzureEventGridSinkConfig
-	39, // 64: indykite.auditsink.v1beta1.EventSinkConfig.Route.context_key_value:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Route.KeyValue
-	36, // 65: indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Provider
-	52, // 66: indykite.auditsink.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
-	45, // 67: indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Claim
-	68, // [68:68] is the sub-list for method output_type
-	68, // [68:68] is the sub-list for method input_type
-	68, // [68:68] is the sub-list for extension type_name
-	68, // [68:68] is the sub-list for extension extendee
-	0,  // [0:68] is the sub-list for field type_name
+	16, // 13: indykite.auditsink.v1beta1.ConfigDetail.application_agent:type_name -> indykite.auditsink.v1beta1.ApplicationAgentConfig
+	15, // 14: indykite.auditsink.v1beta1.ConfigDetail.application_agent_credential:type_name -> indykite.auditsink.v1beta1.ApplicationAgentCredentialConfig
+	17, // 15: indykite.auditsink.v1beta1.ConfigDetail.service_account_credential:type_name -> indykite.auditsink.v1beta1.ServiceAccountCredentialConfig
+	18, // 16: indykite.auditsink.v1beta1.ConfigDetail.event_sink_config:type_name -> indykite.auditsink.v1beta1.EventSinkConfig
+	20, // 17: indykite.auditsink.v1beta1.ConfigDetail.authorization_policy_config:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicyConfig
+	23, // 18: indykite.auditsink.v1beta1.ConfigDetail.token_introspect_config:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig
+	19, // 19: indykite.auditsink.v1beta1.ConfigDetail.external_data_resolver_config:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig
+	28, // 20: indykite.auditsink.v1beta1.ConfigDetail.trust_score_profile_config:type_name -> indykite.auditsink.v1beta1.TrustScoreProfileConfig
+	24, // 21: indykite.auditsink.v1beta1.ConfigDetail.consent_config:type_name -> indykite.auditsink.v1beta1.ConsentConfiguration
+	25, // 22: indykite.auditsink.v1beta1.ConfigDetail.ingest_pipeline_config:type_name -> indykite.auditsink.v1beta1.IngestPipelineConfig
+	26, // 23: indykite.auditsink.v1beta1.ConfigDetail.entity_matching_pipeline_config:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig
+	29, // 24: indykite.auditsink.v1beta1.ConfigDetail.knowledge_query_config:type_name -> indykite.auditsink.v1beta1.KnowledgeQueryConfig
+	30, // 25: indykite.auditsink.v1beta1.ConfigDetail.capture_pipeline_config:type_name -> indykite.auditsink.v1beta1.CapturePipelineConfig
+	31, // 26: indykite.auditsink.v1beta1.ConfigDetail.capture_pipeline_topic_config:type_name -> indykite.auditsink.v1beta1.CapturePipelineTopicConfig
+	51, // 27: indykite.auditsink.v1beta1.ApplicationAgentCredentialConfig.expire_time:type_name -> google.protobuf.Timestamp
+	51, // 28: indykite.auditsink.v1beta1.ServiceAccountCredentialConfig.expire_time:type_name -> google.protobuf.Timestamp
+	39, // 29: indykite.auditsink.v1beta1.EventSinkConfig.providers:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry
+	38, // 30: indykite.auditsink.v1beta1.EventSinkConfig.routes:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Route
+	41, // 31: indykite.auditsink.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	3,  // 32: indykite.auditsink.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.ContentType
+	3,  // 33: indykite.auditsink.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.auditsink.v1beta1.ExternalDataResolverConfig.ContentType
+	4,  // 34: indykite.auditsink.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicyConfig.Status
+	0,  // 35: indykite.auditsink.v1beta1.AssignConfigPermissions.target_type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	0,  // 36: indykite.auditsink.v1beta1.AssignConfigPermissions.object_type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	0,  // 37: indykite.auditsink.v1beta1.RevokeConfigPermissions.target_type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	0,  // 38: indykite.auditsink.v1beta1.RevokeConfigPermissions.object_type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	42, // 39: indykite.auditsink.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.JWT
+	43, // 40: indykite.auditsink.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Opaque
+	44, // 41: indykite.auditsink.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Offline
+	45, // 42: indykite.auditsink.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Online
+	47, // 43: indykite.auditsink.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	1,  // 44: indykite.auditsink.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.auditsink.v1beta1.ExternalTokenStatus
+	2,  // 45: indykite.auditsink.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.auditsink.v1beta1.IngestPipelineOperation
+	48, // 46: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	5,  // 47: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.Status
+	52, // 48: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
+	5,  // 49: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.Status
+	52, // 50: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
+	49, // 51: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	51, // 52: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
+	52, // 53: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
+	52, // 54: indykite.auditsink.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
+	6,  // 55: indykite.auditsink.v1beta1.TrustScoreDimension.name:type_name -> indykite.auditsink.v1beta1.TrustScoreDimension.Name
+	27, // 56: indykite.auditsink.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.auditsink.v1beta1.TrustScoreDimension
+	7,  // 57: indykite.auditsink.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.auditsink.v1beta1.TrustScoreProfileConfig.UpdateFrequency
+	8,  // 58: indykite.auditsink.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.auditsink.v1beta1.KnowledgeQueryConfig.Status
+	50, // 59: indykite.auditsink.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.auditsink.v1beta1.CapturePipelineTopicConfig.Script
+	0,  // 60: indykite.auditsink.v1beta1.CreatedConfig.Location.type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	0,  // 61: indykite.auditsink.v1beta1.ReadConfig.NameIdentifier.location_type:type_name -> indykite.auditsink.v1beta1.ConfigType
+	34, // 62: indykite.auditsink.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.KafkaSinkConfig
+	35, // 63: indykite.auditsink.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.AzureServiceBusSinkConfig
+	36, // 64: indykite.auditsink.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.AzureEventGridSinkConfig
+	40, // 65: indykite.auditsink.v1beta1.EventSinkConfig.Route.context_key_value:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Route.KeyValue
+	37, // 66: indykite.auditsink.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.auditsink.v1beta1.EventSinkConfig.Provider
+	53, // 67: indykite.auditsink.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
+	46, // 68: indykite.auditsink.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.auditsink.v1beta1.TokenIntrospectConfig.Claim
+	69, // [69:69] is the sub-list for method output_type
+	69, // [69:69] is the sub-list for method input_type
+	69, // [69:69] is the sub-list for extension type_name
+	69, // [69:69] is the sub-list for extension extendee
+	0,  // [0:69] is the sub-list for field type_name
 }
 
 func init() { file_indykite_auditsink_v1beta1_config_proto_init() }
@@ -3923,6 +3988,7 @@ func file_indykite_auditsink_v1beta1_config_proto_init() {
 		(*ReadConfig_Name)(nil),
 	}
 	file_indykite_auditsink_v1beta1_config_proto_msgTypes[5].OneofWrappers = []any{
+		(*ConfigDetail_ApplicationAgent)(nil),
 		(*ConfigDetail_ApplicationAgentCredential)(nil),
 		(*ConfigDetail_ServiceAccountCredential)(nil),
 		(*ConfigDetail_EventSinkConfig)(nil),
@@ -3937,19 +4003,19 @@ func file_indykite_auditsink_v1beta1_config_proto_init() {
 		(*ConfigDetail_CapturePipelineConfig)(nil),
 		(*ConfigDetail_CapturePipelineTopicConfig)(nil),
 	}
-	file_indykite_auditsink_v1beta1_config_proto_msgTypes[13].OneofWrappers = []any{
+	file_indykite_auditsink_v1beta1_config_proto_msgTypes[14].OneofWrappers = []any{
 		(*TokenIntrospectConfig_Jwt)(nil),
 		(*TokenIntrospectConfig_Opaque_)(nil),
 		(*TokenIntrospectConfig_Offline_)(nil),
 		(*TokenIntrospectConfig_Online_)(nil),
 	}
-	file_indykite_auditsink_v1beta1_config_proto_msgTypes[23].OneofWrappers = []any{}
-	file_indykite_auditsink_v1beta1_config_proto_msgTypes[27].OneofWrappers = []any{
+	file_indykite_auditsink_v1beta1_config_proto_msgTypes[24].OneofWrappers = []any{}
+	file_indykite_auditsink_v1beta1_config_proto_msgTypes[28].OneofWrappers = []any{
 		(*EventSinkConfig_Provider_Kafka)(nil),
 		(*EventSinkConfig_Provider_AzureServiceBus)(nil),
 		(*EventSinkConfig_Provider_AzureEventGrid)(nil),
 	}
-	file_indykite_auditsink_v1beta1_config_proto_msgTypes[28].OneofWrappers = []any{
+	file_indykite_auditsink_v1beta1_config_proto_msgTypes[29].OneofWrappers = []any{
 		(*EventSinkConfig_Route_EventType)(nil),
 		(*EventSinkConfig_Route_ContextKeyValue)(nil),
 	}
@@ -3959,7 +4025,7 @@ func file_indykite_auditsink_v1beta1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_indykite_auditsink_v1beta1_config_proto_rawDesc), len(file_indykite_auditsink_v1beta1_config_proto_rawDesc)),
 			NumEnums:      9,
-			NumMessages:   41,
+			NumMessages:   42,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
