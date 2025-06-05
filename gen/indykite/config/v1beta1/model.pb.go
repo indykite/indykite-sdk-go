@@ -3535,12 +3535,11 @@ type EventSinkConfig_Route struct {
 	StopProcessing bool                   `protobuf:"varint,2,opt,name=stop_processing,json=stopProcessing,proto3" json:"stop_processing,omitempty"`
 	// Types that are valid to be assigned to Filter:
 	//
-	//	*EventSinkConfig_Route_EventType
-	//	*EventSinkConfig_Route_ContextKeyValue
+	//	*EventSinkConfig_Route_KeysValues
 	Filter      isEventSinkConfig_Route_Filter `protobuf_oneof:"filter"`
-	DisplayName *wrapperspb.StringValue        `protobuf:"bytes,5,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	DisplayName *wrapperspb.StringValue        `protobuf:"bytes,4,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// optional, because UI needs that for some reason
-	Id            *wrapperspb.StringValue `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
+	Id            *wrapperspb.StringValue `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3596,19 +3595,10 @@ func (x *EventSinkConfig_Route) GetFilter() isEventSinkConfig_Route_Filter {
 	return nil
 }
 
-func (x *EventSinkConfig_Route) GetEventType() string {
+func (x *EventSinkConfig_Route) GetKeysValues() *EventSinkConfig_Route_EventTypeKeysValues {
 	if x != nil {
-		if x, ok := x.Filter.(*EventSinkConfig_Route_EventType); ok {
-			return x.EventType
-		}
-	}
-	return ""
-}
-
-func (x *EventSinkConfig_Route) GetContextKeyValue() *EventSinkConfig_Route_KeyValue {
-	if x != nil {
-		if x, ok := x.Filter.(*EventSinkConfig_Route_ContextKeyValue); ok {
-			return x.ContextKeyValue
+		if x, ok := x.Filter.(*EventSinkConfig_Route_KeysValues); ok {
+			return x.KeysValues
 		}
 	}
 	return nil
@@ -3632,41 +3622,34 @@ type isEventSinkConfig_Route_Filter interface {
 	isEventSinkConfig_Route_Filter()
 }
 
-type EventSinkConfig_Route_EventType struct {
-	EventType string `protobuf:"bytes,3,opt,name=event_type,json=eventType,proto3,oneof"`
+type EventSinkConfig_Route_KeysValues struct {
+	KeysValues *EventSinkConfig_Route_EventTypeKeysValues `protobuf:"bytes,3,opt,name=keys_values,json=keysValues,proto3,oneof"`
 }
 
-type EventSinkConfig_Route_ContextKeyValue struct {
-	ContextKeyValue *EventSinkConfig_Route_KeyValue `protobuf:"bytes,4,opt,name=context_key_value,json=contextKeyValue,proto3,oneof"`
-}
+func (*EventSinkConfig_Route_KeysValues) isEventSinkConfig_Route_Filter() {}
 
-func (*EventSinkConfig_Route_EventType) isEventSinkConfig_Route_Filter() {}
-
-func (*EventSinkConfig_Route_ContextKeyValue) isEventSinkConfig_Route_Filter() {}
-
-type EventSinkConfig_Route_KeyValue struct {
+type EventSinkConfig_Route_KeyValuePair struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	EventType     string                 `protobuf:"bytes,3,opt,name=event_type,json=eventType,proto3" json:"event_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EventSinkConfig_Route_KeyValue) Reset() {
-	*x = EventSinkConfig_Route_KeyValue{}
+func (x *EventSinkConfig_Route_KeyValuePair) Reset() {
+	*x = EventSinkConfig_Route_KeyValuePair{}
 	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EventSinkConfig_Route_KeyValue) String() string {
+func (x *EventSinkConfig_Route_KeyValuePair) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EventSinkConfig_Route_KeyValue) ProtoMessage() {}
+func (*EventSinkConfig_Route_KeyValuePair) ProtoMessage() {}
 
-func (x *EventSinkConfig_Route_KeyValue) ProtoReflect() protoreflect.Message {
+func (x *EventSinkConfig_Route_KeyValuePair) ProtoReflect() protoreflect.Message {
 	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3678,26 +3661,71 @@ func (x *EventSinkConfig_Route_KeyValue) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EventSinkConfig_Route_KeyValue.ProtoReflect.Descriptor instead.
-func (*EventSinkConfig_Route_KeyValue) Descriptor() ([]byte, []int) {
+// Deprecated: Use EventSinkConfig_Route_KeyValuePair.ProtoReflect.Descriptor instead.
+func (*EventSinkConfig_Route_KeyValuePair) Descriptor() ([]byte, []int) {
 	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{10, 1, 0}
 }
 
-func (x *EventSinkConfig_Route_KeyValue) GetKey() string {
+func (x *EventSinkConfig_Route_KeyValuePair) GetKey() string {
 	if x != nil {
 		return x.Key
 	}
 	return ""
 }
 
-func (x *EventSinkConfig_Route_KeyValue) GetValue() string {
+func (x *EventSinkConfig_Route_KeyValuePair) GetValue() string {
 	if x != nil {
 		return x.Value
 	}
 	return ""
 }
 
-func (x *EventSinkConfig_Route_KeyValue) GetEventType() string {
+type EventSinkConfig_Route_EventTypeKeysValues struct {
+	state         protoimpl.MessageState                `protogen:"open.v1"`
+	KeyValuePairs []*EventSinkConfig_Route_KeyValuePair `protobuf:"bytes,1,rep,name=key_value_pairs,json=keyValuePairs,proto3" json:"key_value_pairs,omitempty"`
+	EventType     string                                `protobuf:"bytes,3,opt,name=event_type,json=eventType,proto3" json:"event_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EventSinkConfig_Route_EventTypeKeysValues) Reset() {
+	*x = EventSinkConfig_Route_EventTypeKeysValues{}
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EventSinkConfig_Route_EventTypeKeysValues) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EventSinkConfig_Route_EventTypeKeysValues) ProtoMessage() {}
+
+func (x *EventSinkConfig_Route_EventTypeKeysValues) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EventSinkConfig_Route_EventTypeKeysValues.ProtoReflect.Descriptor instead.
+func (*EventSinkConfig_Route_EventTypeKeysValues) Descriptor() ([]byte, []int) {
+	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{10, 1, 1}
+}
+
+func (x *EventSinkConfig_Route_EventTypeKeysValues) GetKeyValuePairs() []*EventSinkConfig_Route_KeyValuePair {
+	if x != nil {
+		return x.KeyValuePairs
+	}
+	return nil
+}
+
+func (x *EventSinkConfig_Route_EventTypeKeysValues) GetEventType() string {
 	if x != nil {
 		return x.EventType
 	}
@@ -3717,7 +3745,7 @@ type TokenIntrospectConfig_JWT struct {
 
 func (x *TokenIntrospectConfig_JWT) Reset() {
 	*x = TokenIntrospectConfig_JWT{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[32]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3729,7 +3757,7 @@ func (x *TokenIntrospectConfig_JWT) String() string {
 func (*TokenIntrospectConfig_JWT) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_JWT) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[32]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3772,7 +3800,7 @@ type TokenIntrospectConfig_Opaque struct {
 
 func (x *TokenIntrospectConfig_Opaque) Reset() {
 	*x = TokenIntrospectConfig_Opaque{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[33]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3784,7 +3812,7 @@ func (x *TokenIntrospectConfig_Opaque) String() string {
 func (*TokenIntrospectConfig_Opaque) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Opaque) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[33]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3820,7 +3848,7 @@ type TokenIntrospectConfig_Offline struct {
 
 func (x *TokenIntrospectConfig_Offline) Reset() {
 	*x = TokenIntrospectConfig_Offline{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[34]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3832,7 +3860,7 @@ func (x *TokenIntrospectConfig_Offline) String() string {
 func (*TokenIntrospectConfig_Offline) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Offline) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[34]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3878,7 +3906,7 @@ type TokenIntrospectConfig_Online struct {
 
 func (x *TokenIntrospectConfig_Online) Reset() {
 	*x = TokenIntrospectConfig_Online{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[35]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3890,7 +3918,7 @@ func (x *TokenIntrospectConfig_Online) String() string {
 func (*TokenIntrospectConfig_Online) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Online) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[35]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3936,7 +3964,7 @@ type TokenIntrospectConfig_Claim struct {
 
 func (x *TokenIntrospectConfig_Claim) Reset() {
 	*x = TokenIntrospectConfig_Claim{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[36]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3948,7 +3976,7 @@ func (x *TokenIntrospectConfig_Claim) String() string {
 func (*TokenIntrospectConfig_Claim) ProtoMessage() {}
 
 func (x *TokenIntrospectConfig_Claim) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[36]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3981,7 +4009,7 @@ type ConsentDataPoint_Return struct {
 
 func (x *ConsentDataPoint_Return) Reset() {
 	*x = ConsentDataPoint_Return{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[38]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3993,7 +4021,7 @@ func (x *ConsentDataPoint_Return) String() string {
 func (*ConsentDataPoint_Return) ProtoMessage() {}
 
 func (x *ConsentDataPoint_Return) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[38]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4035,7 +4063,7 @@ type EntityMatchingPipelineConfig_NodeFilter struct {
 
 func (x *EntityMatchingPipelineConfig_NodeFilter) Reset() {
 	*x = EntityMatchingPipelineConfig_NodeFilter{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[39]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4047,7 +4075,7 @@ func (x *EntityMatchingPipelineConfig_NodeFilter) String() string {
 func (*EntityMatchingPipelineConfig_NodeFilter) ProtoMessage() {}
 
 func (x *EntityMatchingPipelineConfig_NodeFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[39]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4095,7 +4123,7 @@ type EntityMatchingPipelineConfig_PropertyMapping struct {
 
 func (x *EntityMatchingPipelineConfig_PropertyMapping) Reset() {
 	*x = EntityMatchingPipelineConfig_PropertyMapping{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[40]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4107,7 +4135,7 @@ func (x *EntityMatchingPipelineConfig_PropertyMapping) String() string {
 func (*EntityMatchingPipelineConfig_PropertyMapping) ProtoMessage() {}
 
 func (x *EntityMatchingPipelineConfig_PropertyMapping) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[40]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4167,7 +4195,7 @@ type ExternalDataResolverConfig_Header struct {
 
 func (x *ExternalDataResolverConfig_Header) Reset() {
 	*x = ExternalDataResolverConfig_Header{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[41]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4179,7 +4207,7 @@ func (x *ExternalDataResolverConfig_Header) String() string {
 func (*ExternalDataResolverConfig_Header) ProtoMessage() {}
 
 func (x *ExternalDataResolverConfig_Header) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[41]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4212,7 +4240,7 @@ type RegisterCapturePipelineTopicConfig_Script struct {
 
 func (x *RegisterCapturePipelineTopicConfig_Script) Reset() {
 	*x = RegisterCapturePipelineTopicConfig_Script{}
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[43]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4224,7 +4252,7 @@ func (x *RegisterCapturePipelineTopicConfig_Script) String() string {
 func (*RegisterCapturePipelineTopicConfig_Script) ProtoMessage() {}
 
 func (x *RegisterCapturePipelineTopicConfig_Script) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[43]
+	mi := &file_indykite_config_v1beta1_model_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4458,7 +4486,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x0eSTATUS_INVALID\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\x12\x13\n" +
 	"\x0fSTATUS_INACTIVE\x10\x02\x12\x10\n" +
-	"\fSTATUS_DRAFT\x10\x03\"\x9a\t\n" +
+	"\fSTATUS_DRAFT\x10\x03\"\xd8\t\n" +
 	"\x0fEventSinkConfig\x12U\n" +
 	"\tproviders\x18\x01 \x03(\v27.indykite.config.v1beta1.EventSinkConfig.ProvidersEntryR\tproviders\x12F\n" +
 	"\x06routes\x18\x02 \x03(\v2..indykite.config.v1beta1.EventSinkConfig.RouteR\x06routes\x1a\x9e\x02\n" +
@@ -4466,22 +4494,23 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x05kafka\x18\x01 \x01(\v2(.indykite.config.v1beta1.KafkaSinkConfigH\x00R\x05kafka\x12]\n" +
 	"\x10azure_event_grid\x18\x02 \x01(\v21.indykite.config.v1beta1.AzureEventGridSinkConfigH\x00R\x0eazureEventGrid\x12`\n" +
 	"\x11azure_service_bus\x18\x03 \x01(\v22.indykite.config.v1beta1.AzureServiceBusSinkConfigH\x00R\x0fazureServiceBusB\x0f\n" +
-	"\bprovider\x12\x03\xf8B\x01\x1a\xd5\x04\n" +
+	"\bprovider\x12\x03\xf8B\x01\x1a\x93\x05\n" +
 	"\x05Route\x12N\n" +
 	"\vprovider_id\x18\x01 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\n" +
 	"providerId\x12'\n" +
-	"\x0fstop_processing\x18\x02 \x01(\bR\x0estopProcessing\x12<\n" +
-	"\n" +
-	"event_type\x18\x03 \x01(\tB\x1b\xfaB\x18r\x16\x10\x012\x12^[a-zA-Z0-9_*\\.]+$H\x00R\teventType\x12e\n" +
-	"\x11context_key_value\x18\x04 \x01(\v27.indykite.config.v1beta1.EventSinkConfig.Route.KeyValueH\x00R\x0fcontextKeyValue\x12N\n" +
-	"\fdisplay_name\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
+	"\x0fstop_processing\x18\x02 \x01(\bR\x0estopProcessing\x12e\n" +
+	"\vkeys_values\x18\x03 \x01(\v2B.indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValuesH\x00R\n" +
+	"keysValues\x12N\n" +
+	"\fdisplay_name\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
 	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12:\n" +
-	"\x02id\x18\x06 \x01(\v2\x1c.google.protobuf.StringValueB\f\xfaB\tr\a\x10\x02\x18?\xd0\x01\x01R\x02id\x1a\x92\x01\n" +
-	"\bKeyValue\x12*\n" +
+	"\x02id\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\f\xfaB\tr\a\x10\x02\x18?\xd0\x01\x01R\x02id\x1aY\n" +
+	"\fKeyValuePair\x12*\n" +
 	"\x03key\x18\x01 \x01(\tB\x18\xfaB\x15r\x13\x10\x012\x0f^[a-zA-Z0-9*]+$R\x03key\x12\x1d\n" +
-	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05value\x12;\n" +
+	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05value\x1a\xb3\x01\n" +
+	"\x13EventTypeKeysValues\x12c\n" +
+	"\x0fkey_value_pairs\x18\x01 \x03(\v2;.indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePairR\rkeyValuePairs\x127\n" +
 	"\n" +
-	"event_type\x18\x03 \x01(\tB\x1c\xfaB\x19r\x172\x12^[a-zA-Z0-9_*\\.]+$\xd0\x01\x01R\teventTypeB\r\n" +
+	"event_type\x18\x03 \x01(\tB\x18\xfaB\x15r\x132\x11^[a-zA-Z0-9_*.]+$R\teventTypeB\r\n" +
 	"\x06filter\x12\x03\xf8B\x01\x1ao\n" +
 	"\x0eProvidersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12G\n" +
@@ -4714,7 +4743,7 @@ func file_indykite_config_v1beta1_model_proto_rawDescGZIP() []byte {
 }
 
 var file_indykite_config_v1beta1_model_proto_enumTypes = make([]protoimpl.EnumInfo, 9)
-var file_indykite_config_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
+var file_indykite_config_v1beta1_model_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_indykite_config_v1beta1_model_proto_goTypes = []any{
 	(AppSpaceIKGStatus)(0),                               // 0: indykite.config.v1beta1.AppSpaceIKGStatus
 	(ExternalTokenStatus)(0),                             // 1: indykite.config.v1beta1.ExternalTokenStatus
@@ -4756,62 +4785,63 @@ var file_indykite_config_v1beta1_model_proto_goTypes = []any{
 	(*EventSinkConfig_Provider)(nil),                     // 37: indykite.config.v1beta1.EventSinkConfig.Provider
 	(*EventSinkConfig_Route)(nil),                        // 38: indykite.config.v1beta1.EventSinkConfig.Route
 	nil,                                                  // 39: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry
-	(*EventSinkConfig_Route_KeyValue)(nil),               // 40: indykite.config.v1beta1.EventSinkConfig.Route.KeyValue
-	(*TokenIntrospectConfig_JWT)(nil),                    // 41: indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	(*TokenIntrospectConfig_Opaque)(nil),                 // 42: indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	(*TokenIntrospectConfig_Offline)(nil),                // 43: indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	(*TokenIntrospectConfig_Online)(nil),                 // 44: indykite.config.v1beta1.TokenIntrospectConfig.Online
-	(*TokenIntrospectConfig_Claim)(nil),                  // 45: indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	nil,                                                  // 46: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	(*ConsentDataPoint_Return)(nil),                      // 47: indykite.config.v1beta1.ConsentDataPoint.Return
-	(*EntityMatchingPipelineConfig_NodeFilter)(nil),      // 48: indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
-	(*EntityMatchingPipelineConfig_PropertyMapping)(nil), // 49: indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	(*ExternalDataResolverConfig_Header)(nil),            // 50: indykite.config.v1beta1.ExternalDataResolverConfig.Header
-	nil, // 51: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
-	(*RegisterCapturePipelineTopicConfig_Script)(nil), // 52: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
-	(*wrapperspb.StringValue)(nil),                    // 53: google.protobuf.StringValue
-	(*timestamppb.Timestamp)(nil),                     // 54: google.protobuf.Timestamp
-	(*PolicyBuilderConfig)(nil),                       // 55: indykite.config.v1beta1.PolicyBuilderConfig
-	(*durationpb.Duration)(nil),                       // 56: google.protobuf.Duration
+	(*EventSinkConfig_Route_KeyValuePair)(nil),           // 40: indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePair
+	(*EventSinkConfig_Route_EventTypeKeysValues)(nil),    // 41: indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues
+	(*TokenIntrospectConfig_JWT)(nil),                    // 42: indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	(*TokenIntrospectConfig_Opaque)(nil),                 // 43: indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	(*TokenIntrospectConfig_Offline)(nil),                // 44: indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	(*TokenIntrospectConfig_Online)(nil),                 // 45: indykite.config.v1beta1.TokenIntrospectConfig.Online
+	(*TokenIntrospectConfig_Claim)(nil),                  // 46: indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	nil,                                                  // 47: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	(*ConsentDataPoint_Return)(nil),                      // 48: indykite.config.v1beta1.ConsentDataPoint.Return
+	(*EntityMatchingPipelineConfig_NodeFilter)(nil),      // 49: indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	(*EntityMatchingPipelineConfig_PropertyMapping)(nil), // 50: indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	(*ExternalDataResolverConfig_Header)(nil),            // 51: indykite.config.v1beta1.ExternalDataResolverConfig.Header
+	nil, // 52: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	(*RegisterCapturePipelineTopicConfig_Script)(nil), // 53: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
+	(*wrapperspb.StringValue)(nil),                    // 54: google.protobuf.StringValue
+	(*timestamppb.Timestamp)(nil),                     // 55: google.protobuf.Timestamp
+	(*PolicyBuilderConfig)(nil),                       // 56: indykite.config.v1beta1.PolicyBuilderConfig
+	(*durationpb.Duration)(nil),                       // 57: google.protobuf.Duration
 }
 var file_indykite_config_v1beta1_model_proto_depIdxs = []int32{
-	53, // 0: indykite.config.v1beta1.Customer.description:type_name -> google.protobuf.StringValue
-	54, // 1: indykite.config.v1beta1.Customer.create_time:type_name -> google.protobuf.Timestamp
-	54, // 2: indykite.config.v1beta1.Customer.update_time:type_name -> google.protobuf.Timestamp
-	54, // 3: indykite.config.v1beta1.Customer.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 4: indykite.config.v1beta1.Customer.delete_time:type_name -> google.protobuf.Timestamp
-	53, // 5: indykite.config.v1beta1.ApplicationSpace.description:type_name -> google.protobuf.StringValue
-	54, // 6: indykite.config.v1beta1.ApplicationSpace.create_time:type_name -> google.protobuf.Timestamp
-	54, // 7: indykite.config.v1beta1.ApplicationSpace.update_time:type_name -> google.protobuf.Timestamp
-	54, // 8: indykite.config.v1beta1.ApplicationSpace.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 9: indykite.config.v1beta1.ApplicationSpace.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 0: indykite.config.v1beta1.Customer.description:type_name -> google.protobuf.StringValue
+	55, // 1: indykite.config.v1beta1.Customer.create_time:type_name -> google.protobuf.Timestamp
+	55, // 2: indykite.config.v1beta1.Customer.update_time:type_name -> google.protobuf.Timestamp
+	55, // 3: indykite.config.v1beta1.Customer.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 4: indykite.config.v1beta1.Customer.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 5: indykite.config.v1beta1.ApplicationSpace.description:type_name -> google.protobuf.StringValue
+	55, // 6: indykite.config.v1beta1.ApplicationSpace.create_time:type_name -> google.protobuf.Timestamp
+	55, // 7: indykite.config.v1beta1.ApplicationSpace.update_time:type_name -> google.protobuf.Timestamp
+	55, // 8: indykite.config.v1beta1.ApplicationSpace.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 9: indykite.config.v1beta1.ApplicationSpace.delete_time:type_name -> google.protobuf.Timestamp
 	0,  // 10: indykite.config.v1beta1.ApplicationSpace.ikg_status:type_name -> indykite.config.v1beta1.AppSpaceIKGStatus
-	53, // 11: indykite.config.v1beta1.Application.description:type_name -> google.protobuf.StringValue
-	54, // 12: indykite.config.v1beta1.Application.create_time:type_name -> google.protobuf.Timestamp
-	54, // 13: indykite.config.v1beta1.Application.update_time:type_name -> google.protobuf.Timestamp
-	54, // 14: indykite.config.v1beta1.Application.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 15: indykite.config.v1beta1.Application.delete_time:type_name -> google.protobuf.Timestamp
-	53, // 16: indykite.config.v1beta1.ApplicationAgent.description:type_name -> google.protobuf.StringValue
-	54, // 17: indykite.config.v1beta1.ApplicationAgent.create_time:type_name -> google.protobuf.Timestamp
-	54, // 18: indykite.config.v1beta1.ApplicationAgent.update_time:type_name -> google.protobuf.Timestamp
-	54, // 19: indykite.config.v1beta1.ApplicationAgent.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 20: indykite.config.v1beta1.ApplicationAgent.delete_time:type_name -> google.protobuf.Timestamp
-	54, // 21: indykite.config.v1beta1.ApplicationAgentCredential.create_time:type_name -> google.protobuf.Timestamp
-	54, // 22: indykite.config.v1beta1.ApplicationAgentCredential.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 23: indykite.config.v1beta1.ApplicationAgentCredential.delete_time:type_name -> google.protobuf.Timestamp
-	53, // 24: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
-	54, // 25: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
-	54, // 26: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
-	54, // 27: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 28: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
-	54, // 29: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
-	54, // 30: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 31: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
-	53, // 32: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
-	54, // 33: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
-	54, // 34: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
-	54, // 35: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
-	54, // 36: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 11: indykite.config.v1beta1.Application.description:type_name -> google.protobuf.StringValue
+	55, // 12: indykite.config.v1beta1.Application.create_time:type_name -> google.protobuf.Timestamp
+	55, // 13: indykite.config.v1beta1.Application.update_time:type_name -> google.protobuf.Timestamp
+	55, // 14: indykite.config.v1beta1.Application.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 15: indykite.config.v1beta1.Application.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 16: indykite.config.v1beta1.ApplicationAgent.description:type_name -> google.protobuf.StringValue
+	55, // 17: indykite.config.v1beta1.ApplicationAgent.create_time:type_name -> google.protobuf.Timestamp
+	55, // 18: indykite.config.v1beta1.ApplicationAgent.update_time:type_name -> google.protobuf.Timestamp
+	55, // 19: indykite.config.v1beta1.ApplicationAgent.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 20: indykite.config.v1beta1.ApplicationAgent.delete_time:type_name -> google.protobuf.Timestamp
+	55, // 21: indykite.config.v1beta1.ApplicationAgentCredential.create_time:type_name -> google.protobuf.Timestamp
+	55, // 22: indykite.config.v1beta1.ApplicationAgentCredential.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 23: indykite.config.v1beta1.ApplicationAgentCredential.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 24: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
+	55, // 25: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
+	55, // 26: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
+	55, // 27: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 28: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
+	55, // 29: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
+	55, // 30: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 31: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 32: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
+	55, // 33: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
+	55, // 34: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
+	55, // 35: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
+	55, // 36: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
 	19, // 37: indykite.config.v1beta1.ConfigNode.event_sink_config:type_name -> indykite.config.v1beta1.EventSinkConfig
 	18, // 38: indykite.config.v1beta1.ConfigNode.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
 	23, // 39: indykite.config.v1beta1.ConfigNode.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
@@ -4824,54 +4854,55 @@ var file_indykite_config_v1beta1_model_proto_depIdxs = []int32{
 	33, // 46: indykite.config.v1beta1.ConfigNode.capture_pipeline_config:type_name -> indykite.config.v1beta1.CapturePipelineConfig
 	35, // 47: indykite.config.v1beta1.ConfigNode.capture_pipeline_topic_config:type_name -> indykite.config.v1beta1.CapturePipelineTopicConfig
 	3,  // 48: indykite.config.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig.Status
-	55, // 49: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
+	56, // 49: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
 	39, // 50: indykite.config.v1beta1.EventSinkConfig.providers:type_name -> indykite.config.v1beta1.EventSinkConfig.ProvidersEntry
 	38, // 51: indykite.config.v1beta1.EventSinkConfig.routes:type_name -> indykite.config.v1beta1.EventSinkConfig.Route
-	53, // 52: indykite.config.v1beta1.KafkaSinkConfig.display_name:type_name -> google.protobuf.StringValue
-	53, // 53: indykite.config.v1beta1.AzureEventGridSinkConfig.display_name:type_name -> google.protobuf.StringValue
-	53, // 54: indykite.config.v1beta1.AzureServiceBusSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	54, // 52: indykite.config.v1beta1.KafkaSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	54, // 53: indykite.config.v1beta1.AzureEventGridSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	54, // 54: indykite.config.v1beta1.AzureServiceBusSinkConfig.display_name:type_name -> google.protobuf.StringValue
 	1,  // 55: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
-	41, // 56: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	42, // 57: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	43, // 58: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	44, // 59: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
-	46, // 60: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	45, // 61: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	47, // 62: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
+	42, // 56: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	43, // 57: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	44, // 58: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	45, // 59: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
+	47, // 60: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	46, // 61: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	48, // 62: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
 	2,  // 63: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
-	48, // 64: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	49, // 64: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
 	4,  // 65: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	53, // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
+	54, // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
 	4,  // 67: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	53, // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
-	49, // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	54, // 70: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
-	53, // 71: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
-	53, // 72: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
-	51, // 73: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	54, // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
+	50, // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	55, // 70: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
+	54, // 71: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
+	54, // 72: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
+	52, // 73: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
 	5,  // 74: indykite.config.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
 	5,  // 75: indykite.config.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
 	6,  // 76: indykite.config.v1beta1.TrustScoreDimension.name:type_name -> indykite.config.v1beta1.TrustScoreDimension.Name
 	29, // 77: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.config.v1beta1.TrustScoreDimension
 	7,  // 78: indykite.config.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.UpdateFrequency
 	8,  // 79: indykite.config.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig.Status
-	52, // 80: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
+	53, // 80: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
 	36, // 81: indykite.config.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.CapturePipelineTopicScriptConfig
 	20, // 82: indykite.config.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
 	21, // 83: indykite.config.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.config.v1beta1.AzureEventGridSinkConfig
 	22, // 84: indykite.config.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.config.v1beta1.AzureServiceBusSinkConfig
-	40, // 85: indykite.config.v1beta1.EventSinkConfig.Route.context_key_value:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValue
-	53, // 86: indykite.config.v1beta1.EventSinkConfig.Route.display_name:type_name -> google.protobuf.StringValue
-	53, // 87: indykite.config.v1beta1.EventSinkConfig.Route.id:type_name -> google.protobuf.StringValue
+	41, // 85: indykite.config.v1beta1.EventSinkConfig.Route.keys_values:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues
+	54, // 86: indykite.config.v1beta1.EventSinkConfig.Route.display_name:type_name -> google.protobuf.StringValue
+	54, // 87: indykite.config.v1beta1.EventSinkConfig.Route.id:type_name -> google.protobuf.StringValue
 	37, // 88: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.config.v1beta1.EventSinkConfig.Provider
-	56, // 89: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
-	45, // 90: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	50, // 91: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
-	92, // [92:92] is the sub-list for method output_type
-	92, // [92:92] is the sub-list for method input_type
-	92, // [92:92] is the sub-list for extension type_name
-	92, // [92:92] is the sub-list for extension extendee
-	0,  // [0:92] is the sub-list for field type_name
+	40, // 89: indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues.key_value_pairs:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePair
+	57, // 90: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
+	46, // 91: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	51, // 92: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
+	93, // [93:93] is the sub-list for method output_type
+	93, // [93:93] is the sub-list for method input_type
+	93, // [93:93] is the sub-list for extension type_name
+	93, // [93:93] is the sub-list for extension extendee
+	0,  // [0:93] is the sub-list for field type_name
 }
 
 func init() { file_indykite_config_v1beta1_model_proto_init() }
@@ -4905,8 +4936,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 		(*EventSinkConfig_Provider_AzureServiceBus)(nil),
 	}
 	file_indykite_config_v1beta1_model_proto_msgTypes[29].OneofWrappers = []any{
-		(*EventSinkConfig_Route_EventType)(nil),
-		(*EventSinkConfig_Route_ContextKeyValue)(nil),
+		(*EventSinkConfig_Route_KeysValues)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -4914,7 +4944,7 @@ func file_indykite_config_v1beta1_model_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_indykite_config_v1beta1_model_proto_rawDesc), len(file_indykite_config_v1beta1_model_proto_rawDesc)),
 			NumEnums:      9,
-			NumMessages:   44,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

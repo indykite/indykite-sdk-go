@@ -754,7 +754,7 @@ var _ = Describe("Configuration", func() {
 		})
 	})
 
-	/*Describe("EventSink", func() {
+	Describe("EventSink", func() {
 		It("CreateEventSink", func() {
 			var (
 				err        error
@@ -813,8 +813,13 @@ var _ = Describe("Configuration", func() {
 					{
 						ProviderId:     "kafka",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.audit.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								KeyValuePairs: []*configpb.EventSinkConfig_Route_KeyValuePair{
+									{Key: "relationshipupsert*", Value: "HAS"},
+								},
+								EventType: "iindykite.audit.ingest.*",
+							},
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
@@ -838,8 +843,13 @@ var _ = Describe("Configuration", func() {
 					{
 						ProviderId:     "kafka",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.audit.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								KeyValuePairs: []*configpb.EventSinkConfig_Route_KeyValuePair{
+									{Key: "relationshipupsert*", Value: "HAS"},
+								},
+								EventType: "iindykite.audit.ingest.*",
+							},
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
@@ -893,8 +903,13 @@ var _ = Describe("Configuration", func() {
 					{
 						ProviderId:     "kafka",
 						StopProcessing: true,
-						Filter: &configpb.EventSinkConfig_Route_EventType{
-							EventType: "indykite.audit.config.create",
+						Filter: &configpb.EventSinkConfig_Route_KeysValues{
+							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+								KeyValuePairs: []*configpb.EventSinkConfig_Route_KeyValuePair{
+									{Key: "relationshipupsert*", Value: "HAS"},
+								},
+								EventType: "iindykite.audit.ingest.*",
+							},
 						},
 						DisplayName: wrapperspb.String("route-display-name"),
 						Id:          wrapperspb.String("route-id"),
@@ -940,5 +955,5 @@ var _ = Describe("Configuration", func() {
 			err = configClient.Close()
 			Expect(err).To(Succeed())
 		})
-	})*/
+	})
 })

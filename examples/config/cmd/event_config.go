@@ -53,8 +53,10 @@ var createEventSinkConfigCmd = &cobra.Command{
 				{
 					ProviderId:     "kafka",
 					StopProcessing: true,
-					Filter: &configpb.EventSinkConfig_Route_EventType{
-						EventType: "indykite.eventsink.config.create",
+					Filter: &configpb.EventSinkConfig_Route_KeysValues{
+						KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+							EventType: "indykite.eventsink.config.create",
+						},
 					},
 					DisplayName: wrapperspb.String("like-real-provider-name"),
 					Id:          wrapperspb.String("like-real-provider-id"),
@@ -103,8 +105,10 @@ var updateEventSinkConfigCmd = &cobra.Command{
 				{
 					ProviderId:     "kafka",
 					StopProcessing: true,
-					Filter: &configpb.EventSinkConfig_Route_EventType{
-						EventType: "indykite.eventsink.config.update",
+					Filter: &configpb.EventSinkConfig_Route_KeysValues{
+						KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+							EventType: "indykite.eventsink.config.update",
+						},
 					},
 					DisplayName: wrapperspb.String("like-real-route-name"),
 					Id:          wrapperspb.String("like-real-route-id"),
@@ -149,8 +153,10 @@ var createEventSinkConfigGridCmd = &cobra.Command{
 				{
 					ProviderId:     "azureeventgrid",
 					StopProcessing: true,
-					Filter: &configpb.EventSinkConfig_Route_EventType{
-						EventType: "indykite.eventsink.config.create",
+					Filter: &configpb.EventSinkConfig_Route_KeysValues{
+						KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+							EventType: "indykite.eventsink.config.update",
+						},
 					},
 					DisplayName: wrapperspb.String("like-real-route-name"),
 					Id:          wrapperspb.String("like-real-route-id"),
@@ -197,8 +203,10 @@ var createEventSinkConfigBusCmd = &cobra.Command{
 				{
 					ProviderId:     "azureservicebus",
 					StopProcessing: true,
-					Filter: &configpb.EventSinkConfig_Route_EventType{
-						EventType: "indykite.eventsink.config.create",
+					Filter: &configpb.EventSinkConfig_Route_KeysValues{
+						KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
+							EventType: "indykite.eventsink.config.update",
+						},
 					},
 					DisplayName: wrapperspb.String("like-real-route-name"),
 					Id:          wrapperspb.String("like-real-route-id"),
