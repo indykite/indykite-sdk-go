@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.58.0](https://github.com/indykite/indykite-sdk-go/compare/v0.57.0...v0.58.0) (2025-06-05)
+
+
+### Features
+
+* modify filter in eventsink routes ([d43aada](https://github.com/indykite/indykite-sdk-go/commit/d43aadaa5e971837ef430e8ac380b4c59c3d751b))
+
 ## [0.57.0](https://github.com/indykite/indykite-sdk-go/compare/v0.56.0...v0.57.0) (2025-05-09)
 
 
