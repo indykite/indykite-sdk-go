@@ -17,4 +17,4 @@ Package entitymatching implements the IndyKite TrustedDataAccess Service API Cli
 */
 package entitymatching
 
-const versionClient = "v0.58.0" // x-release-please-version
+const versionClient = "v0.59.0" // x-release-please-version

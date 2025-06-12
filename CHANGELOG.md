@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.59.0](https://github.com/indykite/indykite-sdk-go/compare/v0.58.0...v0.59.0) (2025-06-12)
+
+
+### Features
+
+* replace ingest by capture in events ([062d712](https://github.com/indykite/indykite-sdk-go/commit/062d712d87b5bd4603dfdf9767191e0d8d1ea116))
+
 ## [0.58.0](https://github.com/indykite/indykite-sdk-go/compare/v0.57.0...v0.58.0) (2025-06-05)
 
 
