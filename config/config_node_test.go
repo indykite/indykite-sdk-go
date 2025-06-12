@@ -1959,9 +1959,9 @@ var _ = Describe("ConfigNode", func() {
 						Filter: &configpb.EventSinkConfig_Route_KeysValues{
 							KeysValues: &configpb.EventSinkConfig_Route_EventTypeKeysValues{
 								KeyValuePairs: []*configpb.EventSinkConfig_Route_KeyValuePair{
-									{Key: "relationshipupsert*", Value: "HAS"},
+									{Key: "captureLabel", Value: "HAS"},
 								},
-								EventType: "iindykite.audit.ingest.*",
+								EventType: "iindykite.audit.capture.*",
 							},
 						},
 						DisplayName: wrapperspb.String("like-real-route-name"),

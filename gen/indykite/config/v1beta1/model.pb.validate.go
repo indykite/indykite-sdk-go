@@ -6223,6 +6223,139 @@ func (m *TrustScoreProfileConfig) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if all {
+		switch v := interface{}(m.GetLastRunId()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunId",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetLastRunId()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TrustScoreProfileConfigValidationError{
+				field:  "LastRunId",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetLastRunStartTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunStartTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunStartTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetLastRunStartTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TrustScoreProfileConfigValidationError{
+				field:  "LastRunStartTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetLastRunEndTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunEndTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, TrustScoreProfileConfigValidationError{
+					field:  "LastRunEndTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetLastRunEndTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TrustScoreProfileConfigValidationError{
+				field:  "LastRunEndTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	{
+		sorted_keys := make([]int32, len(m.GetDimensionsExecutionTimes()))
+		i := 0
+		for key := range m.GetDimensionsExecutionTimes() {
+			sorted_keys[i] = key
+			i++
+		}
+		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+		for _, key := range sorted_keys {
+			val := m.GetDimensionsExecutionTimes()[key]
+			_ = val
+
+			// no validation rules for DimensionsExecutionTimes[key]
+
+			if all {
+				switch v := interface{}(val).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, TrustScoreProfileConfigValidationError{
+							field:  fmt.Sprintf("DimensionsExecutionTimes[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, TrustScoreProfileConfigValidationError{
+							field:  fmt.Sprintf("DimensionsExecutionTimes[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return TrustScoreProfileConfigValidationError{
+						field:  fmt.Sprintf("DimensionsExecutionTimes[%v]", key),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+	}
+
 	if len(errors) > 0 {
 		return TrustScoreProfileConfigMultiError(errors)
 	}
@@ -9104,6 +9237,134 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ExternalDataResolverConfig_HeaderValidationError{}
+
+// Validate checks the field values on
+// TrustScoreProfileConfig_ExecutionTimeWindow with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TrustScoreProfileConfig_ExecutionTimeWindow) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// TrustScoreProfileConfig_ExecutionTimeWindow with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// TrustScoreProfileConfig_ExecutionTimeWindowMultiError, or nil if none found.
+func (m *TrustScoreProfileConfig_ExecutionTimeWindow) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TrustScoreProfileConfig_ExecutionTimeWindow) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetStartTime() == nil {
+		err := TrustScoreProfileConfig_ExecutionTimeWindowValidationError{
+			field:  "StartTime",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetEndTime() == nil {
+		err := TrustScoreProfileConfig_ExecutionTimeWindowValidationError{
+			field:  "EndTime",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return TrustScoreProfileConfig_ExecutionTimeWindowMultiError(errors)
+	}
+
+	return nil
+}
+
+// TrustScoreProfileConfig_ExecutionTimeWindowMultiError is an error wrapping
+// multiple validation errors returned by
+// TrustScoreProfileConfig_ExecutionTimeWindow.ValidateAll() if the designated
+// constraints aren't met.
+type TrustScoreProfileConfig_ExecutionTimeWindowMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TrustScoreProfileConfig_ExecutionTimeWindowMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TrustScoreProfileConfig_ExecutionTimeWindowMultiError) AllErrors() []error { return m }
+
+// TrustScoreProfileConfig_ExecutionTimeWindowValidationError is the validation
+// error returned by TrustScoreProfileConfig_ExecutionTimeWindow.Validate if
+// the designated constraints aren't met.
+type TrustScoreProfileConfig_ExecutionTimeWindowValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) ErrorName() string {
+	return "TrustScoreProfileConfig_ExecutionTimeWindowValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TrustScoreProfileConfig_ExecutionTimeWindowValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTrustScoreProfileConfig_ExecutionTimeWindow.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TrustScoreProfileConfig_ExecutionTimeWindowValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TrustScoreProfileConfig_ExecutionTimeWindowValidationError{}
 
 // Validate checks the field values on
 // RegisterCapturePipelineTopicConfig_Script with the rules defined in the

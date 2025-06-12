@@ -294,6 +294,134 @@ func (x *AuthorizationDenyReason) GetMessage() string {
 	return ""
 }
 
+type AuthZENRequest struct {
+	state         protoimpl.MessageState          `protogen:"open.v1"`
+	Body          string                          `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	Token         *AuthZENRequest_ThirdPartyToken `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthZENRequest) Reset() {
+	*x = AuthZENRequest{}
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthZENRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthZENRequest) ProtoMessage() {}
+
+func (x *AuthZENRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthZENRequest.ProtoReflect.Descriptor instead.
+func (*AuthZENRequest) Descriptor() ([]byte, []int) {
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AuthZENRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *AuthZENRequest) GetToken() *AuthZENRequest_ThirdPartyToken {
+	if x != nil {
+		return x.Token
+	}
+	return nil
+}
+
+type SearchAction struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Request        *AuthZENRequest        `protobuf:"bytes,1,opt,name=request,proto3" json:"request,omitempty"`
+	Response       string                 `protobuf:"bytes,2,opt,name=response,proto3" json:"response,omitempty"`
+	Results        []*SearchAction_Result `protobuf:"bytes,3,rep,name=results,proto3" json:"results,omitempty"`
+	ErrorMessage   string                 `protobuf:"bytes,4,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	EvaluationTime *durationpb.Duration   `protobuf:"bytes,5,opt,name=evaluation_time,json=evaluationTime,proto3" json:"evaluation_time,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *SearchAction) Reset() {
+	*x = SearchAction{}
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchAction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchAction) ProtoMessage() {}
+
+func (x *SearchAction) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchAction.ProtoReflect.Descriptor instead.
+func (*SearchAction) Descriptor() ([]byte, []int) {
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SearchAction) GetRequest() *AuthZENRequest {
+	if x != nil {
+		return x.Request
+	}
+	return nil
+}
+
+func (x *SearchAction) GetResponse() string {
+	if x != nil {
+		return x.Response
+	}
+	return ""
+}
+
+func (x *SearchAction) GetResults() []*SearchAction_Result {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+func (x *SearchAction) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *SearchAction) GetEvaluationTime() *durationpb.Duration {
+	if x != nil {
+		return x.EvaluationTime
+	}
+	return nil
+}
+
 type IsAuthorized struct {
 	state               protoimpl.MessageState    `protogen:"open.v1"`
 	Request             *IsAuthorized_Request     `protobuf:"bytes,1,opt,name=request,proto3" json:"request,omitempty"`
@@ -309,7 +437,7 @@ type IsAuthorized struct {
 
 func (x *IsAuthorized) Reset() {
 	*x = IsAuthorized{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[4]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +449,7 @@ func (x *IsAuthorized) String() string {
 func (*IsAuthorized) ProtoMessage() {}
 
 func (x *IsAuthorized) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[4]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -334,7 +462,7 @@ func (x *IsAuthorized) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized.ProtoReflect.Descriptor instead.
 func (*IsAuthorized) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *IsAuthorized) GetRequest() *IsAuthorized_Request {
@@ -401,7 +529,7 @@ type WhatAuthorized struct {
 
 func (x *WhatAuthorized) Reset() {
 	*x = WhatAuthorized{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[5]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -413,7 +541,7 @@ func (x *WhatAuthorized) String() string {
 func (*WhatAuthorized) ProtoMessage() {}
 
 func (x *WhatAuthorized) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[5]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -426,7 +554,7 @@ func (x *WhatAuthorized) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatAuthorized.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *WhatAuthorized) GetRequest() *WhatAuthorized_Request {
@@ -493,7 +621,7 @@ type WhoAuthorized struct {
 
 func (x *WhoAuthorized) Reset() {
 	*x = WhoAuthorized{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[6]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -505,7 +633,7 @@ func (x *WhoAuthorized) String() string {
 func (*WhoAuthorized) ProtoMessage() {}
 
 func (x *WhoAuthorized) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[6]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -518,7 +646,7 @@ func (x *WhoAuthorized) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *WhoAuthorized) GetRequest() *WhoAuthorized_Request {
@@ -580,7 +708,7 @@ type AuthorizationSubject_Property struct {
 
 func (x *AuthorizationSubject_Property) Reset() {
 	*x = AuthorizationSubject_Property{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[7]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -592,7 +720,7 @@ func (x *AuthorizationSubject_Property) String() string {
 func (*AuthorizationSubject_Property) ProtoMessage() {}
 
 func (x *AuthorizationSubject_Property) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[7]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -632,7 +760,7 @@ type AuthorizationSubject_ExternalID struct {
 
 func (x *AuthorizationSubject_ExternalID) Reset() {
 	*x = AuthorizationSubject_ExternalID{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[8]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -644,7 +772,7 @@ func (x *AuthorizationSubject_ExternalID) String() string {
 func (*AuthorizationSubject_ExternalID) ProtoMessage() {}
 
 func (x *AuthorizationSubject_ExternalID) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[8]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -674,6 +802,102 @@ func (x *AuthorizationSubject_ExternalID) GetExternalId() string {
 	return ""
 }
 
+type AuthZENRequest_ThirdPartyToken struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SubjectId     string                 `protobuf:"bytes,1,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthZENRequest_ThirdPartyToken) Reset() {
+	*x = AuthZENRequest_ThirdPartyToken{}
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthZENRequest_ThirdPartyToken) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthZENRequest_ThirdPartyToken) ProtoMessage() {}
+
+func (x *AuthZENRequest_ThirdPartyToken) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthZENRequest_ThirdPartyToken.ProtoReflect.Descriptor instead.
+func (*AuthZENRequest_ThirdPartyToken) Descriptor() ([]byte, []int) {
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *AuthZENRequest_ThirdPartyToken) GetSubjectId() string {
+	if x != nil {
+		return x.SubjectId
+	}
+	return ""
+}
+
+type SearchAction_Result struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Policy        *AuthorizationPolicy   `protobuf:"bytes,1,opt,name=policy,proto3" json:"policy,omitempty"`
+	Actions       []string               `protobuf:"bytes,2,rep,name=actions,proto3" json:"actions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchAction_Result) Reset() {
+	*x = SearchAction_Result{}
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchAction_Result) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchAction_Result) ProtoMessage() {}
+
+func (x *SearchAction_Result) ProtoReflect() protoreflect.Message {
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchAction_Result.ProtoReflect.Descriptor instead.
+func (*SearchAction_Result) Descriptor() ([]byte, []int) {
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *SearchAction_Result) GetPolicy() *AuthorizationPolicy {
+	if x != nil {
+		return x.Policy
+	}
+	return nil
+}
+
+func (x *SearchAction_Result) GetActions() []string {
+	if x != nil {
+		return x.Actions
+	}
+	return nil
+}
+
 type IsAuthorized_Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// AuthorizationSubject to check if is authorized to perform given actions.
@@ -690,7 +914,7 @@ type IsAuthorized_Request struct {
 
 func (x *IsAuthorized_Request) Reset() {
 	*x = IsAuthorized_Request{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[9]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -702,7 +926,7 @@ func (x *IsAuthorized_Request) String() string {
 func (*IsAuthorized_Request) ProtoMessage() {}
 
 func (x *IsAuthorized_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[9]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -715,7 +939,7 @@ func (x *IsAuthorized_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Request.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Request) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 0}
 }
 
 func (x *IsAuthorized_Request) GetSubject() *AuthorizationSubject {
@@ -758,7 +982,7 @@ type IsAuthorized_Response struct {
 
 func (x *IsAuthorized_Response) Reset() {
 	*x = IsAuthorized_Response{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[10]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -770,7 +994,7 @@ func (x *IsAuthorized_Response) String() string {
 func (*IsAuthorized_Response) ProtoMessage() {}
 
 func (x *IsAuthorized_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[10]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -783,7 +1007,7 @@ func (x *IsAuthorized_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Response.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Response) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1}
 }
 
 func (x *IsAuthorized_Response) GetDecisionTime() *timestamppb.Timestamp {
@@ -813,7 +1037,7 @@ type IsAuthorized_Request_Resource struct {
 
 func (x *IsAuthorized_Request_Resource) Reset() {
 	*x = IsAuthorized_Request_Resource{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[11]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -825,7 +1049,7 @@ func (x *IsAuthorized_Request_Resource) String() string {
 func (*IsAuthorized_Request_Resource) ProtoMessage() {}
 
 func (x *IsAuthorized_Request_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[11]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,7 +1062,7 @@ func (x *IsAuthorized_Request_Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Request_Resource.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Request_Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 0, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 0, 0}
 }
 
 func (x *IsAuthorized_Request_Resource) GetExternalId() string {
@@ -873,7 +1097,7 @@ type IsAuthorized_Response_Advice struct {
 
 func (x *IsAuthorized_Response_Advice) Reset() {
 	*x = IsAuthorized_Response_Advice{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[13]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -885,7 +1109,7 @@ func (x *IsAuthorized_Response_Advice) String() string {
 func (*IsAuthorized_Response_Advice) ProtoMessage() {}
 
 func (x *IsAuthorized_Response_Advice) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[13]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -898,7 +1122,7 @@ func (x *IsAuthorized_Response_Advice) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Response_Advice.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Response_Advice) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 1, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 0}
 }
 
 func (x *IsAuthorized_Response_Advice) GetError() string {
@@ -932,7 +1156,7 @@ type IsAuthorized_Response_Action struct {
 
 func (x *IsAuthorized_Response_Action) Reset() {
 	*x = IsAuthorized_Response_Action{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[14]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -944,7 +1168,7 @@ func (x *IsAuthorized_Response_Action) String() string {
 func (*IsAuthorized_Response_Action) ProtoMessage() {}
 
 func (x *IsAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[14]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +1181,7 @@ func (x *IsAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Response_Action.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Response_Action) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 1, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 1}
 }
 
 func (x *IsAuthorized_Response_Action) GetAllow() bool {
@@ -984,7 +1208,7 @@ type IsAuthorized_Response_Resource struct {
 
 func (x *IsAuthorized_Response_Resource) Reset() {
 	*x = IsAuthorized_Response_Resource{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[15]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -996,7 +1220,7 @@ func (x *IsAuthorized_Response_Resource) String() string {
 func (*IsAuthorized_Response_Resource) ProtoMessage() {}
 
 func (x *IsAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[15]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1009,7 +1233,7 @@ func (x *IsAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsAuthorized_Response_Resource.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Response_Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 1, 2}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 2}
 }
 
 func (x *IsAuthorized_Response_Resource) GetActions() map[string]*IsAuthorized_Response_Action {
@@ -1029,7 +1253,7 @@ type IsAuthorized_Response_ResourceType struct {
 
 func (x *IsAuthorized_Response_ResourceType) Reset() {
 	*x = IsAuthorized_Response_ResourceType{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[16]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1041,7 +1265,7 @@ func (x *IsAuthorized_Response_ResourceType) String() string {
 func (*IsAuthorized_Response_ResourceType) ProtoMessage() {}
 
 func (x *IsAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[16]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1054,7 +1278,7 @@ func (x *IsAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use IsAuthorized_Response_ResourceType.ProtoReflect.Descriptor instead.
 func (*IsAuthorized_Response_ResourceType) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{4, 1, 3}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 3}
 }
 
 func (x *IsAuthorized_Response_ResourceType) GetResources() map[string]*IsAuthorized_Response_Resource {
@@ -1080,7 +1304,7 @@ type WhatAuthorized_Request struct {
 
 func (x *WhatAuthorized_Request) Reset() {
 	*x = WhatAuthorized_Request{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[21]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1092,7 +1316,7 @@ func (x *WhatAuthorized_Request) String() string {
 func (*WhatAuthorized_Request) ProtoMessage() {}
 
 func (x *WhatAuthorized_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[21]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1105,7 +1329,7 @@ func (x *WhatAuthorized_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatAuthorized_Request.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Request) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 0}
 }
 
 func (x *WhatAuthorized_Request) GetSubject() *AuthorizationSubject {
@@ -1148,7 +1372,7 @@ type WhatAuthorized_Response struct {
 
 func (x *WhatAuthorized_Response) Reset() {
 	*x = WhatAuthorized_Response{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[22]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1160,7 +1384,7 @@ func (x *WhatAuthorized_Response) String() string {
 func (*WhatAuthorized_Response) ProtoMessage() {}
 
 func (x *WhatAuthorized_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[22]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1173,7 +1397,7 @@ func (x *WhatAuthorized_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatAuthorized_Response.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Response) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 1}
 }
 
 func (x *WhatAuthorized_Response) GetDecisionTime() *timestamppb.Timestamp {
@@ -1202,7 +1426,7 @@ type WhatAuthorized_Request_ResourceType struct {
 
 func (x *WhatAuthorized_Request_ResourceType) Reset() {
 	*x = WhatAuthorized_Request_ResourceType{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[23]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1214,7 +1438,7 @@ func (x *WhatAuthorized_Request_ResourceType) String() string {
 func (*WhatAuthorized_Request_ResourceType) ProtoMessage() {}
 
 func (x *WhatAuthorized_Request_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[23]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1227,7 +1451,7 @@ func (x *WhatAuthorized_Request_ResourceType) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use WhatAuthorized_Request_ResourceType.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Request_ResourceType) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 0, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 0, 0}
 }
 
 func (x *WhatAuthorized_Request_ResourceType) GetType() string {
@@ -1254,7 +1478,7 @@ type WhatAuthorized_Response_Resource struct {
 
 func (x *WhatAuthorized_Response_Resource) Reset() {
 	*x = WhatAuthorized_Response_Resource{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[25]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1266,7 +1490,7 @@ func (x *WhatAuthorized_Response_Resource) String() string {
 func (*WhatAuthorized_Response_Resource) ProtoMessage() {}
 
 func (x *WhatAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[25]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1279,7 +1503,7 @@ func (x *WhatAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatAuthorized_Response_Resource.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Response_Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 1, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 1, 0}
 }
 
 func (x *WhatAuthorized_Response_Resource) GetExternalId() string {
@@ -1299,7 +1523,7 @@ type WhatAuthorized_Response_Action struct {
 
 func (x *WhatAuthorized_Response_Action) Reset() {
 	*x = WhatAuthorized_Response_Action{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[26]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1311,7 +1535,7 @@ func (x *WhatAuthorized_Response_Action) String() string {
 func (*WhatAuthorized_Response_Action) ProtoMessage() {}
 
 func (x *WhatAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[26]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1324,7 +1548,7 @@ func (x *WhatAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatAuthorized_Response_Action.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Response_Action) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 1, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 1, 1}
 }
 
 func (x *WhatAuthorized_Response_Action) GetResources() []*WhatAuthorized_Response_Resource {
@@ -1344,7 +1568,7 @@ type WhatAuthorized_Response_ResourceType struct {
 
 func (x *WhatAuthorized_Response_ResourceType) Reset() {
 	*x = WhatAuthorized_Response_ResourceType{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[27]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1356,7 +1580,7 @@ func (x *WhatAuthorized_Response_ResourceType) String() string {
 func (*WhatAuthorized_Response_ResourceType) ProtoMessage() {}
 
 func (x *WhatAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[27]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1369,7 +1593,7 @@ func (x *WhatAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use WhatAuthorized_Response_ResourceType.ProtoReflect.Descriptor instead.
 func (*WhatAuthorized_Response_ResourceType) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{5, 1, 2}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{7, 1, 2}
 }
 
 func (x *WhatAuthorized_Response_ResourceType) GetActions() map[string]*WhatAuthorized_Response_Action {
@@ -1393,7 +1617,7 @@ type WhoAuthorized_Request struct {
 
 func (x *WhoAuthorized_Request) Reset() {
 	*x = WhoAuthorized_Request{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[30]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1405,7 +1629,7 @@ func (x *WhoAuthorized_Request) String() string {
 func (*WhoAuthorized_Request) ProtoMessage() {}
 
 func (x *WhoAuthorized_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[30]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1418,7 +1642,7 @@ func (x *WhoAuthorized_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Request.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Request) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 0}
 }
 
 func (x *WhoAuthorized_Request) GetResources() []*WhoAuthorized_Request_Resource {
@@ -1454,7 +1678,7 @@ type WhoAuthorized_Response struct {
 
 func (x *WhoAuthorized_Response) Reset() {
 	*x = WhoAuthorized_Response{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[31]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1466,7 +1690,7 @@ func (x *WhoAuthorized_Response) String() string {
 func (*WhoAuthorized_Response) ProtoMessage() {}
 
 func (x *WhoAuthorized_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[31]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1479,7 +1703,7 @@ func (x *WhoAuthorized_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Response.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Response) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 1}
 }
 
 func (x *WhoAuthorized_Response) GetDecisionTime() *timestamppb.Timestamp {
@@ -1509,7 +1733,7 @@ type WhoAuthorized_Request_Resource struct {
 
 func (x *WhoAuthorized_Request_Resource) Reset() {
 	*x = WhoAuthorized_Request_Resource{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[32]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1521,7 +1745,7 @@ func (x *WhoAuthorized_Request_Resource) String() string {
 func (*WhoAuthorized_Request_Resource) ProtoMessage() {}
 
 func (x *WhoAuthorized_Request_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[32]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1534,7 +1758,7 @@ func (x *WhoAuthorized_Request_Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Request_Resource.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Request_Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 0, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 0, 0}
 }
 
 func (x *WhoAuthorized_Request_Resource) GetExternalId() string {
@@ -1570,7 +1794,7 @@ type WhoAuthorized_Response_Subject struct {
 
 func (x *WhoAuthorized_Response_Subject) Reset() {
 	*x = WhoAuthorized_Response_Subject{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[34]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1582,7 +1806,7 @@ func (x *WhoAuthorized_Response_Subject) String() string {
 func (*WhoAuthorized_Response_Subject) ProtoMessage() {}
 
 func (x *WhoAuthorized_Response_Subject) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[34]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1595,7 +1819,7 @@ func (x *WhoAuthorized_Response_Subject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Response_Subject.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Response_Subject) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 0}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 1, 0}
 }
 
 func (x *WhoAuthorized_Response_Subject) GetExternalId() string {
@@ -1622,7 +1846,7 @@ type WhoAuthorized_Response_Action struct {
 
 func (x *WhoAuthorized_Response_Action) Reset() {
 	*x = WhoAuthorized_Response_Action{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[35]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1634,7 +1858,7 @@ func (x *WhoAuthorized_Response_Action) String() string {
 func (*WhoAuthorized_Response_Action) ProtoMessage() {}
 
 func (x *WhoAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[35]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1647,7 +1871,7 @@ func (x *WhoAuthorized_Response_Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Response_Action.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Response_Action) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 1}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 1, 1}
 }
 
 func (x *WhoAuthorized_Response_Action) GetSubjects() []*WhoAuthorized_Response_Subject {
@@ -1667,7 +1891,7 @@ type WhoAuthorized_Response_Resource struct {
 
 func (x *WhoAuthorized_Response_Resource) Reset() {
 	*x = WhoAuthorized_Response_Resource{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[36]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1679,7 +1903,7 @@ func (x *WhoAuthorized_Response_Resource) String() string {
 func (*WhoAuthorized_Response_Resource) ProtoMessage() {}
 
 func (x *WhoAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[36]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1692,7 +1916,7 @@ func (x *WhoAuthorized_Response_Resource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAuthorized_Response_Resource.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Response_Resource) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 2}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 1, 2}
 }
 
 func (x *WhoAuthorized_Response_Resource) GetActions() map[string]*WhoAuthorized_Response_Action {
@@ -1712,7 +1936,7 @@ type WhoAuthorized_Response_ResourceType struct {
 
 func (x *WhoAuthorized_Response_ResourceType) Reset() {
 	*x = WhoAuthorized_Response_ResourceType{}
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[37]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1724,7 +1948,7 @@ func (x *WhoAuthorized_Response_ResourceType) String() string {
 func (*WhoAuthorized_Response_ResourceType) ProtoMessage() {}
 
 func (x *WhoAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Message {
-	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[37]
+	mi := &file_indykite_auditsink_v1beta1_authorization_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1737,7 +1961,7 @@ func (x *WhoAuthorized_Response_ResourceType) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use WhoAuthorized_Response_ResourceType.ProtoReflect.Descriptor instead.
 func (*WhoAuthorized_Response_ResourceType) Descriptor() ([]byte, []int) {
-	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{6, 1, 3}
+	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP(), []int{8, 1, 3}
 }
 
 func (x *WhoAuthorized_Response_ResourceType) GetResources() map[string]*WhoAuthorized_Response_Resource {
@@ -1773,7 +1997,22 @@ const file_indykite_auditsink_v1beta1_authorization_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"3\n" +
 	"\x17AuthorizationDenyReason\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"\xf8\x10\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\"\xa8\x01\n" +
+	"\x0eAuthZENRequest\x12\x12\n" +
+	"\x04body\x18\x01 \x01(\tR\x04body\x12P\n" +
+	"\x05token\x18\x02 \x01(\v2:.indykite.auditsink.v1beta1.AuthZENRequest.ThirdPartyTokenR\x05token\x1a0\n" +
+	"\x0fThirdPartyToken\x12\x1d\n" +
+	"\n" +
+	"subject_id\x18\x01 \x01(\tR\tsubjectId\"\x91\x03\n" +
+	"\fSearchAction\x12D\n" +
+	"\arequest\x18\x01 \x01(\v2*.indykite.auditsink.v1beta1.AuthZENRequestR\arequest\x12\x1a\n" +
+	"\bresponse\x18\x02 \x01(\tR\bresponse\x12I\n" +
+	"\aresults\x18\x03 \x03(\v2/.indykite.auditsink.v1beta1.SearchAction.ResultR\aresults\x12#\n" +
+	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage\x12B\n" +
+	"\x0fevaluation_time\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\x0eevaluationTime\x1ak\n" +
+	"\x06Result\x12G\n" +
+	"\x06policy\x18\x01 \x01(\v2/.indykite.auditsink.v1beta1.AuthorizationPolicyR\x06policy\x12\x18\n" +
+	"\aactions\x18\x02 \x03(\tR\aactions\"\xf8\x10\n" +
 	"\fIsAuthorized\x12J\n" +
 	"\arequest\x18\x01 \x01(\v20.indykite.auditsink.v1beta1.IsAuthorized.RequestR\arequest\x12h\n" +
 	"\x15resolved_digital_twin\x18\x02 \x01(\v24.indykite.auditsink.v1beta1.AuthorizationDigitalTwinR\x13resolvedDigitalTwin\x12M\n" +
@@ -1918,115 +2157,124 @@ func file_indykite_auditsink_v1beta1_authorization_proto_rawDescGZIP() []byte {
 	return file_indykite_auditsink_v1beta1_authorization_proto_rawDescData
 }
 
-var file_indykite_auditsink_v1beta1_authorization_proto_msgTypes = make([]protoimpl.MessageInfo, 41)
+var file_indykite_auditsink_v1beta1_authorization_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_indykite_auditsink_v1beta1_authorization_proto_goTypes = []any{
 	(*AuthorizationSubject)(nil),               // 0: indykite.auditsink.v1beta1.AuthorizationSubject
 	(*AuthorizationDigitalTwin)(nil),           // 1: indykite.auditsink.v1beta1.AuthorizationDigitalTwin
 	(*AuthorizationPolicy)(nil),                // 2: indykite.auditsink.v1beta1.AuthorizationPolicy
 	(*AuthorizationDenyReason)(nil),            // 3: indykite.auditsink.v1beta1.AuthorizationDenyReason
-	(*IsAuthorized)(nil),                       // 4: indykite.auditsink.v1beta1.IsAuthorized
-	(*WhatAuthorized)(nil),                     // 5: indykite.auditsink.v1beta1.WhatAuthorized
-	(*WhoAuthorized)(nil),                      // 6: indykite.auditsink.v1beta1.WhoAuthorized
-	(*AuthorizationSubject_Property)(nil),      // 7: indykite.auditsink.v1beta1.AuthorizationSubject.Property
-	(*AuthorizationSubject_ExternalID)(nil),    // 8: indykite.auditsink.v1beta1.AuthorizationSubject.ExternalID
-	(*IsAuthorized_Request)(nil),               // 9: indykite.auditsink.v1beta1.IsAuthorized.Request
-	(*IsAuthorized_Response)(nil),              // 10: indykite.auditsink.v1beta1.IsAuthorized.Response
-	(*IsAuthorized_Request_Resource)(nil),      // 11: indykite.auditsink.v1beta1.IsAuthorized.Request.Resource
-	nil,                                        // 12: indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry
-	(*IsAuthorized_Response_Advice)(nil),       // 13: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice
-	(*IsAuthorized_Response_Action)(nil),       // 14: indykite.auditsink.v1beta1.IsAuthorized.Response.Action
-	(*IsAuthorized_Response_Resource)(nil),     // 15: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource
-	(*IsAuthorized_Response_ResourceType)(nil), // 16: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType
-	nil,                             // 17: indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry
-	nil,                             // 18: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.ValuesEntry
-	nil,                             // 19: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry
-	nil,                             // 20: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry
-	(*WhatAuthorized_Request)(nil),  // 21: indykite.auditsink.v1beta1.WhatAuthorized.Request
-	(*WhatAuthorized_Response)(nil), // 22: indykite.auditsink.v1beta1.WhatAuthorized.Response
-	(*WhatAuthorized_Request_ResourceType)(nil), // 23: indykite.auditsink.v1beta1.WhatAuthorized.Request.ResourceType
-	nil,                                      // 24: indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry
-	(*WhatAuthorized_Response_Resource)(nil), // 25: indykite.auditsink.v1beta1.WhatAuthorized.Response.Resource
-	(*WhatAuthorized_Response_Action)(nil),   // 26: indykite.auditsink.v1beta1.WhatAuthorized.Response.Action
-	(*WhatAuthorized_Response_ResourceType)(nil), // 27: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType
-	nil,                                     // 28: indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry
-	nil,                                     // 29: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry
-	(*WhoAuthorized_Request)(nil),           // 30: indykite.auditsink.v1beta1.WhoAuthorized.Request
-	(*WhoAuthorized_Response)(nil),          // 31: indykite.auditsink.v1beta1.WhoAuthorized.Response
-	(*WhoAuthorized_Request_Resource)(nil),  // 32: indykite.auditsink.v1beta1.WhoAuthorized.Request.Resource
-	nil,                                     // 33: indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry
-	(*WhoAuthorized_Response_Subject)(nil),  // 34: indykite.auditsink.v1beta1.WhoAuthorized.Response.Subject
-	(*WhoAuthorized_Response_Action)(nil),   // 35: indykite.auditsink.v1beta1.WhoAuthorized.Response.Action
-	(*WhoAuthorized_Response_Resource)(nil), // 36: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource
-	(*WhoAuthorized_Response_ResourceType)(nil), // 37: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType
-	nil,                           // 38: indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry
-	nil,                           // 39: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry
-	nil,                           // 40: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry
-	(*durationpb.Duration)(nil),   // 41: google.protobuf.Duration
-	(*v1beta1.Value)(nil),         // 42: indykite.objects.v1beta1.Value
-	(*timestamppb.Timestamp)(nil), // 43: google.protobuf.Timestamp
+	(*AuthZENRequest)(nil),                     // 4: indykite.auditsink.v1beta1.AuthZENRequest
+	(*SearchAction)(nil),                       // 5: indykite.auditsink.v1beta1.SearchAction
+	(*IsAuthorized)(nil),                       // 6: indykite.auditsink.v1beta1.IsAuthorized
+	(*WhatAuthorized)(nil),                     // 7: indykite.auditsink.v1beta1.WhatAuthorized
+	(*WhoAuthorized)(nil),                      // 8: indykite.auditsink.v1beta1.WhoAuthorized
+	(*AuthorizationSubject_Property)(nil),      // 9: indykite.auditsink.v1beta1.AuthorizationSubject.Property
+	(*AuthorizationSubject_ExternalID)(nil),    // 10: indykite.auditsink.v1beta1.AuthorizationSubject.ExternalID
+	(*AuthZENRequest_ThirdPartyToken)(nil),     // 11: indykite.auditsink.v1beta1.AuthZENRequest.ThirdPartyToken
+	(*SearchAction_Result)(nil),                // 12: indykite.auditsink.v1beta1.SearchAction.Result
+	(*IsAuthorized_Request)(nil),               // 13: indykite.auditsink.v1beta1.IsAuthorized.Request
+	(*IsAuthorized_Response)(nil),              // 14: indykite.auditsink.v1beta1.IsAuthorized.Response
+	(*IsAuthorized_Request_Resource)(nil),      // 15: indykite.auditsink.v1beta1.IsAuthorized.Request.Resource
+	nil,                                        // 16: indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry
+	(*IsAuthorized_Response_Advice)(nil),       // 17: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice
+	(*IsAuthorized_Response_Action)(nil),       // 18: indykite.auditsink.v1beta1.IsAuthorized.Response.Action
+	(*IsAuthorized_Response_Resource)(nil),     // 19: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource
+	(*IsAuthorized_Response_ResourceType)(nil), // 20: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType
+	nil,                             // 21: indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry
+	nil,                             // 22: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.ValuesEntry
+	nil,                             // 23: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry
+	nil,                             // 24: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry
+	(*WhatAuthorized_Request)(nil),  // 25: indykite.auditsink.v1beta1.WhatAuthorized.Request
+	(*WhatAuthorized_Response)(nil), // 26: indykite.auditsink.v1beta1.WhatAuthorized.Response
+	(*WhatAuthorized_Request_ResourceType)(nil), // 27: indykite.auditsink.v1beta1.WhatAuthorized.Request.ResourceType
+	nil,                                      // 28: indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry
+	(*WhatAuthorized_Response_Resource)(nil), // 29: indykite.auditsink.v1beta1.WhatAuthorized.Response.Resource
+	(*WhatAuthorized_Response_Action)(nil),   // 30: indykite.auditsink.v1beta1.WhatAuthorized.Response.Action
+	(*WhatAuthorized_Response_ResourceType)(nil), // 31: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType
+	nil,                                     // 32: indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry
+	nil,                                     // 33: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry
+	(*WhoAuthorized_Request)(nil),           // 34: indykite.auditsink.v1beta1.WhoAuthorized.Request
+	(*WhoAuthorized_Response)(nil),          // 35: indykite.auditsink.v1beta1.WhoAuthorized.Response
+	(*WhoAuthorized_Request_Resource)(nil),  // 36: indykite.auditsink.v1beta1.WhoAuthorized.Request.Resource
+	nil,                                     // 37: indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry
+	(*WhoAuthorized_Response_Subject)(nil),  // 38: indykite.auditsink.v1beta1.WhoAuthorized.Response.Subject
+	(*WhoAuthorized_Response_Action)(nil),   // 39: indykite.auditsink.v1beta1.WhoAuthorized.Response.Action
+	(*WhoAuthorized_Response_Resource)(nil), // 40: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource
+	(*WhoAuthorized_Response_ResourceType)(nil), // 41: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType
+	nil,                           // 42: indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry
+	nil,                           // 43: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry
+	nil,                           // 44: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry
+	(*durationpb.Duration)(nil),   // 45: google.protobuf.Duration
+	(*v1beta1.Value)(nil),         // 46: indykite.objects.v1beta1.Value
+	(*timestamppb.Timestamp)(nil), // 47: google.protobuf.Timestamp
 }
 var file_indykite_auditsink_v1beta1_authorization_proto_depIdxs = []int32{
 	1,  // 0: indykite.auditsink.v1beta1.AuthorizationSubject.digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
-	7,  // 1: indykite.auditsink.v1beta1.AuthorizationSubject.digital_twin_property:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject.Property
-	8,  // 2: indykite.auditsink.v1beta1.AuthorizationSubject.external_id:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject.ExternalID
-	9,  // 3: indykite.auditsink.v1beta1.IsAuthorized.request:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request
-	1,  // 4: indykite.auditsink.v1beta1.IsAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
-	10, // 5: indykite.auditsink.v1beta1.IsAuthorized.response:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response
-	2,  // 6: indykite.auditsink.v1beta1.IsAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
-	3,  // 7: indykite.auditsink.v1beta1.IsAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
-	41, // 8: indykite.auditsink.v1beta1.IsAuthorized.evaluation_time:type_name -> google.protobuf.Duration
-	21, // 9: indykite.auditsink.v1beta1.WhatAuthorized.request:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request
-	1,  // 10: indykite.auditsink.v1beta1.WhatAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
-	22, // 11: indykite.auditsink.v1beta1.WhatAuthorized.response:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response
-	2,  // 12: indykite.auditsink.v1beta1.WhatAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
-	3,  // 13: indykite.auditsink.v1beta1.WhatAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
-	41, // 14: indykite.auditsink.v1beta1.WhatAuthorized.evaluation_time:type_name -> google.protobuf.Duration
-	30, // 15: indykite.auditsink.v1beta1.WhoAuthorized.request:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request
-	1,  // 16: indykite.auditsink.v1beta1.WhoAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
-	31, // 17: indykite.auditsink.v1beta1.WhoAuthorized.response:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response
-	2,  // 18: indykite.auditsink.v1beta1.WhoAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
-	3,  // 19: indykite.auditsink.v1beta1.WhoAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
-	41, // 20: indykite.auditsink.v1beta1.WhoAuthorized.evaluation_time:type_name -> google.protobuf.Duration
-	42, // 21: indykite.auditsink.v1beta1.AuthorizationSubject.Property.value:type_name -> indykite.objects.v1beta1.Value
-	0,  // 22: indykite.auditsink.v1beta1.IsAuthorized.Request.subject:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject
-	11, // 23: indykite.auditsink.v1beta1.IsAuthorized.Request.resources:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request.Resource
-	12, // 24: indykite.auditsink.v1beta1.IsAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry
-	43, // 25: indykite.auditsink.v1beta1.IsAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
-	17, // 26: indykite.auditsink.v1beta1.IsAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry
-	42, // 27: indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
-	18, // 28: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.values:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.ValuesEntry
-	13, // 29: indykite.auditsink.v1beta1.IsAuthorized.Response.Action.advices:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Advice
-	19, // 30: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.actions:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry
-	20, // 31: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.resources:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry
-	16, // 32: indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType
-	14, // 33: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Action
-	15, // 34: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Resource
-	0,  // 35: indykite.auditsink.v1beta1.WhatAuthorized.Request.subject:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject
-	23, // 36: indykite.auditsink.v1beta1.WhatAuthorized.Request.resource_types:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request.ResourceType
-	24, // 37: indykite.auditsink.v1beta1.WhatAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry
-	43, // 38: indykite.auditsink.v1beta1.WhatAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
-	28, // 39: indykite.auditsink.v1beta1.WhatAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry
-	42, // 40: indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
-	25, // 41: indykite.auditsink.v1beta1.WhatAuthorized.Response.Action.resources:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.Resource
-	29, // 42: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.actions:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry
-	27, // 43: indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType
-	26, // 44: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.Action
-	32, // 45: indykite.auditsink.v1beta1.WhoAuthorized.Request.resources:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request.Resource
-	33, // 46: indykite.auditsink.v1beta1.WhoAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry
-	43, // 47: indykite.auditsink.v1beta1.WhoAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
-	38, // 48: indykite.auditsink.v1beta1.WhoAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry
-	42, // 49: indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
-	34, // 50: indykite.auditsink.v1beta1.WhoAuthorized.Response.Action.subjects:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Subject
-	39, // 51: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.actions:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry
-	40, // 52: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.resources:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry
-	37, // 53: indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType
-	35, // 54: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Action
-	36, // 55: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource
-	56, // [56:56] is the sub-list for method output_type
-	56, // [56:56] is the sub-list for method input_type
-	56, // [56:56] is the sub-list for extension type_name
-	56, // [56:56] is the sub-list for extension extendee
-	0,  // [0:56] is the sub-list for field type_name
+	9,  // 1: indykite.auditsink.v1beta1.AuthorizationSubject.digital_twin_property:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject.Property
+	10, // 2: indykite.auditsink.v1beta1.AuthorizationSubject.external_id:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject.ExternalID
+	11, // 3: indykite.auditsink.v1beta1.AuthZENRequest.token:type_name -> indykite.auditsink.v1beta1.AuthZENRequest.ThirdPartyToken
+	4,  // 4: indykite.auditsink.v1beta1.SearchAction.request:type_name -> indykite.auditsink.v1beta1.AuthZENRequest
+	12, // 5: indykite.auditsink.v1beta1.SearchAction.results:type_name -> indykite.auditsink.v1beta1.SearchAction.Result
+	45, // 6: indykite.auditsink.v1beta1.SearchAction.evaluation_time:type_name -> google.protobuf.Duration
+	13, // 7: indykite.auditsink.v1beta1.IsAuthorized.request:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request
+	1,  // 8: indykite.auditsink.v1beta1.IsAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
+	14, // 9: indykite.auditsink.v1beta1.IsAuthorized.response:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response
+	2,  // 10: indykite.auditsink.v1beta1.IsAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
+	3,  // 11: indykite.auditsink.v1beta1.IsAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
+	45, // 12: indykite.auditsink.v1beta1.IsAuthorized.evaluation_time:type_name -> google.protobuf.Duration
+	25, // 13: indykite.auditsink.v1beta1.WhatAuthorized.request:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request
+	1,  // 14: indykite.auditsink.v1beta1.WhatAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
+	26, // 15: indykite.auditsink.v1beta1.WhatAuthorized.response:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response
+	2,  // 16: indykite.auditsink.v1beta1.WhatAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
+	3,  // 17: indykite.auditsink.v1beta1.WhatAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
+	45, // 18: indykite.auditsink.v1beta1.WhatAuthorized.evaluation_time:type_name -> google.protobuf.Duration
+	34, // 19: indykite.auditsink.v1beta1.WhoAuthorized.request:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request
+	1,  // 20: indykite.auditsink.v1beta1.WhoAuthorized.resolved_digital_twin:type_name -> indykite.auditsink.v1beta1.AuthorizationDigitalTwin
+	35, // 21: indykite.auditsink.v1beta1.WhoAuthorized.response:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response
+	2,  // 22: indykite.auditsink.v1beta1.WhoAuthorized.policies_found:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
+	3,  // 23: indykite.auditsink.v1beta1.WhoAuthorized.deny_reason:type_name -> indykite.auditsink.v1beta1.AuthorizationDenyReason
+	45, // 24: indykite.auditsink.v1beta1.WhoAuthorized.evaluation_time:type_name -> google.protobuf.Duration
+	46, // 25: indykite.auditsink.v1beta1.AuthorizationSubject.Property.value:type_name -> indykite.objects.v1beta1.Value
+	2,  // 26: indykite.auditsink.v1beta1.SearchAction.Result.policy:type_name -> indykite.auditsink.v1beta1.AuthorizationPolicy
+	0,  // 27: indykite.auditsink.v1beta1.IsAuthorized.Request.subject:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject
+	15, // 28: indykite.auditsink.v1beta1.IsAuthorized.Request.resources:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request.Resource
+	16, // 29: indykite.auditsink.v1beta1.IsAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry
+	47, // 30: indykite.auditsink.v1beta1.IsAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
+	21, // 31: indykite.auditsink.v1beta1.IsAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry
+	46, // 32: indykite.auditsink.v1beta1.IsAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
+	22, // 33: indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.values:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Advice.ValuesEntry
+	17, // 34: indykite.auditsink.v1beta1.IsAuthorized.Response.Action.advices:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Advice
+	23, // 35: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.actions:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry
+	24, // 36: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.resources:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry
+	20, // 37: indykite.auditsink.v1beta1.IsAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType
+	18, // 38: indykite.auditsink.v1beta1.IsAuthorized.Response.Resource.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Action
+	19, // 39: indykite.auditsink.v1beta1.IsAuthorized.Response.ResourceType.ResourcesEntry.value:type_name -> indykite.auditsink.v1beta1.IsAuthorized.Response.Resource
+	0,  // 40: indykite.auditsink.v1beta1.WhatAuthorized.Request.subject:type_name -> indykite.auditsink.v1beta1.AuthorizationSubject
+	27, // 41: indykite.auditsink.v1beta1.WhatAuthorized.Request.resource_types:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request.ResourceType
+	28, // 42: indykite.auditsink.v1beta1.WhatAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry
+	47, // 43: indykite.auditsink.v1beta1.WhatAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
+	32, // 44: indykite.auditsink.v1beta1.WhatAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry
+	46, // 45: indykite.auditsink.v1beta1.WhatAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
+	29, // 46: indykite.auditsink.v1beta1.WhatAuthorized.Response.Action.resources:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.Resource
+	33, // 47: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.actions:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry
+	31, // 48: indykite.auditsink.v1beta1.WhatAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType
+	30, // 49: indykite.auditsink.v1beta1.WhatAuthorized.Response.ResourceType.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhatAuthorized.Response.Action
+	36, // 50: indykite.auditsink.v1beta1.WhoAuthorized.Request.resources:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request.Resource
+	37, // 51: indykite.auditsink.v1beta1.WhoAuthorized.Request.input_params:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry
+	47, // 52: indykite.auditsink.v1beta1.WhoAuthorized.Response.decision_time:type_name -> google.protobuf.Timestamp
+	42, // 53: indykite.auditsink.v1beta1.WhoAuthorized.Response.decisions:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry
+	46, // 54: indykite.auditsink.v1beta1.WhoAuthorized.Request.InputParamsEntry.value:type_name -> indykite.objects.v1beta1.Value
+	38, // 55: indykite.auditsink.v1beta1.WhoAuthorized.Response.Action.subjects:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Subject
+	43, // 56: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.actions:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry
+	44, // 57: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.resources:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry
+	41, // 58: indykite.auditsink.v1beta1.WhoAuthorized.Response.DecisionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType
+	39, // 59: indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource.ActionsEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Action
+	40, // 60: indykite.auditsink.v1beta1.WhoAuthorized.Response.ResourceType.ResourcesEntry.value:type_name -> indykite.auditsink.v1beta1.WhoAuthorized.Response.Resource
+	61, // [61:61] is the sub-list for method output_type
+	61, // [61:61] is the sub-list for method input_type
+	61, // [61:61] is the sub-list for extension type_name
+	61, // [61:61] is the sub-list for extension extendee
+	0,  // [0:61] is the sub-list for field type_name
 }
 
 func init() { file_indykite_auditsink_v1beta1_authorization_proto_init() }
@@ -2046,7 +2294,7 @@ func file_indykite_auditsink_v1beta1_authorization_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_indykite_auditsink_v1beta1_authorization_proto_rawDesc), len(file_indykite_auditsink_v1beta1_authorization_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   41,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
