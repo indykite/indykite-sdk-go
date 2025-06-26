@@ -101,7 +101,7 @@ type PropertyMapping struct {
 	SourceNodeProperty string `protobuf:"bytes,2,opt,name=source_node_property,json=sourceNodeProperty,proto3" json:"source_node_property,omitempty"`
 	// TargetNodeType is the type of the node that will be compared to nodes of SourceNodeType.
 	TargetNodeType string `protobuf:"bytes,3,opt,name=target_node_type,json=targetNodeType,proto3" json:"target_node_type,omitempty"`
-	// TargetNodeProperty is a property of the source node that will be compared to SourceNodeProperty.
+	// TargetNodeProperty is a property of the target node that will be compared to SourceNodeProperty.
 	TargetNodeProperty string `protobuf:"bytes,4,opt,name=target_node_property,json=targetNodeProperty,proto3" json:"target_node_property,omitempty"`
 	// SimilarityScoreCutoff defines the threshold (in range [0,1]), above which entities will be automatically matched.
 	SimilarityScoreCutoff float32 `protobuf:"fixed32,5,opt,name=similarity_score_cutoff,json=similarityScoreCutoff,proto3" json:"similarity_score_cutoff,omitempty"`
@@ -178,7 +178,7 @@ type CustomPropertyMappings struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// SourceNodeProperty is a property of the source node that will be compared to TargetNodeProperty.
 	SourceNodeProperty string `protobuf:"bytes,2,opt,name=source_node_property,json=sourceNodeProperty,proto3" json:"source_node_property,omitempty"`
-	// TargetNodeProperty is a property of the source node that will be compared to SourceNodeProperty.
+	// TargetNodeProperty is a property of the target node that will be compared to SourceNodeProperty.
 	TargetNodeProperty string `protobuf:"bytes,4,opt,name=target_node_property,json=targetNodeProperty,proto3" json:"target_node_property,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache

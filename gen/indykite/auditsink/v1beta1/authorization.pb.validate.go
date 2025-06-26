@@ -722,6 +722,202 @@ var _ interface {
 	ErrorName() string
 } = AuthZENRequestValidationError{}
 
+// Validate checks the field values on SearchSubject with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SearchSubject) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SearchSubject with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SearchSubjectMultiError, or
+// nil if none found.
+func (m *SearchSubject) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SearchSubject) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SearchSubjectValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SearchSubjectValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SearchSubjectValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Response
+
+	for idx, item := range m.GetResults() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SearchSubjectValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SearchSubjectValidationError{
+						field:  fmt.Sprintf("Results[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SearchSubjectValidationError{
+					field:  fmt.Sprintf("Results[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for ErrorMessage
+
+	if all {
+		switch v := interface{}(m.GetEvaluationTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SearchSubjectValidationError{
+					field:  "EvaluationTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SearchSubjectValidationError{
+					field:  "EvaluationTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetEvaluationTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SearchSubjectValidationError{
+				field:  "EvaluationTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return SearchSubjectMultiError(errors)
+	}
+
+	return nil
+}
+
+// SearchSubjectMultiError is an error wrapping multiple validation errors
+// returned by SearchSubject.ValidateAll() if the designated constraints
+// aren't met.
+type SearchSubjectMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SearchSubjectMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SearchSubjectMultiError) AllErrors() []error { return m }
+
+// SearchSubjectValidationError is the validation error returned by
+// SearchSubject.Validate if the designated constraints aren't met.
+type SearchSubjectValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SearchSubjectValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SearchSubjectValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SearchSubjectValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SearchSubjectValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SearchSubjectValidationError) ErrorName() string { return "SearchSubjectValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SearchSubjectValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSearchSubject.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SearchSubjectValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SearchSubjectValidationError{}
+
 // Validate checks the field values on SearchAction with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -2104,6 +2300,139 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AuthZENRequest_ThirdPartyTokenValidationError{}
+
+// Validate checks the field values on SearchSubject_Result with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SearchSubject_Result) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SearchSubject_Result with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SearchSubject_ResultMultiError, or nil if none found.
+func (m *SearchSubject_Result) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SearchSubject_Result) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetPolicy()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SearchSubject_ResultValidationError{
+					field:  "Policy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SearchSubject_ResultValidationError{
+					field:  "Policy",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPolicy()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SearchSubject_ResultValidationError{
+				field:  "Policy",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Decision
+
+	if len(errors) > 0 {
+		return SearchSubject_ResultMultiError(errors)
+	}
+
+	return nil
+}
+
+// SearchSubject_ResultMultiError is an error wrapping multiple validation
+// errors returned by SearchSubject_Result.ValidateAll() if the designated
+// constraints aren't met.
+type SearchSubject_ResultMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SearchSubject_ResultMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SearchSubject_ResultMultiError) AllErrors() []error { return m }
+
+// SearchSubject_ResultValidationError is the validation error returned by
+// SearchSubject_Result.Validate if the designated constraints aren't met.
+type SearchSubject_ResultValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SearchSubject_ResultValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SearchSubject_ResultValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SearchSubject_ResultValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SearchSubject_ResultValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SearchSubject_ResultValidationError) ErrorName() string {
+	return "SearchSubject_ResultValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SearchSubject_ResultValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSearchSubject_Result.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SearchSubject_ResultValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SearchSubject_ResultValidationError{}
 
 // Validate checks the field values on SearchAction_Result with the rules
 // defined in the proto definition for this message. If any rules are

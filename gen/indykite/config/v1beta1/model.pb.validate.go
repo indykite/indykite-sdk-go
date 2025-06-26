@@ -3702,54 +3702,100 @@ func (m *EventSinkConfig) validate(all bool) error {
 
 	var errors []error
 
-	{
-		sorted_keys := make([]string, len(m.GetProviders()))
-		i := 0
-		for key := range m.GetProviders() {
-			sorted_keys[i] = key
-			i++
-		}
-		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
-		for _, key := range sorted_keys {
-			val := m.GetProviders()[key]
-			_ = val
+	if len(m.GetProviders()) > 0 {
 
-			// no validation rules for Providers[key]
-
-			if all {
-				switch v := interface{}(val).(type) {
-				case interface{ ValidateAll() error }:
-					if err := v.ValidateAll(); err != nil {
-						errors = append(errors, EventSinkConfigValidationError{
-							field:  fmt.Sprintf("Providers[%v]", key),
-							reason: "embedded message failed validation",
-							cause:  err,
-						})
-					}
-				case interface{ Validate() error }:
-					if err := v.Validate(); err != nil {
-						errors = append(errors, EventSinkConfigValidationError{
-							field:  fmt.Sprintf("Providers[%v]", key),
-							reason: "embedded message failed validation",
-							cause:  err,
-						})
-					}
-				}
-			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
-				if err := v.Validate(); err != nil {
-					return EventSinkConfigValidationError{
-						field:  fmt.Sprintf("Providers[%v]", key),
-						reason: "embedded message failed validation",
-						cause:  err,
-					}
-				}
+		{
+			sorted_keys := make([]string, len(m.GetProviders()))
+			i := 0
+			for key := range m.GetProviders() {
+				sorted_keys[i] = key
+				i++
 			}
+			sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
+			for _, key := range sorted_keys {
+				val := m.GetProviders()[key]
+				_ = val
 
+				if l := utf8.RuneCountInString(key); l < 2 || l > 63 {
+					err := EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Providers[%v]", key),
+						reason: "value length must be between 2 and 63 runes, inclusive",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+				if !_EventSinkConfig_Providers_Pattern.MatchString(key) {
+					err := EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Providers[%v]", key),
+						reason: "value does not match regex pattern \"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$\"",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+				if val == nil {
+					err := EventSinkConfigValidationError{
+						field:  fmt.Sprintf("Providers[%v]", key),
+						reason: "value is required",
+					}
+					if !all {
+						return err
+					}
+					errors = append(errors, err)
+				}
+
+				if all {
+					switch v := interface{}(val).(type) {
+					case interface{ ValidateAll() error }:
+						if err := v.ValidateAll(); err != nil {
+							errors = append(errors, EventSinkConfigValidationError{
+								field:  fmt.Sprintf("Providers[%v]", key),
+								reason: "embedded message failed validation",
+								cause:  err,
+							})
+						}
+					case interface{ Validate() error }:
+						if err := v.Validate(); err != nil {
+							errors = append(errors, EventSinkConfigValidationError{
+								field:  fmt.Sprintf("Providers[%v]", key),
+								reason: "embedded message failed validation",
+								cause:  err,
+							})
+						}
+					}
+				} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
+					if err := v.Validate(); err != nil {
+						return EventSinkConfigValidationError{
+							field:  fmt.Sprintf("Providers[%v]", key),
+							reason: "embedded message failed validation",
+							cause:  err,
+						}
+					}
+				}
+
+			}
 		}
+
 	}
 
 	for idx, item := range m.GetRoutes() {
 		_, _ = idx, item
+
+		if item == nil {
+			err := EventSinkConfigValidationError{
+				field:  fmt.Sprintf("Routes[%v]", idx),
+				reason: "value is required",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		if all {
 			switch v := interface{}(item).(type) {
@@ -3860,6 +3906,8 @@ var _ interface {
 	ErrorName() string
 } = EventSinkConfigValidationError{}
 
+var _EventSinkConfig_Providers_Pattern = regexp.MustCompile("^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$")
+
 // Validate checks the field values on KafkaSinkConfig with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -3883,6 +3931,17 @@ func (m *KafkaSinkConfig) validate(all bool) error {
 	var errors []error
 
 	if len(m.GetBrokers()) > 0 {
+
+		if len(m.GetBrokers()) < 1 {
+			err := KafkaSinkConfigValidationError{
+				field:  "Brokers",
+				reason: "value must contain at least 1 item(s)",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
 
 		_KafkaSinkConfig_Brokers_Unique := make(map[string]struct{}, len(m.GetBrokers()))
 
@@ -7754,7 +7813,7 @@ func (m *EventSinkConfig_Route_KeyValuePair) validate(all bool) error {
 	if !_EventSinkConfig_Route_KeyValuePair_Key_Pattern.MatchString(m.GetKey()) {
 		err := EventSinkConfig_Route_KeyValuePairValidationError{
 			field:  "Key",
-			reason: "value does not match regex pattern \"^[a-zA-Z0-9*]+$\"",
+			reason: "value does not match regex pattern \"^[a-zA-Z0-9*_]+$\"",
 		}
 		if !all {
 			return err
@@ -7855,7 +7914,7 @@ var _ interface {
 	ErrorName() string
 } = EventSinkConfig_Route_KeyValuePairValidationError{}
 
-var _EventSinkConfig_Route_KeyValuePair_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*]+$")
+var _EventSinkConfig_Route_KeyValuePair_Key_Pattern = regexp.MustCompile("^[a-zA-Z0-9*_]+$")
 
 // Validate checks the field values on
 // EventSinkConfig_Route_EventTypeKeysValues with the rules defined in the
