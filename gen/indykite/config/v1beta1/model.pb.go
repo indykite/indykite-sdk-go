@@ -2478,7 +2478,7 @@ type TokenIntrospectConfig struct {
 	SubClaim *TokenIntrospectConfig_Claim `protobuf:"bytes,8,opt,name=sub_claim,json=subClaim,proto3" json:"sub_claim,omitempty"`
 	// Node type in IKG to which we will try to match sub claim with DT external_id.
 	IkgNodeType string `protobuf:"bytes,5,opt,name=ikg_node_type,json=ikgNodeType,proto3" json:"ikg_node_type,omitempty"`
-	// Perform Upsert specify, if we should create and/or update DigitalTwin in IKG if it doesn't exist with.
+	// Perform Upsert specify, if we should create and/or update DigitalTwin in IKG if it doesn't exist.
 	// In future this will perform upsert also on properties that are derived from token.
 	PerformUpsert bool `protobuf:"varint,6,opt,name=perform_upsert,json=performUpsert,proto3" json:"perform_upsert,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -4149,7 +4149,7 @@ type EntityMatchingPipelineConfig_PropertyMapping struct {
 	SourceNodeProperty string `protobuf:"bytes,2,opt,name=source_node_property,json=sourceNodeProperty,proto3" json:"source_node_property,omitempty"`
 	// TargetNodeType is the type of the node that will be compared to nodes of SourceNodeType.
 	TargetNodeType string `protobuf:"bytes,3,opt,name=target_node_type,json=targetNodeType,proto3" json:"target_node_type,omitempty"`
-	// TargetNodeProperty is a property of the source node that will be compared to SourceNodeProperty.
+	// TargetNodeProperty is a property of the target node that will be compared to SourceNodeProperty.
 	TargetNodeProperty string `protobuf:"bytes,4,opt,name=target_node_property,json=targetNodeProperty,proto3" json:"target_node_property,omitempty"`
 	// SimilarityScoreCutoff defines the threshold (in range [0,1]), above which entities will be automatically matched.
 	SimilarityScoreCutoff float32 `protobuf:"fixed32,5,opt,name=similarity_score_cutoff,json=similarityScoreCutoff,proto3" json:"similarity_score_cutoff,omitempty"`
@@ -4576,15 +4576,17 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x0eSTATUS_INVALID\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\x12\x13\n" +
 	"\x0fSTATUS_INACTIVE\x10\x02\x12\x10\n" +
-	"\fSTATUS_DRAFT\x10\x03\"\xd8\t\n" +
-	"\x0fEventSinkConfig\x12U\n" +
-	"\tproviders\x18\x01 \x03(\v27.indykite.config.v1beta1.EventSinkConfig.ProvidersEntryR\tproviders\x12F\n" +
-	"\x06routes\x18\x02 \x03(\v2..indykite.config.v1beta1.EventSinkConfig.RouteR\x06routes\x1a\x9e\x02\n" +
+	"\fSTATUS_DRAFT\x10\x03\"\xa6\n" +
+	"\n" +
+	"\x0fEventSinkConfig\x12\x92\x01\n" +
+	"\tproviders\x18\x01 \x03(\v27.indykite.config.v1beta1.EventSinkConfig.ProvidersEntryB;\xfaB8\x9a\x015\"*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$*\x05\x8a\x01\x02\x10\x010\x01R\tproviders\x12U\n" +
+	"\x06routes\x18\x02 \x03(\v2..indykite.config.v1beta1.EventSinkConfig.RouteB\r\xfaB\n" +
+	"\x92\x01\a\"\x05\x8a\x01\x02\x10\x01R\x06routes\x1a\x9e\x02\n" +
 	"\bProvider\x12@\n" +
 	"\x05kafka\x18\x01 \x01(\v2(.indykite.config.v1beta1.KafkaSinkConfigH\x00R\x05kafka\x12]\n" +
 	"\x10azure_event_grid\x18\x02 \x01(\v21.indykite.config.v1beta1.AzureEventGridSinkConfigH\x00R\x0eazureEventGrid\x12`\n" +
 	"\x11azure_service_bus\x18\x03 \x01(\v22.indykite.config.v1beta1.AzureServiceBusSinkConfigH\x00R\x0fazureServiceBusB\x0f\n" +
-	"\bprovider\x12\x03\xf8B\x01\x1a\x93\x05\n" +
+	"\bprovider\x12\x03\xf8B\x01\x1a\x94\x05\n" +
 	"\x05Route\x12N\n" +
 	"\vprovider_id\x18\x01 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\n" +
 	"providerId\x12'\n" +
@@ -4593,9 +4595,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"keysValues\x12N\n" +
 	"\fdisplay_name\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
 	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12:\n" +
-	"\x02id\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\f\xfaB\tr\a\x10\x02\x18?\xd0\x01\x01R\x02id\x1aY\n" +
-	"\fKeyValuePair\x12*\n" +
-	"\x03key\x18\x01 \x01(\tB\x18\xfaB\x15r\x13\x10\x012\x0f^[a-zA-Z0-9*]+$R\x03key\x12\x1d\n" +
+	"\x02id\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\f\xfaB\tr\a\x10\x02\x18?\xd0\x01\x01R\x02id\x1aZ\n" +
+	"\fKeyValuePair\x12+\n" +
+	"\x03key\x18\x01 \x01(\tB\x19\xfaB\x16r\x14\x10\x012\x10^[a-zA-Z0-9*_]+$R\x03key\x12\x1d\n" +
 	"\x05value\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05value\x1a\xb3\x01\n" +
 	"\x13EventTypeKeysValues\x12c\n" +
 	"\x0fkey_value_pairs\x18\x01 \x03(\v2;.indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePairR\rkeyValuePairs\x127\n" +
@@ -4604,9 +4606,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x06filter\x12\x03\xf8B\x01\x1ao\n" +
 	"\x0eProvidersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12G\n" +
-	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\xc6\x02\n" +
-	"\x0fKafkaSinkConfig\x12-\n" +
-	"\abrokers\x18\x01 \x03(\tB\x13\xfaB\x10\x92\x01\r\x18\x01\"\ar\x05\x10\b\x90\x01\x01(\x01R\abrokers\x123\n" +
+	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\xc8\x02\n" +
+	"\x0fKafkaSinkConfig\x12/\n" +
+	"\abrokers\x18\x01 \x03(\tB\x15\xfaB\x12\x92\x01\x0f\b\x01\x18\x01\"\ar\x05\x10\b\x90\x01\x01(\x01R\abrokers\x123\n" +
 	"\x05topic\x18\x02 \x01(\tB\x1d\xfaB\x1ar\x18\x10\x01\x18\xf9\x012\x11^[a-zA-Z0-9._-]+$R\x05topic\x12\x1f\n" +
 	"\vdisable_tls\x18\x03 \x01(\bR\n" +
 	"disableTls\x12&\n" +
