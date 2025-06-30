@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.60.0](https://github.com/indykite/indykite-sdk-go/compare/v0.59.0...v0.60.0) (2025-06-30)
+
+
+### Features
+
+* prepare for new filter changes in events ([f072c47](https://github.com/indykite/indykite-sdk-go/commit/f072c474a41215c33d4f6e902abc3f50672eca51))
+
 ## [0.59.0](https://github.com/indykite/indykite-sdk-go/compare/v0.58.0...v0.59.0) (2025-06-12)
 
 
