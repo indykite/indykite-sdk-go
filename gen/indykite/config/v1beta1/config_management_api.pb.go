@@ -1470,8 +1470,10 @@ type CreateApplicationAgentRequest struct {
 	// Human readable name of ApplicationAgent.
 	DisplayName *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Description of ApplicationAgent.
-	Description    *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	ApiPermissions []string                `protobuf:"bytes,6,rep,name=api_permissions,json=apiPermissions,proto3" json:"api_permissions,omitempty"`
+	Description *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	// APIPermissions is a list of API permissions for the agent.
+	// The agent will only be able to access the APIs specified in this list.
+	ApiPermissions []string `protobuf:"bytes,6,rep,name=api_permissions,json=apiPermissions,proto3" json:"api_permissions,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1867,9 +1869,12 @@ type UpdateApplicationAgentRequest struct {
 	// DisplayName is a human readable name.
 	DisplayName *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Description is a optional description.
-	Description   *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Description *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	// APIPermissions is a list of API permissions for the agent.
+	// The agent will only be able to access the APIs specified in this list.
+	ApiPermissions []string `protobuf:"bytes,6,rep,name=api_permissions,json=apiPermissions,proto3" json:"api_permissions,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *UpdateApplicationAgentRequest) Reset() {
@@ -1926,6 +1931,13 @@ func (x *UpdateApplicationAgentRequest) GetDisplayName() *wrapperspb.StringValue
 func (x *UpdateApplicationAgentRequest) GetDescription() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Description
+	}
+	return nil
+}
+
+func (x *UpdateApplicationAgentRequest) GetApiPermissions() []string {
+	if x != nil {
+		return x.ApiPermissions
 	}
 	return nil
 }
@@ -5070,14 +5082,16 @@ const file_indykite_config_v1beta1_config_management_api_proto_rawDesc = "" +
 	"appSpaceId\x12N\n" +
 	"\x05match\x18\x02 \x03(\tB8\xfaB5\x92\x012\b\x01\x18\x01\",r*\x10\x02\x18\xfe\x012#^[a-z](?:[-a-z0-9]{0,252}[a-z0-9])$R\x05matchJ\x04\b\x03\x10\x04\"w\n" +
 	"\x1dListApplicationAgentsResponse\x12V\n" +
-	"\x11application_agent\x18\x01 \x01(\v2).indykite.config.v1beta1.ApplicationAgentR\x10applicationAgent\"\xd1\x02\n" +
+	"\x11application_agent\x18\x01 \x01(\v2).indykite.config.v1beta1.ApplicationAgentR\x10applicationAgent\"\x8c\x03\n" +
 	"\x1dUpdateApplicationAgentRequest\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12U\n" +
 	"\x04etag\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueB#\xfaB r\x1e\x10\b\x18\x122\x15^[A-Za-z0-9-_]{8,18}$\xd0\x01\x01R\x04etag\x12N\n" +
 	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
 	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12M\n" +
 	"\vdescription\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdescriptionJ\x04\b\x05\x10\x06\"\xa8\x02\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdescription\x129\n" +
+	"\x0fapi_permissions\x18\x06 \x03(\tB\x10\xfaB\r\x92\x01\n" +
+	"\"\x06r\x04\x10\x01\x18@(\x01R\x0eapiPermissionsJ\x04\b\x05\x10\x06\"\xa8\x02\n" +
 	"\x1eUpdateApplicationAgentResponse\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12;\n" +
 	"\vcreate_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +

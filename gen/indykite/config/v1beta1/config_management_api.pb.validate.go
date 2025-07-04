@@ -4846,6 +4846,26 @@ func (m *UpdateApplicationAgentRequest) validate(all bool) error {
 
 	}
 
+	if len(m.GetApiPermissions()) > 0 {
+
+		for idx, item := range m.GetApiPermissions() {
+			_, _ = idx, item
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 64 {
+				err := UpdateApplicationAgentRequestValidationError{
+					field:  fmt.Sprintf("ApiPermissions[%v]", idx),
+					reason: "value length must be between 1 and 64 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return UpdateApplicationAgentRequestMultiError(errors)
 	}
