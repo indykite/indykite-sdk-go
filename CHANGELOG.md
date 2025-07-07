@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.61.0](https://github.com/indykite/indykite-sdk-go/compare/v0.60.0...v0.61.0) (2025-07-07)
+
+
+### Features
+
+* add api permissions in app agent ([ed2ea60](https://github.com/indykite/indykite-sdk-go/commit/ed2ea60ca1f9673baa6db91d8059094a55f9c171))
+
 ## [0.60.0](https://github.com/indykite/indykite-sdk-go/compare/v0.59.0...v0.60.0) (2025-06-30)
 
 
