@@ -101,7 +101,7 @@ var _ = Describe("ApplicationAgent", func() {
 						CreatedBy:            "creator",
 						CreateTime:           timestamppb.Now(),
 						ApplicationId:        "gid:like-real-application-id",
-						ApiAccessRestriction: []string{"indykite.*"},
+						ApiAccessRestriction: []string{"Authorization", "Capture"},
 					},
 				},
 			),
@@ -122,7 +122,7 @@ var _ = Describe("ApplicationAgent", func() {
 						CreatedBy:            "creator",
 						CreateTime:           timestamppb.Now(),
 						ApplicationId:        "gid:like-real-application-id",
-						ApiAccessRestriction: []string{"indykite.*"},
+						ApiAccessRestriction: []string{"Authorization", "Capture"},
 					},
 				},
 			),
@@ -181,7 +181,7 @@ var _ = Describe("ApplicationAgent", func() {
 				ApplicationId:  "gid:like-real-application-id",
 				Name:           "like-real-application-agent-name",
 				DisplayName:    displayNamePb,
-				ApiPermissions: []string{"indykite.*", "indykite.tda.*"},
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 			beResp := &configpb.CreateApplicationAgentResponse{
 				Id:         "gid:like-real-application-agent-id",
@@ -204,9 +204,10 @@ var _ = Describe("ApplicationAgent", func() {
 		It("CreateError", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Agent Name"}
 			req := &configpb.CreateApplicationAgentRequest{
-				ApplicationId: "gid:like-real-application-id",
-				Name:          "like-real-application-agent-name",
-				DisplayName:   displayNamePb,
+				ApplicationId:  "gid:like-real-application-id",
+				Name:           "like-real-application-agent-name",
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 			beResp := &configpb.CreateApplicationAgentResponse{}
 
@@ -224,9 +225,10 @@ var _ = Describe("ApplicationAgent", func() {
 		It("CreateNonValid", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real ApplicationAgent Name"}
 			req := &configpb.CreateApplicationAgentRequest{
-				ApplicationId: "error-app-id",
-				Name:          "like-real-application-agent-name",
-				DisplayName:   displayNamePb,
+				ApplicationId:  "error-app-id",
+				Name:           "like-real-application-agent-name",
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 
 			resp, err := configClient.CreateApplicationAgent(ctx, req)
@@ -252,9 +254,10 @@ var _ = Describe("ApplicationAgent", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real ApplicationAgent Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
 			req := &configpb.UpdateApplicationAgentRequest{
-				Id:          "gid:like-real-application-agent-id",
-				Etag:        etagPb,
-				DisplayName: displayNamePb,
+				Id:             "gid:like-real-application-agent-id",
+				Etag:           etagPb,
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 			beResp := &configpb.UpdateApplicationAgentResponse{
 				Id:         "gid:like-real-application-agent-id",
@@ -278,9 +281,10 @@ var _ = Describe("ApplicationAgent", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real ApplicationAgent Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
 			req := &configpb.UpdateApplicationAgentRequest{
-				Id:          "gid:like-real-application-agent-id",
-				Etag:        etagPb,
-				DisplayName: displayNamePb,
+				Id:             "gid:like-real-application-agent-id",
+				Etag:           etagPb,
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 			beResp := &configpb.UpdateApplicationAgentResponse{}
 
@@ -299,9 +303,10 @@ var _ = Describe("ApplicationAgent", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real Application Agent Name"}
 			etagPb := &wrapperspb.StringValue{Value: "123qwert"}
 			req := &configpb.UpdateApplicationAgentRequest{
-				Id:          "wrong-id",
-				Etag:        etagPb,
-				DisplayName: displayNamePb,
+				Id:             "wrong-id",
+				Etag:           etagPb,
+				DisplayName:    displayNamePb,
+				ApiPermissions: []string{"Authorization", "Capture"},
 			}
 			resp, err := configClient.UpdateApplicationAgent(ctx, req)
 			Expect(resp).To(BeNil())
@@ -348,7 +353,7 @@ var _ = Describe("ApplicationAgent", func() {
 					CreateTime:           timestamppb.Now(),
 					Etag:                 "123qwert",
 					ApplicationId:        "gid:like-real-application-id",
-					ApiAccessRestriction: []string{"indykite.*"},
+					ApiAccessRestriction: []string{"Authorization", "Capture"},
 				},
 			}
 
