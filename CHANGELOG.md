@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.62.0](https://github.com/indykite/indykite-sdk-go/compare/v0.61.0...v0.62.0) (2025-07-09)
+
+
+### Features
+
+* add requirement to api_permissions ([00b9c50](https://github.com/indykite/indykite-sdk-go/commit/00b9c508ff6e3e1b7b865358db8dc5554bb1bcc7))
+
 ## [0.61.0](https://github.com/indykite/indykite-sdk-go/compare/v0.60.0...v0.61.0) (2025-07-07)
 
 
