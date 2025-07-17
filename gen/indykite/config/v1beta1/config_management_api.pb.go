@@ -178,8 +178,18 @@ type CreateApplicationSpaceRequest struct {
 	// DisplayName is a human readable name.
 	DisplayName *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Description is a optional description.
-	Description   *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	Region        string                  `protobuf:"bytes,6,opt,name=region,proto3" json:"region,omitempty"`
+	Description *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Region      string                  `protobuf:"bytes,6,opt,name=region,proto3" json:"region,omitempty"`
+	// IKG size that will be allocated, which correspond also to amount of CPU nodes.
+	//
+	// 2GB (1 CPU), 4GB (1 CPU), 8GB (2 CPUs), 16GB (3 CPUs), 32GB (6 CPUs), 64GB (12 CPUs),
+	// 128GB (24 CPUs), 192GB (36 CPUs), 256GB (48 CPUs), 384GB (82 CPUs), and 512GB (96 CPUs)
+	IkgSize string `protobuf:"bytes,5,opt,name=ikg_size,json=ikgSize,proto3" json:"ikg_size,omitempty"`
+	// Replica region specify where the second IKG is created.
+	//
+	// This will turn on multi region with synchronization from master into that replica.
+	// Replica must be different region than the master, but also in the same geographical continent.
+	ReplicaRegion string `protobuf:"bytes,7,opt,name=replica_region,json=replicaRegion,proto3" json:"replica_region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -245,6 +255,20 @@ func (x *CreateApplicationSpaceRequest) GetDescription() *wrapperspb.StringValue
 func (x *CreateApplicationSpaceRequest) GetRegion() string {
 	if x != nil {
 		return x.Region
+	}
+	return ""
+}
+
+func (x *CreateApplicationSpaceRequest) GetIkgSize() string {
+	if x != nil {
+		return x.IkgSize
+	}
+	return ""
+}
+
+func (x *CreateApplicationSpaceRequest) GetReplicaRegion() string {
+	if x != nil {
+		return x.ReplicaRegion
 	}
 	return ""
 }
@@ -4940,7 +4964,7 @@ const file_indykite_config_v1beta1_config_management_api_proto_rawDesc = "" +
 	"\n" +
 	"identifier\x12\x03\xf8B\x00J\x04\b\x03\x10\x04\"U\n" +
 	"\x14ReadCustomerResponse\x12=\n" +
-	"\bcustomer\x18\x01 \x01(\v2!.indykite.config.v1beta1.CustomerR\bcustomer\"\x86\x03\n" +
+	"\bcustomer\x18\x01 \x01(\v2!.indykite.config.v1beta1.CustomerR\bcustomer\"\xb8\x04\n" +
 	"\x1dCreateApplicationSpaceRequest\x12E\n" +
 	"\vcustomer_id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\n" +
 	"customerId\x12A\n" +
@@ -4948,8 +4972,10 @@ const file_indykite_config_v1beta1_config_management_api_proto_rawDesc = "" +
 	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\n" +
 	"\xfaB\ar\x05\x10\x02\x18\xfe\x01R\vdisplayName\x12J\n" +
 	"\vdescription\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueB\n" +
-	"\xfaB\ar\x05\x10\x02\x18\xfe\x01R\vdescription\x12<\n" +
-	"\x06region\x18\x06 \x01(\tB$\xfaB!r\x1f\x10\x02\x18?R\feurope-west1R\bus-east1\xd0\x01\x01R\x06regionJ\x04\b\x05\x10\x06\"\xa8\x02\n" +
+	"\xfaB\ar\x05\x10\x02\x18\xfe\x01R\vdescription\x128\n" +
+	"\x06region\x18\x06 \x01(\tB \xfaB\x1dr\x1bR\feurope-west1R\bus-east1\xd0\x01\x01R\x06region\x12g\n" +
+	"\bikg_size\x18\x05 \x01(\tBL\xfaBIrGR\x032GBR\x034GBR\x038GBR\x0416GBR\x0432GBR\x0464GBR\x05128GBR\x05192GBR\x05256GBR\x05384GBR\x05512GB\xd0\x01\x01R\aikgSize\x12Q\n" +
+	"\x0ereplica_region\x18\a \x01(\tB*\xfaB'r%R\feurope-west1R\bus-east1R\bus-west1\xd0\x01\x01R\rreplicaRegion\"\xa8\x02\n" +
 	"\x1eCreateApplicationSpaceResponse\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12;\n" +
 	"\vcreate_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +

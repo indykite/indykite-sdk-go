@@ -454,10 +454,29 @@ func (m *CreateApplicationSpaceRequest) validate(all bool) error {
 			errors = append(errors, err)
 		}
 
-		if l := utf8.RuneCountInString(m.GetRegion()); l < 2 || l > 63 {
+	}
+
+	if m.GetIkgSize() != "" {
+
+		if _, ok := _CreateApplicationSpaceRequest_IkgSize_InLookup[m.GetIkgSize()]; !ok {
 			err := CreateApplicationSpaceRequestValidationError{
-				field:  "Region",
-				reason: "value length must be between 2 and 63 runes, inclusive",
+				field:  "IkgSize",
+				reason: "value must be in list [2GB 4GB 8GB 16GB 32GB 64GB 128GB 192GB 256GB 384GB 512GB]",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.GetReplicaRegion() != "" {
+
+		if _, ok := _CreateApplicationSpaceRequest_ReplicaRegion_InLookup[m.GetReplicaRegion()]; !ok {
+			err := CreateApplicationSpaceRequestValidationError{
+				field:  "ReplicaRegion",
+				reason: "value must be in list [europe-west1 us-east1 us-west1]",
 			}
 			if !all {
 				return err
@@ -555,6 +574,26 @@ var _CreateApplicationSpaceRequest_Name_Pattern = regexp.MustCompile("^[a-z](?:[
 var _CreateApplicationSpaceRequest_Region_InLookup = map[string]struct{}{
 	"europe-west1": {},
 	"us-east1":     {},
+}
+
+var _CreateApplicationSpaceRequest_IkgSize_InLookup = map[string]struct{}{
+	"2GB":   {},
+	"4GB":   {},
+	"8GB":   {},
+	"16GB":  {},
+	"32GB":  {},
+	"64GB":  {},
+	"128GB": {},
+	"192GB": {},
+	"256GB": {},
+	"384GB": {},
+	"512GB": {},
+}
+
+var _CreateApplicationSpaceRequest_ReplicaRegion_InLookup = map[string]struct{}{
+	"europe-west1": {},
+	"us-east1":     {},
+	"us-west1":     {},
 }
 
 // Validate checks the field values on CreateApplicationSpaceResponse with the

@@ -873,6 +873,47 @@ func (m *ConfigDetail) validate(all bool) error {
 	// no validation rules for Version
 
 	switch v := m.Configuration.(type) {
+	case *ConfigDetail_ApplicationSpace:
+		if v == nil {
+			err := ConfigDetailValidationError{
+				field:  "Configuration",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetApplicationSpace()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "ApplicationSpace",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ConfigDetailValidationError{
+						field:  "ApplicationSpace",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetApplicationSpace()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ConfigDetailValidationError{
+					field:  "ApplicationSpace",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	case *ConfigDetail_ApplicationAgent:
 		if v == nil {
 			err := ConfigDetailValidationError{
@@ -1527,6 +1568,114 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ConfigDetailValidationError{}
+
+// Validate checks the field values on ApplicationSpaceConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ApplicationSpaceConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ApplicationSpaceConfig with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ApplicationSpaceConfigMultiError, or nil if none found.
+func (m *ApplicationSpaceConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ApplicationSpaceConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Region
+
+	// no validation rules for IkgSize
+
+	// no validation rules for ReplicaRegion
+
+	if len(errors) > 0 {
+		return ApplicationSpaceConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// ApplicationSpaceConfigMultiError is an error wrapping multiple validation
+// errors returned by ApplicationSpaceConfig.ValidateAll() if the designated
+// constraints aren't met.
+type ApplicationSpaceConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ApplicationSpaceConfigMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ApplicationSpaceConfigMultiError) AllErrors() []error { return m }
+
+// ApplicationSpaceConfigValidationError is the validation error returned by
+// ApplicationSpaceConfig.Validate if the designated constraints aren't met.
+type ApplicationSpaceConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ApplicationSpaceConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ApplicationSpaceConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ApplicationSpaceConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ApplicationSpaceConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ApplicationSpaceConfigValidationError) ErrorName() string {
+	return "ApplicationSpaceConfigValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ApplicationSpaceConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sApplicationSpaceConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ApplicationSpaceConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ApplicationSpaceConfigValidationError{}
 
 // Validate checks the field values on ApplicationAgentCredentialConfig with
 // the rules defined in the proto definition for this message. If any rules

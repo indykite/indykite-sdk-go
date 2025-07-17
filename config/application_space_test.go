@@ -95,12 +95,14 @@ var _ = Describe("AppSpace", func() {
 				},
 				&configpb.ReadApplicationSpaceResponse{
 					AppSpace: &configpb.ApplicationSpace{
-						Id:          "gid:like-real-appspace-id",
-						Name:        "like-real-appspace-name",
-						DisplayName: "Like Real Appspace Name",
-						CreatedBy:   "creator",
-						CreateTime:  timestamppb.Now(),
-						Region:      "europe-west1",
+						Id:            "gid:like-real-appspace-id",
+						Name:          "like-real-appspace-name",
+						DisplayName:   "Like Real Appspace Name",
+						CreatedBy:     "creator",
+						CreateTime:    timestamppb.Now(),
+						Region:        "us-east1",
+						IkgSize:       "4GB",
+						ReplicaRegion: "us-west1",
 					},
 				},
 			),
@@ -115,12 +117,14 @@ var _ = Describe("AppSpace", func() {
 				},
 				&configpb.ReadApplicationSpaceResponse{
 					AppSpace: &configpb.ApplicationSpace{
-						Id:          "gid:like-real-appspace-id",
-						Name:        "like-real-appspace-name",
-						DisplayName: "Like Real Appspace Name",
-						CreatedBy:   "creator",
-						CreateTime:  timestamppb.Now(),
-						Region:      "europe-west1",
+						Id:            "gid:like-real-appspace-id",
+						Name:          "like-real-appspace-name",
+						DisplayName:   "Like Real Appspace Name",
+						CreatedBy:     "creator",
+						CreateTime:    timestamppb.Now(),
+						Region:        "us-east1",
+						IkgSize:       "4GB",
+						ReplicaRegion: "us-west1",
 					},
 				},
 			),
@@ -178,10 +182,12 @@ var _ = Describe("AppSpace", func() {
 		It("Create", func() {
 			displayNamePb := &wrapperspb.StringValue{Value: "Like real AppSpace Name"}
 			req := &configpb.CreateApplicationSpaceRequest{
-				CustomerId:  "gid:like-real-customer-id",
-				Name:        "like-real-appspace-name",
-				DisplayName: displayNamePb,
-				Region:      "europe-west1",
+				CustomerId:    "gid:like-real-customer-id",
+				Name:          "like-real-appspace-name",
+				DisplayName:   displayNamePb,
+				Region:        "us-east1",
+				IkgSize:       "4GB",
+				ReplicaRegion: "us-west1",
 			}
 			beResp := &configpb.CreateApplicationSpaceResponse{
 				Id:         "gid:like-real-app_space-id",
