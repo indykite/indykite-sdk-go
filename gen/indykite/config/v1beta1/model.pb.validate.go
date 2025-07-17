@@ -720,6 +720,10 @@ func (m *ApplicationSpace) validate(all bool) error {
 
 	// no validation rules for Region
 
+	// no validation rules for IkgSize
+
+	// no validation rules for ReplicaRegion
+
 	if len(errors) > 0 {
 		return ApplicationSpaceMultiError(errors)
 	}

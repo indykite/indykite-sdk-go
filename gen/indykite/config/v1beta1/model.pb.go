@@ -760,8 +760,15 @@ type ApplicationSpace struct {
 	// CustomerId this object is directly connected to.
 	CustomerId string `protobuf:"bytes,10,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
 	// Read only. Status of the ikg db instance behind the Application Space.
-	IkgStatus     AppSpaceIKGStatus `protobuf:"varint,14,opt,name=ikg_status,json=ikgStatus,proto3,enum=indykite.config.v1beta1.AppSpaceIKGStatus" json:"ikg_status,omitempty"`
-	Region        string            `protobuf:"bytes,15,opt,name=region,proto3" json:"region,omitempty"`
+	IkgStatus AppSpaceIKGStatus `protobuf:"varint,14,opt,name=ikg_status,json=ikgStatus,proto3,enum=indykite.config.v1beta1.AppSpaceIKGStatus" json:"ikg_status,omitempty"`
+	Region    string            `protobuf:"bytes,15,opt,name=region,proto3" json:"region,omitempty"`
+	// IKG Size that is allocated, with corresponding amount of CPU nodes. Default value is 2GB.
+	//
+	// 2GB (1 CPU), 4GB (1 CPU), 8GB (2 CPUs), 16GB (3 CPUs), 32GB (6 CPUs), 64GB (12 CPUs),
+	// 128GB (24 CPUs), 192GB (36 CPUs), 256GB (48 CPUs), 384GB (82 CPUs), and 512GB (96 CPUs)
+	IkgSize string `protobuf:"bytes,11,opt,name=ikg_size,json=ikgSize,proto3" json:"ikg_size,omitempty"`
+	// Replica region specify where the second IKG with synchronization is created, if any.
+	ReplicaRegion string `protobuf:"bytes,16,opt,name=replica_region,json=replicaRegion,proto3" json:"replica_region,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -890,6 +897,20 @@ func (x *ApplicationSpace) GetIkgStatus() AppSpaceIKGStatus {
 func (x *ApplicationSpace) GetRegion() string {
 	if x != nil {
 		return x.Region
+	}
+	return ""
+}
+
+func (x *ApplicationSpace) GetIkgSize() string {
+	if x != nil {
+		return x.IkgSize
+	}
+	return ""
+}
+
+func (x *ApplicationSpace) GetReplicaRegion() string {
+	if x != nil {
+		return x.ReplicaRegion
 	}
 	return ""
 }
@@ -4392,7 +4413,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\fdestroy_time\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\vdestroyTime\x12;\n" +
 	"\vdelete_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"deleteTime\x12\x12\n" +
-	"\x04etag\x18\t \x01(\tR\x04etag\"\xfe\x05\n" +
+	"\x04etag\x18\t \x01(\tR\x04etag\"\xba\x06\n" +
 	"\x10ApplicationSpace\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12A\n" +
 	"\x04name\x18\x02 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\x04name\x12-\n" +
@@ -4417,7 +4438,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"customerId\x12I\n" +
 	"\n" +
 	"ikg_status\x18\x0e \x01(\x0e2*.indykite.config.v1beta1.AppSpaceIKGStatusR\tikgStatus\x12\x16\n" +
-	"\x06region\x18\x0f \x01(\tR\x06regionJ\x04\b\v\x10\f\"\xd8\x05\n" +
+	"\x06region\x18\x0f \x01(\tR\x06region\x12\x19\n" +
+	"\bikg_size\x18\v \x01(\tR\aikgSize\x12%\n" +
+	"\x0ereplica_region\x18\x10 \x01(\tR\rreplicaRegion\"\xd8\x05\n" +
 	"\vApplication\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12A\n" +
 	"\x04name\x18\x02 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\x04name\x12-\n" +

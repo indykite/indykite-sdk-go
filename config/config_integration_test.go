@@ -48,10 +48,12 @@ var _ = Describe("Configuration", func() {
 
 			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
 			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
-				CustomerId:  integration.CustomerID,
-				Name:        "appspace-" + timeNow,
-				DisplayName: displayNamePb,
-				Region:      "europe-west1",
+				CustomerId:    integration.CustomerID,
+				Name:          "appspace-" + timeNow,
+				DisplayName:   displayNamePb,
+				Region:        "us-east1",
+				IkgSize:       "4GB",
+				ReplicaRegion: "us-west1",
 			}
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
@@ -488,10 +490,12 @@ var _ = Describe("Configuration", func() {
 
 			displayNamePb := &wrapperspb.StringValue{Value: "AppSpace " + timeNow}
 			createAppSpaceReq := &configpb.CreateApplicationSpaceRequest{
-				CustomerId:  integration.CustomerID,
-				Name:        "appspace-" + timeNow,
-				DisplayName: displayNamePb,
-				Region:      "europe-west1",
+				CustomerId:    integration.CustomerID,
+				Name:          "appspace-" + timeNow,
+				DisplayName:   displayNamePb,
+				Region:        "us-east1",
+				IkgSize:       "4GB",
+				ReplicaRegion: "us-west1",
 			}
 			respAppSpace, err := configClient.CreateApplicationSpace(context.Background(), createAppSpaceReq)
 			Expect(err).To(Succeed())
