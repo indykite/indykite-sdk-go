@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.63.0](https://github.com/indykite/indykite-sdk-go/compare/v0.62.0...v0.63.0) (2025-07-21)
+
+
+### Features
+
+* add multi-regions in appSpace ([7d0c3b6](https://github.com/indykite/indykite-sdk-go/commit/7d0c3b6b5d616b152a2aa3ad1d7dc54441833ab5))
+
 ## [0.62.0](https://github.com/indykite/indykite-sdk-go/compare/v0.61.0...v0.62.0) (2025-07-09)
 
 
