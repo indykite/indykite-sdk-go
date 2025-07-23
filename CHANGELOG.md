@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.64.0](https://github.com/indykite/indykite-sdk-go/compare/v0.63.0...v0.64.0) (2025-07-23)
+
+
+### Features
+
+* add expite_time to sa credentials ([64bacdb](https://github.com/indykite/indykite-sdk-go/commit/64bacdb959221dd96f6a245ab6b25bd997bbe84a))
+
 ## [0.63.0](https://github.com/indykite/indykite-sdk-go/compare/v0.62.0...v0.63.0) (2025-07-21)
 
 
