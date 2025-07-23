@@ -24,7 +24,6 @@ import (
 
 	"github.com/indykite/indykite-sdk-go/authorization"
 	"github.com/indykite/indykite-sdk-go/config"
-	"github.com/indykite/indykite-sdk-go/entitymatching"
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 	"github.com/indykite/indykite-sdk-go/ingest"
@@ -33,14 +32,13 @@ import (
 )
 
 var (
-	clientAuthorization  *authorization.Client
-	clientIngest         *ingest.Client
-	retryIngest          *ingest.RetryClient
-	clientConfig         *config.Client
-	clientTda            *tda.Client
-	clientEntitymatching *entitymatching.Client
-	clientKnowledge      *knowledge.Client
-	err                  error
+	clientAuthorization *authorization.Client
+	clientIngest        *ingest.Client
+	retryIngest         *ingest.RetryClient
+	clientConfig        *config.Client
+	clientTda           *tda.Client
+	clientKnowledge     *knowledge.Client
+	err                 error
 )
 
 // InitConfigAuthorization reads in config file and ENV variables if set.
@@ -109,19 +107,6 @@ func InitConfigTda() (*tda.Client, error) {
 		er(fmt.Sprintf("failed to create IndyKite TDA Client: %v", err))
 	}
 	return clientTda, nil
-}
-
-// InitConfigEntitymatching reads in entitymatching file and ENV variables if set.
-func InitConfigEntitymatching() (*entitymatching.Client, error) {
-	clientEntitymatching, err = entitymatching.NewClient(context.Background(),
-		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
-		grpc.WithRetryOptions(retry.Disable()),
-	)
-
-	if err != nil {
-		er(fmt.Sprintf("failed to create IndyKite Entitymatching Client: %v", err))
-	}
-	return clientEntitymatching, nil
 }
 
 // InitConfigKnowledge reads in knowledge file and ENV variables if set.
