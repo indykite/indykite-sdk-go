@@ -20,7 +20,6 @@ import (
 	"google.golang.org/grpc/metadata"
 
 	"github.com/indykite/indykite-sdk-go/config"
-	"github.com/indykite/indykite-sdk-go/entitymatching"
 	"github.com/indykite/indykite-sdk-go/ingest"
 	"github.com/indykite/indykite-sdk-go/knowledge"
 )
@@ -34,8 +33,7 @@ type Client struct {
 	// The second gRPC API client.
 	ClientIngest *ingest.Client
 
-	ClientConfig         *config.Client
-	ClientEntitymatching *entitymatching.Client
+	ClientConfig *config.Client
 
 	// The metadata to be sent with each request.
 	xMetadata metadata.MD

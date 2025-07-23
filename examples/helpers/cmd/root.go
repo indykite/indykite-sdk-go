@@ -27,7 +27,6 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/indykite/indykite-sdk-go/config"
-	"github.com/indykite/indykite-sdk-go/entitymatching"
 	"github.com/indykite/indykite-sdk-go/grpc"
 	apicfg "github.com/indykite/indykite-sdk-go/grpc/config"
 	"github.com/indykite/indykite-sdk-go/helpers"
@@ -113,14 +112,6 @@ func initConfig() {
 	)
 	if err != nil {
 		er(fmt.Sprintf("failed to create IndyKite Config Client: %v", err))
-	}
-
-	client.ClientEntitymatching, err = entitymatching.NewClient(context.Background(),
-		grpc.WithCredentialsLoader(apicfg.DefaultEnvironmentLoader),
-		grpc.WithRetryOptions(retry.Disable()),
-	)
-	if err != nil {
-		er(fmt.Sprintf("failed to create IndyKite Entitymatching Client: %v", err))
 	}
 }
 
