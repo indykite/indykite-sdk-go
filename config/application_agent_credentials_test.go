@@ -17,6 +17,7 @@ package config_test
 import (
 	"context"
 	"errors"
+	"time"
 
 	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
@@ -78,6 +79,8 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 			req := &configpb.ReadApplicationAgentCredentialRequest{
 				Id: "gid:like-real-application-agent-id",
 			}
+			now := time.Now()
+			future := now.AddDate(2, 0, 0)
 			beResp := &configpb.ReadApplicationAgentCredentialResponse{
 				ApplicationAgentCredential: &configpb.ApplicationAgentCredential{
 					Id:                 "gid:like-real-application-agent-credential-id",
@@ -87,6 +90,7 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 					ApplicationId:      "gid:like-real-application-id",
 					ApplicationAgentId: "gid:like-real-application-agent-id",
 					Kid:                "G9uMQzWWeP9lLvf7qKLhmeHabgZI_Mp8fnH7FJGRWHQ",
+					ExpireTime:         timestamppb.New(future),
 				},
 			}
 
@@ -139,12 +143,15 @@ var _ = Describe("ApplicationAgentCredentials", func() {
 				ApplicationAgentId: "gid:like-real-application-agent-id",
 				DisplayName:        "Like real Application Agent Credential Name",
 			}
+			now := time.Now()
+			future := now.AddDate(2, 0, 0)
 			beResp := &configpb.RegisterApplicationAgentCredentialResponse{
 				Id:                 "gid:like-real-application-agent-credential-id",
 				ApplicationAgentId: "gid:like-real-application-agent-id",
 				CreateTime:         timestamppb.Now(),
 				AgentConfig:        []byte("falwJAyAQawtoWLpIp9OUj"),
 				Kid:                "G9uMQzWWeP9lLvf7qKLhmeHabgZI_Mp8fnH7FJGRWHQ",
+				ExpireTime:         timestamppb.New(future),
 			}
 
 			mockClient.EXPECT().RegisterApplicationAgentCredential(
