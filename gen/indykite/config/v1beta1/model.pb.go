@@ -1279,8 +1279,10 @@ type ApplicationAgentCredential struct {
 	ApplicationId string `protobuf:"bytes,12,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
 	// ApplicationAgentId this object is directly connected to.
 	ApplicationAgentId string `protobuf:"bytes,9,opt,name=application_agent_id,json=applicationAgentId,proto3" json:"application_agent_id,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// The time at which the credential will expire.
+	ExpireTime    *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ApplicationAgentCredential) Reset() {
@@ -1388,6 +1390,13 @@ func (x *ApplicationAgentCredential) GetApplicationAgentId() string {
 		return x.ApplicationAgentId
 	}
 	return ""
+}
+
+func (x *ApplicationAgentCredential) GetExpireTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpireTime
+	}
+	return nil
 }
 
 type ServiceAccount struct {
@@ -3378,7 +3387,9 @@ func (x *RegisterCapturePipelineTopicConfig) GetScript() *RegisterCapturePipelin
 }
 
 type CapturePipelineTopicConfig struct {
-	state              protoimpl.MessageState            `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// CapturePipelineID is gid formatted ID of the capture pipeline this topic belongs to.
+	CapturePipelineId  string                            `protobuf:"bytes,6,opt,name=capture_pipeline_id,json=capturePipelineId,proto3" json:"capture_pipeline_id,omitempty"`
 	TopicInputName     string                            `protobuf:"bytes,1,opt,name=topic_input_name,json=topicInputName,proto3" json:"topic_input_name,omitempty"`
 	TopicInputEndpoint string                            `protobuf:"bytes,2,opt,name=topic_input_endpoint,json=topicInputEndpoint,proto3" json:"topic_input_endpoint,omitempty"`
 	TopicErrorName     string                            `protobuf:"bytes,3,opt,name=topic_error_name,json=topicErrorName,proto3" json:"topic_error_name,omitempty"`
@@ -3416,6 +3427,13 @@ func (x *CapturePipelineTopicConfig) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CapturePipelineTopicConfig.ProtoReflect.Descriptor instead.
 func (*CapturePipelineTopicConfig) Descriptor() ([]byte, []int) {
 	return file_indykite_config_v1beta1_model_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *CapturePipelineTopicConfig) GetCapturePipelineId() string {
+	if x != nil {
+		return x.CapturePipelineId
+	}
+	return ""
 }
 
 func (x *CapturePipelineTopicConfig) GetTopicInputName() string {
@@ -4499,7 +4517,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\fapp_space_id\x18\v \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\n" +
 	"appSpaceId\x12K\n" +
 	"\x0eapplication_id\x18\f \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\rapplicationId\x124\n" +
-	"\x16api_access_restriction\x18\x0f \x03(\tR\x14apiAccessRestriction\"\xbc\x05\n" +
+	"\x16api_access_restriction\x18\x0f \x03(\tR\x14apiAccessRestriction\"\xf9\x05\n" +
 	"\x1aApplicationAgentCredential\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12-\n" +
 	"\x03kid\x18\x02 \x01(\tB\x1b\xfaB\x18r\x16\x10)\x18-2\x10^[a-zA-Z0-9-_]+$R\x03kid\x12-\n" +
@@ -4518,7 +4536,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\fapp_space_id\x18\v \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\n" +
 	"appSpaceId\x12K\n" +
 	"\x0eapplication_id\x18\f \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\rapplicationId\x12V\n" +
-	"\x14application_agent_id\x18\t \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x12applicationAgentId\"\xde\x05\n" +
+	"\x14application_agent_id\x18\t \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x12applicationAgentId\x12;\n" +
+	"\vexpire_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"expireTime\"\xde\x05\n" +
 	"\x0eServiceAccount\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x12A\n" +
 	"\x04name\x18\x02 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\x04name\x12-\n" +
@@ -4836,8 +4856,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x13capture_pipeline_id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x11capturePipelineId\x12Z\n" +
 	"\x06script\x18\x02 \x01(\v2B.indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.ScriptR\x06script\x1a\"\n" +
 	"\x06Script\x12\x18\n" +
-	"\acontent\x18\x01 \x01(\tR\acontent\"\xa3\x02\n" +
-	"\x1aCapturePipelineTopicConfig\x12(\n" +
+	"\acontent\x18\x01 \x01(\tR\acontent\"\xd3\x02\n" +
+	"\x1aCapturePipelineTopicConfig\x12.\n" +
+	"\x13capture_pipeline_id\x18\x06 \x01(\tR\x11capturePipelineId\x12(\n" +
 	"\x10topic_input_name\x18\x01 \x01(\tR\x0etopicInputName\x120\n" +
 	"\x14topic_input_endpoint\x18\x02 \x01(\tR\x12topicInputEndpoint\x12(\n" +
 	"\x10topic_error_name\x18\x03 \x01(\tR\x0etopicErrorName\x12,\n" +
@@ -4968,88 +4989,89 @@ var file_indykite_config_v1beta1_model_proto_depIdxs = []int32{
 	57,  // 21: indykite.config.v1beta1.ApplicationAgentCredential.create_time:type_name -> google.protobuf.Timestamp
 	57,  // 22: indykite.config.v1beta1.ApplicationAgentCredential.destroy_time:type_name -> google.protobuf.Timestamp
 	57,  // 23: indykite.config.v1beta1.ApplicationAgentCredential.delete_time:type_name -> google.protobuf.Timestamp
-	56,  // 24: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
-	57,  // 25: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
-	57,  // 26: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
-	57,  // 27: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
-	57,  // 28: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
-	57,  // 29: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
-	57,  // 30: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
-	57,  // 31: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
-	57,  // 32: indykite.config.v1beta1.ServiceAccountCredential.expire_time:type_name -> google.protobuf.Timestamp
-	56,  // 33: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
-	57,  // 34: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
-	57,  // 35: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
-	57,  // 36: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
-	57,  // 37: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
-	19,  // 38: indykite.config.v1beta1.ConfigNode.event_sink_config:type_name -> indykite.config.v1beta1.EventSinkConfig
-	18,  // 39: indykite.config.v1beta1.ConfigNode.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
-	23,  // 40: indykite.config.v1beta1.ConfigNode.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
-	24,  // 41: indykite.config.v1beta1.ConfigNode.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
-	26,  // 42: indykite.config.v1beta1.ConfigNode.ingest_pipeline_config:type_name -> indykite.config.v1beta1.IngestPipelineConfig
-	27,  // 43: indykite.config.v1beta1.ConfigNode.entity_matching_pipeline_config:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig
-	28,  // 44: indykite.config.v1beta1.ConfigNode.external_data_resolver_config:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig
-	30,  // 45: indykite.config.v1beta1.ConfigNode.trust_score_profile_config:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig
-	31,  // 46: indykite.config.v1beta1.ConfigNode.knowledge_query_config:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig
-	33,  // 47: indykite.config.v1beta1.ConfigNode.capture_pipeline_config:type_name -> indykite.config.v1beta1.CapturePipelineConfig
-	35,  // 48: indykite.config.v1beta1.ConfigNode.capture_pipeline_topic_config:type_name -> indykite.config.v1beta1.CapturePipelineTopicConfig
-	3,   // 49: indykite.config.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig.Status
-	58,  // 50: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
-	39,  // 51: indykite.config.v1beta1.EventSinkConfig.providers:type_name -> indykite.config.v1beta1.EventSinkConfig.ProvidersEntry
-	38,  // 52: indykite.config.v1beta1.EventSinkConfig.routes:type_name -> indykite.config.v1beta1.EventSinkConfig.Route
-	56,  // 53: indykite.config.v1beta1.KafkaSinkConfig.display_name:type_name -> google.protobuf.StringValue
-	56,  // 54: indykite.config.v1beta1.AzureEventGridSinkConfig.display_name:type_name -> google.protobuf.StringValue
-	56,  // 55: indykite.config.v1beta1.AzureServiceBusSinkConfig.display_name:type_name -> google.protobuf.StringValue
-	1,   // 56: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
-	42,  // 57: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
-	43,  // 58: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
-	44,  // 59: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
-	45,  // 60: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
-	47,  // 61: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
-	46,  // 62: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	48,  // 63: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
-	2,   // 64: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
-	49,  // 65: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
-	4,   // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	56,  // 67: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
-	4,   // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
-	56,  // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
-	50,  // 70: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
-	57,  // 71: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
-	56,  // 72: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
-	56,  // 73: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
-	52,  // 74: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
-	5,   // 75: indykite.config.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
-	5,   // 76: indykite.config.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
-	6,   // 77: indykite.config.v1beta1.TrustScoreDimension.name:type_name -> indykite.config.v1beta1.TrustScoreDimension.Name
-	29,  // 78: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.config.v1beta1.TrustScoreDimension
-	7,   // 79: indykite.config.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.UpdateFrequency
-	56,  // 80: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_id:type_name -> google.protobuf.StringValue
-	57,  // 81: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_start_time:type_name -> google.protobuf.Timestamp
-	57,  // 82: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_end_time:type_name -> google.protobuf.Timestamp
-	54,  // 83: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions_execution_times:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.DimensionsExecutionTimesEntry
-	8,   // 84: indykite.config.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig.Status
-	55,  // 85: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
-	36,  // 86: indykite.config.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.CapturePipelineTopicScriptConfig
-	20,  // 87: indykite.config.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
-	21,  // 88: indykite.config.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.config.v1beta1.AzureEventGridSinkConfig
-	22,  // 89: indykite.config.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.config.v1beta1.AzureServiceBusSinkConfig
-	41,  // 90: indykite.config.v1beta1.EventSinkConfig.Route.keys_values:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues
-	56,  // 91: indykite.config.v1beta1.EventSinkConfig.Route.display_name:type_name -> google.protobuf.StringValue
-	56,  // 92: indykite.config.v1beta1.EventSinkConfig.Route.id:type_name -> google.protobuf.StringValue
-	37,  // 93: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.config.v1beta1.EventSinkConfig.Provider
-	40,  // 94: indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues.key_value_pairs:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePair
-	59,  // 95: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
-	46,  // 96: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
-	51,  // 97: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
-	57,  // 98: indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow.start_time:type_name -> google.protobuf.Timestamp
-	57,  // 99: indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow.end_time:type_name -> google.protobuf.Timestamp
-	53,  // 100: indykite.config.v1beta1.TrustScoreProfileConfig.DimensionsExecutionTimesEntry.value:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow
-	101, // [101:101] is the sub-list for method output_type
-	101, // [101:101] is the sub-list for method input_type
-	101, // [101:101] is the sub-list for extension type_name
-	101, // [101:101] is the sub-list for extension extendee
-	0,   // [0:101] is the sub-list for field type_name
+	57,  // 24: indykite.config.v1beta1.ApplicationAgentCredential.expire_time:type_name -> google.protobuf.Timestamp
+	56,  // 25: indykite.config.v1beta1.ServiceAccount.description:type_name -> google.protobuf.StringValue
+	57,  // 26: indykite.config.v1beta1.ServiceAccount.create_time:type_name -> google.protobuf.Timestamp
+	57,  // 27: indykite.config.v1beta1.ServiceAccount.update_time:type_name -> google.protobuf.Timestamp
+	57,  // 28: indykite.config.v1beta1.ServiceAccount.destroy_time:type_name -> google.protobuf.Timestamp
+	57,  // 29: indykite.config.v1beta1.ServiceAccount.delete_time:type_name -> google.protobuf.Timestamp
+	57,  // 30: indykite.config.v1beta1.ServiceAccountCredential.create_time:type_name -> google.protobuf.Timestamp
+	57,  // 31: indykite.config.v1beta1.ServiceAccountCredential.destroy_time:type_name -> google.protobuf.Timestamp
+	57,  // 32: indykite.config.v1beta1.ServiceAccountCredential.delete_time:type_name -> google.protobuf.Timestamp
+	57,  // 33: indykite.config.v1beta1.ServiceAccountCredential.expire_time:type_name -> google.protobuf.Timestamp
+	56,  // 34: indykite.config.v1beta1.ConfigNode.description:type_name -> google.protobuf.StringValue
+	57,  // 35: indykite.config.v1beta1.ConfigNode.create_time:type_name -> google.protobuf.Timestamp
+	57,  // 36: indykite.config.v1beta1.ConfigNode.update_time:type_name -> google.protobuf.Timestamp
+	57,  // 37: indykite.config.v1beta1.ConfigNode.destroy_time:type_name -> google.protobuf.Timestamp
+	57,  // 38: indykite.config.v1beta1.ConfigNode.delete_time:type_name -> google.protobuf.Timestamp
+	19,  // 39: indykite.config.v1beta1.ConfigNode.event_sink_config:type_name -> indykite.config.v1beta1.EventSinkConfig
+	18,  // 40: indykite.config.v1beta1.ConfigNode.authorization_policy_config:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig
+	23,  // 41: indykite.config.v1beta1.ConfigNode.consent_config:type_name -> indykite.config.v1beta1.ConsentConfiguration
+	24,  // 42: indykite.config.v1beta1.ConfigNode.token_introspect_config:type_name -> indykite.config.v1beta1.TokenIntrospectConfig
+	26,  // 43: indykite.config.v1beta1.ConfigNode.ingest_pipeline_config:type_name -> indykite.config.v1beta1.IngestPipelineConfig
+	27,  // 44: indykite.config.v1beta1.ConfigNode.entity_matching_pipeline_config:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig
+	28,  // 45: indykite.config.v1beta1.ConfigNode.external_data_resolver_config:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig
+	30,  // 46: indykite.config.v1beta1.ConfigNode.trust_score_profile_config:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig
+	31,  // 47: indykite.config.v1beta1.ConfigNode.knowledge_query_config:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig
+	33,  // 48: indykite.config.v1beta1.ConfigNode.capture_pipeline_config:type_name -> indykite.config.v1beta1.CapturePipelineConfig
+	35,  // 49: indykite.config.v1beta1.ConfigNode.capture_pipeline_topic_config:type_name -> indykite.config.v1beta1.CapturePipelineTopicConfig
+	3,   // 50: indykite.config.v1beta1.AuthorizationPolicyConfig.status:type_name -> indykite.config.v1beta1.AuthorizationPolicyConfig.Status
+	58,  // 51: indykite.config.v1beta1.AuthorizationPolicyConfig.builder:type_name -> indykite.config.v1beta1.PolicyBuilderConfig
+	39,  // 52: indykite.config.v1beta1.EventSinkConfig.providers:type_name -> indykite.config.v1beta1.EventSinkConfig.ProvidersEntry
+	38,  // 53: indykite.config.v1beta1.EventSinkConfig.routes:type_name -> indykite.config.v1beta1.EventSinkConfig.Route
+	56,  // 54: indykite.config.v1beta1.KafkaSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	56,  // 55: indykite.config.v1beta1.AzureEventGridSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	56,  // 56: indykite.config.v1beta1.AzureServiceBusSinkConfig.display_name:type_name -> google.protobuf.StringValue
+	1,   // 57: indykite.config.v1beta1.ConsentConfiguration.token_status:type_name -> indykite.config.v1beta1.ExternalTokenStatus
+	42,  // 58: indykite.config.v1beta1.TokenIntrospectConfig.jwt:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.JWT
+	43,  // 59: indykite.config.v1beta1.TokenIntrospectConfig.opaque:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Opaque
+	44,  // 60: indykite.config.v1beta1.TokenIntrospectConfig.offline:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Offline
+	45,  // 61: indykite.config.v1beta1.TokenIntrospectConfig.online:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Online
+	47,  // 62: indykite.config.v1beta1.TokenIntrospectConfig.claims_mapping:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry
+	46,  // 63: indykite.config.v1beta1.TokenIntrospectConfig.sub_claim:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	48,  // 64: indykite.config.v1beta1.ConsentDataPoint.returns:type_name -> indykite.config.v1beta1.ConsentDataPoint.Return
+	2,   // 65: indykite.config.v1beta1.IngestPipelineConfig.operations:type_name -> indykite.config.v1beta1.IngestPipelineOperation
+	49,  // 66: indykite.config.v1beta1.EntityMatchingPipelineConfig.node_filter:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.NodeFilter
+	4,   // 67: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
+	56,  // 68: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mapping_message:type_name -> google.protobuf.StringValue
+	4,   // 69: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_status:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.Status
+	56,  // 70: indykite.config.v1beta1.EntityMatchingPipelineConfig.entity_matching_message:type_name -> google.protobuf.StringValue
+	50,  // 71: indykite.config.v1beta1.EntityMatchingPipelineConfig.property_mappings:type_name -> indykite.config.v1beta1.EntityMatchingPipelineConfig.PropertyMapping
+	57,  // 72: indykite.config.v1beta1.EntityMatchingPipelineConfig.last_run_time:type_name -> google.protobuf.Timestamp
+	56,  // 73: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_url:type_name -> google.protobuf.StringValue
+	56,  // 74: indykite.config.v1beta1.EntityMatchingPipelineConfig.report_type:type_name -> google.protobuf.StringValue
+	52,  // 75: indykite.config.v1beta1.ExternalDataResolverConfig.headers:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry
+	5,   // 76: indykite.config.v1beta1.ExternalDataResolverConfig.request_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
+	5,   // 77: indykite.config.v1beta1.ExternalDataResolverConfig.response_type:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.ContentType
+	6,   // 78: indykite.config.v1beta1.TrustScoreDimension.name:type_name -> indykite.config.v1beta1.TrustScoreDimension.Name
+	29,  // 79: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions:type_name -> indykite.config.v1beta1.TrustScoreDimension
+	7,   // 80: indykite.config.v1beta1.TrustScoreProfileConfig.schedule:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.UpdateFrequency
+	56,  // 81: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_id:type_name -> google.protobuf.StringValue
+	57,  // 82: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_start_time:type_name -> google.protobuf.Timestamp
+	57,  // 83: indykite.config.v1beta1.TrustScoreProfileConfig.last_run_end_time:type_name -> google.protobuf.Timestamp
+	54,  // 84: indykite.config.v1beta1.TrustScoreProfileConfig.dimensions_execution_times:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.DimensionsExecutionTimesEntry
+	8,   // 85: indykite.config.v1beta1.KnowledgeQueryConfig.status:type_name -> indykite.config.v1beta1.KnowledgeQueryConfig.Status
+	55,  // 86: indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.RegisterCapturePipelineTopicConfig.Script
+	36,  // 87: indykite.config.v1beta1.CapturePipelineTopicConfig.script:type_name -> indykite.config.v1beta1.CapturePipelineTopicScriptConfig
+	20,  // 88: indykite.config.v1beta1.EventSinkConfig.Provider.kafka:type_name -> indykite.config.v1beta1.KafkaSinkConfig
+	21,  // 89: indykite.config.v1beta1.EventSinkConfig.Provider.azure_event_grid:type_name -> indykite.config.v1beta1.AzureEventGridSinkConfig
+	22,  // 90: indykite.config.v1beta1.EventSinkConfig.Provider.azure_service_bus:type_name -> indykite.config.v1beta1.AzureServiceBusSinkConfig
+	41,  // 91: indykite.config.v1beta1.EventSinkConfig.Route.keys_values:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues
+	56,  // 92: indykite.config.v1beta1.EventSinkConfig.Route.display_name:type_name -> google.protobuf.StringValue
+	56,  // 93: indykite.config.v1beta1.EventSinkConfig.Route.id:type_name -> google.protobuf.StringValue
+	37,  // 94: indykite.config.v1beta1.EventSinkConfig.ProvidersEntry.value:type_name -> indykite.config.v1beta1.EventSinkConfig.Provider
+	40,  // 95: indykite.config.v1beta1.EventSinkConfig.Route.EventTypeKeysValues.key_value_pairs:type_name -> indykite.config.v1beta1.EventSinkConfig.Route.KeyValuePair
+	59,  // 96: indykite.config.v1beta1.TokenIntrospectConfig.Online.cache_ttl:type_name -> google.protobuf.Duration
+	46,  // 97: indykite.config.v1beta1.TokenIntrospectConfig.ClaimsMappingEntry.value:type_name -> indykite.config.v1beta1.TokenIntrospectConfig.Claim
+	51,  // 98: indykite.config.v1beta1.ExternalDataResolverConfig.HeadersEntry.value:type_name -> indykite.config.v1beta1.ExternalDataResolverConfig.Header
+	57,  // 99: indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow.start_time:type_name -> google.protobuf.Timestamp
+	57,  // 100: indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow.end_time:type_name -> google.protobuf.Timestamp
+	53,  // 101: indykite.config.v1beta1.TrustScoreProfileConfig.DimensionsExecutionTimesEntry.value:type_name -> indykite.config.v1beta1.TrustScoreProfileConfig.ExecutionTimeWindow
+	102, // [102:102] is the sub-list for method output_type
+	102, // [102:102] is the sub-list for method input_type
+	102, // [102:102] is the sub-list for extension type_name
+	102, // [102:102] is the sub-list for extension extendee
+	0,   // [0:102] is the sub-list for field type_name
 }
 
 func init() { file_indykite_config_v1beta1_model_proto_init() }

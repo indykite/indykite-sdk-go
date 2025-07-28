@@ -1773,6 +1773,35 @@ func (m *ApplicationAgentCredential) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if all {
+		switch v := interface{}(m.GetExpireTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ApplicationAgentCredentialValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ApplicationAgentCredentialValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetExpireTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ApplicationAgentCredentialValidationError{
+				field:  "ExpireTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ApplicationAgentCredentialMultiError(errors)
 	}
@@ -7116,6 +7145,8 @@ func (m *CapturePipelineTopicConfig) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for CapturePipelineId
 
 	// no validation rules for TopicInputName
 
