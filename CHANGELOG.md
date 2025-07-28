@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.0](https://github.com/indykite/indykite-sdk-go/compare/v0.64.0...v0.65.0) (2025-07-28)
+
+
+### Features
+
+* add expire_time in app agent cred ([5f2c2cc](https://github.com/indykite/indykite-sdk-go/commit/5f2c2cc9a82493c4d9ecef1639028dec3ce77dd4))
+
 ## [0.64.0](https://github.com/indykite/indykite-sdk-go/compare/v0.63.0...v0.64.0) (2025-07-23)
 
 
