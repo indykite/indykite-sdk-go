@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.65.1](https://github.com/indykite/indykite-sdk-go/compare/v0.65.0...v0.65.1) (2025-08-14)
+
+
+### Bug Fixes
+
+* fix broker endpoint format ([f482dab](https://github.com/indykite/indykite-sdk-go/commit/f482daba23796c1034473ce5e62e7ac5a629a0fe))
+
 ## [0.65.0](https://github.com/indykite/indykite-sdk-go/compare/v0.64.0...v0.65.0) (2025-07-28)
 
 
