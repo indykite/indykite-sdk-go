@@ -804,7 +804,7 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:     []string{"broker.com"},
+								Brokers:     []string{"broker.com:9092"},
 								Topic:       "your-topic-name",
 								Username:    "your-name",
 								Password:    "your-password",
@@ -835,7 +835,7 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:     []string{"broker.com"},
+								Brokers:     []string{"broker.com:9092"},
 								Topic:       "your-topic-name",
 								Username:    "your-name",
 								DisplayName: wrapperspb.String("provider-display-name"),
@@ -894,7 +894,7 @@ var _ = Describe("Configuration", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:     []string{"broker.com"},
+								Brokers:     []string{"broker.com:9092"},
 								Topic:       "your-topic-name",
 								Username:    "your-name",
 								Password:    "your-password",

@@ -454,7 +454,7 @@ var _ = Describe("ConfigNode", func() {
 								"kafka": {
 									Provider: &configpb.EventSinkConfig_Provider_Kafka{
 										Kafka: &configpb.KafkaSinkConfig{
-											Brokers:     []string{"broker.com"},
+											Brokers:     []string{"broker.com:9092"},
 											Topic:       "your-topic-name",
 											Username:    "your-name",
 											Password:    "your-password",
@@ -1191,7 +1191,7 @@ var _ = Describe("ConfigNode", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:     []string{"broker.com"},
+								Brokers:     []string{"broker.com:9092"},
 								Topic:       "your-topic-name",
 								Username:    "your-name",
 								Password:    "your-password",
@@ -1943,7 +1943,7 @@ var _ = Describe("ConfigNode", func() {
 					"kafka": {
 						Provider: &configpb.EventSinkConfig_Provider_Kafka{
 							Kafka: &configpb.KafkaSinkConfig{
-								Brokers:     []string{"broker.com"},
+								Brokers:     []string{"broker.com:9092"},
 								Topic:       "your-topic-name",
 								Username:    "your-name-update",
 								Password:    "your-password-update",
