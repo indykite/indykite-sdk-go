@@ -31,7 +31,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - name: Set up Go
               uses: actions/setup-go@v5
@@ -59,7 +59,7 @@ jobs:
             id-token: write
         steps:
             - name: Check out code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - name: Authenticate to Google Cloud
               uses: google-github-actions/auth@v2.1.10
