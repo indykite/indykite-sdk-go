@@ -1400,6 +1400,47 @@ func (m *DeleteData) validate(all bool) error {
 			}
 		}
 
+	case *DeleteData_NodePropertyMetadata:
+		if v == nil {
+			err := DeleteDataValidationError{
+				field:  "Data",
+				reason: "oneof value cannot be a typed-nil",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+		if all {
+			switch v := interface{}(m.GetNodePropertyMetadata()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, DeleteDataValidationError{
+						field:  "NodePropertyMetadata",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, DeleteDataValidationError{
+						field:  "NodePropertyMetadata",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetNodePropertyMetadata()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return DeleteDataValidationError{
+					field:  "NodePropertyMetadata",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	default:
 		_ = v // ensures v is used
 	}
@@ -2321,6 +2362,144 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteData_NodePropertyMatchValidationError{}
+
+// Validate checks the field values on DeleteData_NodePropertyMetadataMatch
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *DeleteData_NodePropertyMetadataMatch) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteData_NodePropertyMetadataMatch
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// DeleteData_NodePropertyMetadataMatchMultiError, or nil if none found.
+func (m *DeleteData_NodePropertyMetadataMatch) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteData_NodePropertyMetadataMatch) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMatch()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DeleteData_NodePropertyMetadataMatchValidationError{
+					field:  "Match",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DeleteData_NodePropertyMetadataMatchValidationError{
+					field:  "Match",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMatch()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DeleteData_NodePropertyMetadataMatchValidationError{
+				field:  "Match",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for PropertyType
+
+	// no validation rules for MetadataType
+
+	if len(errors) > 0 {
+		return DeleteData_NodePropertyMetadataMatchMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteData_NodePropertyMetadataMatchMultiError is an error wrapping multiple
+// validation errors returned by
+// DeleteData_NodePropertyMetadataMatch.ValidateAll() if the designated
+// constraints aren't met.
+type DeleteData_NodePropertyMetadataMatchMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteData_NodePropertyMetadataMatchMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteData_NodePropertyMetadataMatchMultiError) AllErrors() []error { return m }
+
+// DeleteData_NodePropertyMetadataMatchValidationError is the validation error
+// returned by DeleteData_NodePropertyMetadataMatch.Validate if the designated
+// constraints aren't met.
+type DeleteData_NodePropertyMetadataMatchValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteData_NodePropertyMetadataMatchValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteData_NodePropertyMetadataMatchValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteData_NodePropertyMetadataMatchValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteData_NodePropertyMetadataMatchValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteData_NodePropertyMetadataMatchValidationError) ErrorName() string {
+	return "DeleteData_NodePropertyMetadataMatchValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteData_NodePropertyMetadataMatchValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteData_NodePropertyMetadataMatch.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteData_NodePropertyMetadataMatchValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteData_NodePropertyMetadataMatchValidationError{}
 
 // Validate checks the field values on DeleteData_RelationshipPropertyMatch
 // with the rules defined in the proto definition for this message. If any

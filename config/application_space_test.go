@@ -103,6 +103,11 @@ var _ = Describe("AppSpace", func() {
 						Region:        "us-east1",
 						IkgSize:       "4GB",
 						ReplicaRegion: "us-west1",
+						DbConnection: &configpb.DBConnection{
+							Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
+							Username: "neo4j",
+							Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+						},
 					},
 				},
 			),
@@ -188,6 +193,11 @@ var _ = Describe("AppSpace", func() {
 				Region:        "us-east1",
 				IkgSize:       "4GB",
 				ReplicaRegion: "us-west1",
+				DbConnection: &configpb.DBConnection{
+					Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
+					Username: "neo4j",
+					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+				},
 			}
 			beResp := &configpb.CreateApplicationSpaceResponse{
 				Id:         "gid:like-real-app_space-id",
@@ -261,6 +271,11 @@ var _ = Describe("AppSpace", func() {
 				Id:          "gid:like-real-app-space-id",
 				Etag:        etagPb,
 				DisplayName: displayNamePb,
+				DbConnection: &configpb.DBConnection{
+					Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
+					Username: "neo4j",
+					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+				},
 			}
 			beResp := &configpb.UpdateApplicationSpaceResponse{
 				Id:         "gid:like-real-app_space-id",

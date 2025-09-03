@@ -870,8 +870,6 @@ func (m *ConfigDetail) validate(all bool) error {
 
 	// no validation rules for Description
 
-	// no validation rules for Version
-
 	switch v := m.Configuration.(type) {
 	case *ConfigDetail_ApplicationSpace:
 		if v == nil {
@@ -1569,6 +1567,113 @@ var _ interface {
 	ErrorName() string
 } = ConfigDetailValidationError{}
 
+// Validate checks the field values on DBConnection with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DBConnection) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DBConnection with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DBConnectionMultiError, or
+// nil if none found.
+func (m *DBConnection) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DBConnection) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Url
+
+	// no validation rules for Username
+
+	// no validation rules for Password
+
+	// no validation rules for Name
+
+	if len(errors) > 0 {
+		return DBConnectionMultiError(errors)
+	}
+
+	return nil
+}
+
+// DBConnectionMultiError is an error wrapping multiple validation errors
+// returned by DBConnection.ValidateAll() if the designated constraints aren't met.
+type DBConnectionMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DBConnectionMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DBConnectionMultiError) AllErrors() []error { return m }
+
+// DBConnectionValidationError is the validation error returned by
+// DBConnection.Validate if the designated constraints aren't met.
+type DBConnectionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DBConnectionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DBConnectionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DBConnectionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DBConnectionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DBConnectionValidationError) ErrorName() string { return "DBConnectionValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DBConnectionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDBConnection.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DBConnectionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DBConnectionValidationError{}
+
 // Validate checks the field values on ApplicationSpaceConfig with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -1596,6 +1701,35 @@ func (m *ApplicationSpaceConfig) validate(all bool) error {
 	// no validation rules for IkgSize
 
 	// no validation rules for ReplicaRegion
+
+	if all {
+		switch v := interface{}(m.GetDbConnection()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ApplicationSpaceConfigValidationError{
+					field:  "DbConnection",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ApplicationSpaceConfigValidationError{
+					field:  "DbConnection",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDbConnection()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ApplicationSpaceConfigValidationError{
+				field:  "DbConnection",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return ApplicationSpaceConfigMultiError(errors)
