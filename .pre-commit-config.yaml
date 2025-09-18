@@ -12,79 +12,228 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# Usage & installation, the first configures the default stages only, the others must be installed explicitly:
+#   pre-commit install
+#   pre-commit install -t post-checkout -t commit-msg
+#
+# Prerequisites:
+#   brew install pre-commit yamlfmt yamllint actionlint markdownlint-cli2 shellcheck shfmt checkov trivy go buf gci golangci-lint hadolint
+#
+# Update hooks and their dependencies regularly via:
+#   (remote) pre-commit autoupdate --jobs $(getconf _NPROCESSORS_ONLN)
+#   (local) brew update && brew upgrade -g
+# TODO: do NOT use '--freeze' until https://github.com/renovatebot/renovate/issues/22567 is completed
+#
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
 default_stages: [pre-commit, pre-push]
-fail_fast: false
+default_install_hook_types: [pre-commit]
+fail_fast: true # false
+minimum_pre_commit_version: 4.0.0
+
 repos:
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
-          - id: trailing-whitespace
-          - id: check-case-conflict
-          - id: end-of-file-fixer
-            exclude: ^(version|build)\.txt$
-          - id: check-yaml
-          - id: check-toml
-          - id: check-merge-conflict
-          - id: check-added-large-files
-            args: [--maxkb=1500]
-          - id: detect-private-key
-            exclude: ^README.md$
-          - id: pretty-format-json
-            args: [--no-sort-keys, --autofix]
-          - id: no-commit-to-branch
-            args: [--branch, develop, --branch, master]
+  - repo: meta
+    hooks:
+      # - id: check-hooks-apply
+      - id: check-useless-excludes
+        name: pre-commit/check-useless-excludes
 
-    - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt.git
-      rev: 0.2.3
-      hooks:
-          - id: yamlfmt
+  - repo: ssh://git@github.com/indykite/ops-common
+    rev: "205ef5fb1b6d53a70e34a5a799b39257e42226ed" # using a branch name (or HEAD) is not supported
+    hooks:
+      # POST-CHECKOUT
+      # install explicitly with: pre-commit install -t post-checkout
+      - id: git-pull
+      - id: git-branch-delete-stale
 
-#    - repo: https://github.com/detailyang/pre-commit-shell.git
-#      rev: v1.0.6
-#      hooks:
-#          - id: shell-lint
+      # pre-commit validations
+      # - id: pre-commit-autoupdate # done via 'renovate'; left for reference and possible options
+      #   args: [--freeze] # store hashes in 'rev' instead of tag names
+      - id: pre-commit-validate-config
+      - id: pre-commit-validate-manifest
 
-#     No one is fixing it anyway
-#    - repo: https://github.com/jumanjihouse/pre-commit-hooks.git
-#      rev: 2.1.6 # Do not update to 3.0.0 unless macOS comes with Ruby 2.7
-#      hooks:
-#          - id: markdownlint
-#            exclude: ^(CHANGELOG|responsible_disclosure).md$
+      # SAST
+      - id: trivy
 
-    - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-      rev: v9.22.0
-      hooks:
-          - id: commitlint
-            stages: [commit-msg]
-            additional_dependencies:
-                - '@commitlint/config-conventional'
+      # Shellcheck
+      - id: shfmt
+      - id: shellcheck
 
-    - repo: local
-      hooks:
-          - id: go_tools
-            name: Install go tools
-            entry: make install-tools
-            language: system
-            pass_filenames: false
+  #
+  # Renovate
+  - repo: https://github.com/renovatebot/pre-commit-hooks # ci:ignore:OK to validate locally only, otherwise it adds 850MB+ to unpacked cache
+    rev: "41.116.8"
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict]
 
-          - id: fmt_gci
-            name: Fix imports and Format go code
-            entry: make fmt gci
-            language: system
-            pass_filenames: false
+  #
+  # Commit Message linting
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook # ci:ignore:executed under a separate GitHub action
+    rev: v9.22.0
+    hooks:
+      # NON-DEFAULT stage, install explicitly with: pre-commit install -t commit-msg
+      - id: commitlint
+        stages: [commit-msg]
+        # not the best of using shareable config across the org
+        # 'strict' equals to 'failOnWarnings' in Github Action setting
+        args: ["--strict", "--config", "../.github/.github/actions/commitlint/.commitlintrc.mjs"]
+        additional_dependencies:
+          - "@commitlint/config-conventional"
+          - commitlint-plugin-function-rules
 
-          - id: go_test
-            name: Run tests
-            entry: make test
-            language: system
-            pass_filenames: false
+  #
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Git style
+      - id: check-added-large-files
+        args: [--maxkb=1500]
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: forbid-new-submodules
+      # - id: forbid-submodules # XXX: either of two is enough
+      - id: no-commit-to-branch
+        name: no-commit-to-master
+        args: [--branch, dev, --branch, develop, --branch, master, --branch, main]
 
-          - id: go_lint
-            name: Run lint
-            entry: make lint
-            language: system
-            pass_filenames: false
+      # Common errors
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: destroyed-symlinks
+
+      # Cross platform
+      - id: check-illegal-windows-names
+      - id: check-case-conflict
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+      # Format linters
+      # 'check-yaml' and 'sort-simple-yaml' disabled intentionally, use hooks below
+      - id: check-xml
+      - id: check-toml
+      - id: check-json
+      - id: pretty-format-json
+        args: [--no-sort-keys, --autofix]
+
+      # Security
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+
+  #
+  # Detect hardcoded secrets
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+        name: gitleaks
+
+  #
+  # YAML
+  # - repo: https://github.com/rhysd/actionlint <- "language: golang" slower & takes larger CI cache comparing to "system"
+  #   rev: v1.7.7
+  - repo: local
+    hooks:
+      # place any overrides in '.actionlint.yaml' https://github.com/rhysd/actionlint/blob/main/docs/config.md
+      #   args: ["-config-file=.actionlint.yaml"]
+      - id: actionlint-system
+        name: github-actionlint
+        language: system
+        entry: actionlint
+        types: [yaml]
+        files: ^\.github/workflows/
+  # - repo: https://github.com/google/yamlfmt <- "language: golang" slower & takes larger CI cache comparing to "system"
+  #   rev: v0.17.2
+  - repo: local
+    hooks:
+      - id: yamlfmt
+        name: yamlfmt
+        language: system
+        entry: yamlfmt
+        types: [yaml]
+  # - repo: https://github.com/adrienverge/yamllint <- "language: python" slower & takes larger CI cache comparing to "system"
+  #   rev: v1.37.1
+  - repo: local
+    hooks:
+      - id: yamllint
+        name: yamllint
+        language: system
+        entry: yamllint
+        types: [yaml]
+        args: ["--strict"]
+
+  - repo: https://github.com/hadolint/hadolint # language: system
+    rev: v2.13.1
+    hooks:
+      - id: hadolint
+        name: hadolint/dockerfile
+
+  - repo: local
+    hooks:
+      - id: checkov
+        name: iac/checkov
+        language: system
+        entry: checkov -d . --enable-secret-scan-all-files
+        args: ["-f"] # required and must come last
+
+  #
+  # Markdown
+  # - repo: https://github.com/DavidAnson/markdownlint-cli2 <- "language: node" slower & takes larger CI cache comparing to "system"
+  #   rev: v0.18.1
+  - repo: local
+    hooks:
+      - id: markdownlint
+        name: markdownlint
+        language: system
+        entry: markdownlint-cli2
+        types: [markdown]
+        exclude: ^(CHANGELOG|.github\/ISSUE_TEMPLATE\/.*)\.md$
+
+  - repo: local
+    hooks:
+      - id: golang-fmt
+        name: golang-fmt
+        entry: gofmt -s -w .
+        types_or: [go, go-mod, go-sum, gotmpl, proto, sql, graphql]
+        language: system
+        pass_filenames: false
+
+      - id: golang-gci
+        name: golang-gci
+        entry: gci write -s standard -s default -s "prefix(github.com/indykite/indykite-sdk-go)" -s blank -s dot .
+        types_or: [go, go-mod, go-sum, gotmpl, proto, sql, graphql]
+        language: system
+        description: "Requires and runs 'gci', control package import order and make it always deterministic"
+        pass_filenames: false
+
+      - id: golangci-lint-validate-config
+        name: golangci-lint/validate-config
+        entry: golangci-lint config verify
+        files: '\.golangci\.(y?ml|toml|json)$'
+        language: system
+        pass_filenames: false
+
+      - id: golangci-lint
+        name: golangci-lint
+        entry: make lint
+        types_or: [go, go-mod, go-sum, gotmpl, proto, sql, graphql]
+        description: "Requires and runs 'golangci-lint', fast linters runner for golang; strict mode against new changes only"
+        language: system
+        pass_filenames: false # golangci-lint detects those automatically
+
+      - id: go_test
+        name: go-tests
+        entry: make test
+        language: system
+        pass_filenames: false
+        types_or: [go, go-mod, go-sum, gotmpl, proto, sql, graphql]
+        always_run: false
+        stages: [manual]

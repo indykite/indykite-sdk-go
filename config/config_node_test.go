@@ -913,7 +913,7 @@ var _ = Describe("ConfigNode", func() {
 		})
 
 		It("CreateIngestPipelineConfig", func() {
-			appAgentToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaWQ6QUFBQUJXbHVaSGxyYVVSbGdBQUZEd0FBQUFBIiwic3ViIjoiZ2lkOkFBQUFCV2x1WkhscmFVUmxnQUFGRHdBQUFBQSIsImV4cCI6MjUzNDAyMjYxMTk5LCJpYXQiOjE1MTYyMzkwMjJ9.39Kc7pL8Vjf1S4qA6NHBGMP06TahR5Y9JOGSWKOo5Rw" //nolint:gosec,lll // there are no secrets
+			appAgentToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaWQ6QUFBQUJXbHVaSGxyYVVSbGdBQUZEd0FBQUFBIiwic3ViIjoiZ2lkOkFBQUFCV2x1WkhscmFVUmxnQUFGRHdBQUFBQSIsImV4cCI6MjUzNDAyMjYxMTk5LCJpYXQiOjE1MTYyMzkwMjJ9.39Kc7pL8Vjf1S4qA6NHBGMP06TahR5Y9JOGSWKOo5Rw" //nolint:gosec,lll // there are no secrets // checkov:skip=CKV_SECRET_9:acceptance test // gitleaks:allow
 			configuration := &configpb.IngestPipelineConfig{
 				Sources: []string{"source1", "source2", "source3"},
 				Operations: []configpb.IngestPipelineOperation{
