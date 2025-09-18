@@ -1,6 +1,6 @@
 # checkov:skip=CKV_DOCKER_2:ensure that HEALTHCHECK instructions have been added
 
-FROM golang:1.24
+FROM golang:1.24-alpine
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
