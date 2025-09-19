@@ -1,0 +1,26 @@
+---
+compact: true
+quiet: true # otherwise inline 'checkov:skip=' won't work
+summary-position: top
+download-external-modules: true # false
+evaluate-variables: true
+output: cli
+skip-results-upload: true
+framework:
+  - all
+# mask: []
+# secrets-history-timeout: 12h
+# secrets-scan-file-type: []
+# block-list-secret-scan: []
+# branch: master
+
+dockerfile-path: Dockerfile
+
+# skip-path: # '/' is added to the path beginning
+#   - docs/.*.md
+
+# block-list-secret-scan:
+#   - docs/.*.md
+
+skip-check:
+  - CKV_SECRET_6 # FIXME: false positive on certain files as the above settings aren't honoured

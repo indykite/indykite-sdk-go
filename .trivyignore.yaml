@@ -1,0 +1,7 @@
+---
+# https://trivy.dev/latest/docs/configuration/filtering/#trivyignoreyaml
+
+misconfigurations:
+  - id: AVD-DS-0026 # (LOW): Add HEALTHCHECK instruction in your Dockerfile
+    paths:
+      - "docker/infra/Dockerfile"

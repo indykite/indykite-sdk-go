@@ -70,7 +70,7 @@ var _ = Describe("Test Connection pools", func() {
 })
 
 func mockServer() (*grpc.Server, net.Listener) {
-	listener, err := net.Listen("tcp", "localhost:0")
+	listener, err := (&net.ListenConfig{}).Listen(context.Background(), "tcp", "localhost:0")
 	Expect(err).To(Succeed())
 
 	gRPCServer := grpc.NewServer(

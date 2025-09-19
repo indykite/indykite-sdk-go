@@ -1,10 +1,10 @@
+# IndyKite Client Libraries for Go
+
 <div align="left">
 <a href="https://indykite.com">
 <img src="https://github.com/indykite/.github/blob/master/assets/IndyKITE_Rough_red.png" alt="IndyKite Red Logo" width="100px" height="183px" align="right">
 </a>
 </div>
-
-# IndyKite Client Libraries for Go
 
 IndyKite is a cloud identity platform built to secure and manage
 human & non-person (IoT) identities and their data. This repository contains the
@@ -32,7 +32,7 @@ or request one from your point of contact at IndyKite.
 - AppSpace, App, AppAgent, and AppAgent credentials for all APIs except for Config API
 - Service account credentials for Config API
 
-# Getting Started
+## Getting Started
 
 ## Initial settings
 
@@ -59,7 +59,7 @@ or request one from your point of contact at IndyKite.
     "alg": "ES256"
   },
   "privateKeyPKCS8Base64": "LS0tLS==",
-  "privateKeyPKCS8": "-----BEGIN PRIVATE KEY-----\nM\n-----END PRIVATE KEY-----"
+  "privateKeyPKCS8": "..."
 }
 ```
 
@@ -137,7 +137,8 @@ Coming Soon!
 
 ## What is IndyKite
 
-IndyKite is a cloud identity platform built to secure and manage human & non-person (IoT) identities and their data. Based on open source standards, the cloud platform gives developers the ability to secure data and embed identity controls into their Web 3.0 applications. Empowering the world’s 23 million developers without the need to involve security and identity specialists.
+IndyKite is a cloud identity platform built to secure and manage human & non-person (IoT) identities and their data. Based on open source standards, the cloud platform gives developers the ability to secure data and embed identity controls into their Web 3.0 applications.
+Empowering the world’s 23 million developers without the need to involve security and identity specialists.
 
 ## License
 

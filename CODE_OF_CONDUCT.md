@@ -55,7 +55,7 @@ further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting rockstars@indykite.com, which is a shared team inbox.
+reported by contacting <rockstars@indykite.com>, which is a shared team inbox.
 If the incident involves someone who receives that shared inbox, you can contact
 an individual maintainer (@bradtumy or @bayegan). All
 complaints will be reviewed and investigated and will result in a response that

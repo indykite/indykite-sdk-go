@@ -1,24 +1,23 @@
 ---
 name: Changelog
 concurrency: jarvis-changelog
-on:
-    push:
-        branches:
-            - master
+on: # yamllint disable-line rule:truthy
+  push:
+    branches: ["dev", "develop", "main", "master"]
 
 permissions:
-    contents: write
-    pull-requests: write
-    id-token: write
+  contents: write
+  pull-requests: write
+  id-token: write
 
 jobs:
-    release-please:
-        name: Prepare Release notes
-        runs-on: ubuntu-latest
-        outputs:
-            released: ${{ steps.release-please.outputs.release_created }}
-        steps:
-            - id: release-please
-              uses: GoogleCloudPlatform/release-please-action@v4
-              with:
-                  token: ${{ secrets.INDYKITEONE_PAT }}
+  release-please:
+    name: Prepare Release notes
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.release-please.outputs.release_created }}
+    steps:
+      - id: release-please
+        uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4.3.0 - https://github.com/googleapis/release-please-action/releases
+        with:
+          token: ${{ secrets.INDYKITEONE_PAT }}

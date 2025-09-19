@@ -151,7 +151,7 @@ var createAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		"subject":{"type":"Person"},
 		"condition":{
 		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
-		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", 
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name",
 		"operator" : "=", "value" : "$lastname" }]
 		},
 		"upsert_nodes" : [],
@@ -225,7 +225,7 @@ var updateAuthorizationPolicyConfig3Cmd = &cobra.Command{
 		"subject":{"type":"Person"},
 		"condition":{
 		"cypher":"MATCH (person:Person)-[r1:BELONGS_TO]->(org:Organization)-[r2:OWNS]->(resource:Truck) ",
-		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name", 
+		"filter" : [{ "app" : "app-sdk", "attribute" : "person.property.last_name",
 		"operator" : "=", "value" : "$lastname" }]
 		},
 		"upsert_nodes" : [],
