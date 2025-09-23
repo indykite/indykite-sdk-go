@@ -41,7 +41,7 @@ repos:
         name: pre-commit/check-useless-excludes
 
   - repo: ssh://git@github.com/indykite/ops-common
-    rev: "205ef5fb1b6d53a70e34a5a799b39257e42226ed" # using a branch name (or HEAD) is not supported
+    rev: "3ae68be56eacb01489f792badab2ab43fd686916" # using a branch name (or HEAD) is not supported
     hooks:
       # POST-CHECKOUT
       # install explicitly with: pre-commit install -t post-checkout
@@ -64,7 +64,7 @@ repos:
   #
   # Renovate
   - repo: https://github.com/renovatebot/pre-commit-hooks # ci:ignore:OK to validate locally only, otherwise it adds 850MB+ to unpacked cache
-    rev: "41.116.8"
+    rev: "41.125.0"
     hooks:
       - id: renovate-config-validator
         args: [--strict]
@@ -171,7 +171,7 @@ repos:
         args: ["--strict"]
 
   - repo: https://github.com/hadolint/hadolint # language: system
-    rev: v2.13.1
+    rev: v2.14.0
     hooks:
       - id: hadolint
         name: hadolint/dockerfile
