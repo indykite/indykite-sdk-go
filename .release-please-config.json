@@ -9,8 +9,7 @@
         "config/doc.go",
         "ingest/doc.go",
         "authorization/doc.go",
-        "knowledge/doc.go",
-        "tda/doc.go"
+        "knowledge/doc.go"
       ]
     }
   },

@@ -16,7 +16,6 @@
 //go:generate mockgen -copyright_file ./doc/LICENSE -package ingest -destination ./test/ingest/v1beta3/ingest_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/ingest/v1beta3 IngestAPIClient,IngestAPI_StreamRecordsClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package authorization -destination ./test/authorization/v1beta1/authorization_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/authorization/v1beta1 AuthorizationAPIClient
 //go:generate mockgen -copyright_file ./doc/LICENSE -package knowledge -destination ./test/knowledge/v1beta2/identity_knowledge_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/knowledge/v1beta2 IdentityKnowledgeAPIClient
-//go:generate mockgen -copyright_file ./doc/LICENSE -package tda -destination ./test/tda/v1beta1/trusted_data_access_api_mock.go github.com/indykite/indykite-sdk-go/gen/indykite/tda/v1beta1 TrustedDataAccessAPIClient
 
 /*
 Package indykite is the root of the packages used to access IndyKite Platform.
