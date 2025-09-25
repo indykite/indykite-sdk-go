@@ -16,8 +16,6 @@ jobs:
   release-please:
     name: Prepare Release notes
     runs-on: ubuntu-latest
-    outputs:
-      released: ${{ steps.release.outputs.release_created }}
     steps:
       - name: action/release-please
         uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4.3.0 - https://github.com/googleapis/release-please-action/releases
@@ -27,15 +25,40 @@ jobs:
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
 
+      - name: action/version-check
+        id: version-check
+        shell: bash
+        run: |
+          RELEASE_VERSION="${{ steps.release.outputs.version }}"
+
+          # returned as a JSON string of the PullRequest object, so direct 'steps.release.outputs.pr.title' isn't available
+          PR_JSON='${{ steps.release.outputs.pr }}'
+          PR_NUMBER=$(echo "${PR_JSON}" | jq -r '.number')
+          PR_TITLE=$(echo "${PR_JSON}" | jq -r '.title')
+
+          if [[ -z "${RELEASE_VERSION}" ]]; then
+            # RELEASE_VERSION="$(jq -r '.["."]' .release-please-manifest.json)" # <- requires code checkout
+            RELEASE_VERSION="$(echo "${PR_TITLE}" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')" # another option: | awk '{print $NF}'
+          fi
+
+          {
+            echo "version=${RELEASE_VERSION}"
+            echo "pr_number=${PR_NUMBER}"
+          } >> "$GITHUB_OUTPUT"
+
       - name: actions/slack-notification
         uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1 - https://github.com/slackapi/slack-github-action/releases
-        if: ${{ steps.release.outputs.release_created }}
+        if: steps.release.outputs.releases_created || steps.release.outputs.prs_created
         with:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           method: chat.postMessage
+          # https://docs.slack.dev/reference/methods/chat.postmessage for payload fields
+          # Bot App must be added under Channel Settings/Integrations tab
           payload: >-
             {
               "channel": "${{ vars.SLACK_CHANNEL_IK_SDK }}",
-              "text": "`indykite-sdk-go` release ${{ format('v{0}', steps.release.outputs.version) }} is ready:
-                format('<{0}/{1}/pull/{2}|{1]#{2]}}>', github.server_url, github.repository, steps.release.outputs.pr.number)"
+              "username": "github-actions[bot]",
+              "icon_emoji": ":package:",
+              "text": "`indykite-sdk-go` release ${{ format('v{0}', steps.version-check.outputs.version) }} is ready:
+                ${{ format('<{0}/{1}/pull/{2}|{1}#{2}>', github.server_url, github.repository, steps.version-check.outputs.pr_number) }}"
             }
