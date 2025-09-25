@@ -118,50 +118,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("ReadSuccessConsentConfiguration", func() {
-			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.WithVersion(int64(0))
-			beResp := &configpb.ReadConfigNodeResponse{
-				ConfigNode: &configpb.ConfigNode{
-					Id:          "gid:like-real-config-node-id",
-					Name:        "like-real-config-node-name",
-					DisplayName: "Like Real Config-Node Name",
-					CreatedBy:   "creator",
-					CreateTime:  timestamppb.Now(),
-					CustomerId:  "gid:like-real-customer-id",
-					AppSpaceId:  "gid:like-real-app-space-id",
-					Etag:        "123qwe",
-					Version:     0,
-					Config: &configpb.ConfigNode_ConsentConfig{
-						ConsentConfig: &configpb.ConsentConfiguration{
-							Purpose: "Taking control",
-							DataPoints: []string{
-								"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
-									"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
-							},
-							ApplicationId:  "gid:like-real-application-id",
-							ValidityPeriod: uint64(86400),
-							RevokeAfterUse: true,
-							TokenStatus:    3,
-						},
-					},
-				},
-			}
-			mockClient.EXPECT().
-				ReadConfigNode(
-					gomock.Any(),
-					test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-						"Id": Equal("gid:like-real-config-node-id"),
-					}))),
-					gomock.Any(),
-				).Return(beResp, nil)
-
-			resp, err := configClient.ReadConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("ReadSuccessTokenIntrospectConfig", func() {
 			configNodeRequest, err := config.NewRead("gid:like-real-config-node-id")
 			Ω(err).To(Succeed())
@@ -802,54 +758,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("CreateConsentConfiguration", func() {
-			configuration := &configpb.ConsentConfiguration{
-				Purpose: "Taking control",
-				DataPoints: []string{
-					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
-						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
-				},
-				ApplicationId:  "gid:like-real-application-id",
-				ValidityPeriod: uint64(86400),
-				RevokeAfterUse: true,
-				TokenStatus:    3,
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithConsentConfig(configuration)
-
-			beResp := &configpb.CreateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwe",
-				CreatedBy:  "creator",
-				CreateTime: timestamppb.Now(),
-			}
-
-			mockClient.EXPECT().CreateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Name":     Equal("like-real-config-node-name"),
-					"Location": Equal("gid:like-real-customer-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ConsentConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"Purpose":        Equal("Taking control"),
-							"ApplicationId":  Equal("gid:like-real-application-id"),
-							"ValidityPeriod": Equal(uint64(86400)),
-							"RevokeAfterUse": Equal(true),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
 		It("CreateTokenIntrospectConfig", func() {
 			configuration := &configpb.TokenIntrospectConfig{
 				TokenMatcher: &configpb.TokenIntrospectConfig_Jwt{Jwt: &configpb.TokenIntrospectConfig_JWT{
@@ -1434,28 +1342,6 @@ var _ = Describe("ConfigNode", func() {
 			Expect(resp).To(test.EqualProto(beResp))
 		})
 
-		It("CreateNonValid", func() {
-			configuration := &configpb.ConsentConfiguration{
-				Purpose: "Taking control",
-				DataPoints: []string{
-					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
-						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
-				},
-				ApplicationId:  "gid:like",
-				ValidityPeriod: uint64(86400),
-				RevokeAfterUse: true,
-			}
-
-			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
-			Ω(err).To(Succeed())
-			configNodeRequest.ForLocation("gid:like-real-customer-id")
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name")
-			configNodeRequest.WithConsentConfig(configuration)
-			resp, err := configClient.CreateConfigNode(ctx, configNodeRequest)
-			Expect(resp).To(BeNil())
-			Expect(err).To(MatchError(ContainSubstring("value length must be between 22 and 254 runes")))
-		})
-
 		It("CreateNonValidName", func() {
 			configNodeRequest, err := config.NewCreate("1234")
 			Expect(err).ToNot(Succeed())
@@ -1562,51 +1448,6 @@ var _ = Describe("ConfigNode", func() {
 						"AuthorizationPolicyConfig": PointTo(MatchFields(IgnoreExtras, Fields{
 							"Policy": Equal(jsonInput),
 							"Status": Equal(configpb.AuthorizationPolicyConfig_STATUS_ACTIVE),
-						})),
-					})),
-				}))),
-				gomock.Any(),
-			).Return(beResp, nil)
-
-			resp, err := configClient.UpdateConfigNode(ctx, configNodeRequest)
-			Expect(err).To(Succeed())
-			Expect(resp).To(test.EqualProto(beResp))
-		})
-
-		It("UpdateConsentConfiguration", func() {
-			configuration := &configpb.ConsentConfiguration{
-				Purpose: "Taking control",
-				DataPoints: []string{
-					"{ \"query\": \"\", \"returns\": [ { \"variable\": \"\"," +
-						"\"properties\": [\"name\", \"email\", \"location\"] } ] }",
-				},
-				ApplicationId:  "gid:like-real-application-id",
-				ValidityPeriod: uint64(86400),
-				RevokeAfterUse: true,
-				TokenStatus:    3,
-			}
-
-			configNodeRequest, err := config.NewUpdate("gid:like-real-config-node-id")
-			Ω(err).To(Succeed())
-			configNodeRequest.EmptyDisplayName()
-			configNodeRequest.WithDisplayName("Like real ConfigNode Name Update")
-			configNodeRequest.WithConsentConfig(configuration)
-
-			beResp := &configpb.UpdateConfigNodeResponse{
-				Id:         "gid:like-real-config-node-id",
-				Etag:       "123qwert",
-				UpdatedBy:  "creator",
-				UpdateTime: timestamppb.Now(),
-			}
-
-			mockClient.EXPECT().UpdateConfigNode(
-				gomock.Any(),
-				test.WrapMatcher(PointTo(MatchFields(IgnoreExtras, Fields{
-					"Id": Equal("gid:like-real-config-node-id"),
-					"Config": PointTo(MatchFields(IgnoreExtras, Fields{
-						"ConsentConfig": PointTo(MatchFields(IgnoreExtras, Fields{
-							"Purpose":       Equal("Taking control"),
-							"ApplicationId": Equal("gid:like-real-application-id"),
 						})),
 					})),
 				}))),
