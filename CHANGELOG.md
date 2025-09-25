@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.67.0](https://github.com/indykite/indykite-sdk-go/compare/v0.66.0...v0.67.0) (2025-09-25)
+
+
+### Features
+
+* remove tda and consent config ([832f11e](https://github.com/indykite/indykite-sdk-go/commit/832f11e91ddb23658611bab0170f1281631c217d))
+
 ## [0.66.0](https://github.com/indykite/indykite-sdk-go/compare/v0.65.0...v0.66.0) (2025-09-03)
 
 
