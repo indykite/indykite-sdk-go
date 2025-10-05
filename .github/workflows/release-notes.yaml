@@ -3,6 +3,8 @@ name: Release notes
 on: # yamllint disable-line rule:truthy
   push:
     branches: ["dev", "develop", "main", "master"]
+  # to have an ability to run thee workflow manually
+  workflow_dispatch: # yamllint disable-line rule:empty-values
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions
 permissions:
@@ -21,7 +23,10 @@ jobs:
         uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4.3.0 - https://github.com/googleapis/release-please-action/releases
         id: release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # secrets.GITHUB_TOKEN cannot be used due to:
+          #   when you use the repository's GITHUB_TOKEN to perform tasks, events triggered by the GITHUB_TOKEN,
+          #   with the exception of workflow_dispatch and repository_dispatch, will not create a new workflow run.
+          token: ${{ secrets.INDYKITEONE_PAT }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
 

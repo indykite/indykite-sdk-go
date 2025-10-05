@@ -8,6 +8,8 @@ on: # yamllint disable-line rule:truthy
     # GitHub Actions does not support the non-standard syntax @monthly, @weekly, @daily, etc.
     # - cron: "15 0 * * *" # daily at 00:15 UTC
     - cron: "15 0 1 * *" # low activity repos can do just the first day of the month at 00:15 UTC
+  # to have an ability to run thee workflow manually
+  workflow_dispatch: # yamllint disable-line rule:empty-values
 
 permissions:
   contents: write # required for trivy to upload artifacts

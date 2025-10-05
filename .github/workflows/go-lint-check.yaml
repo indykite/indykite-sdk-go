@@ -3,6 +3,8 @@ name: Tests
 on: # yamllint disable-line rule:truthy
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+  # to have an ability to run thee workflow manually
+  workflow_dispatch: # yamllint disable-line rule:empty-values
 
 #
 # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions
