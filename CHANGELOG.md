@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.67.1](https://github.com/indykite/indykite-sdk-go/compare/v0.67.0...v0.67.1) (2025-10-05)
+
+
+### Bug Fixes
+
+* ci actions; workflow manual re-run support ([#385](https://github.com/indykite/indykite-sdk-go/issues/385)) ([efa662e](https://github.com/indykite/indykite-sdk-go/commit/efa662e31e8fd9b4c64c97d313ae8e0e9b0d4269))
+
 ## [0.67.0](https://github.com/indykite/indykite-sdk-go/compare/v0.66.0...v0.67.0) (2025-09-25)
 
 
