@@ -4,6 +4,8 @@ on: # yamllint disable-line rule:truthy
   pull_request:
     branches: ["dev", "develop", "main", "master"]
     paths: [docker/infra/**]
+  # to have an ability to run thee workflow manually
+  workflow_dispatch: # yamllint disable-line rule:empty-values
 #
 permissions:
   contents: read

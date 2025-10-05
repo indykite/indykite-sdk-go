@@ -7,6 +7,7 @@ on: # yamllint disable-line rule:truthy
   # Run on default branch for cache generation & to report coverage on master branch to Codecov
   push:
     branches: ["dev", "develop", "main", "master"]
+  # to have an ability to run thee workflow manually
   workflow_dispatch: # yamllint disable-line rule:empty-values
 
 concurrency:
