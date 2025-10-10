@@ -57,12 +57,19 @@ type IngestAPIClient interface {
 	StreamRecords(ctx context.Context, opts ...grpc.CallOption) (IngestAPI_StreamRecordsClient, error)
 	// Deprecated: Do not use.
 	IngestRecord(ctx context.Context, in *IngestRecordRequest, opts ...grpc.CallOption) (*IngestRecordResponse, error)
+	// Deprecated: Do not use.
 	BatchUpsertNodes(ctx context.Context, in *BatchUpsertNodesRequest, opts ...grpc.CallOption) (*BatchUpsertNodesResponse, error)
+	// Deprecated: Do not use.
 	BatchUpsertRelationships(ctx context.Context, in *BatchUpsertRelationshipsRequest, opts ...grpc.CallOption) (*BatchUpsertRelationshipsResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodes(ctx context.Context, in *BatchDeleteNodesRequest, opts ...grpc.CallOption) (*BatchDeleteNodesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteRelationships(ctx context.Context, in *BatchDeleteRelationshipsRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipsResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodeProperties(ctx context.Context, in *BatchDeleteNodePropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteNodePropertiesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteRelationshipProperties(ctx context.Context, in *BatchDeleteRelationshipPropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipPropertiesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodeTags(ctx context.Context, in *BatchDeleteNodeTagsRequest, opts ...grpc.CallOption) (*BatchDeleteNodeTagsResponse, error)
 }
 
@@ -118,6 +125,7 @@ func (c *ingestAPIClient) IngestRecord(ctx context.Context, in *IngestRecordRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchUpsertNodes(ctx context.Context, in *BatchUpsertNodesRequest, opts ...grpc.CallOption) (*BatchUpsertNodesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchUpsertNodesResponse)
@@ -128,6 +136,7 @@ func (c *ingestAPIClient) BatchUpsertNodes(ctx context.Context, in *BatchUpsertN
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchUpsertRelationships(ctx context.Context, in *BatchUpsertRelationshipsRequest, opts ...grpc.CallOption) (*BatchUpsertRelationshipsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchUpsertRelationshipsResponse)
@@ -138,6 +147,7 @@ func (c *ingestAPIClient) BatchUpsertRelationships(ctx context.Context, in *Batc
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchDeleteNodes(ctx context.Context, in *BatchDeleteNodesRequest, opts ...grpc.CallOption) (*BatchDeleteNodesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchDeleteNodesResponse)
@@ -148,6 +158,7 @@ func (c *ingestAPIClient) BatchDeleteNodes(ctx context.Context, in *BatchDeleteN
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchDeleteRelationships(ctx context.Context, in *BatchDeleteRelationshipsRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchDeleteRelationshipsResponse)
@@ -158,6 +169,7 @@ func (c *ingestAPIClient) BatchDeleteRelationships(ctx context.Context, in *Batc
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchDeleteNodeProperties(ctx context.Context, in *BatchDeleteNodePropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteNodePropertiesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchDeleteNodePropertiesResponse)
@@ -168,6 +180,7 @@ func (c *ingestAPIClient) BatchDeleteNodeProperties(ctx context.Context, in *Bat
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchDeleteRelationshipProperties(ctx context.Context, in *BatchDeleteRelationshipPropertiesRequest, opts ...grpc.CallOption) (*BatchDeleteRelationshipPropertiesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchDeleteRelationshipPropertiesResponse)
@@ -178,6 +191,7 @@ func (c *ingestAPIClient) BatchDeleteRelationshipProperties(ctx context.Context,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *ingestAPIClient) BatchDeleteNodeTags(ctx context.Context, in *BatchDeleteNodeTagsRequest, opts ...grpc.CallOption) (*BatchDeleteNodeTagsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BatchDeleteNodeTagsResponse)
@@ -198,12 +212,19 @@ type IngestAPIServer interface {
 	StreamRecords(IngestAPI_StreamRecordsServer) error
 	// Deprecated: Do not use.
 	IngestRecord(context.Context, *IngestRecordRequest) (*IngestRecordResponse, error)
+	// Deprecated: Do not use.
 	BatchUpsertNodes(context.Context, *BatchUpsertNodesRequest) (*BatchUpsertNodesResponse, error)
+	// Deprecated: Do not use.
 	BatchUpsertRelationships(context.Context, *BatchUpsertRelationshipsRequest) (*BatchUpsertRelationshipsResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodes(context.Context, *BatchDeleteNodesRequest) (*BatchDeleteNodesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteRelationships(context.Context, *BatchDeleteRelationshipsRequest) (*BatchDeleteRelationshipsResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodeProperties(context.Context, *BatchDeleteNodePropertiesRequest) (*BatchDeleteNodePropertiesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteRelationshipProperties(context.Context, *BatchDeleteRelationshipPropertiesRequest) (*BatchDeleteRelationshipPropertiesResponse, error)
+	// Deprecated: Do not use.
 	BatchDeleteNodeTags(context.Context, *BatchDeleteNodeTagsRequest) (*BatchDeleteNodeTagsResponse, error)
 }
 

@@ -45,6 +45,7 @@ const (
 //
 // IdentityKnowledgeAPI represents the service interface for the Identity Knowledge API.
 type IdentityKnowledgeAPIClient interface {
+	// Deprecated: Do not use.
 	IdentityKnowledgeRead(ctx context.Context, in *IdentityKnowledgeReadRequest, opts ...grpc.CallOption) (*IdentityKnowledgeReadResponse, error)
 }
 
@@ -56,6 +57,7 @@ func NewIdentityKnowledgeAPIClient(cc grpc.ClientConnInterface) IdentityKnowledg
 	return &identityKnowledgeAPIClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *identityKnowledgeAPIClient) IdentityKnowledgeRead(ctx context.Context, in *IdentityKnowledgeReadRequest, opts ...grpc.CallOption) (*IdentityKnowledgeReadResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(IdentityKnowledgeReadResponse)
@@ -72,6 +74,7 @@ func (c *identityKnowledgeAPIClient) IdentityKnowledgeRead(ctx context.Context, 
 //
 // IdentityKnowledgeAPI represents the service interface for the Identity Knowledge API.
 type IdentityKnowledgeAPIServer interface {
+	// Deprecated: Do not use.
 	IdentityKnowledgeRead(context.Context, *IdentityKnowledgeReadRequest) (*IdentityKnowledgeReadResponse, error)
 }
 
