@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.0](https://github.com/indykite/indykite-sdk-go/compare/v0.67.1...v0.68.0) (2025-10-10)
+
+
+### Features
+
+* deprecate old api ([4a48650](https://github.com/indykite/indykite-sdk-go/commit/4a48650dafef069faf1e9744cdc641de650bda3a))
+
 ## [0.67.1](https://github.com/indykite/indykite-sdk-go/compare/v0.67.0...v0.67.1) (2025-10-05)
 
 
