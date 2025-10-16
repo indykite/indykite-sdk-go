@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.68.1](https://github.com/indykite/indykite-sdk-go/compare/v0.68.0...v0.68.1) (2025-10-16)
+
+
+### Bug Fixes
+
+* fix test after modif ([092ec61](https://github.com/indykite/indykite-sdk-go/commit/092ec61f00e1c5ceada0558641f681a9513a0307))
+
 ## [0.68.0](https://github.com/indykite/indykite-sdk-go/compare/v0.67.1...v0.68.0) (2025-10-10)
 
 
