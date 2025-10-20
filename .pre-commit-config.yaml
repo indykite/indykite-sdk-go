@@ -64,7 +64,7 @@ repos:
   #
   # Renovate
   - repo: https://github.com/renovatebot/pre-commit-hooks # ci:ignore:OK to validate locally only, otherwise it adds 850MB+ to unpacked cache
-    rev: "41.125.0"
+    rev: "41.152.9"
     hooks:
       - id: renovate-config-validator
         args: [--strict]
@@ -72,7 +72,7 @@ repos:
   #
   # Commit Message linting
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook # ci:ignore:executed under a separate GitHub action
-    rev: v9.22.0
+    rev: v9.23.0
     hooks:
       # NON-DEFAULT stage, install explicitly with: pre-commit install -t commit-msg
       - id: commitlint
