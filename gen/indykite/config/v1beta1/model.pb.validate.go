@@ -4261,6 +4261,8 @@ func (m *KafkaSinkConfig) validate(all bool) error {
 
 	}
 
+	// no validation rules for LastError
+
 	if len(errors) > 0 {
 		return KafkaSinkConfigMultiError(errors)
 	}
@@ -4427,6 +4429,8 @@ func (m *AzureEventGridSinkConfig) validate(all bool) error {
 
 	}
 
+	// no validation rules for LastError
+
 	if len(errors) > 0 {
 		return AzureEventGridSinkConfigMultiError(errors)
 	}
@@ -4569,6 +4573,8 @@ func (m *AzureServiceBusSinkConfig) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for LastError
 
 	if len(errors) > 0 {
 		return AzureServiceBusSinkConfigMultiError(errors)
