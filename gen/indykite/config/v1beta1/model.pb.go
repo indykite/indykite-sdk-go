@@ -2275,6 +2275,7 @@ type KafkaSinkConfig struct {
 	Username      string                  `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
 	Password      string                  `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
 	DisplayName   *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	LastError     string                  `protobuf:"bytes,8,opt,name=last_error,json=lastError,proto3" json:"last_error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2358,12 +2359,20 @@ func (x *KafkaSinkConfig) GetDisplayName() *wrapperspb.StringValue {
 	return nil
 }
 
+func (x *KafkaSinkConfig) GetLastError() string {
+	if x != nil {
+		return x.LastError
+	}
+	return ""
+}
+
 type AzureEventGridSinkConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TopicEndpoint string                 `protobuf:"bytes,1,opt,name=topic_endpoint,json=topicEndpoint,proto3" json:"topic_endpoint,omitempty"`
 	// TopicKey is the key to access the Azure Event Grid topic.
 	AccessKey     string                  `protobuf:"bytes,2,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
 	DisplayName   *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	LastError     string                  `protobuf:"bytes,8,opt,name=last_error,json=lastError,proto3" json:"last_error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2419,6 +2428,13 @@ func (x *AzureEventGridSinkConfig) GetDisplayName() *wrapperspb.StringValue {
 	return nil
 }
 
+func (x *AzureEventGridSinkConfig) GetLastError() string {
+	if x != nil {
+		return x.LastError
+	}
+	return ""
+}
+
 type AzureServiceBusSinkConfig struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ConnectionString is the connection string to the Azure Service Bus.
@@ -2426,6 +2442,7 @@ type AzureServiceBusSinkConfig struct {
 	// QueueName is the name of the queue to send messages to.
 	QueueOrTopicName string                  `protobuf:"bytes,2,opt,name=queue_or_topic_name,json=queueOrTopicName,proto3" json:"queue_or_topic_name,omitempty"`
 	DisplayName      *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	LastError        string                  `protobuf:"bytes,8,opt,name=last_error,json=lastError,proto3" json:"last_error,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -2479,6 +2496,13 @@ func (x *AzureServiceBusSinkConfig) GetDisplayName() *wrapperspb.StringValue {
 		return x.DisplayName
 	}
 	return nil
+}
+
+func (x *AzureServiceBusSinkConfig) GetLastError() string {
+	if x != nil {
+		return x.LastError
+	}
+	return ""
 }
 
 type ConsentConfiguration struct {
@@ -4748,7 +4772,7 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\x06filter\x12\x03\xf8B\x01\x1ao\n" +
 	"\x0eProvidersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12G\n" +
-	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\x83\x03\n" +
+	"\x05value\x18\x02 \x01(\v21.indykite.config.v1beta1.EventSinkConfig.ProviderR\x05value:\x028\x01\"\xa2\x03\n" +
 	"\x0fKafkaSinkConfig\x12j\n" +
 	"\abrokers\x18\x01 \x03(\tBP\xfaBM\x92\x01J\b\x01\x18\x01\"Br@\x10\x03\x18\xff\x0129^[a-zA-Z0-9]([a-zA-Z0-9.-]*[a-zA-Z0-9])?:[1-9][0-9]{0,4}$(\x01R\abrokers\x123\n" +
 	"\x05topic\x18\x02 \x01(\tB\x1d\xfaB\x1ar\x18\x10\x01\x18\xf9\x012\x11^[a-zA-Z0-9._-]+$R\x05topic\x12\x1f\n" +
@@ -4758,7 +4782,9 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"\busername\x18\x05 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x06 \x01(\tR\bpassword\x12N\n" +
 	"\fdisplay_name\x18\a \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xcb\x01\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12\x1d\n" +
+	"\n" +
+	"last_error\x18\b \x01(\tR\tlastError\"\xea\x01\n" +
 	"\x18AzureEventGridSinkConfig\x124\n" +
 	"\x0etopic_endpoint\x18\x01 \x01(\tB\r\xfaB\n" +
 	"r\b\x10\x01\x18\x80\b\x88\x01\x01R\rtopicEndpoint\x12)\n" +
@@ -4766,14 +4792,18 @@ const file_indykite_config_v1beta1_model_proto_rawDesc = "" +
 	"access_key\x18\x02 \x01(\tB\n" +
 	"\xfaB\ar\x05\x10\x01\x18\x80\bR\taccessKey\x12N\n" +
 	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xdf\x01\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12\x1d\n" +
+	"\n" +
+	"last_error\x18\b \x01(\tR\tlastError\"\xfe\x01\n" +
 	"\x19AzureServiceBusSinkConfig\x127\n" +
 	"\x11connection_string\x18\x01 \x01(\tB\n" +
 	"\xfaB\ar\x05\x10\x01\x18\x80\bR\x10connectionString\x129\n" +
 	"\x13queue_or_topic_name\x18\x02 \x01(\tB\n" +
 	"\xfaB\ar\x05\x10\x01\x18\x80\bR\x10queueOrTopicName\x12N\n" +
 	"\fdisplay_name\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\"\xfa\x02\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12\x1d\n" +
+	"\n" +
+	"last_error\x18\b \x01(\tR\tlastError\"\xfa\x02\n" +
 	"\x14ConsentConfiguration\x12\"\n" +
 	"\apurpose\x18\x01 \x01(\tB\b\xfaB\x05r\x03\x18\x80\bR\apurpose\x127\n" +
 	"\vdata_points\x18\x02 \x03(\tB\x16\xfaB\x13\x92\x01\x10\b\x01\x18\x01\"\n" +
