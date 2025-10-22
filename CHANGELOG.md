@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.69.0](https://github.com/indykite/indykite-sdk-go/compare/v0.68.0...v0.69.0) (2025-10-22)
+
+
+### Features
+
+* add last error in events ([88b688e](https://github.com/indykite/indykite-sdk-go/commit/88b688ecb576fe5761573636271c8a81c7bac80d))
+
+
+### Bug Fixes
+
+* fix test after modif ([092ec61](https://github.com/indykite/indykite-sdk-go/commit/092ec61f00e1c5ceada0558641f681a9513a0307))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([#380](https://github.com/indykite/indykite-sdk-go/issues/380)) ([73fb7c3](https://github.com/indykite/indykite-sdk-go/commit/73fb7c33eb6b08758944c8ebbc1a7e20c3f4b182))
+
 ## [0.68.0](https://github.com/indykite/indykite-sdk-go/compare/v0.67.1...v0.68.0) (2025-10-10)
 
 
