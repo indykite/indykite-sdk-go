@@ -10,9 +10,9 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
-	github.com/lestrrat-go/jwx/v3 v3.0.11
+	github.com/lestrrat-go/jwx/v3 v3.0.12
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/onsi/ginkgo/v2 v2.26.0
+	github.com/onsi/ginkgo/v2 v2.27.1
 	github.com/onsi/gomega v1.38.2
 	github.com/pborman/uuid v1.2.1
 	github.com/spf13/cobra v1.10.1
@@ -20,7 +20,7 @@ require (
 	go.uber.org/mock v0.6.0
 	golang.org/x/oauth2 v0.32.0
 	golang.org/x/text v0.30.0
-	google.golang.org/api v0.252.0
+	google.golang.org/api v0.253.0
 	google.golang.org/genproto v0.0.0-20251014184007-4626949a642f
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251014184007-4626949a642f
 	google.golang.org/grpc v1.76.0
