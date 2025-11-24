@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.69.1](https://github.com/indykite/indykite-sdk-go/compare/v0.69.0...v0.69.1) (2025-11-24)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v6 ([#405](https://github.com/indykite/indykite-sdk-go/issues/405)) ([cabd1b8](https://github.com/indykite/indykite-sdk-go/commit/cabd1b8dafc4e9edf0b7650bf5214e967397985c))
+* **deps:** update all non-major dependencies ([#399](https://github.com/indykite/indykite-sdk-go/issues/399)) ([47ffc77](https://github.com/indykite/indykite-sdk-go/commit/47ffc77bbe4f104d49e265a62493f6f2d8c8815a))
+* **deps:** update golang:1.25-alpine Docker digest to d3f0cf7 ([#398](https://github.com/indykite/indykite-sdk-go/issues/398)) ([5c2f82c](https://github.com/indykite/indykite-sdk-go/commit/5c2f82c83d3eb4a749e672eca1e229fe25c317b2))
+* **deps:** update golangci/golangci-lint-action action to v9 ([#401](https://github.com/indykite/indykite-sdk-go/issues/401)) ([fd31888](https://github.com/indykite/indykite-sdk-go/commit/fd3188832d9ca8c1522259ee5269b6377ccc5378))
+* **deps:** update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#404](https://github.com/indykite/indykite-sdk-go/issues/404)) ([9c323ba](https://github.com/indykite/indykite-sdk-go/commit/9c323bae5a1ca59017fdd88cf8672771e4376b6b))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v42 ([#402](https://github.com/indykite/indykite-sdk-go/issues/402)) ([b9582ba](https://github.com/indykite/indykite-sdk-go/commit/b9582ba0d34ca60777cfc36b32d70ba02baad00e))
+
 ## [0.69.0](https://github.com/indykite/indykite-sdk-go/compare/v0.68.0...v0.69.0) (2025-11-05)
 
 
