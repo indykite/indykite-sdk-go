@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.69.2](https://github.com/indykite/indykite-sdk-go/compare/v0.69.1...v0.69.2) (2025-12-03)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([#406](https://github.com/indykite/indykite-sdk-go/issues/406)) ([ff3dcce](https://github.com/indykite/indykite-sdk-go/commit/ff3dccee45bc2ef0dd9d559a3c0023049857a5e8))
+* **deps:** update google.golang.org/genproto digest to ff82c1b ([4dce35b](https://github.com/indykite/indykite-sdk-go/commit/4dce35b1470feb3cae4b51c0e2e47445d57f4200))
+* **deps:** update google.golang.org/genproto/googleapis/rpc digest to ff82c1b ([bea03a2](https://github.com/indykite/indykite-sdk-go/commit/bea03a2164db8efdd35a32d8d018832ac7a5ca1a))
+
 ## [0.69.1](https://github.com/indykite/indykite-sdk-go/compare/v0.69.0...v0.69.1) (2025-11-24)
 
 
