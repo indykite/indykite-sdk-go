@@ -107,7 +107,7 @@ func (m *Node) validate(all bool) error {
 	if !_Node_Type_Pattern.MatchString(m.GetType()) {
 		err := NodeValidationError{
 			field:  "Type",
-			reason: "value does not match regex pattern \"^([A-Z][a-z]+)+$\"",
+			reason: "value does not match regex pattern \"^[a-zA-Z_]\\\\w+$\"",
 		}
 		if !all {
 			return err
@@ -350,7 +350,7 @@ var _ interface {
 	ErrorName() string
 } = NodeValidationError{}
 
-var _Node_Type_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
+var _Node_Type_Pattern = regexp.MustCompile("^[a-zA-Z_]\\w+$")
 
 var _Node_Tags_Pattern = regexp.MustCompile("^([A-Z][a-z]+)+$")
 

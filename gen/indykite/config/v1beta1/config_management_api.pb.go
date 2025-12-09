@@ -5262,14 +5262,13 @@ const file_indykite_config_v1beta1_config_management_api_proto_rawDesc = "" +
 	"%DeleteServiceAccountCredentialRequest\x124\n" +
 	"\x02id\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\x02id\x120\n" +
 	"\x04etag\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueR\x04etagJ\x04\b\x02\x10\x03\".\n" +
-	"&DeleteServiceAccountCredentialResponseJ\x04\b\x01\x10\x02\"\xbe\r\n" +
+	"&DeleteServiceAccountCredentialResponseJ\x04\b\x01\x10\x02\"\xbf\r\n" +
 	"\x17CreateConfigNodeRequest\x12@\n" +
 	"\blocation\x18\x01 \x01(\tB$\xfaB!r\x1f\x10\x16\x18\xfe\x012\x18^[A-Za-z0-9-_:]{22,254}$R\blocation\x12A\n" +
 	"\x04name\x18\x04 \x01(\tB-\xfaB*r(\x10\x02\x18?2\"^[a-z](?:[-a-z0-9]{0,61}[a-z0-9])$R\x04name\x12N\n" +
 	"\fdisplay_name\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12M\n" +
-	"\vdescription\x18\x06 \x01(\v2\x1c.google.protobuf.StringValueB\r\xfaB\n" +
-	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdescription\x12`\n" +
+	"r\b\x10\x02\x18\xfe\x01\xd0\x01\x01R\vdisplayName\x12N\n" +
+	"\vdescription\x18\x06 \x01(\v2\x1c.google.protobuf.StringValueB\x0e\xfaB\vr\t\x10\x02\x18\xe8\xfb\x03\xd0\x01\x01R\vdescription\x12`\n" +
 	"\x11event_sink_config\x18\x1c \x01(\v2(.indykite.config.v1beta1.EventSinkConfigB\b\xfaB\x05\x8a\x01\x02\x10\x01H\x00R\x0feventSinkConfig\x12~\n" +
 	"\x1bauthorization_policy_config\x18\x19 \x01(\v22.indykite.config.v1beta1.AuthorizationPolicyConfigB\b\xfaB\x05\x8a\x01\x02\x10\x01H\x00R\x19authorizationPolicyConfig\x12b\n" +
 	"\x0econsent_config\x18\x1d \x01(\v2-.indykite.config.v1beta1.ConsentConfigurationB\n" +
