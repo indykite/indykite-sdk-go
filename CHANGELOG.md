@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.70.0](https://github.com/indykite/indykite-sdk-go/compare/v0.69.2...v0.70.0) (2025-12-09)
+
+
+### Features
+
+* update buf with latest modif in config ([53aad2d](https://github.com/indykite/indykite-sdk-go/commit/53aad2d9eef0d79ce63a00af21c88e4c98ddb3b7))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([#410](https://github.com/indykite/indykite-sdk-go/issues/410)) ([239061f](https://github.com/indykite/indykite-sdk-go/commit/239061f1a01a20d7afa1c6d74373ad8e32073da0))
+
 ## [0.69.2](https://github.com/indykite/indykite-sdk-go/compare/v0.69.1...v0.69.2) (2025-12-03)
 
 
