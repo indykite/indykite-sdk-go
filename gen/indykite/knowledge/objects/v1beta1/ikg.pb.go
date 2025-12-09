@@ -676,13 +676,13 @@ var File_indykite_knowledge_objects_v1beta1_ikg_proto protoreflect.FileDescripto
 
 const file_indykite_knowledge_objects_v1beta1_ikg_proto_rawDesc = "" +
 	"\n" +
-	",indykite/knowledge/objects/v1beta1/ikg.proto\x12\"indykite.knowledge.objects.v1beta1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%indykite/objects/v1beta1/struct.proto\x1a$indykite/objects/v1beta2/value.proto\x1a\x17validate/validate.proto\"\xb2\x03\n" +
+	",indykite/knowledge/objects/v1beta1/ikg.proto\x12\"indykite.knowledge.objects.v1beta1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%indykite/objects/v1beta1/struct.proto\x1a$indykite/objects/v1beta2/value.proto\x1a\x17validate/validate.proto\"\xb0\x03\n" +
 	"\x04Node\x12#\n" +
 	"\x02id\x18\x01 \x01(\tB\x13\xfaB\x10r\x0e\x10\x16\x18\x80\x02:\x04gid:\xd0\x01\x01R\x02id\x12+\n" +
 	"\vexternal_id\x18\x02 \x01(\tB\n" +
 	"\xfaB\ar\x05\x10\x01\x18\x80\x02R\n" +
-	"externalId\x12-\n" +
-	"\x04type\x18\x03 \x01(\tB\x19\xfaB\x16r\x14\x18@2\x10^([A-Z][a-z]+)+$R\x04type\x126\n" +
+	"externalId\x12+\n" +
+	"\x04type\x18\x03 \x01(\tB\x17\xfaB\x14r\x12\x18@2\x0e^[a-zA-Z_]\\w+$R\x04type\x126\n" +
 	"\x04tags\x18\x04 \x03(\tB\"\xfaB\x1f\x92\x01\x1c\x10\n" +
 	"\x18\x01\"\x16r\x14\x18@2\x10^([A-Z][a-z]+)+$R\x04tags\x12;\n" +
 	"\vcreate_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +

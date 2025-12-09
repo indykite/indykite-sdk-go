@@ -8969,10 +8969,10 @@ func (m *CreateConfigNodeRequest) validate(all bool) error {
 
 		if wrapper.GetValue() != "" {
 
-			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 254 {
+			if l := utf8.RuneCountInString(wrapper.GetValue()); l < 2 || l > 65000 {
 				err := CreateConfigNodeRequestValidationError{
 					field:  "Description",
-					reason: "value length must be between 2 and 254 runes, inclusive",
+					reason: "value length must be between 2 and 65000 runes, inclusive",
 				}
 				if !all {
 					return err
