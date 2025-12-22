@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.70.1](https://github.com/indykite/indykite-sdk-go/compare/v0.70.0...v0.70.1) (2025-12-22)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([#417](https://github.com/indykite/indykite-sdk-go/issues/417)) ([25b1af4](https://github.com/indykite/indykite-sdk-go/commit/25b1af4692f718914cf558780eaf9a514ab4e9bc))
+* **deps:** update golang:1.25-alpine Docker digest to 7256733 ([fa1afaa](https://github.com/indykite/indykite-sdk-go/commit/fa1afaa52e3b6f41fa015022d1ca247b52b54017))
+* **deps:** update golang:1.25-alpine Docker digest to ac09a5f ([09ac81d](https://github.com/indykite/indykite-sdk-go/commit/09ac81d4723850bd9b79f0d6dfcec7c4883ae2f0))
+* **deps:** update google.golang.org/genproto digest to 97cd9d5 ([63f2019](https://github.com/indykite/indykite-sdk-go/commit/63f2019c78e20712381da36a3821c60efdb2923e))
+* **deps:** update google.golang.org/genproto/googleapis/rpc digest to 97cd9d5 ([bf89df8](https://github.com/indykite/indykite-sdk-go/commit/bf89df87c6353f64db4752f54e23a116fe85fb77))
+
 ## [0.70.0](https://github.com/indykite/indykite-sdk-go/compare/v0.69.2...v0.70.0) (2025-12-09)
 
 
