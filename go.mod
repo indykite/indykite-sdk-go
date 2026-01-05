@@ -23,7 +23,7 @@ require (
 	google.golang.org/api v0.258.0
 	google.golang.org/genproto v0.0.0-20251213004720-97cd9d5aeac2
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251213004720-97cd9d5aeac2
-	google.golang.org/grpc v1.77.0
+	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
 )
 
