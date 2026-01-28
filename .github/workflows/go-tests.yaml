@@ -66,6 +66,7 @@ jobs:
       id-token: write
     env:
       GCP_PROJECT_ID_MGMT: ${{ secrets.GCP_PROJECT_ID_MGMT }}
+      GCP_WORKLOAD_IDENTITY_PROVIDER_MGMT: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_MGMT }}
     steps:
       - name: actions/checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2 - https://github.com/actions/checkout/releases
@@ -78,7 +79,7 @@ jobs:
       - name: gcloud/auth
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0 - https://github.com/google-github-actions/auth/releases
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER_MGMT }}
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER_MGMT }}
           service_account: github@${{ env.GCP_PROJECT_ID_MGMT }}.iam.gserviceaccount.com
 
       - name: Run Integration tests
