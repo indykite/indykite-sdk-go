@@ -2,12 +2,15 @@
 
 <div align="left">
 <a href="https://indykite.com">
-<img src="https://github.com/indykite/.github/blob/master/assets/IndyKITE_Rough_red.png" alt="IndyKite Red Logo" width="100px" height="183px" align="right">
+<img src="https://raw.githubusercontent.com/indykite/.github/master/assets/squareformatlogo.png" alt="IndyKite Logo" width="100px" height="100px" align="right">
 </a>
 </div>
 
-IndyKite is a cloud identity platform built to secure and manage
-human & non-person (IoT) identities and their data. This repository contains the
+As AI agents and users execute work, IndyKite continuously captures context, relationships, trust signals, and actions.
+This becomes the point of decision, pulling signals from multiple systems and applying them at runtime, with full traceability.
+The result is agentic AI that can operate across platforms with precision and deliver an entirely new class of intelligent services.
+
+This repository contains the
 Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK.
 
 [![Build](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml/badge.svg)](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml)
@@ -23,12 +26,12 @@ import "github.com/indykite/indykite-sdk-go"
 [Documentation](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)
 
 In order to access to the platform you must first obtain AppAgent credentials or Service Account credentials.
-These credentials can be obtained either from the [Admin Console](https://console2.indykite.id)
+These credentials can be obtained either from the Hub ([EU](https://eu.hub.indykite.com/) or [US](https://us.hub.indykite.com/))
 or request one from your point of contact at IndyKite.
 
 ## Requirements
 
-- Go version 1.23 or later
+- Go version 1.25
 - AppSpace, App, AppAgent, and AppAgent credentials for all APIs except for Config API
 - Service account credentials for Config API
 
@@ -44,10 +47,10 @@ or request one from your point of contact at IndyKite.
 ```json
 {
   "appSpaceId": "gid:AAAAAimlBsA9X0Gnlv2UTituW4Q",
-  "baseUrl": "https://jarvis.indykite.com",
+  "baseUrl": "https://eu.api.indykite.com",
   "applicationId": "gid:AAAABKiMFRKkFEiEn3c-izbz9sk",
   "appAgentId": "gid:AAAABUqz8GXJB0cDikdAH8ywz8I",
-  "endpoint": "jarvis.indykite.com",
+  "endpoint": "eu.api.indykite.com",
   "privateKeyJWK": {
     "kty": "EC",
     "d": "aa",
