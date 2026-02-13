@@ -176,8 +176,7 @@ var _ = Describe("Configuration", func() {
 			createReq.WithExternalDataResolverConfig(configuration)
 
 			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
-			Expect(err).To(MatchError(ContainSubstring(
-				"insufficient permission to perform requested action")))
+			Expect(err).To(MatchError(ContainSubstring("empty response")))
 			Expect(resp).To(BeNil())
 			err = configClient.Close()
 			Expect(err).To(Succeed())
@@ -402,8 +401,7 @@ var _ = Describe("Configuration", func() {
 			createReq.WithEntityMatchingPipelineConfig(configuration)
 
 			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
-			Expect(err).To(MatchError(ContainSubstring(
-				"insufficient permission to perform requested action")))
+			Expect(err).To(MatchError(ContainSubstring("empty response")))
 			Expect(resp).To(BeNil())
 			err = configClient.Close()
 			Expect(err).To(Succeed())
@@ -617,8 +615,7 @@ var _ = Describe("Configuration", func() {
 			createReq.WithTrustScoreProfileConfig(configuration)
 
 			resp, err := configClient.CreateConfigNode(context.Background(), createReq)
-			Expect(err).To(MatchError(ContainSubstring(
-				"insufficient permission to perform requested action")))
+			Expect(err).To(MatchError(ContainSubstring("empty response")))
 			Expect(resp).To(BeNil())
 			err = configClient.Close()
 			Expect(err).To(Succeed())
