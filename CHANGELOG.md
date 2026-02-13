@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.71.0](https://github.com/indykite/indykite-sdk-go/compare/v0.70.0...v0.71.0) (2026-02-13)
+
+
+### Features
+
+* update readme ([f331808](https://github.com/indykite/indykite-sdk-go/commit/f33180871b75baa1f8fc5ab094ca3f5323f6bf4e))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([#417](https://github.com/indykite/indykite-sdk-go/issues/417)) ([25b1af4](https://github.com/indykite/indykite-sdk-go/commit/25b1af4692f718914cf558780eaf9a514ab4e9bc))
+* **deps:** update all non-major dependencies ([#420](https://github.com/indykite/indykite-sdk-go/issues/420)) ([de49c82](https://github.com/indykite/indykite-sdk-go/commit/de49c8271798593c17e39824f129f42e7b95ef18))
+* **deps:** update all non-major dependencies ([#421](https://github.com/indykite/indykite-sdk-go/issues/421)) ([4877691](https://github.com/indykite/indykite-sdk-go/commit/487769196641f44727621be43f918df8cb24401d))
+* **deps:** update all non-major dependencies ([#425](https://github.com/indykite/indykite-sdk-go/issues/425)) ([c8da93c](https://github.com/indykite/indykite-sdk-go/commit/c8da93ca4123fdd0a093e1da1ca9dc9b847cb117))
+* **deps:** update all non-major dependencies ([#428](https://github.com/indykite/indykite-sdk-go/issues/428)) ([fba32c1](https://github.com/indykite/indykite-sdk-go/commit/fba32c1efabd3d7b05b019bd5344e7081e79a116))
+* **deps:** update golang:1.25-alpine Docker digest to 7256733 ([fa1afaa](https://github.com/indykite/indykite-sdk-go/commit/fa1afaa52e3b6f41fa015022d1ca247b52b54017))
+* **deps:** update golang:1.25-alpine Docker digest to 98e6cff ([a69824f](https://github.com/indykite/indykite-sdk-go/commit/a69824fdc1418290862d580b71644e9ae5e90732))
+* **deps:** update golang:1.25-alpine Docker digest to ac09a5f ([09ac81d](https://github.com/indykite/indykite-sdk-go/commit/09ac81d4723850bd9b79f0d6dfcec7c4883ae2f0))
+* **deps:** update google.golang.org/genproto digest to 0a764e5 ([17d268e](https://github.com/indykite/indykite-sdk-go/commit/17d268ea58bf4b344a33b1e0517c476dd011ba86))
+* **deps:** update google.golang.org/genproto digest to 97cd9d5 ([63f2019](https://github.com/indykite/indykite-sdk-go/commit/63f2019c78e20712381da36a3821c60efdb2923e))
+* **deps:** update google.golang.org/genproto/googleapis/rpc digest to 0a764e5 ([23d6762](https://github.com/indykite/indykite-sdk-go/commit/23d6762d67b2cbc2efe9cabe6b80962cac4176df))
+* **deps:** update google.golang.org/genproto/googleapis/rpc digest to 97cd9d5 ([bf89df8](https://github.com/indykite/indykite-sdk-go/commit/bf89df87c6353f64db4752f54e23a116fe85fb77))
+
 ## [0.70.0](https://github.com/indykite/indykite-sdk-go/compare/v0.69.2...v0.70.0) (2025-12-09)
 
 
