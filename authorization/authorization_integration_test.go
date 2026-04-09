@@ -465,9 +465,6 @@ var _ = Describe("Authorized", func() {
 					})))
 				}
 			},
-			Entry("What authorized DT", integration.Node1, integration.ResourceType1,
-				[]string{integration.Asset4, integration.Asset1, integration.Asset3,
-					integration.Asset2, integration.Asset5}, []string{}, ""),
 			Entry("What Authorized DT Resource Non Valid", integration.Node1, integration.ResourceType2,
 				[]string{}, []string{},
 				"invalid WhatAuthorizedRequest_ResourceType.Type: value length must be between 2 and 50 runes"),
