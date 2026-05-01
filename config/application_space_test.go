@@ -106,7 +106,7 @@ var _ = Describe("AppSpace", func() {
 						DbConnection: &configpb.DBConnection{
 							Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
 							Username: "neo4j",
-							Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+							Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY", // #nosec G101 -- test fixture only
 						},
 					},
 				},
@@ -196,7 +196,7 @@ var _ = Describe("AppSpace", func() {
 				DbConnection: &configpb.DBConnection{
 					Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
 					Username: "neo4j",
-					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY", // #nosec G101 -- test fixture only
 				},
 			}
 			beResp := &configpb.CreateApplicationSpaceResponse{
@@ -274,7 +274,7 @@ var _ = Describe("AppSpace", func() {
 				DbConnection: &configpb.DBConnection{
 					Url:      "neo4j+s://a1b2c3d4.databases.neo4j.io",
 					Username: "neo4j",
-					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY",
+					Password: "Lg7e3kFjP2n8mQv5hZ9yXcW4bN1dRmTpY", // #nosec G101 -- test fixture only
 				},
 			}
 			beResp := &configpb.UpdateApplicationSpaceResponse{

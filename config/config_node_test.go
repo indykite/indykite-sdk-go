@@ -1271,7 +1271,7 @@ var _ = Describe("ConfigNode", func() {
 
 		It("RegisterCapturePipelineConfig", func() {
 			configuration := &configpb.RegisterCapturePipelineConfig{
-				AppAgentToken: "eyJhbGciOiJIIkpXVCJ9.eyJpc3MiOiJnaWQkwMjJ9.39Kc7pL8Vjf1S4Oo5Rw",
+				AppAgentToken: "eyJhbGciOiJIIkpXVCJ9.eyJpc3MiOiJnaWQkwMjJ9.39Kc7pL8Vjf1S4Oo5Rw", // #nosec G101
 			}
 
 			configNodeRequest, err := config.NewCreate("like-real-config-node-name")
