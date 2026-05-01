@@ -703,13 +703,13 @@ var _ = Describe("Authorized", func() {
 						// First action with specific subject matches
 						subjectMatcher := BeEmpty()
 						if i == 0 && len(subjects) > 0 {
-							elements := Elements{}
-							for i, subject := range subjects {
-								elements[strconv.Itoa(i)] = PointTo(MatchFields(IgnoreExtras, Fields{
+							elements := make([]any, 0, len(subjects))
+							for _, subject := range subjects {
+								elements = append(elements, PointTo(MatchFields(IgnoreExtras, Fields{
 									"ExternalId": Equal(subject),
-								}))
+								})))
 							}
-							subjectMatcher = MatchAllElementsWithIndex(IndexIdentity, elements)
+							subjectMatcher = ConsistOf(elements...)
 						}
 						actionMatchers[action] = PointTo(MatchFields(IgnoreExtras, Fields{
 							"Subjects": subjectMatcher,
