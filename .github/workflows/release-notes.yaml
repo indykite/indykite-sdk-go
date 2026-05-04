@@ -52,7 +52,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: actions/slack-notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1 - https://github.com/slackapi/slack-github-action/releases
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1 - https://github.com/slackapi/slack-github-action/releases
         if: steps.release.outputs.releases_created || steps.release.outputs.prs_created
         with:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
