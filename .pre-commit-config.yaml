@@ -72,7 +72,7 @@ repos:
   #
   # Commit Message linting
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook # ci:ignore:executed under a separate GitHub action
-    rev: v9.24.0
+    rev: v9.25.0
     hooks:
       # NON-DEFAULT stage, install explicitly with: pre-commit install -t commit-msg
       - id: commitlint
@@ -131,7 +131,7 @@ repos:
   #
   # Detect hardcoded secrets
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+    rev: v8.30.1
     hooks:
       - id: gitleaks
         name: gitleaks

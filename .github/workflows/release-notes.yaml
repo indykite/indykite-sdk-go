@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: action/release-please
-        uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0 - https://github.com/googleapis/release-please-action/releases
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1 - https://github.com/googleapis/release-please-action/releases
         id: release
         with:
           # secrets.GITHUB_TOKEN cannot be used due to:

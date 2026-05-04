@@ -21,13 +21,13 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2 - https://github.com/actions/checkout/releases
 
       - name: setup/golang
-        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0 - https://github.com/actions/setup-go/releases
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0 - https://github.com/actions/setup-go/releases
         with:
           go-version-file: go.mod
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0 - https://github.com/golangci/golangci-lint-action/releases
         with:
-          version: v2.4.0 # optional, https://github.com/golangci/golangci-lint/releases
+          version: v2.12.1 # optional, https://github.com/golangci/golangci-lint/releases
           # Optional: golangci-lint command line arguments.
           args: --config=.golangci.yml --timeout 3m00s
