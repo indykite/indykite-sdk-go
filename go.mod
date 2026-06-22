@@ -22,7 +22,7 @@ require (
 	golang.org/x/text v0.38.0
 	google.golang.org/api v0.285.0
 	google.golang.org/genproto v0.0.0-20260622165455-1f2690bbfedf
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260618152121-87f3d3e198d3
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260622165455-1f2690bbfedf
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 )
