@@ -195,7 +195,7 @@ func toProtoValue(v reflect.Value) (*Value, bool, error) {
 		return sliceToProtoValue(v)
 	case reflect.Map:
 		return mapToProtoValue(v)
-	case reflect.Ptr:
+	case reflect.Pointer:
 		if v.IsNil() {
 			return nullValue, false, nil
 		}
