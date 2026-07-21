@@ -15,6 +15,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 .idea
+.claude
+.sixth
 
 .private/
 
@@ -23,3 +25,7 @@
 
 # test report
 test-report.html
+
+# locally built helper binaries (go build ./test/setup, ./agents/e2e-driver)
+/setup
+/e2e-driver

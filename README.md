@@ -1,4 +1,4 @@
-# IndyKite Client Libraries for Go
+# IndyKite Client Library for Go
 
 <div align="left">
 <a href="https://indykite.com">
@@ -10,139 +10,109 @@ As AI agents and users execute work, IndyKite continuously captures context, rel
 This becomes the point of decision, pulling signals from multiple systems and applying them at runtime, with full traceability.
 The result is agentic AI that can operate across platforms with precision and deliver an entirely new class of intelligent services.
 
-This repository contains the
-Golang Library packages for [IndyKite Platform](https://indykite.com) Client SDK.
+This repository contains the Go client SDK for the [IndyKite Platform](https://indykite.com) **REST APIs**
+([OpenAPI reference](https://openapi.indykite.com)).
 
-[![Build](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml/badge.svg)](https://github.com/indykite/indykite-sdk-go/actions/workflows/pr-test.yaml)
 [![codecov](https://codecov.io/gh/indykite/indykite-sdk-go/branch/master/graph/badge.svg?token=TFCDLXbnsh)](https://codecov.io/gh/indykite/indykite-sdk-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/indykite/indykite-sdk-go)](https://goreportcard.com/report/github.com/indykite/indykite-sdk-go)
 [![Go Reference](https://pkg.go.dev/badge/github.com/indykite/indykite-sdk-go.svg)](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Findykite%2Findykite-sdk-go.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Findykite%2Findykite-sdk-go?ref=badge_shield)
-
-```go
-import "github.com/indykite/indykite-sdk-go"
-```
-
-[Documentation](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)
-
-In order to access to the platform you must first obtain AppAgent credentials or Service Account credentials.
-These credentials can be obtained either from the Hub ([EU](https://eu.hub.indykite.com/) or [US](https://us.hub.indykite.com/))
-or request one from your point of contact at IndyKite.
 
 ## Requirements
 
-- Go version 1.25
-- AppSpace, App, AppAgent, and AppAgent credentials for all APIs except for Config API
-- Service account credentials for Config API
+- Go 1.26+
+- An **App Agent** credential for the runtime APIs (AuthZEN, ContX IQ, Capture, Entity Matching)
+- A **Service Account** credential for the Config API
 
-## Getting Started
+Credentials can be obtained from the Hub ([EU](https://eu.hub.indykite.com/) or [US](https://us.hub.indykite.com/))
+or from your IndyKite contact.
 
-## Initial settings
+## Two planes, two clients
 
-1. You need to have a configuration json file to be able to use the IndyKite Proto SDK. You can get it from your
-   Indykite contact or from Indykite hub if you have access to it.
+| Plane | Credential | Entry point | Services |
+| --- | --- | --- | --- |
+| Runtime / data | App Agent | `indykite.NewClient[FromEnv]` | AuthZEN, ContX IQ, Capture, Entity Matching |
+| Control | Service Account | `indykite.NewAdmin[FromEnv]` | Config management (`/configs/v1`) |
 
-   Example configuration file:
+The SDK picks the right auth header per plane automatically (`X-IK-ClientKey` for runtime,
+`Authorization: Bearer` for control). No TLS or connection setup is needed.
 
-```json
-{
-  "appSpaceId": "gid:AAAAAimlBsA9X0Gnlv2UTituW4Q",
-  "baseUrl": "https://eu.api.indykite.com",
-  "applicationId": "gid:AAAABKiMFRKkFEiEn3c-izbz9sk",
-  "appAgentId": "gid:AAAABUqz8GXJB0cDikdAH8ywz8I",
-  "endpoint": "eu.api.indykite.com",
-  "privateKeyJWK": {
-    "kty": "EC",
-    "d": "aa",
-    "use": "sig",
-    "crv": "P-256",
-    "kid": "2e5lIxxb6obIwpok",
-    "x": "6d83se2Eg",
-    "y": "lshzMo",
-    "alg": "ES256"
-  },
-  "privateKeyPKCS8Base64": "LS0tLS==",
-  "privateKeyPKCS8": "..."
-}
+The two credential artifacts differ: `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` holds the
+**App Agent credential token itself** (the raw `X-IK-ClientKey` value — always pass
+`WithRegion`/`WithBaseURL`, the token carries no URL); `INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE]`
+holds the **Service Account JSON artifact** (`serviceAccountId`, `baseUrl`, a pre-issued `token`,
+private key). The SDK sends the pre-issued token while valid and mints a fresh JWT from the key
+when it expires.
+
+## Quick start
+
+```go
+import (
+    indykite "github.com/indykite/indykite-sdk-go"
+    "github.com/indykite/indykite-sdk-go/authzen"
+    "github.com/indykite/indykite-sdk-go/ciq"
+    "github.com/indykite/indykite-sdk-go/config"
+)
+
+// Runtime plane — reads INDYKITE_APPLICATION_CREDENTIALS[_FILE].
+cli, err := indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
+
+ok, err := cli.AuthZEN().Allowed(ctx,
+    authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
+
+rows, err := cli.CIQ().All(ctx, ciq.ExecuteRequest{
+    ID: "get-servers", InputParams: map[string]any{"region": "eu"},
+})
+
+// Control plane — reads INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE].
+admin, err := indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))
+pol, err := admin.AuthorizationPolicies().Create(ctx, &config.CreateAuthorizationPolicy{
+    ProjectID: projectID, Name: "can-provision", Policy: policyJSON, Status: config.StatusActive,
+})
 ```
 
-Conditionally optional parameters:
+Config mutations are guarded by ETags for optimistic concurrency: `Read` captures the ETag,
+`Update`/`Delete` send it as `If-Match`.
 
-- baseUrl
-- defaultTenantId
-- endpoint
+Errors are `*transport.APIError` (HTTP status, platform code/message, request id):
 
-1. You have two choices to set up the necessary credentials. You either pass the json to the `INDYKITE_APPLICATION_CREDENTIALS`
-   environment variable or set the `INDYKITE_APPLICATION_CREDENTIALS_FILE` environment variable to the configuration file's path.
+```go
+if apiErr, ok := transport.AsAPIError(err); ok && apiErr.IsNotFound() { /* ... */ }
+```
 
-   1. on Linux and OSX
+Options: `WithRegion`, `WithBaseURL`, `WithRetry`, `WithTracing` (OpenTelemetry),
+`WithHTTPClient`, `WithUserAgent`.
 
-      ```shell
-      export INDYKITE_APPLICATION_CREDENTIALS='{"appSpaceId":"00000000-0000-4000-a000-000000000000","appAgentId":"00000000-0000-4000-a000-000000000001","endpoint": "application.indykite.com","privateKeyJWK":{"kty":"EC","d": "abcdef","use": "sig","crv": "P-256","kid":"efghij","x":"klmnop","y":"qrstvw","alg":"ES256"}}'`
-      ```
+## Examples
 
-      or
+Runnable per-service CLIs live in [examples/](examples/) — one subcommand per operation.
 
-      ```shell
-      export INDYKITE_APPLICATION_CREDENTIALS_FILE=/Users/xx/configuration.json
-      ```
+## Tests
 
-   1. on Windows command line
+```sh
+make test          # unit tests (offline, httptest-based)
+make integration   # integration tests against the platform
+```
 
-      ```shell
-      setex INDYKITE_APPLICATION_CREDENTIALS='{"appSpaceId":"00000000-0000-4000-a000-000000000000","appAgentId":"00000000-0000-4000-a000-000000000001","endpoint": "application.indykite.com","privateKeyJWK":{"kty":"EC","d": "abcdef","use": "sig","crv": "P-256","kid":"efghij","x":"klmnop","y":"qrstvw","alg":"ES256"}}'`
-      ```
+Integration tests cover the Config, Capture, AuthZEN, ContX IQ, and Entity Matching APIs.
+`TestIntegrationIKGEndToEnd` additionally exercises an actual IKG with zero pre-provisioned
+fixtures: it seeds a KBAC policy plus a CIQ read policy/knowledge query, ingests a
+`Person -[:OWNS]-> Server` graph, asserts the AuthZEN decision (positive and negative) and
+the knowledge-query read over that live data, then removes everything it created.
+They authenticate from `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` /
+`INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE]` and scope to `PROJECT_ID` (and optionally
+`ORGANIZATION_ID`). Fixture-dependent tests read `CIQ_QUERY_ID`, `EM_PIPELINE_ID`, and
+`AUTHZEN_{SUBJECT_TYPE,SUBJECT_ID,ACTION,RESOURCE_TYPE,RESOURCE_ID}`; each test skips
+cleanly when its inputs are unset. `INDYKITE_BASE_URL` overrides the default region URL.
+The fixture dataset and config resources behind those env values live in [test/fixtures/](test/fixtures/)
+and are provisioned idempotently with `go run ./test/setup apply` (see [test/README.md](test/README.md)).
+The data-schema API is feature-flagged and intentionally has no integration tests.
 
-      or
+When `SDK_AUDIT_TABLE_NAME` is set, the AuthZEN and ContX IQ integration tests additionally
+verify that the platform's audit events reached the BigQuery audit-log table (authenticating
+with Application Default Credentials; `BQ_PROJECT_ID` selects the hosting GCP project).
 
-      ```shell
-      setex INDYKITE_APPLICATION_CREDENTIALS_FILE "C:\Users\xx\Documents\configuration.json"
-      ```
+## SDK Documentation
 
-## Documentation
-
-[IndyKite documentation](https://docs.indykite.com)
-
-## Terminology
-
-[IndyKite glossary](https://docs.indykite.com/docs/resources/glossary)
-
-## SDK Development
-
-Commit message follows
-[commit guidelines](./doc/guides/commit-message.md#commit-message-guidelines)
-
-## Roadmap
-
-Checkout our roadmap on our
-[issues page](https://github.com/indykite/indykite-sdk-go/issues)
-
-## Contributing
-
-[Contribution guidelines for this project](contributing.md)
-
-## Support, Feedback, Connect with other developers
-
-Feel free to file a bug, submit an issue or give us feedback on our
-[issues page](https://github.com/indykite/indykite-sdk-go/issues)
-
-## Vulnerability Reporting
-
-[Responsible Disclosure](responsible_disclosure.md)
-
-## Changelog
-
-[Changelog](CHANGELOG.md)
-
-## Contributers / Acknowledgements
-
-Coming Soon!
-
-## What is IndyKite
-
-IndyKite is a cloud identity platform built to secure and manage human & non-person (IoT) identities and their data. Based on open source standards, the cloud platform gives developers the ability to secure data and embed identity controls into their Web 3.0 applications.
-Empowering the world’s 23 million developers without the need to involve security and identity specialists.
-
-## License
-
-[This project is licensed under the terms of the Apache 2.0 license.](LICENSE)
+- [IndyKite documentation](https://docs.indykite.com)
+- [REST API reference](https://openapi.indykite.com)
+- [Go package reference](https://pkg.go.dev/github.com/indykite/indykite-sdk-go)

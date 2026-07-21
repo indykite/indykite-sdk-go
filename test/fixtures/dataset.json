@@ -1,0 +1,171 @@
+{
+  "$comment": "Seed graph for the SDK integration tests. All external ids carry the sdk-it-fix- prefix so `setup destroy` can remove exactly this dataset. Upserts are idempotent: applying twice is safe.",
+  "nodes": [
+    {
+      "external_id": "sdk-it-fix-ada",
+      "type": "Person",
+      "is_identity": true,
+      "properties": [
+        {
+          "type": "email",
+          "value": "ada@sdktest.example",
+          "metadata": {
+            "source": "sdk-fixtures",
+            "assurance_level": 2
+          }
+        },
+        {
+          "type": "first_name",
+          "value": "Ada"
+        },
+        {
+          "type": "last_name",
+          "value": "Lovelace"
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-grace",
+      "type": "Person",
+      "is_identity": true,
+      "properties": [
+        {
+          "type": "email",
+          "value": "grace@sdktest.example",
+          "metadata": {
+            "source": "sdk-fixtures",
+            "assurance_level": 2
+          }
+        },
+        {
+          "type": "first_name",
+          "value": "Grace"
+        },
+        {
+          "type": "last_name",
+          "value": "Hopper"
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-linus",
+      "type": "Person",
+      "is_identity": true,
+      "properties": [
+        {
+          "type": "email",
+          "value": "linus@sdktest.example"
+        },
+        {
+          "type": "first_name",
+          "value": "Linus"
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-cust-1",
+      "type": "Customer",
+      "properties": [
+        {
+          "type": "email",
+          "value": "ada@sdktest.example"
+        },
+        {
+          "type": "full_name",
+          "value": "Ada Lovelace"
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-cust-2",
+      "type": "Customer",
+      "properties": [
+        {
+          "type": "email",
+          "value": "grace@sdktest.example"
+        },
+        {
+          "type": "full_name",
+          "value": "Grace Hopper"
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-gpu-1",
+      "type": "Server",
+      "properties": [
+        {
+          "type": "region",
+          "value": "eu"
+        },
+        {
+          "type": "price",
+          "value": 300
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-gpu-2",
+      "type": "Server",
+      "properties": [
+        {
+          "type": "region",
+          "value": "eu"
+        },
+        {
+          "type": "price",
+          "value": 800
+        }
+      ]
+    },
+    {
+      "external_id": "sdk-it-fix-gpu-3",
+      "type": "Server",
+      "properties": [
+        {
+          "type": "region",
+          "value": "us"
+        },
+        {
+          "type": "price",
+          "value": 500
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "OWNS",
+      "source": {
+        "external_id": "sdk-it-fix-ada",
+        "type": "Person"
+      },
+      "target": {
+        "external_id": "sdk-it-fix-gpu-1",
+        "type": "Server"
+      }
+    },
+    {
+      "type": "OWNS",
+      "source": {
+        "external_id": "sdk-it-fix-grace",
+        "type": "Person"
+      },
+      "target": {
+        "external_id": "sdk-it-fix-gpu-2",
+        "type": "Server"
+      }
+    },
+    {
+      "type": "OWNS",
+      "source": {
+        "external_id": "sdk-it-fix-ada",
+        "type": "Person"
+      },
+      "target": {
+        "external_id": "sdk-it-fix-gpu-3",
+        "type": "Server"
+      }
+    }
+  ]
+}

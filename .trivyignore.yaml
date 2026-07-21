@@ -5,3 +5,13 @@ misconfigurations:
   - id: AVD-DS-0026 # (LOW): Add HEALTHCHECK instruction in your Dockerfile
     paths:
       - "docker/infra/Dockerfile"
+
+vulnerabilities:
+  - id: GO-2026-5932 # (UNKNOWN): golang.org/x/crypto/openpgp is unmaintained/deprecated.
+    # The openpgp PACKAGE is never imported by this module or any dependency
+    # (verified: `go mod why golang.org/x/crypto/openpgp` -> "main module does
+    # not need package"; it is absent from `go list -deps ./...`). The x/crypto
+    # MODULE is required transitively (jwx v3, google.golang.org/api) for
+    # unrelated primitives, and no fixed version exists — the upstream advice is
+    # "do not use openpgp", which we already satisfy.
+    statement: "openpgp is not in the build graph; x/crypto is transitive-only"

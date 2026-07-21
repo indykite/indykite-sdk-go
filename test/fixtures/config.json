@@ -1,0 +1,94 @@
+{
+  "$comment": "Config-API resources backing the SDK integration tests. Names are stable so `setup apply` is idempotent (read-by-name, create when missing). The policy/query objects are stringified by the setup tool before sending.",
+  "kbac_policy": {
+    "name": "sdk-it-fix-kbac",
+    "display_name": "SDK IT: Person may use owned Server",
+    "description": "Fixture policy for the SDK integration tests: a Person may SDK_IT_CAN_USE a Server they OWN.",
+    "status": "ACTIVE",
+    "policy": {
+      "meta": {
+        "policy_version": "2.0-kbac"
+      },
+      "subject": {
+        "type": "Person"
+      },
+      "actions": [
+        "SDK_IT_CAN_USE"
+      ],
+      "resource": {
+        "type": "Server"
+      },
+      "condition": {
+        "cypher": "MATCH (subject:Person)-[:OWNS]->(resource:Server)"
+      }
+    }
+  },
+  "ciq_policy": {
+    "name": "sdk-it-fix-ciq",
+    "display_name": "SDK IT: read Servers by region",
+    "description": "Fixture CIQ read policy for the SDK integration tests; _Application subject so only the App Agent key is needed at execute time.",
+    "status": "ACTIVE",
+    "policy": {
+      "meta": {
+        "policy_version": "1.0-ciq"
+      },
+      "subject": {
+        "type": "_Application"
+      },
+      "condition": {
+        "cypher": "MATCH (subject:_Application), (server:Server)",
+        "filter": [
+          {
+            "operator": "=",
+            "attribute": "subject.external_id",
+            "value": "$_appId"
+          },
+          {
+            "operator": "=",
+            "attribute": "server.property.region",
+            "value": "$region"
+          }
+        ]
+      },
+      "allowed_reads": {
+        "nodes": [
+          "server",
+          "server.*"
+        ]
+      }
+    }
+  },
+  "knowledge_query": {
+    "name": "sdk-it-fix-kq",
+    "display_name": "SDK IT: Servers by region",
+    "description": "Fixture knowledge query for the SDK integration tests. input_params: {region}.",
+    "status": "ACTIVE",
+    "query": {
+      "nodes": [
+        "server"
+      ]
+    }
+  },
+  "entity_matching_pipeline": {
+    "name": "sdk-it-fix-em",
+    "display_name": "SDK IT: match Persons to Customers",
+    "description": "Fixture entity-matching pipeline for the SDK integration tests; Persons and Customers share email values in the dataset.",
+    "node_filter": {
+      "source_node_types": [
+        "Person"
+      ],
+      "target_node_types": [
+        "Customer"
+      ]
+    },
+    "similarity_score_cutoff": 0.85
+  },
+  "env": {
+    "AUTHZEN_SUBJECT_TYPE": "Person",
+    "AUTHZEN_SUBJECT_ID": "sdk-it-fix-ada",
+    "AUTHZEN_ACTION": "SDK_IT_CAN_USE",
+    "AUTHZEN_RESOURCE_TYPE": "Server",
+    "AUTHZEN_RESOURCE_ID": "sdk-it-fix-gpu-1",
+    "CIQ_INPUT_PARAMS": "{\"region\":\"eu\"}"
+  }
+}
