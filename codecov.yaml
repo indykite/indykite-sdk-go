@@ -11,8 +11,5 @@ coverage:
         threshold: 40%
 ignore:
   - examples
-  - gen
-  - errors
-  - helpers
+  - agents
   - doc
-  - test

@@ -29,7 +29,6 @@ linters:
     - errorlint
     - exhaustive
     - forbidigo
-    - ginkgolinter
     - gocheckcompilerdirectives
     - gocritic
     - godot
@@ -55,7 +54,6 @@ linters:
     - perfsprint
     - prealloc
     - predeclared
-    - protogetter
     - reassign
     - revive
     - tagalign
@@ -73,9 +71,6 @@ linters:
         - map
       default-signifies-exhaustive: true
 
-    ginkgolinter:
-      forbid-focus-container: true
-
     gocritic:
       enabled-tags:
         - diagnostic
@@ -92,7 +87,7 @@ linters:
       values:
         regexp:
           # As long we decide which format of YEAR in copyright we want, add this hack
-          our_year: 202[2-5] # Just change to 202[2-3] or other when changed
+          our_year: 202[2-6] # Just change to 202[2-3] or other when changed
       template: |-
         Copyright (c) {{OUR_YEAR}} IndyKite
 
@@ -212,7 +207,6 @@ linters:
       - third_party$
       - builtin$
       - examples$
-      - gen$
     rules:
       # Exclude lll issues for long lines with go:generate (including the ones commented out)
       - linters:
@@ -236,11 +230,6 @@ linters:
         path: (^cli/cmd/)|(^pkg/test/)|.*_test.go
         text: GID|fmt\.Print
 
-      # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
-      - linters:
-          - revive
-        path: .*\.go
-
       # Dupword checks for multiple words in comment or text, which sometimes happen.
       # But there are some false positives ones, especially in Cyphers.
       - linters:
@@ -263,12 +252,17 @@ linters:
         text: 'deep-exit: calls to log.Fatalf|exitAfterDefer: log.Fatalf will exit'
         path: .*_test.go
 
-      # We want to allow import gomega and ginkgo (+ all sub-packages) in tests files only
+      # The test/ tree holds the integration fixture tooling (CLIs): printing,
+      # logging fixture values and os.Exit are its job.
       - linters:
+          - errcheck
+          - forbidigo
+          - gocritic
+          - gosec
+          - nolintlint
+          - perfsprint
           - revive
-        text: '^dot-imports:'
-        source: . "github.com/onsi/(gomega|ginkgo)(/.*)?"
-        path: .*_test.go
+        path: test/.*
 
       # We remove lint on examples
       - linters:
@@ -281,27 +275,6 @@ linters:
           - revive
           - staticcheck
         path: examples/.*
-      - linters:
-          - errcheck
-          - forbidigo
-          - gocritic
-          - gosec
-          - nolintlint
-          - perfsprint
-          - revive
-          - staticcheck
-        path: test/.*
-      - linters:
-          - errcheck
-          - forbidigo
-          - gocritic
-          - gosec
-          - intrange
-          - nolintlint
-          - perfsprint
-          - revive
-          - staticcheck
-        path: gen/.*
 
 issues:
   max-issues-per-linter: 0
@@ -316,7 +289,7 @@ formatters:
       sections:
         - standard
         - default
-        - prefix(github.com/indykite/terraform-provider-indykite)
+        - prefix(github.com/indykite/indykite-sdk-go)
         - blank
         - dot
   exclusions:

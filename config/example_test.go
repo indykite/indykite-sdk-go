@@ -1,4 +1,4 @@
-// Copyright (c) 2022 IndyKite
+// Copyright (c) 2026 IndyKite
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,27 +16,69 @@ package config_test
 
 import (
 	"context"
-	"log"
+	"fmt"
 
+	indykite "github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/config"
-	api "github.com/indykite/indykite-sdk-go/grpc"
 )
 
-// This example demonstrates how to create a new Config Client.
-func ExampleNewClient_default() {
-	client, err := config.NewClient(context.Background())
+// Bootstrap the runtime plane: application -> agent -> credential. The signed
+// credential is returned exactly once, on Create.
+func ExampleAppAgentCredentialAPI_Create() {
+	ctx := context.Background()
+	admin, err := indykite.NewAdminFromEnv(ctx)
 	if err != nil {
-		log.Fatalf("failed to create client %v", err)
+		return
 	}
-	_ = client.Close()
+
+	app, err := admin.Applications().Create(ctx, &config.CreateApplication{
+		ProjectID: "gid:project", Name: "checkout-service",
+	})
+	if err != nil {
+		return
+	}
+
+	agent, err := admin.AppAgents().Create(ctx, &config.CreateAppAgent{
+		ApplicationID:  app.ID,
+		Name:           "checkout-agent",
+		APIPermissions: []string{config.PermissionAuthorization, config.PermissionCapture},
+	})
+	if err != nil {
+		return
+	}
+
+	cred, err := admin.AppAgentCredentials().Create(ctx, &config.CreateAppAgentCredential{
+		ApplicationAgentID: agent.ID, DisplayName: "prod-key",
+	})
+	if err != nil {
+		return
+	}
+	// Persist cred.ApplicationAgentConfig now — it cannot be retrieved later.
+	fmt.Println(len(cred.ApplicationAgentConfig) > 0)
 }
 
-// This example demonstrates how to create a new Config Client.
-func ExampleNewClient_options() {
-	client, err := config.NewClient(context.Background(),
-		api.WithCredentialsJSON([]byte(`{}`)))
+// Route audit events to Kafka with an event sink.
+func ExampleEventSinkAPI_Create() {
+	ctx := context.Background()
+	admin, err := indykite.NewAdminFromEnv(ctx)
 	if err != nil {
-		log.Fatalf("failed to create client %v", err)
+		return
 	}
-	_ = client.Close()
+
+	if _, err = admin.EventSinks().Create(ctx, &config.CreateEventSink{
+		ProjectID: "gid:project",
+		Name:      "audit-to-kafka",
+		Providers: map[string]config.EventSinkProvider{
+			"kafka-main": {Kafka: &config.KafkaSinkConfig{
+				Brokers: []string{"kafka.example.com:9092"},
+				Topic:   "indykite-events",
+			}},
+		},
+		Routes: []config.EventSinkRoute{{
+			ProviderID: "kafka-main",
+			Filter:     config.EventSinkFilter{EventType: "indykite.audit.config.create"},
+		}},
+	}); err != nil {
+		return
+	}
 }

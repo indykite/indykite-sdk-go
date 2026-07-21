@@ -1,6 +1,14 @@
-.PHONY: test
+.PHONY: default build vet fmt goimports gci lint lint_fix fieldalignment test test_race integration report fixtures fixtures_destroy cover tidy upgrade install-tools
 
-default:
+default: build
+
+build:
+	@echo "==> Building..."
+	go build ./...
+
+vet:
+	@echo "==> go vet..."
+	go vet ./...
 
 fmt:
 	@echo "==> Fixing source code with gofmt..."
@@ -21,46 +29,51 @@ lint_fix:
 	@golangci-lint run --fix --timeout 3m0s ./...
 
 fieldalignment:
-	@echo "==> Analyzer structs and rearranged to use less memory with fieldalignment..."
+	@echo "==> Rearranging struct fields to use less memory with fieldalignment..."
 	fieldalignment -fix -test=false ./...
 
-install-tools:
-	@echo Installing tools
-	@go install github.com/bufbuild/buf/cmd/buf@latest
-	@go install github.com/daixiang0/gci@latest
-	@go install go.uber.org/mock/mockgen@latest
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-	@go install github.com/onsi/ginkgo/v2/ginkgo@latest
-	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
-	@go install github.com/vakenbolt/go-test-report@latest
-	@echo Installation completed
-
 test:
-	go test -v -cpu 4 -covermode=count -coverpkg github.com/indykite/indykite-sdk-go/... -coverprofile=coverage.out.tmp ./...
-	cat coverage.out.tmp | grep -v "pb.go\|pb.validate.go\|generated.go\|indykite-sdk-go/test/\|main.go\|indykite-sdk-go/examples/" > coverage.out
+	go test -cpu 4 -covermode=count -coverpkg github.com/indykite/indykite-sdk-go/... -coverprofile=coverage.out.tmp ./...
+	cat coverage.out.tmp | grep -v "indykite-sdk-go/agents/\|indykite-sdk-go/test/" > coverage.out
 	rm coverage.out.tmp
 
-integration:
-	go clean -testcache && go test --tags=integration ./...
+test_race:
+	go test -race -count=1 ./...
 
+integration:
+	go test -tags integration -count=1 -run TestIntegration ./...
+
+# Provision / remove the integration-test fixtures (see test/README.md).
+fixtures:
+	go run ./test/setup apply
+
+fixtures_destroy:
+	go run ./test/setup destroy
+
+# report runs the integration suite once and renders test-report.html; the
+# go-sdk-tests image (docker/infra) uploads it to the results bucket. bash +
+# pipefail so a test failure is the target's exit code, not go-test-report's.
 report:
-	go clean -testcache && go test -v -json --tags=integration ./... | go-test-report -o  test-report.html -t "Go SDK Tests report"
+	bash -o pipefail -c 'go test -v -json -tags integration -count=1 -run TestIntegration ./... \
+		| go-test-report -o test-report.html -t "Go SDK Tests report"'
 
 cover: test
 	@echo "==> generate test coverage..."
 	go tool cover -html=coverage.out
 
-upgrade: upgrade_deps generate-proto
+tidy:
+	go mod tidy
 
-upgrade_deps:
-	@echo "==> Upgrading Go"
+upgrade:
+	@echo "==> Upgrading Go dependencies"
 	@GO111MODULE=on go get -u all && go mod tidy
 	@echo "==> Upgrading pre-commit"
 	@pre-commit autoupdate
-	@echo "Please, upgrade workflows manually"
 
-generate-proto:
-	@echo "==> Generate Proto messages"
-	@buf generate buf.build/indykite/indykiteapis
-	@go generate
-	@make fmt gci
+install-tools:
+	@echo Installing tools
+	@go install github.com/daixiang0/gci@latest
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+	@go install github.com/vakenbolt/go-test-report@latest
+	@echo Installation completed
