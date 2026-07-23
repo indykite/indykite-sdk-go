@@ -21,7 +21,7 @@ import (
 )
 
 // instrumentHTTPClient wraps the client's RoundTripper with OpenTelemetry HTTP
-// instrumentation. This replaces the gRPC SDK's otelgrpc tracing.
+// instrumentation.
 func instrumentHTTPClient(c *http.Client) *http.Client {
 	base := c.Transport
 	if base == nil {

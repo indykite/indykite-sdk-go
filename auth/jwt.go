@@ -30,8 +30,7 @@ import (
 
 // tokenSourceFromCredentials mints a self-signed JWT token source from the
 // credential's private key. The resulting token string is what is placed in the
-// X-IK-ClientKey or Authorization header. Ported from the gRPC SDK's grpc/jwt so
-// the credential signing behaviour is identical.
+// X-IK-ClientKey or Authorization header.
 func tokenSourceFromCredentials(c *Credentials) (oauth2.TokenSource, error) {
 	// A pre-issued token is preferred: it is served verbatim until its own
 	// expiry. When a private key is also present (Service Account credentials

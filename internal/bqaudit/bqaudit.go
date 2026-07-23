@@ -13,8 +13,7 @@
 // limitations under the License.
 
 // Package bqaudit verifies, from integration tests, that platform audit events
-// landed in the BigQuery audit-log table (the REST successor of the gRPC SDK's
-// helpers package).
+// landed in the BigQuery audit-log table.
 //
 // It is enabled by setting SDK_AUDIT_TABLE_NAME (the dataset/table name, e.g.
 // "audit_log"). BQ_PROJECT_ID overrides the Google Cloud project that hosts the

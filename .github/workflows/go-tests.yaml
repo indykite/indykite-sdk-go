@@ -88,11 +88,19 @@ jobs:
           INDYKITE_BASE_URL=$(jq -r .baseUrl <<< "$INDYKITE_SERVICE_ACCOUNT_CREDENTIALS")
           export INDYKITE_BASE_URL
           # apply is idempotent (create-if-missing by name, upserts by external
-          # id) and prints the fixture env (CIQ_QUERY_ID, EM_PIPELINE_ID,
-          # AUTHZEN_*) consumed by the tests in the next step.
+          # id) and prints shell-quoted `export KEY="value"` lines for the
+          # fixture env (CIQ_QUERY_ID, EM_PIPELINE_ID, AUTHZEN_*, CIQ_INPUT_PARAMS).
+          # eval them so values containing quotes (the CIQ_INPUT_PARAMS JSON) are
+          # decoded correctly, then forward each resolved value to GITHUB_ENV
+          # verbatim — GITHUB_ENV takes the value literally, so it must not carry
+          # the shell escaping.
+          fixtures=$(go run ./test/setup apply)
+          eval "$(grep '^export ' <<< "$fixtures")"
           {
             echo "INDYKITE_BASE_URL=$INDYKITE_BASE_URL"
-            go run ./test/setup apply | sed -n 's/^export \([A-Z_]*\)="\(.*\)"$/\1=\2/p'
+            grep -oE '^export [A-Z_]+' <<< "$fixtures" | awk '{print $2}' | while read -r key; do
+              printf '%s=%s\n' "$key" "${!key}"
+            done
           } >> "$GITHUB_ENV"
 
       - name: Run Integration tests

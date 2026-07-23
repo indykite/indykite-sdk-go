@@ -95,7 +95,7 @@ func TestIntegrationAuthZENEvaluate(t *testing.T) {
 	ctx := context.Background()
 
 	// The auditLog input param is echoed into the audit event, which lets the
-	// BigQuery check below correlate this exact request (gRPC SDK convention).
+	// BigQuery check below correlate this exact request.
 	auditMarker := fmt.Sprintf("sdk-it-authzen-%d", time.Now().UnixNano())
 	resp, err := cli.AuthZEN().Evaluate(ctx, authzen.EvaluationRequest{
 		Subject:  &f.subject,
