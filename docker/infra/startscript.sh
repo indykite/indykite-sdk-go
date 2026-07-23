@@ -36,20 +36,35 @@ export BUCKET_NAME="${BUCKET_NAME:=sdk_results_deploy}"
 export SECRET_NAME=${SECRET_NAME:=goSdkTests}
 export SDK_AUDIT_TABLE_NAME="${SDK_AUDIT_TABLE_NAME:=audit_log}"
 
-# setup test environment variables
-CUSTOMER_ID=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.customerID)
-LOCATION_ID=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.appAgentCredentials.appSpaceId)
-INDYKITE_APPLICATION_CREDENTIALS=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.appAgentCredentials)
+# setup test environment variables from the goSdkTests secret: customerID is the
+# organization, the appSpaceId (nested under appAgentCredentials) is the project,
+# and the runtime credential is the raw token in appAgentCredentials.token.
+ORGANIZATION_ID=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.customerID)
+PROJECT_ID=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.appAgentCredentials.appSpaceId)
+INDYKITE_APPLICATION_CREDENTIALS=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.appAgentCredentials.token)
 INDYKITE_SERVICE_ACCOUNT_CREDENTIALS=$(gcloud secrets versions access latest --secret="${SECRET_NAME}" | jq --raw-output .goSdkTests.serviceAccountCredentials)
-export CUSTOMER_ID LOCATION_ID INDYKITE_APPLICATION_CREDENTIALS INDYKITE_SERVICE_ACCOUNT_CREDENTIALS
+export ORGANIZATION_ID PROJECT_ID INDYKITE_APPLICATION_CREDENTIALS INDYKITE_SERVICE_ACCOUNT_CREDENTIALS
+
+# The runtime credential is a bare token with no URL; take the base URL from the
+# service-account artifact, then provision the test fixtures (idempotent) and
+# adopt the env they print (CIQ_QUERY_ID, EM_PIPELINE_ID, AUTHZEN_*).
+INDYKITE_BASE_URL=$(jq -r .baseUrl <<<"${INDYKITE_SERVICE_ACCOUNT_CREDENTIALS}")
+export INDYKITE_BASE_URL
+if fixtures_env=$(go run ./test/setup apply); then
+    eval "$(grep '^export ' <<<"${fixtures_env}" || true)"
+else
+    echo "fixture provisioning failed; fixture-dependent tests will skip"
+fi
 
 # setup reporting variables
 run_date=$(date +%Y%m%d-%H%M)
 result_file_name="${RELEASE_VERSION}_results_sdk_${RUN_ENV}_${run_date}_report.html"
 storage="https://storage.cloud.google.com/${BUCKET_NAME}/${result_file_name}"
 
-make install-tools report integration 2>output.txt
-retVal=$?
+# The 'report' target runs the integration suite once with pipefail.
+# '|| retVal=$?' keeps errexit from aborting before the results are uploaded below.
+retVal=0
+make install-tools report 2>output.txt || retVal=$?
 
 # we are moving away of this kind of slack messaging, so it is optional for now
 if [[ -n "${SLACK_WEBHOOK_URL}" ]]; then

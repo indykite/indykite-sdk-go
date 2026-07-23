@@ -21,9 +21,8 @@
 //	    Node: capture.Node{ExternalID: "ada", Type: "Person"},
 //	})
 //
-// The gRPC SDK's streaming ingest is replaced by batch calls. Capture caps a
-// batch at MaxBatchSize entries; UpsertNodesChunked / UpsertRelationshipsChunked
-// split larger slices automatically.
+// Capture caps a batch at MaxBatchSize entries; UpsertNodesChunked /
+// UpsertRelationshipsChunked split larger slices automatically.
 package capture
 
 import (
@@ -169,7 +168,7 @@ func (c *Client) ReadDataSchema(ctx context.Context) (map[string]any, error) {
 
 // UpsertNodesChunked upserts any number of nodes, splitting into batches of at
 // most chunkSize (clamped to 1..MaxBatchSize; 0 means MaxBatchSize) and
-// aggregating the results. This replaces the gRPC SDK's streaming ingest.
+// aggregating the results.
 func (c *Client) UpsertNodesChunked(ctx context.Context, nodes []UpsertNode, chunkSize int) (*BatchResults, error) {
 	if len(nodes) == 0 {
 		return nil, ErrEmptyBatch

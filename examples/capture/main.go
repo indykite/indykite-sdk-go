@@ -13,8 +13,7 @@
 // limitations under the License.
 
 // Command capture demonstrates the Capture (IKG ingest) API: batch upserts and
-// deletes of nodes, relationships, properties and property metadata. The
-// chunked subcommand replaces the old gRPC streaming ingest.
+// deletes of nodes, relationships, properties and property metadata.
 package main
 
 import (
@@ -92,8 +91,7 @@ func main() {
 		})
 
 	case "chunked-upsert":
-		// Batches above capture.MaxBatchSize are split automatically; this is
-		// the REST replacement for the old gRPC record streaming.
+		// Batches above capture.MaxBatchSize are split automatically.
 		nodes := make([]capture.UpsertNode, 300)
 		for i := range nodes {
 			nodes[i] = capture.UpsertNode{Node: capture.Node{

@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Command ciq demonstrates the ContX IQ query API, the REST replacement for
-// the old IKG read API: you execute a pre-configured knowledge query by id and
-// pass its input parameters.
+// Command ciq demonstrates the ContX IQ query API: you execute a
+// pre-configured knowledge query by id and pass its input parameters.
 package main
 
 import (

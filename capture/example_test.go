@@ -54,8 +54,7 @@ func ExampleClient_UpsertNodes() {
 	}
 }
 
-// Batches above MaxBatchSize are split transparently — the REST replacement
-// for the gRPC SDK's streaming ingest.
+// Batches above MaxBatchSize are split transparently.
 func ExampleClient_UpsertNodesChunked() {
 	ctx := context.Background()
 	cli, err := indykite.NewClientFromEnv(ctx)

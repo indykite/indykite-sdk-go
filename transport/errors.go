@@ -24,8 +24,7 @@ import (
 	"time"
 )
 
-// APIError is a non-2xx response from a platform REST endpoint. It is the
-// gRPC-free replacement for the SDK's status-code based errors.
+// APIError is a non-2xx response from a platform REST endpoint.
 type APIError struct {
 	// Code is the platform error code, when present in the body.
 	Code string
