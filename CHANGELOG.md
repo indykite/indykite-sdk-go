@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.72.0](https://github.com/indykite/indykite-sdk-go/compare/v0.71.0...v0.72.0) (2026-07-24)
+
+
+### Features
+
+* add the docker infra ([3659d66](https://github.com/indykite/indykite-sdk-go/commit/3659d66f8171a7b254ae28e13d7dcf4af6216b67))
+* put integration tests back ([6de7e6d](https://github.com/indykite/indykite-sdk-go/commit/6de7e6d7e84afad41fc0adf0c45eee919bde92e1))
+* refactor from grpc to rest ([0352baa](https://github.com/indykite/indykite-sdk-go/commit/0352baa1a6c6f7a8d49fb677934be701c1fce2dc))
+
 ## [0.71.0](https://github.com/indykite/indykite-sdk-go/compare/v0.70.0...v0.71.0) (2026-06-22)
 
 
