@@ -83,6 +83,11 @@ func resourcePath(base, id string) string {
 // Generic CRUD helpers shared by all resource sub-APIs.
 
 // listResource lists resources of type T at path with the given query.
+//
+// The config list API is not paginated: the {"data":[...]} envelope
+// (listResponse[T]) carries no page token, and the backend returns the complete
+// result set in a single response. There is therefore no next-page handling to
+// do here and nothing is truncated.
 func listResource[T any](ctx context.Context, t *transport.Client, path string, q url.Values) ([]T, error) {
 	var out listResponse[T]
 	if err := t.Do(ctx, http.MethodGet, appendQuery(path, q), nil, &out); err != nil {
