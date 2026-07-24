@@ -16,8 +16,8 @@ package transport
 
 import "context"
 
-// Page is one page of results plus the token for the next page. Domain packages
-// (e.g. ciq.Execute, config list endpoints) return this from their fetch func.
+// Page is one page of results plus the token for the next page. Paginated
+// domain endpoints (e.g. ciq.Execute) return this from their fetch func.
 type Page[T any] struct {
 	NextToken string
 	Items     []T
