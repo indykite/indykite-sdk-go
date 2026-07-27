@@ -40,8 +40,10 @@ test:
 test_race:
 	go test -race -count=1 ./...
 
+# -p 1 serializes the per-package test binaries: they all hit the same live
+# environment, and concurrent graph writes make fixture queries flaky.
 integration:
-	go test -tags integration -count=1 -run TestIntegration ./...
+	go test -tags integration -count=1 -p 1 -run TestIntegration ./...
 
 # Provision / remove the integration-test fixtures (see test/README.md).
 fixtures:
@@ -54,7 +56,7 @@ fixtures_destroy:
 # go-sdk-tests image (docker/infra) uploads it to the results bucket. bash +
 # pipefail so a test failure is the target's exit code, not go-test-report's.
 report:
-	bash -o pipefail -c 'go test -v -json -tags integration -count=1 -run TestIntegration ./... \
+	bash -o pipefail -c 'go test -v -json -tags integration -count=1 -p 1 -run TestIntegration ./... \
 		| go-test-report -o test-report.html -t "Go SDK Tests report"'
 
 cover: test
