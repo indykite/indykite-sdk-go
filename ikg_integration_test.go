@@ -151,12 +151,10 @@ func TestIntegrationIKGEndToEnd(t *testing.T) {
 	if _, err = cli.Capture().UpsertNodes(ctx,
 		capture.UpsertNode{Node: person, IsIdentity: true},
 		capture.UpsertNode{Node: stranger, IsIdentity: true},
-		capture.UpsertNode{
-			Node: server,
-			Properties: []capture.Property{{
-				BaseProperty: capture.BaseProperty{Type: "region", Value: "eu"},
-			}},
-		},
+		// No region property: the fixture knowledge query (region=eu) must not
+		// see this transient server when packages run in parallel (plain
+		// `go test ./...` without the make targets' -p 1).
+		capture.UpsertNode{Node: server},
 	); err != nil {
 		t.Fatalf("ingest nodes: %v", err)
 	}
