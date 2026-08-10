@@ -171,7 +171,7 @@ repos:
         args: ["--strict"]
 
   - repo: https://github.com/hadolint/hadolint # language: system
-    rev: v2.14.0
+    rev: v2.15.1
     hooks:
       - id: hadolint
         name: hadolint/dockerfile
