@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.72.1](https://github.com/indykite/indykite-sdk-go/compare/v0.72.0...v0.72.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* fix hadolint issue and update dep ([6f786c9](https://github.com/indykite/indykite-sdk-go/commit/6f786c9d724ea327f5d28c514231ccc452267d73))
+* fix test integration issue ([0bc860a](https://github.com/indykite/indykite-sdk-go/commit/0bc860ab931e0efc53c245084d93802358e8b29f))
+
+
+### Miscellaneous Chores
+
+* **deps:** update ci-configs ([0354b30](https://github.com/indykite/indykite-sdk-go/commit/0354b308a3107c900d8d2341fd9756b86478e16a))
+* **deps:** update module google.golang.org/api to v0.290.0 ([cc6fb37](https://github.com/indykite/indykite-sdk-go/commit/cc6fb3712e4c2d113b825f97f2989aba41667a9c))
+* **deps:** update pre-commit hook hadolint/hadolint to v2.15.1 ([07593e0](https://github.com/indykite/indykite-sdk-go/commit/07593e043610808a06eb087594db4566885ab516))
+
 ## [0.72.0](https://github.com/indykite/indykite-sdk-go/compare/v0.71.0...v0.72.0) (2026-07-24)
 
 
