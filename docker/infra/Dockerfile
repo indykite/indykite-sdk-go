@@ -36,8 +36,8 @@ RUN apk add --update --no-cache \
 COPY startscript.sh "${APPUSER_HOME}/startscript.sh"
 RUN chmod +x "${APPUSER_HOME}/startscript.sh"
 
-# Switch to user
-USER "$APPUSER"
+# Switch to user (numeric UID:GID of $APPUSER:$APPGROUP)
+USER 10001:10001
 WORKDIR "${APPUSER_HOME}/github"
 
 # Checkout github repository
