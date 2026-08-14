@@ -13,6 +13,8 @@ on: # yamllint disable-line rule:truthy
 
 permissions:
   contents: write # required for trivy to upload artifacts
+  security-events: write # required for trivy to upload SARIF to GitHub Security tab (master only)
+  actions: write # required for trivy to upload SBOM artifact (master only)
 
 jobs:
   pre-commit:
@@ -42,5 +44,3 @@ jobs:
     steps:
       - name: trivy
         uses: indykite/.github/.github/actions/trivy@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
