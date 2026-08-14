@@ -21,9 +21,8 @@
 #   brew install pre-commit yamlfmt yamllint actionlint markdownlint-cli2 shellcheck shfmt checkov trivy go buf gci golangci-lint hadolint
 #
 # Update hooks and their dependencies regularly via:
-#   (remote) pre-commit autoupdate --jobs $(getconf _NPROCESSORS_ONLN)
+#   (remote) pre-commit autoupdate --freeze --jobs $(getconf _NPROCESSORS_ONLN)
 #   (local) brew update && brew upgrade -g
-# TODO: do NOT use '--freeze' until https://github.com/renovatebot/renovate/issues/22567 is completed
 #
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks

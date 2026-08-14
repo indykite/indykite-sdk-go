@@ -35,6 +35,7 @@ scan:
     - misconfig
   skip-dirs: ["**/.terraform/**", "**/.terragrunt-cache/**", "openapi/**"]
   # skip-files: []
+  show-suppressed: true
 
 vulnerability:
   ignore-unfixed: false
