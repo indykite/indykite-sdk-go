@@ -47,6 +47,16 @@ jobs:
 
           # returned as a JSON string of the PullRequest object, so direct 'steps.release.outputs.pr.title' isn't available
           PR_JSON='${{ steps.release.outputs.pr }}'
+
+          if [[ -z "${RELEASE_VERSION}" && -z "${PR_JSON}" ]]; then
+            echo "no release pending"
+            {
+              echo "version="
+              echo "pr_number="
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           PR_NUMBER=$(echo "${PR_JSON}" | jq -r '.number')
           PR_TITLE=$(echo "${PR_JSON}" | jq -r '.title')
 
@@ -62,7 +72,7 @@ jobs:
 
       - name: actions/slack-notification
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0 - https://github.com/slackapi/slack-github-action/releases
-        if: steps.release.outputs.releases_created || steps.release.outputs.prs_created
+        if: steps.release.outputs.releases_created == 'true' || steps.release.outputs.prs_created == 'true'
         with:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           method: chat.postMessage
