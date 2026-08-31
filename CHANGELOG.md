@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.73.0](https://github.com/indykite/indykite-sdk-go/compare/v0.72.2...v0.73.0) (2026-08-31)
+
+
+### Features
+
+* upgrade to go 1.27 ([7de24ec](https://github.com/indykite/indykite-sdk-go/commit/7de24ecabebd3114743cd4b261ece1d59369f863))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([b72f77a](https://github.com/indykite/indykite-sdk-go/commit/b72f77af6070fd0100c482871e419e5191f2fa65))
+* **deps:** update golang:1.26-alpine Docker digest to 28d89ee ([b064940](https://github.com/indykite/indykite-sdk-go/commit/b064940581cdc4a8bd68dbeb07e4c39d8da19942))
+* **deps:** update golang:1.26-alpine Docker digest to 3889b42 ([e24ab35](https://github.com/indykite/indykite-sdk-go/commit/e24ab356a921a9100d054f65e6878837edf9baab))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.31.0 ([47be621](https://github.com/indykite/indykite-sdk-go/commit/47be6217294865b8196c9cb9b9eec4ea61dd19a4))
+
 ## [0.72.2](https://github.com/indykite/indykite-sdk-go/compare/v0.72.1...v0.72.2) (2026-08-14)
 
 
