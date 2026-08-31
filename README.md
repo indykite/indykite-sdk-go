@@ -19,7 +19,7 @@ This repository contains the Go client SDK for the [IndyKite Platform](https://i
 
 ## Requirements
 
-- Go 1.26+
+- Go 1.27+
 - An **App Agent** credential for the runtime APIs (AuthZEN, ContX IQ, Capture, Entity Matching)
 - A **Service Account** credential for the Config API
 

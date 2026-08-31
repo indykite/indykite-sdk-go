@@ -75,7 +75,7 @@ upgrade:
 install-tools:
 	@echo Installing tools
 	@go install github.com/daixiang0/gci@latest
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	@go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 	@go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
 	@go install github.com/vakenbolt/go-test-report@latest
 	@echo Installation completed

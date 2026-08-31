@@ -1,6 +1,6 @@
 module github.com/indykite/indykite-sdk-go
 
-go 1.26.5
+go 1.27.0
 
 require (
 	cloud.google.com/go/bigquery v1.80.0
