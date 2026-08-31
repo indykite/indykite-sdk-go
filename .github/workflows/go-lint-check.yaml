@@ -28,6 +28,6 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0 - https://github.com/golangci/golangci-lint-action/releases
         with:
-          version: v2.12.2 # optional, https://github.com/golangci/golangci-lint/releases
+          version: v2.13.2 # optional, https://github.com/golangci/golangci-lint/releases
           # Optional: golangci-lint command line arguments.
           args: --config=.golangci.yml --timeout 3m00s
