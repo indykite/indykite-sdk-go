@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.74.0](https://github.com/indykite/indykite-sdk-go/compare/v0.73.0...v0.74.0) (2026-09-03)
+
+
+### Features
+
+* add audit-signings ([b9429d3](https://github.com/indykite/indykite-sdk-go/commit/b9429d3b80dc217e92751400007bdb871b226c65))
+
+
+### Miscellaneous Chores
+
+* **deps:** update ci-configs ([#483](https://github.com/indykite/indykite-sdk-go/issues/483)) ([9b07d53](https://github.com/indykite/indykite-sdk-go/commit/9b07d53a297412dc6518bf6ae5059315db2aea3f))
+
 ## [0.73.0](https://github.com/indykite/indykite-sdk-go/compare/v0.72.2...v0.73.0) (2026-08-31)
 
 
