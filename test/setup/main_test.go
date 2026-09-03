@@ -41,6 +41,8 @@ func assertRequiredFields(t *testing.T, m *manifest) {
 		"ciq_policy.name":               m.CIQPolicy.Name,
 		"knowledge_query.name":          m.Query.Name,
 		"entity_matching_pipeline.name": m.Pipeline.Name,
+		"audit_signing.name":            m.AuditSigning.Name,
+		"audit_signing.provider":        m.AuditSigning.Provider,
 	} {
 		if s == "" {
 			t.Errorf("%s is empty", name)

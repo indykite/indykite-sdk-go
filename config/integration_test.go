@@ -18,7 +18,9 @@ package config_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -82,6 +84,249 @@ func TestIntegrationConfigOrganizationAndProjects(t *testing.T) {
 		t.Fatalf("Projects.List: %v", err)
 	}
 	t.Logf("organization %s has %d projects", org.ID, len(projects))
+}
+
+// TestIntegrationConfigAuditSigningFixture reads the audit-signing config
+// provisioned by `go run ./test/setup apply` (AUDIT_SIGNING_ID) and checks the
+// platform-managed shape: provider set, no key material, secrets never echoed.
+func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
+	admin := adminClient(t)
+	id := os.Getenv("AUDIT_SIGNING_ID")
+	if id == "" {
+		t.Skip("AUDIT_SIGNING_ID not set")
+	}
+	ctx := context.Background()
+
+	signing, err := admin.AuditSignings().Read(ctx, id)
+	if err != nil {
+		t.Fatalf("AuditSignings.Read: %v", err)
+	}
+	if signing.ID != id {
+		t.Errorf("ID = %q, want %q", signing.ID, id)
+	}
+	if signing.Provider != config.AuditSigningProviderPlatformManaged {
+		t.Errorf("Provider = %q, want %q", signing.Provider, config.AuditSigningProviderPlatformManaged)
+	}
+	if signing.ETag == "" {
+		t.Error("ETag is empty")
+	}
+	for k, v := range signing.AuthParams {
+		if v != "" {
+			t.Errorf("auth_params[%q] echoed a value; the platform must mask secrets on read", k)
+		}
+	}
+
+	items, err := admin.AuditSignings().List(ctx, projectID(t))
+	if err != nil {
+		t.Fatalf("AuditSignings.List: %v", err)
+	}
+	for i := range items {
+		if items[i].ID == id {
+			return
+		}
+	}
+	t.Errorf("fixture %s not present in AuditSignings.List of the project", id)
+}
+
+// TestIntegrationConfigAuditSigningCRUD runs the full ETag-guarded lifecycle
+// of a PLATFORM_MANAGED audit-signing config: create -> read by id and by
+// name -> update -> stale-ETag update is refused -> customer-managed provider
+// without key material is rejected -> list -> delete.
+//
+// It deliberately stays PLATFORM_MANAGED throughout: a customer-managed config
+// pointing at fake KMS material would be accepted by the config API but could
+// then break audit signing for the shared test project until cleanup. The
+// customer-managed path is covered by
+// TestIntegrationConfigAuditSigningCustomerManaged, gated on real key material.
+func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
+	admin := adminClient(t)
+	ctx := context.Background()
+	project := projectID(t)
+	api := admin.AuditSignings()
+
+	name := uniqueName("sdk-it-audit-signing")
+	created, err := api.Create(ctx, &config.CreateAuditSigning{
+		ProjectID:   project,
+		Name:        name,
+		DisplayName: "SDK IT audit signing",
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: config.AuditSigningProviderPlatformManaged,
+		},
+	})
+	if err != nil {
+		t.Fatalf("Create: %v", err)
+	}
+	t.Cleanup(func() { _ = api.Delete(ctx, created.ID, "") })
+	if created.ID == "" || created.ETag == "" {
+		t.Fatalf("Create returned incomplete result: %+v", created)
+	}
+
+	signing, err := api.Read(ctx, created.ID)
+	if err != nil {
+		t.Fatalf("Read: %v", err)
+	}
+	if signing.Name != name {
+		t.Errorf("Name = %q, want %q", signing.Name, name)
+	}
+	if signing.Provider != config.AuditSigningProviderPlatformManaged {
+		t.Errorf("Provider = %q, want %q", signing.Provider, config.AuditSigningProviderPlatformManaged)
+	}
+	if signing.ETag == "" {
+		t.Error("Read returned no ETag")
+	}
+
+	byName, err := api.Read(ctx, name, config.WithLocation(project))
+	if err != nil {
+		t.Fatalf("Read by name: %v", err)
+	}
+	if byName.ID != created.ID {
+		t.Errorf("Read by name ID = %q, want %q", byName.ID, created.ID)
+	}
+
+	displayName := "SDK IT audit signing (renamed)"
+	updated, err := api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
+		DisplayName: &displayName,
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: config.AuditSigningProviderPlatformManaged,
+		},
+	})
+	if err != nil {
+		t.Fatalf("Update: %v", err)
+	}
+	if updated.ETag == "" || updated.ETag == signing.ETag {
+		t.Errorf("Update ETag = %q, want a new non-empty value (was %q)", updated.ETag, signing.ETag)
+	}
+
+	got, err := api.Read(ctx, signing.ID)
+	if err != nil {
+		t.Fatalf("Read after update: %v", err)
+	}
+	if got.DisplayName != displayName {
+		t.Errorf("DisplayName after update = %q, want %q", got.DisplayName, displayName)
+	}
+	if got.Provider != config.AuditSigningProviderPlatformManaged {
+		t.Errorf("Provider after update = %q, want %q", got.Provider, config.AuditSigningProviderPlatformManaged)
+	}
+
+	// The pre-update ETag is stale now; the platform must refuse to apply it.
+	_, err = api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: config.AuditSigningProviderPlatformManaged,
+		},
+	})
+	if err == nil {
+		t.Error("Update with stale ETag succeeded, want precondition-failed error")
+	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusPreconditionFailed {
+		t.Errorf("Update with stale ETag: got %v, want 412 APIError", err)
+	}
+
+	// Customer-managed providers require key material. This write is rejected
+	// by validation before anything is persisted, so it never leaves the
+	// config pointing at a non-existent key.
+	_, err = api.Update(ctx, signing.ID, got.ETag, &config.UpdateAuditSigning{
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: config.AuditSigningProviderCustomerAWSKMS,
+		},
+	})
+	if err == nil {
+		t.Error("Update to CUSTOMER_AWS_KMS without key_resource/kid succeeded, want validation error")
+	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode < 400 || apiErr.StatusCode >= 500 {
+		t.Errorf("Update without key material: got %v, want 4xx APIError", err)
+	}
+
+	items, err := api.List(ctx, project)
+	if err != nil {
+		t.Fatalf("List: %v", err)
+	}
+	found := false
+	for i := range items {
+		if items[i].ID == signing.ID {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("%s not in List of %d audit signings", signing.ID, len(items))
+	}
+
+	if err = api.Delete(ctx, got.ID, got.ETag); err != nil {
+		t.Fatalf("Delete: %v", err)
+	}
+	if _, err = api.Read(ctx, got.ID); err == nil {
+		t.Error("Read after delete succeeded, want not-found error")
+	} else if apiErr, ok := transport.AsAPIError(err); !ok || !apiErr.IsNotFound() {
+		t.Errorf("Read after delete: got %v, want 404 APIError", err)
+	}
+}
+
+// TestIntegrationConfigAuditSigningCustomerManaged creates a customer-managed
+// audit-signing config from real key material and verifies the key fields
+// round-trip while auth-param secrets are masked on read. It is opt-in:
+//
+//	AUDIT_SIGNING_KEY_RESOURCE  provider key reference (required to run)
+//	AUDIT_SIGNING_KID           key id (required to run)
+//	AUDIT_SIGNING_PROVIDER      CUSTOMER_GCP_KMS (default) | CUSTOMER_AWS_KMS | CUSTOMER_AZURE_KEY_VAULT
+//	AUDIT_SIGNING_AUTH_PARAMS   optional JSON object of provider credentials
+func TestIntegrationConfigAuditSigningCustomerManaged(t *testing.T) {
+	admin := adminClient(t)
+	keyResource, kid := os.Getenv("AUDIT_SIGNING_KEY_RESOURCE"), os.Getenv("AUDIT_SIGNING_KID")
+	if keyResource == "" || kid == "" {
+		t.Skip("AUDIT_SIGNING_KEY_RESOURCE / AUDIT_SIGNING_KID not set")
+	}
+	provider := os.Getenv("AUDIT_SIGNING_PROVIDER")
+	if provider == "" {
+		provider = config.AuditSigningProviderCustomerGCPKMS
+	}
+	var authParams map[string]string
+	if raw := os.Getenv("AUDIT_SIGNING_AUTH_PARAMS"); raw != "" {
+		if err := json.Unmarshal([]byte(raw), &authParams); err != nil {
+			t.Fatalf("AUDIT_SIGNING_AUTH_PARAMS is not a JSON object of strings: %v", err)
+		}
+	}
+	ctx := context.Background()
+	project := projectID(t)
+	api := admin.AuditSignings()
+
+	created, err := api.Create(ctx, &config.CreateAuditSigning{
+		ProjectID: project,
+		Name:      uniqueName("sdk-it-audit-signing-cm"),
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider:    provider,
+			KeyResource: keyResource,
+			Kid:         kid,
+			AuthParams:  authParams,
+		},
+	})
+	if err != nil {
+		t.Fatalf("Create: %v", err)
+	}
+	t.Cleanup(func() { _ = api.Delete(ctx, created.ID, "") })
+
+	got, err := api.Read(ctx, created.ID)
+	if err != nil {
+		t.Fatalf("Read: %v", err)
+	}
+	if got.Provider != provider {
+		t.Errorf("Provider = %q, want %q", got.Provider, provider)
+	}
+	if got.KeyResource != keyResource {
+		t.Errorf("KeyResource = %q, want %q", got.KeyResource, keyResource)
+	}
+	if got.Kid != kid {
+		t.Errorf("Kid = %q, want %q", got.Kid, kid)
+	}
+	for k := range authParams {
+		v, ok := got.AuthParams[k]
+		if !ok {
+			t.Errorf("AuthParams[%q] missing on read; keys must be preserved", k)
+		} else if v != "" {
+			t.Errorf("AuthParams[%q] echoed a value; the platform must mask secrets on read", k)
+		}
+	}
+
+	if err = api.Delete(ctx, got.ID, got.ETag); err != nil {
+		t.Fatalf("Delete: %v", err)
+	}
 }
 
 // TestIntegrationConfigAuthorizationPolicyCRUD runs the full ETag-guarded
@@ -250,6 +495,10 @@ func TestIntegrationConfigLists(t *testing.T) {
 		},
 		"mcp-servers": func() (int, error) {
 			items, err := admin.MCPServers().List(ctx, project)
+			return len(items), err
+		},
+		"audit-signings": func() (int, error) {
+			items, err := admin.AuditSignings().List(ctx, project)
 			return len(items), err
 		},
 	} {

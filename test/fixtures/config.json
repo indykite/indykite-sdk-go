@@ -83,6 +83,12 @@
     },
     "similarity_score_cutoff": 0.85
   },
+  "audit_signing": {
+    "name": "sdk-it-fix-audit-signing",
+    "display_name": "SDK IT: platform-managed audit signing",
+    "description": "Fixture audit-signing config for the SDK integration tests; PLATFORM_MANAGED so no customer key material is needed.",
+    "provider": "PLATFORM_MANAGED"
+  },
   "env": {
     "AUTHZEN_SUBJECT_TYPE": "Person",
     "AUTHZEN_SUBJECT_ID": "sdk-it-fix-ada",

@@ -106,7 +106,8 @@ func listAll(ctx context.Context, admin *config.AdminClient, projectID string) {
 		"entity-matching-pipelines": func() (any, error) {
 			return admin.EntityMatchingPipelines().List(ctx, projectID)
 		},
-		"mcp-servers": func() (any, error) { return admin.MCPServers().List(ctx, projectID) },
+		"mcp-servers":    func() (any, error) { return admin.MCPServers().List(ctx, projectID) },
+		"audit-signings": func() (any, error) { return admin.AuditSignings().List(ctx, projectID) },
 	} {
 		items, err := list()
 		if err != nil {

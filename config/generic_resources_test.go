@@ -276,6 +276,41 @@ func crudCases() []crudCase {
 			},
 		},
 		{
+			name: "AuditSignings", basePath: "/configs/v1/audit-signings", scopeKey: "project_id",
+			list: func(ctx context.Context, a *config.AdminClient) error {
+				_, err := a.AuditSignings().List(ctx, "gid:scope")
+				return err
+			},
+			create: func(ctx context.Context, a *config.AdminClient) (*config.WriteResult, error) {
+				return a.AuditSignings().Create(ctx, &config.CreateAuditSigning{
+					ProjectID: "gid:scope", Name: "signing",
+					AuditSigningConfig: config.AuditSigningConfig{
+						Provider:    config.AuditSigningProviderCustomerGCPKMS,
+						KeyResource: "projects/p/locations/l/keyRings/r/cryptoKeys/k",
+						Kid:         "k1",
+						AuthParams:  map[string]string{"credentials_json": "{}"},
+					},
+				})
+			},
+			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
+				s, err := a.AuditSignings().Read(ctx, id)
+				if err != nil {
+					return "", err
+				}
+				return s.ETag, nil
+			},
+			update: func(ctx context.Context, a *config.AdminClient, id, etag string) (*config.WriteResult, error) {
+				return a.AuditSignings().Update(ctx, id, etag, &config.UpdateAuditSigning{
+					AuditSigningConfig: config.AuditSigningConfig{
+						Provider: config.AuditSigningProviderPlatformManaged,
+					},
+				})
+			},
+			remove: func(ctx context.Context, a *config.AdminClient, id, etag string) error {
+				return a.AuditSignings().Delete(ctx, id, etag)
+			},
+		},
+		{
 			name: "AppAgents", basePath: "/configs/v1/application-agents", scopeKey: "project_id",
 			list: func(ctx context.Context, a *config.AdminClient) error {
 				_, err := a.AppAgents().List(ctx, "gid:scope")
