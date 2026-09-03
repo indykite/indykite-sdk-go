@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.74.1](https://github.com/indykite/indykite-sdk-go/compare/v0.74.0...v0.74.1) (2026-09-03)
+
+
+### Miscellaneous Chores
+
+* **deps:** update golang:1.27-alpine Docker digest to cf6fca6 ([#487](https://github.com/indykite/indykite-sdk-go/issues/487)) ([c0a203e](https://github.com/indykite/indykite-sdk-go/commit/c0a203ecd80a64d82042564ff4500ca421ad60da))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.61.2 ([#488](https://github.com/indykite/indykite-sdk-go/issues/488)) ([56a42d7](https://github.com/indykite/indykite-sdk-go/commit/56a42d7a79646ba0004bc9e74c199da730ccf901))
+
 ## [0.74.0](https://github.com/indykite/indykite-sdk-go/compare/v0.73.0...v0.74.0) (2026-09-03)
 
 
