@@ -124,6 +124,9 @@ func (a *AdminClient) EventSinks() *EventSinkAPI { return &EventSinkAPI{t: a.t} 
 // MCPServers returns the mcp-servers sub-API.
 func (a *AdminClient) MCPServers() *MCPServerAPI { return &MCPServerAPI{t: a.t} }
 
+// AuditSignings returns the audit-signings sub-API.
+func (a *AdminClient) AuditSignings() *AuditSigningAPI { return &AuditSigningAPI{t: a.t} }
+
 // DataSchema returns the data-schema sub-API.
 func (a *AdminClient) DataSchema() *DataSchemaAPI { return &DataSchemaAPI{t: a.t} }
 

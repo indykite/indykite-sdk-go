@@ -47,7 +47,7 @@ export ORGANIZATION_ID PROJECT_ID INDYKITE_APPLICATION_CREDENTIALS INDYKITE_SERV
 
 # The runtime credential is a bare token with no URL; take the base URL from the
 # service-account artifact, then provision the test fixtures (idempotent) and
-# adopt the env they print (CIQ_QUERY_ID, EM_PIPELINE_ID, AUTHZEN_*).
+# adopt the env they print (CIQ_QUERY_ID, EM_PIPELINE_ID, AUDIT_SIGNING_ID, AUTHZEN_*).
 INDYKITE_BASE_URL=$(jq -r .baseUrl <<<"${INDYKITE_SERVICE_ACCOUNT_CREDENTIALS}")
 export INDYKITE_BASE_URL
 if fixtures_env=$(go run ./test/setup apply); then

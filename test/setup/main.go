@@ -69,18 +69,30 @@ type pipelineSpec struct {
 	SimilarityScoreCutoff float32         `json:"similarity_score_cutoff"`
 }
 
+// auditSigningSpec describes the audit-signing fixture. The fixture is
+// PLATFORM_MANAGED so it carries no key resource, kid or auth params; the
+// customer-managed providers would need real KMS material.
+type auditSigningSpec struct {
+	Name        string `json:"name"`
+	DisplayName string `json:"display_name"`
+	Description string `json:"description"`
+	Provider    string `json:"provider"`
+}
+
 type manifest struct {
-	Env           map[string]string `json:"env"`
-	ProjectID     string            `json:"-"`
-	KQID          string            `json:"-"`
-	PipelineID    string            `json:"-"`
-	KBACPolicyID  string            `json:"-"`
-	CIQPolicyID   string            `json:"-"`
-	Query         querySpec         `json:"knowledge_query"`
-	loadedDataset dataset
-	KBACPolicy    policySpec   `json:"kbac_policy"`
-	CIQPolicy     policySpec   `json:"ciq_policy"`
-	Pipeline      pipelineSpec `json:"entity_matching_pipeline"`
+	Env            map[string]string `json:"env"`
+	ProjectID      string            `json:"-"`
+	KQID           string            `json:"-"`
+	PipelineID     string            `json:"-"`
+	AuditSigningID string            `json:"-"`
+	KBACPolicyID   string            `json:"-"`
+	CIQPolicyID    string            `json:"-"`
+	Query          querySpec         `json:"knowledge_query"`
+	loadedDataset  dataset
+	KBACPolicy     policySpec       `json:"kbac_policy"`
+	CIQPolicy      policySpec       `json:"ciq_policy"`
+	AuditSigning   auditSigningSpec `json:"audit_signing"`
+	Pipeline       pipelineSpec     `json:"entity_matching_pipeline"`
 }
 
 // errUsage signals a usage error; main prints the usage line and exits 2.
@@ -290,6 +302,31 @@ func (m *manifest) ensurePipeline(ctx context.Context, admin *config.AdminClient
 	return created.ID, nil
 }
 
+func (m *manifest) ensureAuditSigning(ctx context.Context, admin *config.AdminClient) (string, error) {
+	existing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+	if err == nil {
+		log.Printf("audit signing %q exists: %s", m.AuditSigning.Name, existing.ID)
+		return existing.ID, nil
+	}
+	if apiErr, ok := transport.AsAPIError(err); !ok || !apiErr.IsNotFound() {
+		return "", fmt.Errorf("read audit signing %q: %w", m.AuditSigning.Name, err)
+	}
+	created, err := admin.AuditSignings().Create(ctx, &config.CreateAuditSigning{
+		ProjectID:   m.ProjectID,
+		Name:        m.AuditSigning.Name,
+		DisplayName: m.AuditSigning.DisplayName,
+		Description: m.AuditSigning.Description,
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: m.AuditSigning.Provider,
+		},
+	})
+	if err != nil {
+		return "", fmt.Errorf("create audit signing %q: %w", m.AuditSigning.Name, err)
+	}
+	log.Printf("created audit signing %q: %s", m.AuditSigning.Name, created.ID)
+	return created.ID, nil
+}
+
 func (m *manifest) apply(ctx context.Context, admin *config.AdminClient, cli *indykite.Client) error {
 	var err error
 	if m.KBACPolicyID, err = m.ensurePolicy(ctx, admin, &m.KBACPolicy); err != nil {
@@ -302,6 +339,9 @@ func (m *manifest) apply(ctx context.Context, admin *config.AdminClient, cli *in
 		return err
 	}
 	if m.PipelineID, err = m.ensurePipeline(ctx, admin); err != nil {
+		return err
+	}
+	if m.AuditSigningID, err = m.ensureAuditSigning(ctx, admin); err != nil {
 		return err
 	}
 
@@ -328,6 +368,11 @@ func (m *manifest) resolve(ctx context.Context, admin *config.AdminClient) error
 		return fmt.Errorf("pipeline %q not found; run apply first: %w", m.Pipeline.Name, err)
 	}
 	m.PipelineID = pipe.ID
+	signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+	if err != nil {
+		return fmt.Errorf("audit signing %q not found; run apply first: %w", m.AuditSigning.Name, err)
+	}
+	m.AuditSigningID = signing.ID
 	return nil
 }
 
@@ -337,6 +382,7 @@ func (m *manifest) printEnv() {
 	for _, kv := range [][2]string{
 		{"CIQ_QUERY_ID", m.KQID},
 		{"EM_PIPELINE_ID", m.PipelineID},
+		{"AUDIT_SIGNING_ID", m.AuditSigningID},
 	} {
 		fmt.Printf("export %s=%q\n", kv[0], kv[1])
 	}
@@ -392,6 +438,13 @@ func (m *manifest) destroy(ctx context.Context, admin *config.AdminClient, cli *
 				return err
 			}
 			return admin.EntityMatchingPipelines().Delete(ctx, pipe.ID, "")
+		}},
+		{name: m.AuditSigning.Name, del: func(ctx context.Context) error {
+			signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+			if err != nil {
+				return err
+			}
+			return admin.AuditSignings().Delete(ctx, signing.ID, "")
 		}},
 	}
 	for _, d := range deleteByName {

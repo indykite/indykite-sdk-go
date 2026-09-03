@@ -93,7 +93,8 @@ jobs:
           export INDYKITE_BASE_URL
           # apply is idempotent (create-if-missing by name, upserts by external
           # id) and prints shell-quoted `export KEY="value"` lines for the
-          # fixture env (CIQ_QUERY_ID, EM_PIPELINE_ID, AUTHZEN_*, CIQ_INPUT_PARAMS).
+          # fixture env (CIQ_QUERY_ID, EM_PIPELINE_ID, AUDIT_SIGNING_ID, AUTHZEN_*,
+          # CIQ_INPUT_PARAMS).
           # eval them so values containing quotes (the CIQ_INPUT_PARAMS JSON) are
           # decoded correctly, then forward each resolved value to GITHUB_ENV
           # verbatim — GITHUB_ENV takes the value literally, so it must not carry

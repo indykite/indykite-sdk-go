@@ -10,8 +10,9 @@ Everything the integration tests need in a real project, as data:
 - [`fixtures/config.json`](fixtures/config.json) — the Config-API resources:
   a KBAC policy (*Person may `SDK_IT_CAN_USE` a Server they OWN*), a CIQ read
   policy + knowledge query (*Servers by `$region`*, `_Application` subject so
-  execution needs only the App Agent key), and an entity-matching pipeline
-  (Person → Customer). Plus the static env values the tests read.
+  execution needs only the App Agent key), an entity-matching pipeline
+  (Person → Customer), and a `PLATFORM_MANAGED` audit-signing config (no
+  customer key material needed). Plus the static env values the tests read.
 - [`setup/`](setup/) — the SDK-backed tool that applies them.
 
 ## Usage
@@ -33,9 +34,18 @@ eval "$(go run ./test/setup env)"
 make integration
 ```
 
-It sets `CIQ_QUERY_ID` and `EM_PIPELINE_ID` (the created gids) plus the static
+It sets `CIQ_QUERY_ID`, `EM_PIPELINE_ID` and `AUDIT_SIGNING_ID` (the created
+gids) plus the static
 `AUTHZEN_{SUBJECT_TYPE,SUBJECT_ID,ACTION,RESOURCE_TYPE,RESOURCE_ID}` and
 `CIQ_INPUT_PARAMS` values from the manifest.
+
+The fixture audit-signing config is `PLATFORM_MANAGED` on purpose: a
+customer-managed config pointing at fake key material would be accepted by the
+config API but could break audit signing for the project. To exercise the
+customer-managed path set `AUDIT_SIGNING_KEY_RESOURCE` and `AUDIT_SIGNING_KID`
+(plus optional `AUDIT_SIGNING_PROVIDER`, default `CUSTOMER_GCP_KMS`, and
+`AUDIT_SIGNING_AUTH_PARAMS` as a JSON object) to real material; the
+`TestIntegrationConfigAuditSigningCustomerManaged` test skips otherwise.
 
 CI needs no manual copies: both the Integration job (go-tests.yaml) and the
 go-sdk-tests pipeline image (docker/infra/startscript.sh) run `setup apply`
