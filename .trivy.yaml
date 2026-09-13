@@ -55,4 +55,13 @@ misconfiguration:
   terraform:
     exclude-downloaded-modules: true
 
-# TODO: add licensing restrictions, https://trivy.dev/latest/docs/references/configuration/config-file/#license-options
+pkg:
+  include-dev-deps: true # supported: npm, yarn, gradle
+
+# https://trivy.dev/latest/docs/references/configuration/config-file/#license-options
+license:
+  confidenceLevel: 0.9 # '--license-confidence-level'
+  full: true # '--license-full'
+  # forbidden: []
+  # permissive: []
+  ignored: [] # '--ignored-licenses'
