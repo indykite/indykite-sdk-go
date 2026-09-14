@@ -5,9 +5,9 @@ go 1.27.0
 require (
 	cloud.google.com/go/bigquery v1.83.0
 	github.com/google/uuid v1.6.0
-	github.com/lestrrat-go/jwx/v3 v3.2.0
+	github.com/lestrrat-go/jwx/v3 v3.3.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.71.0
-	golang.org/x/oauth2 v0.36.0
+	golang.org/x/oauth2 v0.37.0
 	google.golang.org/api v0.297.0
 )
 
