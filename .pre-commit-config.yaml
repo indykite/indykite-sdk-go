@@ -40,7 +40,7 @@ repos:
         name: pre-commit/check-useless-excludes
 
   - repo: ssh://git@github.com/indykite/ops-common
-    rev: "3ae68be56eacb01489f792badab2ab43fd686916" # using a branch name (or HEAD) is not supported
+    rev: "803c07b33cb5dd02a2301b259e81df655e1504ec" # using a branch name (or HEAD) is not supported
     hooks:
       # POST-CHECKOUT
       # install explicitly with: pre-commit install -t post-checkout
@@ -55,6 +55,7 @@ repos:
 
       # SAST
       - id: trivy
+      - id: trivy-licenses
 
       # Shellcheck
       - id: shfmt

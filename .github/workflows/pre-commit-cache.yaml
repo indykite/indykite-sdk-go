@@ -35,7 +35,7 @@ jobs:
         with:
           github_token: ${{ steps.code_reader_token.outputs.token }}
           pre_commit_skip: >-
-            commitlint,trivy,trivy-conf,trivy-filesystem
+            commitlint,trivy,trivy-conf,trivy-filesystem,trivy-licenses
             ${{ vars.PRE_COMMIT_SKIP != null && ',' || '' }}${{ vars.PRE_COMMIT_SKIP }}
             ${{ format('{0}', github.event_name != 'pull_request' && ',pre-commit-autoupdate,no-commit-to-branch' || '' ) }}
   trivy:
