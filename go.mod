@@ -8,7 +8,7 @@ require (
 	github.com/lestrrat-go/jwx/v3 v3.3.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.71.0
 	golang.org/x/oauth2 v0.37.0
-	google.golang.org/api v0.297.0
+	google.golang.org/api v0.298.0
 )
 
 require (
