@@ -131,6 +131,11 @@ linters:
         - name: context-as-argument
         - name: context-keys-type
         - name: dot-imports
+          arguments:
+            # Ginkgo/Gomega DSL is conventionally dot-imported in test files.
+            - allowedPackages:
+                - github.com/onsi/ginkgo/v2
+                - github.com/onsi/gomega
         - name: empty-block
         - name: error-naming
         - name: error-return

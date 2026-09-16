@@ -22,9 +22,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lestrrat-go/jwx/v3/jwa"
-	"github.com/lestrrat-go/jwx/v3/jwk"
-	"github.com/lestrrat-go/jwx/v3/jwt"
+	"github.com/lestrrat-go/jwx/v4/jwa"
+	"github.com/lestrrat-go/jwx/v4/jwk"
+	"github.com/lestrrat-go/jwx/v4/jwt"
 	"golang.org/x/oauth2"
 )
 
@@ -163,8 +163,8 @@ func preIssuedExpiry(token string) time.Time {
 func inferAlgorithm(key jwk.Key) (jwa.SignatureAlgorithm, error) {
 	switch key.KeyType() {
 	case jwa.EC():
-		var crv jwa.EllipticCurveAlgorithm
-		if err := key.Get(jwk.ECDSACrvKey, &crv); err != nil {
+		crv, err := jwk.Get[jwa.EllipticCurveAlgorithm](key, jwk.ECDSACrvKey)
+		if err != nil {
 			return jwa.SignatureAlgorithm{}, fmt.Errorf("indykite: EC key has no curve: %w", err)
 		}
 		switch crv {
@@ -188,7 +188,7 @@ func inferAlgorithm(key jwk.Key) (jwa.SignatureAlgorithm, error) {
 
 func parseKey(secretKey []byte, pem bool) (jwk.Key, error) {
 	if pem {
-		return jwk.ParseKey(secretKey, jwk.WithPEM(pem))
+		return jwk.ParseKey(secretKey, jwk.WithX509(pem))
 	}
 	if len(secretKey) > 0 && secretKey[0] != '"' {
 		return jwk.ParseKey(secretKey)

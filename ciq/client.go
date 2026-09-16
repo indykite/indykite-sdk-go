@@ -12,30 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package ciq is the client for the IndyKite ContX IQ query API
-// (/contx-iq/v1/execute). It runs on the runtime plane (App Agent token) and is
-// a thin facade over a *transport.Client.
+// Package ciq is the client for the IndyKite ContX IQ API
+// (/contx-iq/v1/execute and /contx-iq/v1/whoami). It runs on the runtime plane
+// (App Agent token) and is a thin facade over a *transport.Client.
 //
 //	q := ciq.NewClient(client)
 //	rows, _ := q.All(ctx, ciq.ExecuteRequest{ID: "get-servers"})  // all pages
 //	// or page-by-page:
 //	it := q.Iterate(ciq.ExecuteRequest{ID: "get-servers"})
 //	for it.Next(ctx) { use(it.Item()) }
+//	// resolve an end-user token to its IKG subject:
+//	me, _ := q.WhoAmI(ctx, endUserToken)
 package ciq
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"strconv"
 
+	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/transport"
 )
 
 const (
 	pathExecute     = "/contx-iq/v1/execute"
+	pathWhoAmI      = "/contx-iq/v1/whoami"
 	defaultPageSize = 100
 	firstPage       = 1
 )
+
+// ErrEndUserTokenRequired is returned by WhoAmI when no end-user token is given.
+// The platform would reject such a request with 401 anyway; failing locally
+// saves the round trip.
+var ErrEndUserTokenRequired = errors.New("ciq: end-user token is required")
 
 // Client calls the ContX IQ Execute endpoint.
 type Client struct {
@@ -96,4 +106,25 @@ func (c *Client) Iterate(req ExecuteRequest) *transport.Iterator[Record] {
 // All collects every record across all pages.
 func (c *Client) All(ctx context.Context, req ExecuteRequest) ([]Record, error) {
 	return c.Iterate(req).Collect(ctx)
+}
+
+// WhoAmI returns the IKG subject a third-party end-user token was resolved to
+// during its introspection (GET /contx-iq/v1/whoami).
+//
+// endUserToken is the raw end-user token (e.g. an OIDC access or ID token) that
+// the App Agent's Token Introspect configuration knows how to introspect. It is
+// sent as "Authorization: Bearer <token>" alongside the App Agent credential.
+// The platform answers 401 when the token is missing, invalid or cannot be
+// matched to an IKG node.
+func (c *Client) WhoAmI(ctx context.Context, endUserToken string) (*WhoAmIResponse, error) {
+	if endUserToken == "" {
+		return nil, ErrEndUserTokenRequired
+	}
+	var out WhoAmIResponse
+	err := c.t.Do(ctx, http.MethodGet, pathWhoAmI, nil, &out,
+		transport.WithHeader(auth.HeaderAuthorization, "Bearer "+endUserToken))
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
