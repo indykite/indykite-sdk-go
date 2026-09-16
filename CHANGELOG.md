@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.75.0](https://github.com/indykite/indykite-sdk-go/compare/v0.74.0...v0.75.0) (2026-09-16)
+
+
+### Features
+
+* add whoami endpoint ([fb40f4a](https://github.com/indykite/indykite-sdk-go/commit/fb40f4a66fb01102f905a054d75d6fbff413ea3e))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([6450197](https://github.com/indykite/indykite-sdk-go/commit/6450197cfddbc026247a5eb83f39815994775295))
+* **deps:** update golang:1.27-alpine Docker digest to cf6fca6 ([#487](https://github.com/indykite/indykite-sdk-go/issues/487)) ([c0a203e](https://github.com/indykite/indykite-sdk-go/commit/c0a203ecd80a64d82042564ff4500ca421ad60da))
+* **deps:** update module google.golang.org/api to v0.298.0 ([#495](https://github.com/indykite/indykite-sdk-go/issues/495)) ([7bd1fa5](https://github.com/indykite/indykite-sdk-go/commit/7bd1fa504734daea60d0b3faaf98d288d96d8250))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.61.2 ([#488](https://github.com/indykite/indykite-sdk-go/issues/488)) ([56a42d7](https://github.com/indykite/indykite-sdk-go/commit/56a42d7a79646ba0004bc9e74c199da730ccf901))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.65.5 ([76e690d](https://github.com/indykite/indykite-sdk-go/commit/76e690d4dc02d6ca641d4bb6b64890b21c65e16a))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.83.0 ([6caeb6c](https://github.com/indykite/indykite-sdk-go/commit/6caeb6ceda047838f20b67a9464ca425ec3af84e))
+
 ## [0.74.0](https://github.com/indykite/indykite-sdk-go/compare/v0.73.0...v0.74.0) (2026-09-03)
 
 
