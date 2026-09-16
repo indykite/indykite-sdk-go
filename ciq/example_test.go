@@ -16,7 +16,7 @@ package ciq_test
 
 import (
 	"context"
-	"fmt"
+	"os"
 
 	indykite "github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/ciq"
@@ -37,9 +37,28 @@ func ExampleClient_Iterate() {
 	})
 	for it.Next(ctx) {
 		record := it.Item()
-		fmt.Println(record.Nodes)
+		_ = record.Nodes // one row: nodes, relationships and aggregates keyed by query alias
 	}
 	if err := it.Err(); err != nil {
 		return
 	}
+}
+
+// Resolve a third-party end-user token to the IKG node it maps to.
+func ExampleClient_WhoAmI() {
+	ctx := context.Background()
+	cli, err := indykite.NewClientFromEnv(ctx)
+	if err != nil {
+		return
+	}
+
+	// The raw end-user token (e.g. from an incoming Authorization header) that
+	// the App Agent's Token Introspect configuration accepts.
+	endUserToken := os.Getenv("END_USER_TOKEN")
+	me, err := cli.CIQ().WhoAmI(ctx, endUserToken)
+	if err != nil {
+		return
+	}
+	_ = me.Type // IKG node type, e.g. "Person"
+	_ = me.ID   // token subject == node external_id, e.g. "alice@example.com"
 }

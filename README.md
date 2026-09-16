@@ -63,6 +63,9 @@ rows, err := cli.CIQ().All(ctx, ciq.ExecuteRequest{
     ID: "get-servers", InputParams: map[string]any{"region": "eu"},
 })
 
+// Resolve a third-party end-user token to its IKG node (type + external_id).
+me, err := cli.CIQ().WhoAmI(ctx, endUserToken)
+
 // Control plane — reads INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE].
 admin, err := indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))
 pol, err := admin.AuthorizationPolicies().Create(ctx, &config.CreateAuthorizationPolicy{
@@ -100,7 +103,10 @@ fixtures: it seeds a KBAC policy plus a CIQ read policy/knowledge query, ingests
 the knowledge-query read over that live data, then removes everything it created.
 They authenticate from `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` /
 `INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE]` and scope to `PROJECT_ID` (and optionally
-`ORGANIZATION_ID`). Fixture-dependent tests read `CIQ_QUERY_ID`, `EM_PIPELINE_ID`, and
+`ORGANIZATION_ID`). The ContX IQ `WhoAmI` end-to-end test is likewise fixture-free: it
+generates a signing key, creates a Token Introspect config trusting it, ingests a Person, and
+signs its own short-lived end-user token, so no pre-minted token is needed.
+Fixture-dependent tests read `CIQ_QUERY_ID`, `EM_PIPELINE_ID`, and
 `AUTHZEN_{SUBJECT_TYPE,SUBJECT_ID,ACTION,RESOURCE_TYPE,RESOURCE_ID}`; each test skips
 cleanly when its inputs are unset. `INDYKITE_BASE_URL` overrides the default region URL.
 The fixture dataset and config resources behind those env values live in [test/fixtures/](test/fixtures/)

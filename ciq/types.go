@@ -40,3 +40,13 @@ type Record struct {
 type ExecuteResponse struct {
 	Data []Record `json:"data"`
 }
+
+// WhoAmIResponse is the body of GET /contx-iq/v1/whoami: the IKG node the
+// end-user token's subject was matched to.
+type WhoAmIResponse struct {
+	// Type is the IKG node type the token subject was matched to (e.g. "Person").
+	Type string `json:"type"`
+	// ID is the original subject from the end-user token, i.e. the node's
+	// external_id in the IKG (e.g. "alice@example.com").
+	ID string `json:"id"`
+}
