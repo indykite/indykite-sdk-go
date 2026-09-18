@@ -6,7 +6,7 @@ structure of the platform APIs.
 
 | Example | Plane | Credential env var | Demonstrates |
 | --- | --- | --- | --- |
-| [`authzen`](authzen/) | runtime | `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` | evaluate, batch evaluate, search action/resource/subject |
+| [`authzen`](authzen/) | runtime | `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` | evaluate, batch evaluate, search action/resource/subject, list policies |
 | [`capture`](capture/) | runtime | `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` | upsert/delete nodes & relationships, property deletes, chunked batches |
 | [`ciq`](ciq/) | runtime | `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` | execute a ContX IQ query, paginate all records |
 | [`entitymatching`](entitymatching/) | runtime | `INDYKITE_APPLICATION_CREDENTIALS[_FILE]` | run pipeline, read status, suggested property mappings |

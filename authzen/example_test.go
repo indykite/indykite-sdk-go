@@ -16,6 +16,7 @@ package authzen_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	indykite "github.com/indykite/indykite-sdk-go"
@@ -62,6 +63,27 @@ func ExampleClient_EvaluateBatch() {
 	}
 	for _, e := range resp.Evaluations {
 		fmt.Println(e.Decision)
+	}
+}
+
+// Which policies apply to Person subjects? The stored policy body is returned
+// verbatim, so decode only what you need. Requires the ReadAuthZConfigs
+// App Agent permission.
+func ExampleClient_ListPolicies() {
+	ctx := context.Background()
+	cli, err := indykite.NewClientFromEnv(ctx)
+	if err != nil {
+		return
+	}
+
+	policies, err := cli.AuthZEN().ListPolicies(ctx, authzen.WithSubjectType("Person"))
+	if err != nil {
+		return
+	}
+	for _, p := range policies {
+		var body map[string]any
+		_ = json.Unmarshal(p.Policy, &body)
+		fmt.Println(body["meta"], p.Tags)
 	}
 }
 

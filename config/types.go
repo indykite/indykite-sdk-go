@@ -100,8 +100,10 @@ const (
 	PermissionCapture        = "Capture"
 	PermissionContXIQ        = "ContXIQ"
 	PermissionEntityMatching = "EntityMatching"
-	PermissionIKGRead        = "IKGRead"
-	PermissionReadDataSchema = "ReadDataSchema"
+	// PermissionReadAuthZConfigs lets an App Agent read the active authorization
+	// policies of its project (authzen.Client.ListPolicies).
+	PermissionReadAuthZConfigs = "ReadAuthZConfigs"
+	PermissionReadDataSchema   = "ReadDataSchema"
 )
 
 // AppAgent is an application agent configuration.

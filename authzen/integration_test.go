@@ -18,48 +18,35 @@ package authzen_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
-	"testing"
 	"time"
 
 	indykite "github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/authzen"
 	"github.com/indykite/indykite-sdk-go/internal/bqaudit"
 	"github.com/indykite/indykite-sdk-go/transport"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // evaluationAuditEventType is emitted by the platform for POST /access/v1/evaluation.
 const evaluationAuditEventType = "indykite.audit.authorization.evaluation"
 
-// requireAuditEvent asserts the audit event carrying marker reached the
-// BigQuery audit-log table. It is a no-op unless SDK_AUDIT_TABLE_NAME is set.
-func requireAuditEvent(ctx context.Context, t *testing.T, eventType, marker string) {
-	t.Helper()
-	if !bqaudit.Enabled() {
-		t.Log("SDK_AUDIT_TABLE_NAME not set; skipping BigQuery audit-log check")
-		return
-	}
-	checker, err := bqaudit.New(ctx)
-	if err != nil {
-		t.Fatalf("bqaudit.New: %v", err)
-	}
-	defer func() { _ = checker.Close() }()
-	if err := checker.WaitForEvent(ctx, eventType, marker); err != nil {
-		t.Errorf("audit log not found in BigQuery: %v", err)
-	}
-}
-
 // fixture is the (subject, action, resource) triple the environment provides
-// for decision tests.
+// for decision specs.
 type fixture struct {
 	subject  authzen.Node
 	action   string
 	resource authzen.Node
 }
 
-func fixtures(t *testing.T) fixture {
-	t.Helper()
+// fixtures reads the decision triple from the environment, skipping the spec
+// when any part of it is missing.
+func fixtures() fixture {
+	GinkgoHelper()
 	f := fixture{
 		subject:  authzen.NewNode(os.Getenv("AUTHZEN_SUBJECT_TYPE"), os.Getenv("AUTHZEN_SUBJECT_ID")),
 		action:   os.Getenv("AUTHZEN_ACTION"),
@@ -67,129 +54,165 @@ func fixtures(t *testing.T) fixture {
 	}
 	if f.subject.Type == "" || f.subject.ID == "" || f.action == "" ||
 		f.resource.Type == "" || f.resource.ID == "" {
-		t.Skip("AUTHZEN_{SUBJECT_TYPE,SUBJECT_ID,ACTION,RESOURCE_TYPE,RESOURCE_ID} not set")
+		Skip("AUTHZEN_{SUBJECT_TYPE,SUBJECT_ID,ACTION,RESOURCE_TYPE,RESOURCE_ID} not set")
 	}
 	return f
 }
 
-func runtimeClient(t *testing.T) *indykite.Client {
-	t.Helper()
+// authzenClient builds a live runtime-plane client from the environment,
+// skipping the spec when no App Agent credential is configured.
+func authzenClient(ctx context.Context) *authzen.Client {
+	GinkgoHelper()
 	if os.Getenv("INDYKITE_APPLICATION_CREDENTIALS") == "" &&
 		os.Getenv("INDYKITE_APPLICATION_CREDENTIALS_FILE") == "" {
-		t.Skip("INDYKITE_APPLICATION_CREDENTIALS[_FILE] not set")
+		Skip("INDYKITE_APPLICATION_CREDENTIALS[_FILE] not set")
 	}
 	var opts []indykite.Option
 	if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
 		opts = append(opts, indykite.WithBaseURL(base))
 	}
-	cli, err := indykite.NewClientFromEnv(context.Background(), opts...)
-	if err != nil {
-		t.Fatalf("NewClientFromEnv: %v", err)
-	}
-	return cli
+	cli, err := indykite.NewClientFromEnv(ctx, opts...)
+	Expect(err).NotTo(HaveOccurred())
+	return cli.AuthZEN()
 }
 
-func TestIntegrationAuthZENEvaluate(t *testing.T) {
-	cli := runtimeClient(t)
-	f := fixtures(t)
-	ctx := context.Background()
-
-	// The auditLog input param is echoed into the audit event, which lets the
-	// BigQuery check below correlate this exact request.
-	auditMarker := fmt.Sprintf("sdk-it-authzen-%d", time.Now().UnixNano())
-	resp, err := cli.AuthZEN().Evaluate(ctx, authzen.EvaluationRequest{
-		Subject:  &f.subject,
-		Resource: &f.resource,
-		Action:   &authzen.Action{Name: f.action},
-		Context:  &authzen.Context{InputParams: map[string]any{"auditLog": auditMarker}},
-	})
-	if err != nil {
-		t.Fatalf("Evaluate: %v", err)
+// expectAuditEvent asserts the audit event carrying marker reached the
+// BigQuery audit-log table. It is a no-op unless SDK_AUDIT_TABLE_NAME is set.
+func expectAuditEvent(ctx context.Context, eventType, marker string) {
+	GinkgoHelper()
+	if !bqaudit.Enabled() {
+		GinkgoWriter.Println("SDK_AUDIT_TABLE_NAME not set; skipping BigQuery audit-log check")
+		return
 	}
-	t.Logf("decision=%v", resp.Decision)
-
-	allowed, err := cli.AuthZEN().Allowed(ctx, f.subject, f.action, f.resource)
-	if err != nil {
-		t.Fatalf("Allowed: %v", err)
-	}
-	if allowed != resp.Decision {
-		t.Errorf("Allowed=%v but Evaluate decision=%v", allowed, resp.Decision)
-	}
-
-	requireAuditEvent(ctx, t, evaluationAuditEventType, auditMarker)
+	checker, err := bqaudit.New(ctx)
+	Expect(err).NotTo(HaveOccurred())
+	DeferCleanup(func() { _ = checker.Close() })
+	Expect(checker.WaitForEvent(ctx, eventType, marker)).To(Succeed(), "audit log not found in BigQuery")
 }
 
-func TestIntegrationAuthZENEvaluateBatch(t *testing.T) {
-	cli := runtimeClient(t)
-	f := fixtures(t)
+var _ = Describe("Integration", Label("integration"), func() {
+	var c *authzen.Client
 
-	resp, err := cli.AuthZEN().EvaluateBatch(context.Background(), authzen.EvaluationsRequest{
-		Subject: &f.subject,
-		Action:  &authzen.Action{Name: f.action},
-		Evaluations: []authzen.EvaluationItem{
-			{Resource: &f.resource},
-			{Resource: &authzen.Node{Type: f.resource.Type, ID: "nonexistent-" + f.resource.ID}},
-		},
+	BeforeEach(func(ctx SpecContext) {
+		c = authzenClient(ctx)
 	})
-	if err != nil {
-		t.Fatalf("EvaluateBatch: %v", err)
-	}
-	if len(resp.Evaluations) != 2 {
-		t.Fatalf("got %d evaluations, want 2", len(resp.Evaluations))
-	}
-}
 
-func TestIntegrationAuthZENSearch(t *testing.T) {
-	cli := runtimeClient(t)
-	f := fixtures(t)
-	ctx := context.Background()
+	Describe("Evaluate", func() {
+		It("decides over the fixture triple, agrees with Allowed, and lands in the audit log", func(ctx SpecContext) {
+			f := fixtures()
 
-	actions, err := cli.AuthZEN().SearchAction(ctx, authzen.SearchActionRequest{
-		Subject: &f.subject, Resource: &f.resource,
+			// The auditLog input param is echoed into the audit event, which lets
+			// the BigQuery check below correlate this exact request.
+			auditMarker := fmt.Sprintf("sdk-it-authzen-%d", time.Now().UnixNano())
+			resp, err := c.Evaluate(ctx, authzen.EvaluationRequest{
+				Subject:  &f.subject,
+				Resource: &f.resource,
+				Action:   &authzen.Action{Name: f.action},
+				Context:  &authzen.Context{InputParams: map[string]any{"auditLog": auditMarker}},
+			})
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("decision=%v\n", resp.Decision)
+
+			allowed, err := c.Allowed(ctx, f.subject, f.action, f.resource)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(allowed).To(Equal(resp.Decision), "Allowed and Evaluate must agree")
+
+			expectAuditEvent(ctx, evaluationAuditEventType, auditMarker)
+		})
+
+		// Platform errors surface as *transport.APIError with useful fields.
+		It("surfaces an incomplete request as a 4xx APIError", func(ctx SpecContext) {
+			f := fixtures()
+
+			_, err := c.Evaluate(ctx, authzen.EvaluationRequest{
+				Subject: &f.subject, // missing action & resource
+			})
+			if err == nil {
+				Skip("platform accepted an incomplete request")
+			}
+			apiErr, ok := transport.AsAPIError(err)
+			Expect(ok).To(BeTrue(), "err = %T (%v), want *transport.APIError", err, err)
+			Expect(apiErr.StatusCode).To(And(BeNumerically(">=", 400), BeNumerically("<", 500)))
+		})
 	})
-	if err != nil {
-		t.Fatalf("SearchAction: %v", err)
-	}
-	t.Logf("actions=%v", actions)
 
-	resources, err := cli.AuthZEN().SearchResource(ctx, authzen.SearchResourceRequest{
-		Subject:  &f.subject,
-		Action:   &authzen.Action{Name: f.action},
-		Resource: &authzen.NodeType{Type: f.resource.Type},
+	Describe("EvaluateBatch", func() {
+		It("returns one decision per entry", func(ctx SpecContext) {
+			f := fixtures()
+
+			resp, err := c.EvaluateBatch(ctx, authzen.EvaluationsRequest{
+				Subject: &f.subject,
+				Action:  &authzen.Action{Name: f.action},
+				Evaluations: []authzen.EvaluationItem{
+					{Resource: &f.resource},
+					{Resource: &authzen.Node{Type: f.resource.Type, ID: "nonexistent-" + f.resource.ID}},
+				},
+			})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(resp.Evaluations).To(HaveLen(2))
+		})
 	})
-	if err != nil {
-		t.Fatalf("SearchResource: %v", err)
-	}
-	t.Logf("resources=%v", resources)
 
-	subjects, err := cli.AuthZEN().SearchSubject(ctx, authzen.SearchSubjectRequest{
-		Subject:  &authzen.NodeType{Type: f.subject.Type},
-		Action:   &authzen.Action{Name: f.action},
-		Resource: &f.resource,
+	Describe("Search", func() {
+		It("enumerates actions, resources and subjects around the fixture triple", func(ctx SpecContext) {
+			f := fixtures()
+
+			actions, err := c.SearchAction(ctx, authzen.SearchActionRequest{
+				Subject: &f.subject, Resource: &f.resource,
+			})
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("actions=%v\n", actions)
+
+			resources, err := c.SearchResource(ctx, authzen.SearchResourceRequest{
+				Subject:  &f.subject,
+				Action:   &authzen.Action{Name: f.action},
+				Resource: &authzen.NodeType{Type: f.resource.Type},
+			})
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("resources=%v\n", resources)
+
+			subjects, err := c.SearchSubject(ctx, authzen.SearchSubjectRequest{
+				Subject:  &authzen.NodeType{Type: f.subject.Type},
+				Action:   &authzen.Action{Name: f.action},
+				Resource: &f.resource,
+			})
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("subjects=%v\n", subjects)
+		})
 	})
-	if err != nil {
-		t.Fatalf("SearchSubject: %v", err)
-	}
-	t.Logf("subjects=%v", subjects)
-}
 
-// TestIntegrationAuthZENUnknownResourceType asserts platform errors surface as
-// *transport.APIError with useful fields.
-func TestIntegrationAuthZENErrorShape(t *testing.T) {
-	cli := runtimeClient(t)
-	f := fixtures(t)
+	Describe("ListPolicies", func() {
+		// listAll reads every active policy, skipping the spec when the App
+		// Agent lacks the ReadAuthZConfigs permission: that is a per-agent
+		// grant rather than a test input.
+		listAll := func(ctx context.Context) []authzen.Policy {
+			GinkgoHelper()
+			all, err := c.ListPolicies(ctx)
+			if apiErr, ok := transport.AsAPIError(err); ok && apiErr.IsUnauthorized() {
+				Skip(fmt.Sprintf("App Agent lacks the ReadAuthZConfigs permission: %v", err))
+			}
+			Expect(err).NotTo(HaveOccurred())
+			return all
+		}
 
-	_, err := cli.AuthZEN().Evaluate(context.Background(), authzen.EvaluationRequest{
-		Subject: &f.subject, // missing action & resource
+		It("returns every policy as a JSON object with non-null tags", func(ctx SpecContext) {
+			all := listAll(ctx)
+			GinkgoWriter.Printf("policies=%d\n", len(all))
+			for i, p := range all {
+				Expect(json.Valid(p.Policy)).To(BeTrue(), "policy[%d] is not valid JSON: %s", i, p.Policy)
+				Expect(string(p.Policy)).To(HavePrefix("{"), "policy[%d] is not a JSON object", i)
+				Expect(p.Tags).NotTo(BeNil(), "policy[%d] tags must be a (possibly empty) slice", i)
+			}
+		})
+
+		It("narrows to a subset when filtered by the fixture subject type", func(ctx SpecContext) {
+			all := listAll(ctx)
+			f := fixtures()
+
+			subset, err := c.ListPolicies(ctx, authzen.WithSubjectType(f.subject.Type))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(len(subset)).To(BeNumerically("<=", len(all)),
+				"subject_type=%s must not return more policies than the unfiltered list", f.subject.Type)
+		})
 	})
-	if err == nil {
-		t.Skip("platform accepted an incomplete request")
-	}
-	apiErr, ok := transport.AsAPIError(err)
-	if !ok {
-		t.Fatalf("error is %T, want *transport.APIError: %v", err, err)
-	}
-	if apiErr.StatusCode < 400 || apiErr.StatusCode > 499 {
-		t.Errorf("StatusCode = %d, want 4xx", apiErr.StatusCode)
-	}
-}
+})
