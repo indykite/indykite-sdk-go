@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.76.0](https://github.com/indykite/indykite-sdk-go/compare/v0.75.0...v0.76.0) (2026-09-18)
+
+
+### Features
+
+* add policies endpoint implementation ([190782e](https://github.com/indykite/indykite-sdk-go/commit/190782e6052b679786f379b47647e577d2e20d50))
+
 ## [0.75.0](https://github.com/indykite/indykite-sdk-go/compare/v0.74.0...v0.75.0) (2026-09-16)
 
 
