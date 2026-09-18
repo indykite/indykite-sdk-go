@@ -13,7 +13,8 @@
 // limitations under the License.
 
 // Command authzen demonstrates the AuthZEN (authorization) API: single and
-// batch decisions plus the three search directions.
+// batch decisions, the three search directions, and reading the active
+// policies back.
 package main
 
 import (
@@ -29,7 +30,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		exutil.Usage("authzen", "evaluate", "batch", "search-action", "search-resource", "search-subject")
+		exutil.Usage("authzen", "evaluate", "batch", "search-action", "search-resource", "search-subject", "policies")
 	}
 
 	ctx := context.Background()
@@ -114,7 +115,21 @@ func main() {
 		}
 		exutil.Print(nodes)
 
+	case "policies":
+		// Which active policies does this project have? Needs the
+		// ReadAuthZConfigs App Agent permission. -subject-type narrows the
+		// list; pass an empty one to list everything.
+		var lopts []authzen.ListPoliciesOption
+		if *subjectType != "" {
+			lopts = append(lopts, authzen.WithSubjectType(*subjectType))
+		}
+		policies, err := az.ListPolicies(ctx, lopts...)
+		if err != nil {
+			exutil.Fatal(err)
+		}
+		exutil.Print(policies)
+
 	default:
-		exutil.Usage("authzen", "evaluate", "batch", "search-action", "search-resource", "search-subject")
+		exutil.Usage("authzen", "evaluate", "batch", "search-action", "search-resource", "search-subject", "policies")
 	}
 }

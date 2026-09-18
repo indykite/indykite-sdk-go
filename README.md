@@ -59,6 +59,9 @@ cli, err := indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
 ok, err := cli.AuthZEN().Allowed(ctx,
     authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
 
+// Read the project's active policies back (needs the ReadAuthZConfigs permission).
+policies, err := cli.AuthZEN().ListPolicies(ctx, authzen.WithSubjectType("Person"))
+
 rows, err := cli.CIQ().All(ctx, ciq.ExecuteRequest{
     ID: "get-servers", InputParams: map[string]any{"region": "eu"},
 })

@@ -19,11 +19,14 @@
 //	az := authzen.NewClient(client)
 //	ok, _ := az.Allowed(ctx,
 //	    authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
+//	// read the active policies the decisions are made from:
+//	policies, _ := az.ListPolicies(ctx, authzen.WithSubjectType("Person"))
 package authzen
 
 import (
 	"context"
 	"net/http"
+	"net/url"
 
 	"github.com/indykite/indykite-sdk-go/transport"
 )
@@ -34,6 +37,7 @@ const (
 	pathSearchAction   = "/access/v1/search/action"
 	pathSearchResource = "/access/v1/search/resource"
 	pathSearchSubject  = "/access/v1/search/subject"
+	pathPolicies       = "/access/v1/policies"
 )
 
 // Client calls the AuthZEN API.
@@ -137,6 +141,46 @@ func (c *Client) SearchSubject(ctx context.Context, req SearchSubjectRequest) ([
 	var out searchNodeResponse
 	if err := c.t.Do(ctx, http.MethodPost, pathSearchSubject, req, &out); err != nil {
 		return nil, err
+	}
+	return out.Results, nil
+}
+
+// ListPoliciesOption narrows a ListPolicies call.
+type ListPoliciesOption func(url.Values)
+
+// WithSubjectType returns only the policies written for the given subject
+// node type (e.g. "Person").
+func WithSubjectType(subjectType string) ListPoliciesOption {
+	return func(q url.Values) { q.Set("subject_type", subjectType) }
+}
+
+// ListPolicies returns the active authorization policies of the project the
+// App Agent belongs to, as they are stored, together with their tags
+// (GET /access/v1/policies). Without options every active policy is returned;
+// WithSubjectType keeps only the policies written for one subject type.
+//
+// The App Agent needs the ReadAuthZConfigs API permission
+// (config.PermissionReadAuthZConfigs); without it the platform answers 401,
+// which surfaces as a *transport.APIError whose IsUnauthorized is true.
+func (c *Client) ListPolicies(ctx context.Context, opts ...ListPoliciesOption) ([]Policy, error) {
+	q := url.Values{}
+	for _, o := range opts {
+		o(q)
+	}
+	path := pathPolicies
+	if len(q) > 0 {
+		path += "?" + q.Encode()
+	}
+	var out listPoliciesResponse
+	if err := c.t.Do(ctx, http.MethodGet, path, nil, &out); err != nil {
+		return nil, err
+	}
+	// The platform already sends [] for untagged policies; normalize anyway so
+	// the Policy.Tags contract holds even if a response omits or nulls the field.
+	for i := range out.Results {
+		if out.Results[i].Tags == nil {
+			out.Results[i].Tags = []string{}
+		}
 	}
 	return out.Results, nil
 }

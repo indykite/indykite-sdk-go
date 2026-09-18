@@ -14,6 +14,8 @@
 
 package authzen
 
+import "encoding/json"
+
 // Node is a graph node used as a subject or resource (type + external id).
 type Node struct {
 	Type string `json:"type"`
@@ -111,4 +113,19 @@ type SearchSubjectRequest struct {
 
 type searchNodeResponse struct {
 	Results []Node `json:"results"`
+}
+
+// Policy is one authorization policy as returned by GET /access/v1/policies.
+type Policy struct {
+	// Policy is the policy definition exactly as it is stored, inlined as a
+	// JSON object (e.g. {"meta":{"policy_version":"2.0-kbac"},...}). Decode it
+	// into your own struct or a map[string]any as needed.
+	Policy json.RawMessage `json:"policy"`
+	// Tags are the policy tags used to select policies during an evaluation
+	// (see WithPolicyTags). Never nil: a policy without tags has an empty slice.
+	Tags []string `json:"tags"`
+}
+
+type listPoliciesResponse struct {
+	Results []Policy `json:"results"`
 }

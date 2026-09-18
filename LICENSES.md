@@ -1,8 +1,8 @@
 # Third-Party License Report
 
-<div align="left"> <a href="https://indykite.com"> <img src="https://raw.githubusercontent.com/indykite/.github/master/assets/squareformatlogo.png" alt="IndyKite Logo" width="100px" height="100px" align="right"> </a> </div>
+IndyKite Platform SDK for Go
 
-Generated at: 2026-09-16T04:05:35Z
+Generated at: 2026-09-17T23:49:12Z
 
 DO NOT EDIT!!
 

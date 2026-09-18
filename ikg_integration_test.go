@@ -30,6 +30,7 @@ import (
 	"github.com/indykite/indykite-sdk-go/capture"
 	"github.com/indykite/indykite-sdk-go/ciq"
 	"github.com/indykite/indykite-sdk-go/config"
+	"github.com/indykite/indykite-sdk-go/transport"
 )
 
 // Policies, data and decisions propagate asynchronously; poll before failing.
@@ -44,6 +45,7 @@ const (
 //	seed    control plane: KBAC policy + CIQ read policy + knowledge query
 //	ingest  runtime plane: Person -[:OWNS]-> Server into the IKG
 //	assert  AuthZEN decision over the ingested graph (positive + negative)
+//	assert  AuthZEN policies list shows the seeded policy (if the agent may read it)
 //	assert  ContX IQ knowledge query returns the ingested node
 //	cleanup graph data and config resources (always, via t.Cleanup)
 func TestIntegrationIKGEndToEnd(t *testing.T) {
@@ -180,6 +182,28 @@ func TestIntegrationIKGEndToEnd(t *testing.T) {
 	}
 	if strangerAllowed {
 		t.Errorf("stranger %s must not get %s on %s", stranger.ExternalID, action, server.ExternalID)
+	}
+
+	// --- assert: the seeded KBAC policy is visible through the policies
+	// endpoint. Only checked when the App Agent holds ReadAuthZConfigs.
+	listed := pollUntil(ctx, t, "policies list contains the seeded KBAC policy", func() (bool, error) {
+		policies, lErr := cli.AuthZEN().ListPolicies(ctx, authzen.WithSubjectType("Person"))
+		if lErr != nil {
+			if apiErr, ok := transport.AsAPIError(lErr); ok && apiErr.IsUnauthorized() {
+				t.Logf("App Agent lacks ReadAuthZConfigs; skipping ListPolicies check: %v", lErr)
+				return true, nil
+			}
+			return false, lErr
+		}
+		for _, p := range policies {
+			if strings.Contains(string(p.Policy), action) {
+				return true, nil
+			}
+		}
+		return false, nil
+	})
+	if !listed {
+		t.Errorf("ListPolicies never returned the seeded policy %s", kbac.ID)
 	}
 
 	// --- assert: the knowledge query reads the ingested node back ---
