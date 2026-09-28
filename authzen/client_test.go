@@ -51,6 +51,7 @@ func nodeTypeJSON(nodeType string) types.GomegaMatcher {
 type request struct {
 	body   map[string]any
 	query  url.Values
+	header http.Header
 	method string
 	path   string
 }
@@ -65,6 +66,7 @@ func newClient(reply string) (*authzen.Client, *request) {
 		rec.method = r.Method
 		rec.path = r.URL.Path
 		rec.query = r.URL.Query()
+		rec.header = r.Header.Clone()
 		rec.body = nil
 		raw, _ := io.ReadAll(r.Body)
 		_ = json.Unmarshal(raw, &rec.body)
@@ -151,6 +153,75 @@ var _ = Describe("Evaluate and Allowed", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(resp.Decision).To(BeFalse())
 		Expect(resp.Context).To(HaveValue(Equal(authzen.ResponseContext{Reason: "no OWNS edge"})))
+	})
+})
+
+var _ = Describe("Token claims", func() {
+	It("sends the end-user and delegated tokens as headers, never in the body", func(ctx SpecContext) {
+		c, rec := newClient(`{"decision":true}`)
+
+		_, err := c.Allowed(ctx,
+			authzen.NewNode("Person", "karel"), "SHARE", authzen.NewNode("Doc", "docA"),
+			authzen.WithEndUserToken("user-jwt"),
+			authzen.WithDelegatedToken("ik-jwt"),
+		)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header.Get("Authorization")).To(Equal("Bearer user-jwt"))
+		Expect(rec.header.Get("X-IK-Token")).To(Equal("ik-jwt"))
+		Expect(rec.header.Get("X-IK-ClientKey")).To(Equal("tok"))
+		Expect(rec.body).To(HaveKeyWithValue("context", BeEmpty()))
+	})
+
+	It("sends no token headers when none are set", func(ctx SpecContext) {
+		c, rec := newClient(`{"decision":true}`)
+
+		_, err := c.Allowed(ctx, authzen.NewNode("Person", "karel"), "SHARE", authzen.NewNode("Doc", "docA"),
+			authzen.WithInputParams(map[string]any{"x": 1}))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header).NotTo(HaveKey("Authorization"))
+		Expect(rec.header).NotTo(HaveKey("X-Ik-Token"))
+	})
+
+	It("uses the top-level context tokens of a batch", func(ctx SpecContext) {
+		c, rec := newClient(`{"evaluations":[{"decision":true}]}`)
+
+		_, err := c.EvaluateBatch(ctx, authzen.EvaluationsRequest{
+			Subject: &authzen.Node{Type: "Person", ID: "karel"},
+			Context: &authzen.Context{EndUserToken: "user-jwt", DelegatedToken: "ik-jwt"},
+			Evaluations: []authzen.EvaluationItem{{
+				Action:   &authzen.Action{Name: "SHARE"},
+				Resource: &authzen.Node{Type: "Doc", ID: "docA"},
+			}},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header.Get("Authorization")).To(Equal("Bearer user-jwt"))
+		Expect(rec.header.Get("X-IK-Token")).To(Equal("ik-jwt"))
+	})
+
+	It("forwards the tokens on the search endpoints", func(ctx SpecContext) {
+		c, rec := newClient(`{"results":[]}`)
+		tokens := &authzen.Context{DelegatedToken: "ik-jwt"}
+
+		_, err := c.SearchAction(ctx, authzen.SearchActionRequest{
+			Subject: &authzen.Node{Type: "Person", ID: "karel"}, Resource: &authzen.Node{Type: "Doc", ID: "docA"},
+			Context: tokens,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header.Get("X-IK-Token")).To(Equal("ik-jwt"))
+
+		_, err = c.SearchResource(ctx, authzen.SearchResourceRequest{
+			Subject: &authzen.Node{Type: "Person", ID: "karel"}, Action: &authzen.Action{Name: "SHARE"},
+			Resource: &authzen.NodeType{Type: "Doc"}, Context: tokens,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header.Get("X-IK-Token")).To(Equal("ik-jwt"))
+
+		_, err = c.SearchSubject(ctx, authzen.SearchSubjectRequest{
+			Subject: &authzen.NodeType{Type: "Person"}, Action: &authzen.Action{Name: "SHARE"},
+			Resource: &authzen.Node{Type: "Doc", ID: "docA"}, Context: tokens,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.header.Get("X-IK-Token")).To(Equal("ik-jwt"))
 	})
 })
 

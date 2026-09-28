@@ -19,7 +19,8 @@
 // The platform has two planes with two credential types:
 //
 //   - Runtime / data plane (App Agent credential token, sent in
-//     X-IK-ClientKey): AuthZEN, ContX IQ, capture and entity matching. Use
+//     X-IK-ClientKey): AuthZEN, ContX IQ, capture, entity matching and audit
+//     logs. Use
 //     [NewClient] / [NewClientFromEnv] and the accessors on [Client].
 //   - Control plane (Service Account credential JSON, Bearer token): config
 //     management. Use [NewAdmin] / [NewAdminFromEnv].
@@ -36,6 +37,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/indykite/indykite-sdk-go/audit"
 	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/authzen"
 	"github.com/indykite/indykite-sdk-go/capture"
@@ -77,6 +79,7 @@ type Client struct {
 	ciq            *ciq.Client
 	capture        *capture.Client
 	entityMatching *entitymatching.Client
+	audit          *audit.Client
 }
 
 // NewClient builds the runtime facade from the App Agent credential token (the
@@ -110,6 +113,7 @@ func buildClient(a *auth.Authenticator, opts ...Option) (*Client, error) {
 		ciq:            ciq.NewClient(t),
 		capture:        capture.NewClient(t),
 		entityMatching: entitymatching.NewClient(t),
+		audit:          audit.NewClient(t),
 	}, nil
 }
 
@@ -124,6 +128,9 @@ func (c *Client) Capture() *capture.Client { return c.capture }
 
 // EntityMatching returns the entity-matching client.
 func (c *Client) EntityMatching() *entitymatching.Client { return c.entityMatching }
+
+// Audit returns the tamper-proof audit log client.
+func (c *Client) Audit() *audit.Client { return c.audit }
 
 // NewAdmin builds the control-plane facade from a Service Account credentials
 // JSON. Config operations live here because they use a different credential and

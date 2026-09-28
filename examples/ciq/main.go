@@ -43,13 +43,18 @@ func main() {
 	queryID := fs.String("query-id", "", "knowledge query gid or name")
 	params := fs.String("input-params", "{}", "input parameters as JSON object")
 	pageSize := fs.Int("page-size", 100, "records per page")
+	endUserToken := fs.String("end-user-token", "", "optional end-user token, read by the policy as $token")
+	delegatedToken := fs.String("delegated-token", "", "optional IndyKite delegated token, read by the policy as $ik_token")
 	_ = fs.Parse(os.Args[2:])
 
 	var inputParams map[string]any
 	if err = json.Unmarshal([]byte(*params), &inputParams); err != nil {
 		exutil.Fatal(fmt.Errorf("-input-params must be a JSON object: %w", err))
 	}
-	req := ciq.ExecuteRequest{ID: *queryID, InputParams: inputParams, PageSize: *pageSize}
+	req := ciq.ExecuteRequest{
+		ID: *queryID, InputParams: inputParams, PageSize: *pageSize,
+		EndUserToken: *endUserToken, DelegatedToken: *delegatedToken,
+	}
 
 	switch os.Args[1] {
 	case "execute":

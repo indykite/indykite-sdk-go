@@ -96,6 +96,9 @@ type UpdateAuthorizationPolicy struct {
 
 // AppAgent API permission values.
 const (
+	// PermissionAudit lets an App Agent read the tamper-proof audit logs of its
+	// project (the audit package).
+	PermissionAudit          = "Audit"
 	PermissionAuthorization  = "Authorization"
 	PermissionCapture        = "Capture"
 	PermissionContXIQ        = "ContXIQ"

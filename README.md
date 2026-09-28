@@ -30,7 +30,7 @@ or from your IndyKite contact.
 
 | Plane | Credential | Entry point | Services |
 | --- | --- | --- | --- |
-| Runtime / data | App Agent | `indykite.NewClient[FromEnv]` | AuthZEN, ContX IQ, Capture, Entity Matching |
+| Runtime / data | App Agent | `indykite.NewClient[FromEnv]` | AuthZEN, ContX IQ, Capture, Entity Matching, Audit logs |
 | Control | Service Account | `indykite.NewAdmin[FromEnv]` | Config management (`/configs/v1`) |
 
 The SDK picks the right auth header per plane automatically (`X-IK-ClientKey` for runtime,
@@ -48,6 +48,7 @@ when it expires.
 ```go
 import (
     indykite "github.com/indykite/indykite-sdk-go"
+    "github.com/indykite/indykite-sdk-go/audit"
     "github.com/indykite/indykite-sdk-go/authzen"
     "github.com/indykite/indykite-sdk-go/ciq"
     "github.com/indykite/indykite-sdk-go/config"
@@ -59,6 +60,12 @@ cli, err := indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
 ok, err := cli.AuthZEN().Allowed(ctx,
     authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
 
+// Let the policy condition read the caller's token claims ($token.sub,
+// $ik_token.act.sub, ...): the tokens travel as headers, never in the body.
+ok, err = cli.AuthZEN().Allowed(ctx,
+    authzen.NewNode("Person", "karel"), "SHARE", authzen.NewNode("Doc", "docA"),
+    authzen.WithEndUserToken(userToken), authzen.WithDelegatedToken(ikToken))
+
 // Read the project's active policies back (needs the ReadAuthZConfigs permission).
 policies, err := cli.AuthZEN().ListPolicies(ctx, authzen.WithSubjectType("Person"))
 
@@ -68,6 +75,10 @@ rows, err := cli.CIQ().All(ctx, ciq.ExecuteRequest{
 
 // Resolve a third-party end-user token to its IKG node (type + external_id).
 me, err := cli.CIQ().WhoAmI(ctx, endUserToken)
+
+// Page through the project's tamper-proof audit logs (needs the Audit permission).
+logs, err := cli.Audit().AllLogs(ctx, audit.ListRequest{ProjectID: projectID})
+keys, err := cli.Audit().JWKS(ctx, projectID) // public signature verification keys
 
 // Control plane — reads INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE].
 admin, err := indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))

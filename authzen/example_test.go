@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	indykite "github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/authzen"
@@ -34,6 +35,28 @@ func ExampleClient_Allowed() {
 	ok, err := cli.AuthZEN().Allowed(ctx,
 		authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"),
 		authzen.WithInputParams(map[string]any{"max_price": 500}))
+	if err != nil {
+		return
+	}
+	fmt.Println(ok)
+}
+
+// A decision whose policy condition reads token claims: $token is the
+// end-user token, $ik_token the IndyKite delegated token, e.g.
+// "WHERE resource.delegated_to = $ik_token.act.sub AND resource.owner = $token.sub".
+func ExampleWithDelegatedToken() {
+	ctx := context.Background()
+	cli, err := indykite.NewClientFromEnv(ctx)
+	if err != nil {
+		return
+	}
+
+	// Typically taken from the incoming request's Authorization and X-IK-Token headers.
+	userToken, ikToken := os.Getenv("END_USER_TOKEN"), os.Getenv("IK_TOKEN")
+	ok, err := cli.AuthZEN().Allowed(ctx,
+		authzen.NewNode("Person", "karel"), "SHARE", authzen.NewNode("Doc", "docA"),
+		authzen.WithEndUserToken(userToken),
+		authzen.WithDelegatedToken(ikToken))
 	if err != nil {
 		return
 	}

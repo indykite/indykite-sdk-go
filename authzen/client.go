@@ -19,6 +19,9 @@
 //	az := authzen.NewClient(client)
 //	ok, _ := az.Allowed(ctx,
 //	    authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
+//	// let the condition read the caller's token claims ($token, $ik_token):
+//	ok, _ = az.Allowed(ctx, subject, "SHARE", resource,
+//	    authzen.WithEndUserToken(userToken), authzen.WithDelegatedToken(ikToken))
 //	// read the active policies the decisions are made from:
 //	policies, _ := az.ListPolicies(ctx, authzen.WithSubjectType("Person"))
 package authzen
@@ -28,6 +31,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/transport"
 )
 
@@ -66,6 +70,34 @@ func WithPolicyTags(tags ...string) Option {
 	return func(c *Context) { c.PolicyTags = tags }
 }
 
+// WithEndUserToken sends a third-party end-user token, whose claims policy
+// conditions read as $token. See Context.EndUserToken.
+func WithEndUserToken(token string) Option {
+	return func(c *Context) { c.EndUserToken = token }
+}
+
+// WithDelegatedToken sends an IndyKite delegated token, whose claims policy
+// conditions read as $ik_token. See Context.DelegatedToken.
+func WithDelegatedToken(token string) Option {
+	return func(c *Context) { c.DelegatedToken = token }
+}
+
+// tokenHeaders turns the tokens of a request's Context into request headers.
+// Tokens are per request, so for a batch only the top-level Context counts.
+func tokenHeaders(c *Context) []transport.CallOption {
+	if c == nil {
+		return nil
+	}
+	var opts []transport.CallOption
+	if c.EndUserToken != "" {
+		opts = append(opts, transport.WithHeader(auth.HeaderAuthorization, "Bearer "+c.EndUserToken))
+	}
+	if c.DelegatedToken != "" {
+		opts = append(opts, transport.WithHeader(auth.HeaderIKToken, c.DelegatedToken))
+	}
+	return opts
+}
+
 func buildContext(opts ...Option) *Context {
 	if len(opts) == 0 {
 		return nil
@@ -80,7 +112,7 @@ func buildContext(opts ...Option) *Context {
 // Evaluate makes a single authorization decision.
 func (c *Client) Evaluate(ctx context.Context, req EvaluationRequest) (*EvaluationResponse, error) {
 	var out EvaluationResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathEvaluation, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathEvaluation, req, &out, tokenHeaders(req.Context)...); err != nil {
 		return nil, err
 	}
 	return &out, nil
@@ -108,10 +140,11 @@ func (c *Client) Allowed(
 }
 
 // EvaluateBatch makes many decisions in one call, returning one decision per
-// entry in request order.
+// entry in request order. Tokens are sent once per request, so only the
+// top-level Context's EndUserToken and DelegatedToken are used.
 func (c *Client) EvaluateBatch(ctx context.Context, req EvaluationsRequest) (*EvaluationsResponse, error) {
 	var out EvaluationsResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathEvaluations, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathEvaluations, req, &out, tokenHeaders(req.Context)...); err != nil {
 		return nil, err
 	}
 	return &out, nil
@@ -120,7 +153,7 @@ func (c *Client) EvaluateBatch(ctx context.Context, req EvaluationsRequest) (*Ev
 // SearchAction lists the actions a subject may perform on a resource.
 func (c *Client) SearchAction(ctx context.Context, req SearchActionRequest) ([]Action, error) {
 	var out searchActionResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathSearchAction, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathSearchAction, req, &out, tokenHeaders(req.Context)...); err != nil {
 		return nil, err
 	}
 	return out.Results, nil
@@ -129,17 +162,18 @@ func (c *Client) SearchAction(ctx context.Context, req SearchActionRequest) ([]A
 // SearchResource lists the resources of a type a subject may act on.
 func (c *Client) SearchResource(ctx context.Context, req SearchResourceRequest) ([]Node, error) {
 	var out searchNodeResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathSearchResource, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathSearchResource, req, &out, tokenHeaders(req.Context)...); err != nil {
 		return nil, err
 	}
 	return out.Results, nil
 }
 
 // SearchSubject lists the subjects of a type allowed to perform an action on a
-// resource.
+// resource. The platform evaluates subject searches without token claims, so a
+// condition reading $token or $ik_token matches no subject.
 func (c *Client) SearchSubject(ctx context.Context, req SearchSubjectRequest) ([]Node, error) {
 	var out searchNodeResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathSearchSubject, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathSearchSubject, req, &out, tokenHeaders(req.Context)...); err != nil {
 		return nil, err
 	}
 	return out.Results, nil

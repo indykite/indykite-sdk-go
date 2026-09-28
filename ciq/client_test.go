@@ -125,6 +125,58 @@ var _ = Describe("Execute", func() {
 	})
 })
 
+var _ = Describe("Token claims", func() {
+	It("sends the end-user and delegated tokens as headers, never in the body", func(ctx SpecContext) {
+		var gotAuthz, gotIKToken string
+		var gotBody map[string]any
+		c := newClient(func(w http.ResponseWriter, r *http.Request) {
+			gotAuthz = r.Header.Get("Authorization")
+			gotIKToken = r.Header.Get("X-IK-Token")
+			gotBody = decodeJSONBody(r)
+			_, _ = io.WriteString(w, `{"data":[]}`)
+		})
+
+		_, err := c.Execute(ctx, ciq.ExecuteRequest{
+			ID: "shared-docs", EndUserToken: "user-jwt", DelegatedToken: "ik-jwt",
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(gotAuthz).To(Equal("Bearer user-jwt"))
+		Expect(gotIKToken).To(Equal("ik-jwt"))
+		Expect(gotBody).To(HaveLen(3)) // id, page_token, page_size
+		Expect(gotBody).NotTo(HaveKey("EndUserToken"))
+		Expect(gotBody).NotTo(HaveKey("DelegatedToken"))
+	})
+
+	It("sends no token headers when none are set", func(ctx SpecContext) {
+		var header http.Header
+		c := newClient(func(w http.ResponseWriter, r *http.Request) {
+			header = r.Header.Clone()
+			_, _ = io.WriteString(w, `{"data":[]}`)
+		})
+
+		_, err := c.Execute(ctx, ciq.ExecuteRequest{ID: "shared-docs"})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(header).NotTo(HaveKey("Authorization"))
+		Expect(header).NotTo(HaveKey("X-Ik-Token"))
+	})
+
+	It("sends the tokens on every page of an iteration", func(ctx SpecContext) {
+		var seen []string
+		c := newClient(func(w http.ResponseWriter, r *http.Request) {
+			seen = append(seen, r.Header.Get("X-IK-Token"))
+			if len(seen) == 1 {
+				_, _ = io.WriteString(w, `{"data":[{"nodes":{"n":{"id":"a"}}}]}`)
+				return
+			}
+			_, _ = io.WriteString(w, `{"data":[]}`)
+		})
+
+		_, err := c.All(ctx, ciq.ExecuteRequest{ID: "shared-docs", PageSize: 1, DelegatedToken: "ik-jwt"})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(seen).To(Equal([]string{"ik-jwt", "ik-jwt"}))
+	})
+})
+
 var _ = Describe("Iterate and All", func() {
 	// CIQ has no server-side next token: a page shorter than PageSize is the
 	// last one.

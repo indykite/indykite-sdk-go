@@ -58,10 +58,20 @@ func NewClient(t *transport.Client) *Client {
 }
 
 // Execute runs a single page of a query. PageToken < 1 returns the first page.
-// For multi-page results use Iterate or All.
+// For multi-page results use Iterate or All. EndUserToken and DelegatedToken,
+// when set, are sent as headers so the policy can read their claims.
+//
+//nolint:gocritic // hugeParam: ExecuteRequest stays a value for API compatibility.
 func (c *Client) Execute(ctx context.Context, req ExecuteRequest) (*ExecuteResponse, error) {
+	var opts []transport.CallOption
+	if req.EndUserToken != "" {
+		opts = append(opts, transport.WithHeader(auth.HeaderAuthorization, "Bearer "+req.EndUserToken))
+	}
+	if req.DelegatedToken != "" {
+		opts = append(opts, transport.WithHeader(auth.HeaderIKToken, req.DelegatedToken))
+	}
 	var out ExecuteResponse
-	if err := c.t.Do(ctx, http.MethodPost, pathExecute, req, &out); err != nil {
+	if err := c.t.Do(ctx, http.MethodPost, pathExecute, req, &out, opts...); err != nil {
 		return nil, err
 	}
 	return &out, nil
@@ -70,6 +80,8 @@ func (c *Client) Execute(ctx context.Context, req ExecuteRequest) (*ExecuteRespo
 // Iterate lazily walks every page of a query. CIQ has no server-returned next
 // token: a page is the last one when it returns fewer than PageSize records, so
 // a concrete PageSize is required and defaults to 100.
+//
+//nolint:gocritic // hugeParam: ExecuteRequest stays a value for API compatibility.
 func (c *Client) Iterate(req ExecuteRequest) *transport.Iterator[Record] {
 	pageSize := req.PageSize
 	if pageSize <= 0 {
@@ -104,6 +116,8 @@ func (c *Client) Iterate(req ExecuteRequest) *transport.Iterator[Record] {
 }
 
 // All collects every record across all pages.
+//
+//nolint:gocritic // hugeParam: ExecuteRequest stays a value for API compatibility.
 func (c *Client) All(ctx context.Context, req ExecuteRequest) ([]Record, error) {
 	return c.Iterate(req).Collect(ctx)
 }
