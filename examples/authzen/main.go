@@ -47,11 +47,21 @@ func main() {
 	resourceType := fs.String("resource-type", "Asset", "resource node type")
 	resourceID := fs.String("resource-id", "", "resource external id")
 	tag := fs.String("policy-tag", "", "optional policy tag filter")
+	endUserToken := fs.String("end-user-token", "", "optional end-user token, read by policies as $token")
+	delegatedToken := fs.String("delegated-token", "", "optional IndyKite delegated token, read by policies as $ik_token")
 	_ = fs.Parse(os.Args[2:])
 
 	var opts []authzen.Option
 	if *tag != "" {
 		opts = append(opts, authzen.WithPolicyTags(*tag))
+	}
+	// The tokens travel as headers; a policy condition reads their claims,
+	// e.g. $token.sub or $ik_token.act.sub.
+	if *endUserToken != "" {
+		opts = append(opts, authzen.WithEndUserToken(*endUserToken))
+	}
+	if *delegatedToken != "" {
+		opts = append(opts, authzen.WithDelegatedToken(*delegatedToken))
 	}
 	subject := authzen.NewNode(*subjectType, *subjectID)
 	resource := authzen.NewNode(*resourceType, *resourceID)

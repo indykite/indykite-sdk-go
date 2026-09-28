@@ -17,9 +17,22 @@ package ciq
 // ExecuteRequest is the body for POST /contx-iq/v1/execute.
 type ExecuteRequest struct {
 	// InputParams supplies values for input parameters referenced by the query.
+	// The names "token" and "ik_token" are reserved for the token claims (see
+	// EndUserToken and DelegatedToken): a value sent under them is replaced.
 	InputParams map[string]any `json:"input_params,omitempty"`
 	// PreprocessParams supplies CIQ v2.0 preprocess parameters.
 	PreprocessParams map[string]string `json:"preprocess_params,omitempty"`
+	// EndUserToken is an optional third-party end-user token, introspected via
+	// the Token Introspect configuration. It is sent as
+	// "Authorization: Bearer <token>", not in the body, and its claims are
+	// available to the policy and query as $token (e.g. $token.sub).
+	EndUserToken string `json:"-"`
+	// DelegatedToken is an optional IndyKite delegated token minted by the
+	// IndyKite Token Service. It is sent as is in the X-IK-Token header, not in
+	// the body, and its claims, including the RFC 8693 act delegation chain, are
+	// available to the policy and query as $ik_token (e.g. $ik_token.act.sub).
+	// A filter on a token which was not sent matches nothing.
+	DelegatedToken string `json:"-"`
 	// ID is the ContX IQ query ID (gid:...) or query name.
 	ID string `json:"id"`
 	// PageToken selects the result page; any value < 1 returns the first page.

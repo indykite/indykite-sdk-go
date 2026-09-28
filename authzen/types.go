@@ -35,7 +35,21 @@ type Action struct {
 // Context carries extra decision inputs.
 type Context struct {
 	// InputParams supplies values for input parameters referenced by policies.
+	// The names "token" and "ik_token" are reserved for the token claims (see
+	// EndUserToken and DelegatedToken): a value sent under them is replaced.
 	InputParams map[string]any `json:"input_params,omitempty"`
+	// EndUserToken is an optional third-party end-user token, introspected via
+	// the Token Introspect configuration. It is sent as
+	// "Authorization: Bearer <token>", not in the body, and its claims are
+	// available to policy conditions as $token (e.g. $token.sub).
+	EndUserToken string `json:"-"`
+	// DelegatedToken is an optional IndyKite delegated token minted by the
+	// IndyKite Token Service. It is sent as is in the X-IK-Token header, not in
+	// the body, and its claims, including the RFC 8693 act delegation chain, are
+	// available to policy conditions as $ik_token (e.g. $ik_token.act.sub). Its
+	// sub must match the sub of EndUserToken. A policy that reads a token which
+	// was not sent denies rather than fails.
+	DelegatedToken string `json:"-"`
 	// PolicyTags limits evaluation to policies carrying the given tags.
 	PolicyTags []string `json:"policy_tags,omitempty"`
 }

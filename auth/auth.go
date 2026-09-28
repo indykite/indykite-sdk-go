@@ -43,6 +43,9 @@ import (
 const (
 	HeaderClientKey     = "X-IK-ClientKey"
 	HeaderAuthorization = "Authorization"
+	// HeaderIKToken carries the optional IndyKite delegated token (minted by the
+	// IndyKite Token Service) on runtime calls, sent as is, without a prefix.
+	HeaderIKToken = "X-IK-Token"
 )
 
 // Plane selects which authentication carrier (and therefore which header) is
