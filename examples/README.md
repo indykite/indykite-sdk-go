@@ -29,7 +29,7 @@ The `tokenclaims` example needs both credentials plus an end-user token and an
 IndyKite delegated token (from the Token Service) for the same user:
 
 ```sh
-go run ./examples/tokenclaims setup -project-id "$PROJECT_ID"   # prints CLAIMS_* exports
+eval "$(go run ./examples/tokenclaims setup -project-id "$PROJECT_ID")"   # exports CLAIMS_*
 export END_USER_TOKEN=... IK_TOKEN=...
 go run ./examples/tokenclaims evaluate -subject-id karel -resource-id docA
 go run ./examples/tokenclaims execute

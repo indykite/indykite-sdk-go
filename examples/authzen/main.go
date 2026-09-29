@@ -63,6 +63,15 @@ func main() {
 	if *delegatedToken != "" {
 		opts = append(opts, authzen.WithDelegatedToken(*delegatedToken))
 	}
+	// The convenience calls take Options; the request structs take the same
+	// inputs as a *Context, so apply the options to one for those.
+	var reqCtx *authzen.Context
+	if len(opts) > 0 {
+		reqCtx = &authzen.Context{}
+		for _, o := range opts {
+			o(reqCtx)
+		}
+	}
 	subject := authzen.NewNode(*subjectType, *subjectID)
 	resource := authzen.NewNode(*resourceType, *resourceID)
 
@@ -81,6 +90,7 @@ func main() {
 		resp, err := az.EvaluateBatch(ctx, authzen.EvaluationsRequest{
 			Subject: &subject,
 			Action:  &authzen.Action{Name: *action},
+			Context: reqCtx,
 			Evaluations: []authzen.EvaluationItem{
 				{Resource: &resource},
 				{Resource: &authzen.Node{Type: *resourceType, ID: *resourceID + "-2"}},
@@ -94,7 +104,7 @@ func main() {
 	case "search-action":
 		// What can this subject do with this resource?
 		actions, err := az.SearchAction(ctx, authzen.SearchActionRequest{
-			Subject: &subject, Resource: &resource,
+			Subject: &subject, Resource: &resource, Context: reqCtx,
 		})
 		if err != nil {
 			exutil.Fatal(err)
@@ -107,6 +117,7 @@ func main() {
 			Subject:  &subject,
 			Action:   &authzen.Action{Name: *action},
 			Resource: &authzen.NodeType{Type: *resourceType},
+			Context:  reqCtx,
 		})
 		if err != nil {
 			exutil.Fatal(err)
@@ -119,6 +130,7 @@ func main() {
 			Subject:  &authzen.NodeType{Type: *subjectType},
 			Action:   &authzen.Action{Name: *action},
 			Resource: &resource,
+			Context:  reqCtx,
 		})
 		if err != nil {
 			exutil.Fatal(err)
