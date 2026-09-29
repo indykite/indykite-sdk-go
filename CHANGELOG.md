@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.77.0](https://github.com/indykite/indykite-sdk-go/compare/v0.76.0...v0.77.0) (2026-09-29)
+
+
+### Features
+
+* add claims and audit ([dae3273](https://github.com/indykite/indykite-sdk-go/commit/dae32730a08af646c5c907cbe93c2824d0719eee))
+* add claims and audit ([d04d4d2](https://github.com/indykite/indykite-sdk-go/commit/d04d4d2cb293dcfc5028d96d813ac0e0c942f898))
+* add claims and audit ([abbc482](https://github.com/indykite/indykite-sdk-go/commit/abbc48257d76dd227b37b9d1ca059cc719997228))
+
+
+### Miscellaneous Chores
+
+* **deps:** update ci-configs ([9cc6e4c](https://github.com/indykite/indykite-sdk-go/commit/9cc6e4c59db044875b9fb1349fed68fd6283f0d5))
+* **deps:** update golang:1.27-alpine Docker digest to 4cb7ac9 ([0c76e68](https://github.com/indykite/indykite-sdk-go/commit/0c76e68e9c727257d61e5f6dd4595214b1f5ac39))
+
 ## [0.76.0](https://github.com/indykite/indykite-sdk-go/compare/v0.75.0...v0.76.0) (2026-09-18)
 
 
