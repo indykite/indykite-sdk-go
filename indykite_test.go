@@ -142,7 +142,8 @@ func TestAccessorsNonNil(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	if cli.AuthZEN() == nil || cli.CIQ() == nil || cli.Capture() == nil || cli.EntityMatching() == nil {
+	if cli.AuthZEN() == nil || cli.CIQ() == nil || cli.Capture() == nil || cli.EntityMatching() == nil ||
+		cli.Audit() == nil {
 		t.Error("all service accessors must be non-nil")
 	}
 }
