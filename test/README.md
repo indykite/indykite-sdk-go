@@ -47,6 +47,13 @@ customer-managed path set `AUDIT_SIGNING_KEY_RESOURCE` and `AUDIT_SIGNING_KID`
 `AUDIT_SIGNING_AUTH_PARAMS` as a JSON object) to real material; the
 `TestIntegrationConfigAuditSigningCustomerManaged` test skips otherwise.
 
+The live audit-log specs (`TestIntegrationAudit`, package `audit`) need the
+App Agent to hold the `Audit` API permission and the platform to serve the
+audit API (triton). They skip when either is missing: a 401/403 means the
+permission is not granted, and a 404 on the public
+`/audit/.well-known/jwks.json` route means triton is not deployed on that
+environment yet. Neither is a fixture the setup tool can provision.
+
 CI needs no manual copies: both the Integration job (go-tests.yaml) and the
 go-sdk-tests pipeline image (docker/infra/startscript.sh) run `setup apply`
 themselves before the tests and adopt the env it prints.

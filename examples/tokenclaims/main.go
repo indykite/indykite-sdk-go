@@ -109,7 +109,9 @@ func kbacPolicy(actor string) string {
 
 // ciqPolicy lets an agent acting for a Person read the external ids of the
 // person's documents. $token.sub binds the subject in the cypher; the acting
-// agent is checked in a filter on $ik_token.
+// agent is checked in a filter whose attribute is the token-claim reference
+// $ik_token.act.sub (a supported attribute form, distinct from a graph
+// property), so the two ways of reading a claim are both shown.
 func ciqPolicy(actor string) string {
 	return mustJSON(map[string]any{
 		"meta":    map[string]any{"policy_version": "1.0-ciq"},
