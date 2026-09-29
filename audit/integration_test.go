@@ -28,11 +28,34 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+// deployed caches the one-time probe of the audit API. The API is served by
+// triton, which the platform umbrella chart still ships disabled outside the
+// tamper-proof pipeline rollout (ENG-8630), so on such an environment every
+// /audit path falls through to the ingress's empty 404. The public JWKS route
+// tells the two cases apart without needing the Audit permission, and the
+// hermetic specs in client_test.go pin the paths, so a wrong path cannot hide
+// behind this skip.
+var deployed *bool
+
 var _ = Describe("Audit (live platform)", Label("integration"), func() {
 	var (
 		c       *audit.Client
 		project string
 	)
+
+	skipUnlessDeployed := func(ctx SpecContext) {
+		GinkgoHelper()
+		if deployed == nil {
+			_, err := c.JWKS(ctx, project)
+			apiErr, isAPI := transport.AsAPIError(err)
+			ok := !isAPI || !apiErr.IsNotFound()
+			deployed = &ok
+		}
+		if !*deployed {
+			Skip("audit API not deployed on this platform (GET /audit/.well-known/jwks.json is 404: " +
+				"triton is not enabled there yet)")
+		}
+	}
 
 	BeforeEach(func(ctx SpecContext) {
 		if os.Getenv("INDYKITE_APPLICATION_CREDENTIALS") == "" &&
@@ -50,6 +73,7 @@ var _ = Describe("Audit (live platform)", Label("integration"), func() {
 		cli, err := indykite.NewClientFromEnv(ctx, opts...)
 		Expect(err).NotTo(HaveOccurred())
 		c = cli.Audit()
+		skipUnlessDeployed(ctx)
 	})
 
 	// skipWithoutPermission skips the spec when the App Agent lacks the Audit
