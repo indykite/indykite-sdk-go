@@ -30,7 +30,6 @@ if [[ ${retVal} -ne 0 ]]; then
 fi
 
 cd ./*/ || exit
-export RUN_ENV=${RUN_ENV:=${BRANCH}}
 export RELEASE_VERSION="${RELEASE_VERSION:=unknown}"
 export BUCKET_NAME="${BUCKET_NAME:=sdk_results_deploy}"
 export SECRET_NAME=${SECRET_NAME:=goSdkTests}
@@ -58,7 +57,7 @@ fi
 
 # setup reporting variables
 run_date=$(date +%Y%m%d-%H%M)
-result_file_name="${RELEASE_VERSION}_results_sdk_${RUN_ENV}_${run_date}_report.html"
+result_file_name="${RELEASE_VERSION}_results_sdk_${BRANCH}_${run_date}_report.html"
 storage="https://storage.cloud.google.com/${BUCKET_NAME}/${result_file_name}"
 
 # The 'report' target runs the integration suite once with pipefail.
