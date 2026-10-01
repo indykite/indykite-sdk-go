@@ -30,9 +30,10 @@ scan:
   disable-telemetry: true
   offline: true
   scanners:
-    - vuln
+    # - vuln # keep disabled so not checked on PRs but explicitly via scheduled .github/workflows/pre-commit-cache.yaml
     - secret
     - misconfig
+    - license # while enabled but run via the separate 'trivy-license' action
   skip-dirs: ["**/.terraform/**", "**/.terragrunt-cache/**", "openapi/**"]
   # skip-files: []
   show-suppressed: true
