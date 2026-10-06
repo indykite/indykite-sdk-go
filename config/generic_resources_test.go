@@ -430,12 +430,22 @@ func TestResourceCRUD(t *testing.T) {
 				t.Errorf("read ETag = %q, want \"v2\"", etag)
 			}
 
-			if _, err = tc.read(ctx, admin, "by-name", config.WithProjectID("gid:scope")); err != nil {
+			// Project-scoped names need their parent project; organization-scoped
+			// names resolve within the caller's organization without a scope.
+			var byNameOpts []config.ReadOption
+			if tc.scopeKey == "project_id" {
+				byNameOpts = append(byNameOpts, config.WithProjectID("gid:scope"))
+			}
+			if _, err = tc.read(ctx, admin, "by-name", byNameOpts...); err != nil {
 				t.Fatalf("Read by name: %v", err)
 			}
 			rec.wantReq(t, http.MethodGet, tc.basePath+"/by-name")
-			if rec.query.Get("project_id") != "gid:scope" {
-				t.Errorf("read-by-name query = %v, want project_id=gid:scope", rec.query)
+			if tc.scopeKey == "project_id" {
+				if rec.query.Get("project_id") != "gid:scope" {
+					t.Errorf("read-by-name query = %v, want project_id=gid:scope", rec.query)
+				}
+			} else if len(rec.query) != 0 {
+				t.Errorf("read-by-name query = %v, want none for an organization-scoped resource", rec.query)
 			}
 
 			updated, err := tc.update(ctx, admin, "gid:res", etag)
