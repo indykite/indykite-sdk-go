@@ -70,7 +70,7 @@ func (a *ProjectAPI) Create(ctx context.Context, req *CreateProject) (*WriteResu
 	return write(ctx, a.t, http.MethodPost, pathProjects, req)
 }
 
-// Read fetches one project by gid (or by name with WithLocation).
+// Read fetches one project by gid or name (names resolve within the caller's organization).
 func (a *ProjectAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*Project, error) {
 	return readResource[Project](ctx, a.t, pathProjects, id, readOptsQuery(opts))
 }

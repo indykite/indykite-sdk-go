@@ -88,7 +88,7 @@ func (a *TokenIntrospectAPI) Create(ctx context.Context, req *CreateTokenIntrosp
 	return write(ctx, a.t, http.MethodPost, pathTokenIntrospects, req)
 }
 
-// Read fetches one token introspect config by gid (or by name with WithLocation).
+// Read fetches one token introspect config by gid (or by name with WithProjectID).
 func (a *TokenIntrospectAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*TokenIntrospect, error) {
 	return readResource[TokenIntrospect](ctx, a.t, pathTokenIntrospects, id, readOptsQuery(opts))
 }

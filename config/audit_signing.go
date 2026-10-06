@@ -95,7 +95,7 @@ func (a *AuditSigningAPI) Create(ctx context.Context, req *CreateAuditSigning) (
 	return write(ctx, a.t, http.MethodPost, pathAuditSignings, req)
 }
 
-// Read fetches one audit signing config by gid (or by name with WithLocation).
+// Read fetches one audit signing config by gid (or by name with WithProjectID).
 func (a *AuditSigningAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*AuditSigning, error) {
 	return readResource[AuditSigning](ctx, a.t, pathAuditSignings, id, readOptsQuery(opts))
 }

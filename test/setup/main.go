@@ -230,7 +230,7 @@ func (m *manifest) resolveProject(ctx context.Context, admin *config.AdminClient
 
 // ensurePolicy finds a policy by name or creates it, returning its gid.
 func (m *manifest) ensurePolicy(ctx context.Context, admin *config.AdminClient, spec *policySpec) (string, error) {
-	existing, err := admin.AuthorizationPolicies().Read(ctx, spec.Name, config.WithLocation(m.ProjectID))
+	existing, err := admin.AuthorizationPolicies().Read(ctx, spec.Name, config.WithProjectID(m.ProjectID))
 	if err == nil {
 		log.Printf("policy %q exists: %s", spec.Name, existing.ID)
 		return existing.ID, nil
@@ -254,7 +254,7 @@ func (m *manifest) ensurePolicy(ctx context.Context, admin *config.AdminClient, 
 }
 
 func (m *manifest) ensureQuery(ctx context.Context, admin *config.AdminClient, ciqPolicyID string) (string, error) {
-	existing, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithLocation(m.ProjectID))
+	existing, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithProjectID(m.ProjectID))
 	if err == nil {
 		log.Printf("knowledge query %q exists: %s", m.Query.Name, existing.ID)
 		return existing.ID, nil
@@ -279,7 +279,7 @@ func (m *manifest) ensureQuery(ctx context.Context, admin *config.AdminClient, c
 }
 
 func (m *manifest) ensurePipeline(ctx context.Context, admin *config.AdminClient) (string, error) {
-	existing, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithLocation(m.ProjectID))
+	existing, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithProjectID(m.ProjectID))
 	if err == nil {
 		log.Printf("entity-matching pipeline %q exists: %s", m.Pipeline.Name, existing.ID)
 		return existing.ID, nil
@@ -303,7 +303,7 @@ func (m *manifest) ensurePipeline(ctx context.Context, admin *config.AdminClient
 }
 
 func (m *manifest) ensureAuditSigning(ctx context.Context, admin *config.AdminClient) (string, error) {
-	existing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+	existing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithProjectID(m.ProjectID))
 	if err == nil {
 		log.Printf("audit signing %q exists: %s", m.AuditSigning.Name, existing.ID)
 		return existing.ID, nil
@@ -358,17 +358,17 @@ func (m *manifest) apply(ctx context.Context, admin *config.AdminClient, cli *in
 
 // resolve looks up the gids of already-provisioned resources.
 func (m *manifest) resolve(ctx context.Context, admin *config.AdminClient) error {
-	kq, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithLocation(m.ProjectID))
+	kq, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithProjectID(m.ProjectID))
 	if err != nil {
 		return fmt.Errorf("knowledge query %q not found; run apply first: %w", m.Query.Name, err)
 	}
 	m.KQID = kq.ID
-	pipe, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithLocation(m.ProjectID))
+	pipe, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithProjectID(m.ProjectID))
 	if err != nil {
 		return fmt.Errorf("pipeline %q not found; run apply first: %w", m.Pipeline.Name, err)
 	}
 	m.PipelineID = pipe.ID
-	signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+	signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithProjectID(m.ProjectID))
 	if err != nil {
 		return fmt.Errorf("audit signing %q not found; run apply first: %w", m.AuditSigning.Name, err)
 	}
@@ -412,35 +412,35 @@ func (m *manifest) destroy(ctx context.Context, admin *config.AdminClient, cli *
 		name string
 	}{
 		{name: m.Query.Name, del: func(ctx context.Context) error {
-			kq, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithLocation(m.ProjectID))
+			kq, err := admin.KnowledgeQueries().Read(ctx, m.Query.Name, config.WithProjectID(m.ProjectID))
 			if err != nil {
 				return err
 			}
 			return admin.KnowledgeQueries().Delete(ctx, kq.ID, "")
 		}},
 		{name: m.CIQPolicy.Name, del: func(ctx context.Context) error {
-			pol, err := admin.AuthorizationPolicies().Read(ctx, m.CIQPolicy.Name, config.WithLocation(m.ProjectID))
+			pol, err := admin.AuthorizationPolicies().Read(ctx, m.CIQPolicy.Name, config.WithProjectID(m.ProjectID))
 			if err != nil {
 				return err
 			}
 			return admin.AuthorizationPolicies().Delete(ctx, pol.ID, "")
 		}},
 		{name: m.KBACPolicy.Name, del: func(ctx context.Context) error {
-			pol, err := admin.AuthorizationPolicies().Read(ctx, m.KBACPolicy.Name, config.WithLocation(m.ProjectID))
+			pol, err := admin.AuthorizationPolicies().Read(ctx, m.KBACPolicy.Name, config.WithProjectID(m.ProjectID))
 			if err != nil {
 				return err
 			}
 			return admin.AuthorizationPolicies().Delete(ctx, pol.ID, "")
 		}},
 		{name: m.Pipeline.Name, del: func(ctx context.Context) error {
-			pipe, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithLocation(m.ProjectID))
+			pipe, err := admin.EntityMatchingPipelines().Read(ctx, m.Pipeline.Name, config.WithProjectID(m.ProjectID))
 			if err != nil {
 				return err
 			}
 			return admin.EntityMatchingPipelines().Delete(ctx, pipe.ID, "")
 		}},
 		{name: m.AuditSigning.Name, del: func(ctx context.Context) error {
-			signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithLocation(m.ProjectID))
+			signing, err := admin.AuditSignings().Read(ctx, m.AuditSigning.Name, config.WithProjectID(m.ProjectID))
 			if err != nil {
 				return err
 			}

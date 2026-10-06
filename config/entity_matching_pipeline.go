@@ -86,7 +86,7 @@ func (a *EntityMatchingPipelineAPI) Create(
 	return write(ctx, a.t, http.MethodPost, pathEntityMatchingPipelines, req)
 }
 
-// Read fetches one entity-matching pipeline by gid (or by name with WithLocation).
+// Read fetches one entity-matching pipeline by gid (or by name with WithProjectID).
 func (a *EntityMatchingPipelineAPI) Read(
 	ctx context.Context,
 	id string,

@@ -72,7 +72,7 @@ func (a *MCPServerAPI) Create(ctx context.Context, req *CreateMCPServer) (*Write
 	return write(ctx, a.t, http.MethodPost, pathMCPServers, req)
 }
 
-// Read fetches one MCP server config by gid (or by name with WithLocation).
+// Read fetches one MCP server config by gid (or by name with WithProjectID).
 func (a *MCPServerAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*MCPServer, error) {
 	return readResource[MCPServer](ctx, a.t, pathMCPServers, id, readOptsQuery(opts))
 }

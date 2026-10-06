@@ -162,6 +162,14 @@ func TestEventSinkCRUD(t *testing.T) {
 		t.Fatalf("Read: %+v", got)
 	}
 
+	if _, err = sinks.Read(ctx, "audit", config.WithProjectID("gid:proj")); err != nil {
+		t.Fatalf("Read by name: %v", err)
+	}
+	rec.wantReq(t, http.MethodGet, base+"/audit")
+	if rec.query.Get("project_id") != "gid:proj" {
+		t.Errorf("read-by-name query = %v, want project_id=gid:proj", rec.query)
+	}
+
 	if _, err = sinks.Update(ctx, "gid:sink", got.ETag, &config.UpdateEventSink{
 		Providers: got.Providers, Routes: got.Routes,
 	}); err != nil {

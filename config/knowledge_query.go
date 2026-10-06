@@ -70,7 +70,7 @@ func (a *KnowledgeQueryAPI) Create(ctx context.Context, req *CreateKnowledgeQuer
 	return write(ctx, a.t, http.MethodPost, pathKnowledgeQueries, req)
 }
 
-// Read fetches one knowledge query by gid (or by name with WithLocation).
+// Read fetches one knowledge query by gid (or by name with WithProjectID).
 func (a *KnowledgeQueryAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*KnowledgeQuery, error) {
 	return readResource[KnowledgeQuery](ctx, a.t, pathKnowledgeQueries, id, readOptsQuery(opts))
 }

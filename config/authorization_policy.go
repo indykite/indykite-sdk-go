@@ -50,7 +50,7 @@ func (a *AuthorizationPolicyAPI) Create(
 	return write(ctx, a.t, http.MethodPost, pathAuthorizationPolicies, req)
 }
 
-// Read fetches one policy by gid (or by name with WithLocation). The returned
+// Read fetches one policy by gid (or by name with WithProjectID). The returned
 // ETag is needed for a subsequent Update/Delete.
 func (a *AuthorizationPolicyAPI) Read(
 	ctx context.Context,
