@@ -23,8 +23,10 @@ import (
 	"github.com/indykite/indykite-sdk-go/transport"
 )
 
-// ReadOption customizes a read (by name requires the parent project; a version
-// pins a specific config version).
+// ReadOption customizes a read. Name lookups of project-scoped configs require
+// WithProjectID; organization-scoped ones (projects, service accounts) resolve
+// within the caller's organization and take no scope option. WithVersion pins a
+// specific config version.
 type ReadOption func(url.Values)
 
 // WithProjectID sets the parent project gid for name lookups of
@@ -37,10 +39,12 @@ func WithProjectID(projectID string) ReadOption {
 	}
 }
 
-// WithLocation sets the parent project gid for name lookups.
+// WithLocation sets the deprecated location scope for name lookups.
 //
-// Deprecated: the Config API deprecated the location query parameter; use
-// WithProjectID instead.
+// Deprecated: the Config API deprecated the location query parameter. For
+// project-scoped configs use WithProjectID instead; organization-scoped names
+// (projects, service accounts) resolve within the caller's organization without
+// a scope option.
 func WithLocation(location string) ReadOption {
 	return func(q url.Values) {
 		q.Del("project_id")
