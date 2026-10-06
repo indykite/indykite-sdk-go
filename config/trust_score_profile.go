@@ -86,7 +86,7 @@ func (a *TrustScoreProfileAPI) Create(ctx context.Context, req *CreateTrustScore
 	return write(ctx, a.t, http.MethodPost, pathTrustScoreProfiles, req)
 }
 
-// Read fetches one trust score profile by gid (or by name with WithLocation).
+// Read fetches one trust score profile by gid (or by name with WithProjectID).
 func (a *TrustScoreProfileAPI) Read(
 	ctx context.Context,
 	id string,

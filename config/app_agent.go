@@ -39,7 +39,7 @@ func (a *AppAgentAPI) Create(ctx context.Context, req *CreateAppAgent) (*WriteRe
 	return write(ctx, a.t, http.MethodPost, pathAppAgents, req)
 }
 
-// Read fetches one application agent by gid (or by name with WithLocation).
+// Read fetches one application agent by gid (or by name with WithProjectID).
 func (a *AppAgentAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*AppAgent, error) {
 	return readResource[AppAgent](ctx, a.t, pathAppAgents, id, readOptsQuery(opts))
 }

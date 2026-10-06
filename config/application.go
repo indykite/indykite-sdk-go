@@ -58,7 +58,7 @@ func (a *ApplicationAPI) Create(ctx context.Context, req *CreateApplication) (*W
 	return write(ctx, a.t, http.MethodPost, pathApplications, req)
 }
 
-// Read fetches one application by gid (or by name with WithLocation).
+// Read fetches one application by gid (or by name with WithProjectID).
 func (a *ApplicationAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*Application, error) {
 	return readResource[Application](ctx, a.t, pathApplications, id, readOptsQuery(opts))
 }

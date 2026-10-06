@@ -32,7 +32,7 @@ import (
 type crudCase struct {
 	list     func(ctx context.Context, a *config.AdminClient) error
 	create   func(ctx context.Context, a *config.AdminClient) (*config.WriteResult, error)
-	read     func(ctx context.Context, a *config.AdminClient, id string) (string, error)
+	read     func(ctx context.Context, a *config.AdminClient, id string, opts ...config.ReadOption) (string, error)
 	update   func(ctx context.Context, a *config.AdminClient, id, etag string) (*config.WriteResult, error)
 	remove   func(ctx context.Context, a *config.AdminClient, id, etag string) error
 	name     string
@@ -53,8 +53,8 @@ func crudCases() []crudCase {
 					OrganizationID: "gid:scope", Name: "proj", Region: "europe-west1",
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				p, err := a.Projects().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				p, err := a.Projects().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -79,8 +79,8 @@ func crudCases() []crudCase {
 					ProjectID: "gid:scope", Name: "app",
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				app, err := a.Applications().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				app, err := a.Applications().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -105,8 +105,8 @@ func crudCases() []crudCase {
 					OrganizationID: "gid:scope", Name: "sa", Role: config.RoleAllEditor,
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				sa, err := a.ServiceAccounts().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				sa, err := a.ServiceAccounts().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -132,8 +132,8 @@ func crudCases() []crudCase {
 					TokenIntrospectConfig: config.TokenIntrospectConfig{IkgNodeType: "Person"},
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				ti, err := a.TokenIntrospects().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				ti, err := a.TokenIntrospects().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -164,8 +164,8 @@ func crudCases() []crudCase {
 					},
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				r, err := a.ExternalDataResolvers().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				r, err := a.ExternalDataResolvers().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -196,8 +196,8 @@ func crudCases() []crudCase {
 					Schedule: config.ScheduleDaily, Dimensions: json.RawMessage(`[]`),
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				p, err := a.TrustScoreProfiles().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				p, err := a.TrustScoreProfiles().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -224,8 +224,8 @@ func crudCases() []crudCase {
 					NodeFilter: json.RawMessage(`{}`), SimilarityScoreCutoff: 0.9,
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				p, err := a.EntityMatchingPipelines().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				p, err := a.EntityMatchingPipelines().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -256,8 +256,8 @@ func crudCases() []crudCase {
 					},
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				s, err := a.MCPServers().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				s, err := a.MCPServers().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -292,8 +292,8 @@ func crudCases() []crudCase {
 					},
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				s, err := a.AuditSignings().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				s, err := a.AuditSignings().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -322,8 +322,8 @@ func crudCases() []crudCase {
 					APIPermissions: []string{config.PermissionAuthorization},
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				ag, err := a.AppAgents().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				ag, err := a.AppAgents().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -350,8 +350,8 @@ func crudCases() []crudCase {
 					Status: config.StatusActive, PolicyID: "gid:pol",
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				kq, err := a.KnowledgeQueries().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				kq, err := a.KnowledgeQueries().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -377,8 +377,8 @@ func crudCases() []crudCase {
 					ProjectID: "gid:scope", Name: "pol", Policy: "{}", Status: config.StatusActive,
 				})
 			},
-			read: func(ctx context.Context, a *config.AdminClient, id string) (string, error) {
-				pol, err := a.AuthorizationPolicies().Read(ctx, id)
+			read: func(ctx context.Context, a *config.AdminClient, id string, o ...config.ReadOption) (string, error) {
+				pol, err := a.AuthorizationPolicies().Read(ctx, id, o...)
 				if err != nil {
 					return "", err
 				}
@@ -430,6 +430,14 @@ func TestResourceCRUD(t *testing.T) {
 				t.Errorf("read ETag = %q, want \"v2\"", etag)
 			}
 
+			if _, err = tc.read(ctx, admin, "by-name", config.WithProjectID("gid:scope")); err != nil {
+				t.Fatalf("Read by name: %v", err)
+			}
+			rec.wantReq(t, http.MethodGet, tc.basePath+"/by-name")
+			if rec.query.Get("project_id") != "gid:scope" {
+				t.Errorf("read-by-name query = %v, want project_id=gid:scope", rec.query)
+			}
+
 			updated, err := tc.update(ctx, admin, "gid:res", etag)
 			if err != nil {
 				t.Fatalf("Update: %v", err)
@@ -465,12 +473,29 @@ func TestReadAndListOptions(t *testing.T) {
 	})
 	ctx := context.Background()
 
-	if _, err := admin.Projects().Read(ctx, "proj",
-		config.WithLocation("gid:org"), config.WithVersion(3)); err != nil {
+	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
+		config.WithProjectID("gid:proj"), config.WithVersion(3)); err != nil {
 		t.Fatalf("Read: %v", err)
 	}
-	if query.Get("location") != "gid:org" || query.Get("version") != "3" {
-		t.Errorf("read query = %v, want location=gid:org version=3", query)
+	if query.Get("project_id") != "gid:proj" || query.Get("version") != "3" || query.Has("location") {
+		t.Errorf("read query = %v, want project_id=gid:proj version=3", query)
+	}
+
+	// The backend rejects project_id together with location, so the last
+	// option wins and the other parameter is dropped.
+	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
+		config.WithProjectID("gid:proj"), config.WithLocation("gid:loc")); err != nil {
+		t.Fatalf("Read: %v", err)
+	}
+	if query.Get("location") != "gid:loc" || query.Has("project_id") {
+		t.Errorf("read query = %v, want only location=gid:loc", query)
+	}
+	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
+		config.WithLocation("gid:loc"), config.WithProjectID("gid:proj")); err != nil {
+		t.Fatalf("Read: %v", err)
+	}
+	if query.Get("project_id") != "gid:proj" || query.Has("location") {
+		t.Errorf("read query = %v, want only project_id=gid:proj", query)
 	}
 
 	if _, err := admin.Projects().List(ctx, "gid:org",

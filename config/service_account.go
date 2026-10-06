@@ -66,7 +66,7 @@ func (a *ServiceAccountAPI) Create(ctx context.Context, req *CreateServiceAccoun
 	return write(ctx, a.t, http.MethodPost, pathServiceAccounts, req)
 }
 
-// Read fetches one service account by gid (or by name with WithLocation).
+// Read fetches one service account by gid or name (names resolve within the caller's organization).
 func (a *ServiceAccountAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*ServiceAccount, error) {
 	return readResource[ServiceAccount](ctx, a.t, pathServiceAccounts, id, readOptsQuery(opts))
 }

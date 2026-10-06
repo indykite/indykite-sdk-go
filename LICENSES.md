@@ -2,7 +2,7 @@
 
 IndyKite Platform SDK for Go
 
-Generated at: 2026-09-17T23:49:12Z
+Generated at: 2026-10-06T17:01:52Z
 
 DO NOT EDIT!!
 
@@ -14,8 +14,8 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 
 | License | Classification | Severity | Count |
 | --- | --- | --- | ---: |
-| Apache-2.0 | notice | LOW | 26 |
-| BSD-3-Clause | notice | LOW | 25 |
+| Apache-2.0 | notice | LOW | 27 |
+| BSD-3-Clause | notice | LOW | 26 |
 | MIT | notice | LOW | 15 |
 | BSD-2-Clause | notice | LOW | 2 |
 | BSL-1.0 | notice | LOW | 1 |
@@ -24,14 +24,14 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | OpenSSL | notice | LOW | 1 |
 | Zlib | notice | LOW | 1 |
 
-**Total packages scanned:** 73
+**Total packages scanned:** 75
 
 ## Report Summary (by target)
 
 | Target | Type | Licenses |
 | --- | --- | ---: |
 | Loose File License(s) | - | 1 |
-| go.mod | gomod | 72 |
+| go.mod | gomod | 74 |
 
 ## Details
 
@@ -41,7 +41,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | --- | --- | --- | --- |
 | LICENSE | Apache-2.0 | notice | LOW |
 
-### `go.mod` (gomod) -- 72 licenses
+### `go.mod` (gomod) -- 74 licenses
 
 | Package | License | Classification | Severity |
 | --- | --- | --- | --- |
@@ -63,6 +63,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc | Apache-2.0 | notice | LOW |
 | go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp | Apache-2.0 | notice | LOW |
 | go.opentelemetry.io/otel | Apache-2.0 | notice | LOW |
+| go.opentelemetry.io/otel/log | Apache-2.0 | notice | LOW |
 | go.opentelemetry.io/otel/metric | Apache-2.0 | notice | LOW |
 | go.opentelemetry.io/otel/trace | Apache-2.0 | notice | LOW |
 | go.yaml.in/yaml/v3 | Apache-2.0 | notice | LOW |
@@ -81,6 +82,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc | BSD-3-Clause | notice | LOW |
 | go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp | BSD-3-Clause | notice | LOW |
 | go.opentelemetry.io/otel | BSD-3-Clause | notice | LOW |
+| go.opentelemetry.io/otel/log | BSD-3-Clause | notice | LOW |
 | go.opentelemetry.io/otel/metric | BSD-3-Clause | notice | LOW |
 | go.opentelemetry.io/otel/trace | BSD-3-Clause | notice | LOW |
 | golang.org/x/crypto | BSD-3-Clause | notice | LOW |

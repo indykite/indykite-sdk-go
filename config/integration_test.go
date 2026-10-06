@@ -129,9 +129,10 @@ func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
 }
 
 // TestIntegrationConfigAuditSigningCRUD runs the full ETag-guarded lifecycle
-// of a PLATFORM_MANAGED audit-signing config: create -> read by id and by
-// name -> update -> stale-ETag update is refused -> customer-managed provider
-// without key material is rejected -> list -> delete.
+// of a PLATFORM_MANAGED audit-signing config: create -> read by id, by name
+// (project_id and deprecated location; a bare name is refused) -> update ->
+// stale-ETag update is refused -> customer-managed provider without key
+// material is rejected -> list -> delete.
 //
 // It deliberately stays PLATFORM_MANAGED throughout: a customer-managed config
 // pointing at fake KMS material would be accepted by the config API but could
@@ -175,12 +176,28 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 		t.Error("Read returned no ETag")
 	}
 
-	byName, err := api.Read(ctx, name, config.WithLocation(project))
+	byName, err := api.Read(ctx, name, config.WithProjectID(project))
 	if err != nil {
 		t.Fatalf("Read by name: %v", err)
 	}
 	if byName.ID != created.ID {
 		t.Errorf("Read by name ID = %q, want %q", byName.ID, created.ID)
+	}
+
+	// The deprecated location parameter must keep resolving names.
+	byLocation, err := api.Read(ctx, name, config.WithLocation(project))
+	if err != nil {
+		t.Fatalf("Read by name with deprecated location: %v", err)
+	}
+	if byLocation.ID != created.ID {
+		t.Errorf("Read by name (location) ID = %q, want %q", byLocation.ID, created.ID)
+	}
+
+	// A name is ambiguous without its parent project; the platform must refuse it.
+	if _, err = api.Read(ctx, name); err == nil {
+		t.Error("Read by name without project succeeded, want validation error")
+	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusUnprocessableEntity {
+		t.Errorf("Read by name without project: got %v, want 422 APIError", err)
 	}
 
 	displayName := "SDK IT audit signing (renamed)"
@@ -344,9 +361,10 @@ func TestIntegrationConfigAuthorizationPolicyCRUD(t *testing.T) {
 	  "resource": {"type": "Asset"},
 	  "condition": {"cypher": "MATCH (subject:Person)-[:OWNS]->(resource:Asset)"}
 	}`
+	name := uniqueName("sdk-it-policy")
 	created, err := api.Create(ctx, &config.CreateAuthorizationPolicy{
 		ProjectID: project,
-		Name:      uniqueName("sdk-it-policy"),
+		Name:      name,
 		Policy:    policyJSON,
 		Status:    config.StatusDraft,
 	})
@@ -364,6 +382,14 @@ func TestIntegrationConfigAuthorizationPolicyCRUD(t *testing.T) {
 	}
 	if pol.ETag == "" {
 		t.Error("Read returned no ETag")
+	}
+
+	byName, err := api.Read(ctx, name, config.WithProjectID(project))
+	if err != nil {
+		t.Fatalf("Read by name: %v", err)
+	}
+	if byName.ID != created.ID {
+		t.Errorf("Read by name ID = %q, want %q", byName.ID, created.ID)
 	}
 
 	if _, err = api.Update(ctx, pol.ID, pol.ETag, &config.UpdateAuthorizationPolicy{

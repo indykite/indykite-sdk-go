@@ -82,7 +82,7 @@ func (a *ExternalDataResolverAPI) Create(ctx context.Context, req *CreateExterna
 	return write(ctx, a.t, http.MethodPost, pathExternalDataResolvers, req)
 }
 
-// Read fetches one external data resolver by gid (or by name with WithLocation).
+// Read fetches one external data resolver by gid (or by name with WithProjectID).
 func (a *ExternalDataResolverAPI) Read(
 	ctx context.Context,
 	id string,

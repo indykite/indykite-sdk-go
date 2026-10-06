@@ -136,7 +136,7 @@ func (a *EventSinkAPI) Create(ctx context.Context, req *CreateEventSink) (*Write
 	return write(ctx, a.t, http.MethodPost, pathEventSinks, req)
 }
 
-// Read fetches one event sink by gid (or by name with WithLocation).
+// Read fetches one event sink by gid (or by name with WithProjectID).
 func (a *EventSinkAPI) Read(ctx context.Context, id string, opts ...ReadOption) (*EventSink, error) {
 	return readResource[EventSink](ctx, a.t, pathEventSinks, id, readOptsQuery(opts))
 }
