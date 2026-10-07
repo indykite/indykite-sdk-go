@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.78.0](https://github.com/indykite/indykite-sdk-go/compare/v0.77.0...v0.78.0) (2026-10-07)
+
+
+### Features
+
+* replace location by project_id and deprecate ([5eb3826](https://github.com/indykite/indykite-sdk-go/commit/5eb382616656ba38f9343e87c9e102a924c7c541))
+* replace location by project_id and deprecate ([bdee80a](https://github.com/indykite/indykite-sdk-go/commit/bdee80a95d6a5cfd5fc8b6bdfbe30909753663ef))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([85705f0](https://github.com/indykite/indykite-sdk-go/commit/85705f0059ab37840a94bb7649eed764366918c1))
+* **deps:** update golang:1.27-alpine Docker digest to 8a5910f ([0c36def](https://github.com/indykite/indykite-sdk-go/commit/0c36defe60143e9f5fc6746abe6f086db8221f7e))
+
 ## [0.77.0](https://github.com/indykite/indykite-sdk-go/compare/v0.76.0...v0.77.0) (2026-09-29)
 
 
