@@ -16,7 +16,7 @@
 .shellcheckrc           @indykite/devx @indykite/ops
 .tfdocs-config.yaml     @indykite/devx @indykite/ops
 .tflint.hcl             @indykite/devx @indykite/ops
-.trivy*.                @indykite/devx @indykite/ops
+.trivy*                 @indykite/devx @indykite/ops
 .yamlfmt.yml            @indykite/devx @indykite/ops
 .yamllint.yml           @indykite/devx @indykite/ops
 
