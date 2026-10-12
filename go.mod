@@ -6,16 +6,16 @@ require (
 	cloud.google.com/go/bigquery v1.85.0
 	github.com/google/uuid v1.6.0
 	github.com/lestrrat-go/jwx/v4 v4.5.0
-	github.com/onsi/ginkgo/v2 v2.33.0
+	github.com/onsi/ginkgo/v2 v2.33.1
 	github.com/onsi/gomega v1.44.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.72.0
 	golang.org/x/oauth2 v0.37.0
-	google.golang.org/api v0.300.0
+	google.golang.org/api v0.301.0
 )
 
 require (
 	cloud.google.com/go v0.123.0 // indirect
-	cloud.google.com/go/auth v0.24.0 // indirect
+	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
 	cloud.google.com/go/iam v1.14.0 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/google/flatbuffers v25.12.19+incompatible // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/pprof v0.0.0-20260926063103-aaccee046517 // indirect
-	github.com/google/s2a-go v0.1.10 // indirect
+	github.com/google/s2a-go v0.1.11 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.22 // indirect
 	github.com/googleapis/gax-go/v2 v2.26.2 // indirect
 	github.com/klauspost/compress v1.20.1 // indirect
