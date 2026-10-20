@@ -47,6 +47,10 @@ customer-managed path set `AUDIT_SIGNING_KEY_RESOURCE` and `AUDIT_SIGNING_KID`
 `AUDIT_SIGNING_AUTH_PARAMS` as a JSON object) to real material; the
 `TestIntegrationConfigAuditSigningCustomerManaged` test skips otherwise.
 
+The platform allows only one audit-signing config per project, so the
+audit-signing tests need `AUDIT_SIGNING_ID` and never create their own config.
+They update the fixture and restore it to `PLATFORM_MANAGED` when they finish.
+
 The live audit-log specs (`TestIntegrationAudit`, package `audit`) need the
 App Agent to hold the `Audit` API permission and the platform to serve the
 audit API (triton). They skip when either is missing: a 401/403 means the
