@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.78.1](https://github.com/indykite/indykite-sdk-go/compare/v0.78.0...v0.78.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* update test to match new AuditSigning rules ([#516](https://github.com/indykite/indykite-sdk-go/issues/516)) ([d2d17a1](https://github.com/indykite/indykite-sdk-go/commit/d2d17a1474e58f5c955a3864adff25533d952dd3))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([1ad2cb2](https://github.com/indykite/indykite-sdk-go/commit/1ad2cb2aa847c246787fda8ee13cf106afd15cf8))
+* **deps:** update golang:1.27-alpine Docker digest to f92b6ef ([d0a6ebe](https://github.com/indykite/indykite-sdk-go/commit/d0a6ebeede4c859592586cfba5021c34b90171b2))
+* **deps:** update module golang.org/x/net to v0.60.0 [SECURITY] ([ecdd0d4](https://github.com/indykite/indykite-sdk-go/commit/ecdd0d4c7522837b0e4ccc8a2fe70471e3533f36))
+* **deps:** update module google.golang.org/api to v0.304.0 ([45a715c](https://github.com/indykite/indykite-sdk-go/commit/45a715ccf71b9b48a7b43b570ff7ca2f6f82b9d4))
+
 ## [0.78.0](https://github.com/indykite/indykite-sdk-go/compare/v0.77.0...v0.78.0) (2026-10-07)
 
 
