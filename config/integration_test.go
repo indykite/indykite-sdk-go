@@ -86,9 +86,49 @@ func TestIntegrationConfigOrganizationAndProjects(t *testing.T) {
 	t.Logf("organization %s has %d projects", org.ID, len(projects))
 }
 
+// The platform allows only one audit-signing config per project, and
+// `go run ./test/setup apply` provisions it (AUDIT_SIGNING_ID). The audit-signing
+// tests therefore never create their own config: they work on the fixture and
+// restore it when they are done.
+
+// auditSigningFixture returns the id of the fixture audit-signing config and
+// registers a cleanup that restores it to its provisioned PLATFORM_MANAGED
+// state, so a failed test does not leave it changed for the next run.
+func auditSigningFixture(t *testing.T, admin *config.AdminClient) string {
+	t.Helper()
+	id := os.Getenv("AUDIT_SIGNING_ID")
+	if id == "" {
+		t.Skip("AUDIT_SIGNING_ID not set")
+	}
+	ctx := context.Background()
+	api := admin.AuditSignings()
+	orig, err := api.Read(ctx, id)
+	if err != nil {
+		t.Fatalf("AuditSignings.Read fixture: %v", err)
+	}
+	t.Cleanup(func() {
+		cur, err := api.Read(ctx, id)
+		if err != nil {
+			t.Errorf("restore fixture: Read: %v", err)
+			return
+		}
+		if _, err = api.Update(ctx, id, cur.ETag, &config.UpdateAuditSigning{
+			DisplayName: &orig.DisplayName,
+			Description: &orig.Description,
+			AuditSigningConfig: config.AuditSigningConfig{
+				Provider: config.AuditSigningProviderPlatformManaged,
+			},
+		}); err != nil {
+			t.Errorf("restore fixture: Update: %v", err)
+		}
+	})
+	return id
+}
+
 // TestIntegrationConfigAuditSigningFixture reads the audit-signing config
 // provisioned by `go run ./test/setup apply` (AUDIT_SIGNING_ID) and checks the
 // platform-managed shape: provider set, no key material, secrets never echoed.
+// It also checks that a second config in the same project is refused.
 func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
 	admin := adminClient(t)
 	id := os.Getenv("AUDIT_SIGNING_ID")
@@ -96,6 +136,7 @@ func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
 		t.Skip("AUDIT_SIGNING_ID not set")
 	}
 	ctx := context.Background()
+	project := projectID(t)
 
 	signing, err := admin.AuditSignings().Read(ctx, id)
 	if err != nil {
@@ -116,23 +157,43 @@ func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
 		}
 	}
 
-	items, err := admin.AuditSignings().List(ctx, projectID(t))
+	items, err := admin.AuditSignings().List(ctx, project)
 	if err != nil {
 		t.Fatalf("AuditSignings.List: %v", err)
 	}
+	found := false
 	for i := range items {
 		if items[i].ID == id {
-			return
+			found = true
+			break
 		}
 	}
-	t.Errorf("fixture %s not present in AuditSignings.List of the project", id)
+	if !found {
+		t.Errorf("fixture %s not present in AuditSignings.List of the project", id)
+	}
+
+	// The project already holds the fixture; a second config must be refused.
+	created, err := admin.AuditSignings().Create(ctx, &config.CreateAuditSigning{
+		ProjectID: project,
+		Name:      uniqueName("sdk-it-audit-signing"),
+		AuditSigningConfig: config.AuditSigningConfig{
+			Provider: config.AuditSigningProviderPlatformManaged,
+		},
+	})
+	if err == nil {
+		t.Cleanup(func() { _ = admin.AuditSignings().Delete(ctx, created.ID, "") })
+		t.Error("Create of a second audit signing in the project succeeded, want conflict error")
+	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusConflict {
+		t.Errorf("Create of a second audit signing: got %v, want 409 APIError", err)
+	}
 }
 
-// TestIntegrationConfigAuditSigningCRUD runs the full ETag-guarded lifecycle
-// of a PLATFORM_MANAGED audit-signing config: create -> read by id, by name
-// (project_id and deprecated location; a bare name is refused) -> update ->
-// stale-ETag update is refused -> customer-managed provider without key
-// material is rejected -> list -> delete.
+// TestIntegrationConfigAuditSigningCRUD runs the ETag-guarded read and update
+// paths on the fixture audit-signing config: read by id, by name (project_id
+// and deprecated location; a bare name is refused) -> update -> stale-ETag
+// update is refused -> customer-managed provider without key material is
+// rejected -> list. Create and delete are not run here: the project already
+// holds its only config, and the fixture must survive the test.
 //
 // It deliberately stays PLATFORM_MANAGED throughout: a customer-managed config
 // pointing at fake KMS material would be accepted by the config API but could
@@ -144,30 +205,14 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 	ctx := context.Background()
 	project := projectID(t)
 	api := admin.AuditSignings()
+	id := auditSigningFixture(t, admin)
 
-	name := uniqueName("sdk-it-audit-signing")
-	created, err := api.Create(ctx, &config.CreateAuditSigning{
-		ProjectID:   project,
-		Name:        name,
-		DisplayName: "SDK IT audit signing",
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider: config.AuditSigningProviderPlatformManaged,
-		},
-	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	t.Cleanup(func() { _ = api.Delete(ctx, created.ID, "") })
-	if created.ID == "" || created.ETag == "" {
-		t.Fatalf("Create returned incomplete result: %+v", created)
-	}
-
-	signing, err := api.Read(ctx, created.ID)
+	signing, err := api.Read(ctx, id)
 	if err != nil {
 		t.Fatalf("Read: %v", err)
 	}
-	if signing.Name != name {
-		t.Errorf("Name = %q, want %q", signing.Name, name)
+	if signing.ID != id {
+		t.Errorf("ID = %q, want %q", signing.ID, id)
 	}
 	if signing.Provider != config.AuditSigningProviderPlatformManaged {
 		t.Errorf("Provider = %q, want %q", signing.Provider, config.AuditSigningProviderPlatformManaged)
@@ -175,13 +220,14 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 	if signing.ETag == "" {
 		t.Error("Read returned no ETag")
 	}
+	name := signing.Name
 
 	byName, err := api.Read(ctx, name, config.WithProjectID(project))
 	if err != nil {
 		t.Fatalf("Read by name: %v", err)
 	}
-	if byName.ID != created.ID {
-		t.Errorf("Read by name ID = %q, want %q", byName.ID, created.ID)
+	if byName.ID != id {
+		t.Errorf("Read by name ID = %q, want %q", byName.ID, id)
 	}
 
 	// The deprecated location parameter must keep resolving names.
@@ -189,8 +235,8 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Read by name with deprecated location: %v", err)
 	}
-	if byLocation.ID != created.ID {
-		t.Errorf("Read by name (location) ID = %q, want %q", byLocation.ID, created.ID)
+	if byLocation.ID != id {
+		t.Errorf("Read by name (location) ID = %q, want %q", byLocation.ID, id)
 	}
 
 	// A name is ambiguous without its parent project; the platform must refuse it.
@@ -200,7 +246,7 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 		t.Errorf("Read by name without project: got %v, want 422 APIError", err)
 	}
 
-	displayName := "SDK IT audit signing (renamed)"
+	displayName := uniqueName("SDK IT audit signing (renamed)")
 	updated, err := api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
 		DisplayName: &displayName,
 		AuditSigningConfig: config.AuditSigningConfig{
@@ -255,30 +301,15 @@ func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
 	if err != nil {
 		t.Fatalf("List: %v", err)
 	}
-	found := false
-	for i := range items {
-		if items[i].ID == signing.ID {
-			found = true
-			break
-		}
-	}
-	if !found {
-		t.Errorf("%s not in List of %d audit signings", signing.ID, len(items))
-	}
-
-	if err = api.Delete(ctx, got.ID, got.ETag); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	if _, err = api.Read(ctx, got.ID); err == nil {
-		t.Error("Read after delete succeeded, want not-found error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || !apiErr.IsNotFound() {
-		t.Errorf("Read after delete: got %v, want 404 APIError", err)
+	if len(items) != 1 || items[0].ID != id {
+		t.Errorf("List = %d audit signings, want exactly the fixture %s", len(items), id)
 	}
 }
 
-// TestIntegrationConfigAuditSigningCustomerManaged creates a customer-managed
-// audit-signing config from real key material and verifies the key fields
-// round-trip while auth-param secrets are masked on read. It is opt-in:
+// TestIntegrationConfigAuditSigningCustomerManaged switches the fixture
+// audit-signing config to customer-managed key material and verifies the key
+// fields round-trip while auth-param secrets are masked on read. The fixture
+// is restored to PLATFORM_MANAGED afterwards. It is opt-in:
 //
 //	AUDIT_SIGNING_KEY_RESOURCE  provider key reference (required to run)
 //	AUDIT_SIGNING_KID           key id (required to run)
@@ -301,27 +332,27 @@ func TestIntegrationConfigAuditSigningCustomerManaged(t *testing.T) {
 		}
 	}
 	ctx := context.Background()
-	project := projectID(t)
 	api := admin.AuditSignings()
+	id := auditSigningFixture(t, admin)
 
-	created, err := api.Create(ctx, &config.CreateAuditSigning{
-		ProjectID: project,
-		Name:      uniqueName("sdk-it-audit-signing-cm"),
+	current, err := api.Read(ctx, id)
+	if err != nil {
+		t.Fatalf("Read: %v", err)
+	}
+	if _, err = api.Update(ctx, id, current.ETag, &config.UpdateAuditSigning{
 		AuditSigningConfig: config.AuditSigningConfig{
 			Provider:    provider,
 			KeyResource: keyResource,
 			Kid:         kid,
 			AuthParams:  authParams,
 		},
-	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
+	}); err != nil {
+		t.Fatalf("Update to %s: %v", provider, err)
 	}
-	t.Cleanup(func() { _ = api.Delete(ctx, created.ID, "") })
 
-	got, err := api.Read(ctx, created.ID)
+	got, err := api.Read(ctx, id)
 	if err != nil {
-		t.Fatalf("Read: %v", err)
+		t.Fatalf("Read after update: %v", err)
 	}
 	if got.Provider != provider {
 		t.Errorf("Provider = %q, want %q", got.Provider, provider)
@@ -339,10 +370,6 @@ func TestIntegrationConfigAuditSigningCustomerManaged(t *testing.T) {
 		} else if v != "" {
 			t.Errorf("AuthParams[%q] echoed a value; the platform must mask secrets on read", k)
 		}
-	}
-
-	if err = api.Delete(ctx, got.ID, got.ETag); err != nil {
-		t.Fatalf("Delete: %v", err)
 	}
 }
 
