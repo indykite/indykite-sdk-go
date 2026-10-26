@@ -19,9 +19,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	"testing"
 
 	"github.com/indykite/indykite-sdk-go/auth"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // A valid EC P-256 App Agent credential (test key, not a real secret).
@@ -42,62 +44,50 @@ const appAgentCredJSON = `{
   }
 }`
 
-func TestAppAgentTokenIntoClientKeyHeader(t *testing.T) {
-	a, err := auth.AppAgentFromToken("agent-token-abc")
-	if err != nil {
-		t.Fatalf("AppAgentFromToken: %v", err)
-	}
-	if a.Plane() != auth.PlaneRuntime {
-		t.Errorf("plane = %v, want runtime", a.Plane())
-	}
+var _ = Describe("AppAgentFromToken", func() {
+	It("puts the token into the X-IK-ClientKey header", func() {
+		a, err := auth.AppAgentFromToken("agent-token-abc")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(a.Plane()).To(Equal(auth.PlaneRuntime))
 
-	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/eval", http.NoBody)
-	if err = a.Apply(context.Background(), req); err != nil {
-		t.Fatalf("Apply: %v", err)
-	}
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/eval", http.NoBody)
+		Expect(a.Apply(context.Background(), req)).To(Succeed())
 
-	if tok := req.Header.Get(auth.HeaderClientKey); tok != "agent-token-abc" {
-		t.Errorf("X-IK-ClientKey = %q, want the token verbatim", tok)
-	}
-	if req.Header.Get(auth.HeaderAuthorization) != "" {
-		t.Error("Authorization header should be empty on the runtime plane")
-	}
-}
+		Expect(req.Header.Get(auth.HeaderClientKey)).To(Equal("agent-token-abc"),
+			"X-IK-ClientKey should carry the token verbatim")
+		Expect(req.Header.Get(auth.HeaderAuthorization)).To(BeEmpty(),
+			"Authorization header should be empty on the runtime plane")
+	})
 
-func TestAppAgentTokenRejectsJSON(t *testing.T) {
-	if _, err := auth.AppAgentFromToken(`{"appAgentId":"x"}`); err == nil {
-		t.Error("expected error: the App Agent credential must be the raw token, not JSON")
-	}
-}
+	It("rejects JSON", func() {
+		_, err := auth.AppAgentFromToken(`{"appAgentId":"x"}`)
+		Expect(err).To(HaveOccurred(),
+			"the App Agent credential must be the raw token, not JSON")
+	})
+})
 
-func TestServiceAccountUsesBearer(t *testing.T) {
-	// Same key shape, but as a service account credential.
-	saCred := strings.Replace(appAgentCredJSON,
-		`"appAgentId": "fa50a80e-4840-4fc0-8958-982b84827f83",`,
-		`"serviceAccountId": "fa50a80e-4840-4fc0-8958-982b84827f83",`, 1)
+var _ = Describe("ServiceAccountFromJSON", func() {
+	It("uses a Bearer Authorization header", func() {
+		// Same key shape, but as a service account credential.
+		saCred := strings.Replace(appAgentCredJSON,
+			`"appAgentId": "fa50a80e-4840-4fc0-8958-982b84827f83",`,
+			`"serviceAccountId": "fa50a80e-4840-4fc0-8958-982b84827f83",`, 1)
 
-	a, err := auth.ServiceAccountFromJSON(context.Background(), []byte(saCred))
-	if err != nil {
-		t.Fatalf("ServiceAccountFromJSON: %v", err)
-	}
+		a, err := auth.ServiceAccountFromJSON(context.Background(), []byte(saCred))
+		Expect(err).NotTo(HaveOccurred())
 
-	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/cfg", http.NoBody)
-	if err = a.Apply(context.Background(), req); err != nil {
-		t.Fatalf("Apply: %v", err)
-	}
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/cfg", http.NoBody)
+		Expect(a.Apply(context.Background(), req)).To(Succeed())
 
-	authz := req.Header.Get(auth.HeaderAuthorization)
-	if !strings.HasPrefix(authz, "Bearer ") {
-		t.Errorf("Authorization = %q, want Bearer prefix", authz)
-	}
-	if req.Header.Get(auth.HeaderClientKey) != "" {
-		t.Error("X-IK-ClientKey should be empty on the control plane")
-	}
-}
+		Expect(req.Header.Get(auth.HeaderAuthorization)).To(HavePrefix("Bearer "))
+		Expect(req.Header.Get(auth.HeaderClientKey)).To(BeEmpty(),
+			"X-IK-ClientKey should be empty on the control plane")
+	})
+})
 
-func TestMissingCredentials(t *testing.T) {
-	_, err := auth.New(context.Background(), auth.PlaneRuntime)
-	if err == nil {
-		t.Fatal("expected error when no loader yields credentials")
-	}
-}
+var _ = Describe("New", func() {
+	It("fails when no loader yields credentials", func() {
+		_, err := auth.New(context.Background(), auth.PlaneRuntime)
+		Expect(err).To(HaveOccurred())
+	})
+})

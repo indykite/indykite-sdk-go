@@ -24,31 +24,40 @@ import (
 
 const pathProjects = "/configs/v1/projects"
 
+// IkgSchemaVersionV1 is the IKG schema version of a project, and the default
+// when CreateProject.IkgSchemaVersion is empty.
+const IkgSchemaVersionV1 = "v1"
+
 // Project is an organization-scoped project (formerly application space).
 // DBConnection is passed through as raw JSON; see the platform API reference.
 type Project struct {
 	Metadata
-	Region        string `json:"region,omitempty"`
-	IkgSize       string `json:"ikg_size,omitempty"`
-	IkgStatus     string `json:"ikg_status,omitempty"`
-	ReplicaRegion string `json:"replica_region,omitempty"`
+	Region           string `json:"region,omitempty"`
+	IkgSize          string `json:"ikg_size,omitempty"`
+	IkgStatus        string `json:"ikg_status,omitempty"`
+	IkgSchemaVersion string `json:"ikg_schema_version,omitempty"`
+	ReplicaRegion    string `json:"replica_region,omitempty"`
 	Versioned
 	DBConnection json.RawMessage `json:"db_connection,omitempty"`
 }
 
 // CreateProject is the body to create a project.
+//
+// IkgSchemaVersion is fixed at creation; empty means IkgSchemaVersionV1.
 type CreateProject struct {
-	OrganizationID string          `json:"organization_id"`
-	Name           string          `json:"name"`
-	DisplayName    string          `json:"display_name,omitempty"`
-	Description    string          `json:"description,omitempty"`
-	Region         string          `json:"region"`
-	IkgSize        string          `json:"ikg_size,omitempty"`
-	ReplicaRegion  string          `json:"replica_region,omitempty"`
-	DBConnection   json.RawMessage `json:"db_connection,omitempty"`
+	OrganizationID   string          `json:"organization_id"`
+	Name             string          `json:"name"`
+	DisplayName      string          `json:"display_name,omitempty"`
+	Description      string          `json:"description,omitempty"`
+	Region           string          `json:"region"`
+	IkgSize          string          `json:"ikg_size,omitempty"`
+	IkgSchemaVersion string          `json:"ikg_schema_version,omitempty"`
+	ReplicaRegion    string          `json:"replica_region,omitempty"`
+	DBConnection     json.RawMessage `json:"db_connection,omitempty"`
 }
 
-// UpdateProject is the body to update a project.
+// UpdateProject is the body to update a project. The IKG schema version cannot
+// be changed after creation.
 type UpdateProject struct {
 	DisplayName  *string         `json:"display_name,omitempty"`
 	Description  *string         `json:"description,omitempty"`

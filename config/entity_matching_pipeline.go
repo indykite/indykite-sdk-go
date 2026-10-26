@@ -24,7 +24,7 @@ import (
 
 const pathEntityMatchingPipelines = "/configs/v1/entity-matching-pipelines"
 
-// EntityMatchingPipeline configures a Metis entity-matching pipeline (project
+// EntityMatchingPipeline configures an entity-matching pipeline (project
 // scoped). NodeFilter is passed through as raw JSON; see the platform API ref.
 type EntityMatchingPipeline struct {
 	Metadata

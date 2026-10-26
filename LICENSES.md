@@ -1,8 +1,8 @@
 # Third-Party License Report
 
-IndyKite Platform SDK for Go
+<div align="left"> <a href="https://indykite.com"> <img src="https://raw.githubusercontent.com/indykite/.github/master/assets/squareformatlogo.png" alt="IndyKite Logo" width="100px" height="100px" align="right"> </a> </div>
 
-Generated at: 2026-10-06T17:01:52Z
+Generated at: 2026-10-26T13:03:06Z
 
 DO NOT EDIT!!
 
@@ -16,7 +16,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | --- | --- | --- | ---: |
 | Apache-2.0 | notice | LOW | 27 |
 | BSD-3-Clause | notice | LOW | 26 |
-| MIT | notice | LOW | 15 |
+| MIT | notice | LOW | 14 |
 | BSD-2-Clause | notice | LOW | 2 |
 | BSL-1.0 | notice | LOW | 1 |
 | Copyright | unknown | UNKNOWN | 1 |
@@ -24,14 +24,14 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | OpenSSL | notice | LOW | 1 |
 | Zlib | notice | LOW | 1 |
 
-**Total packages scanned:** 75
+**Total packages scanned:** 74
 
 ## Report Summary (by target)
 
 | Target | Type | Licenses |
 | --- | --- | ---: |
 | Loose File License(s) | - | 1 |
-| go.mod | gomod | 74 |
+| go.mod | gomod | 73 |
 
 ## Details
 
@@ -41,7 +41,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | --- | --- | --- | --- |
 | LICENSE | Apache-2.0 | notice | LOW |
 
-### `go.mod` (gomod) -- 74 licenses
+### `go.mod` (gomod) -- 73 licenses
 
 | Package | License | Classification | Severity |
 | --- | --- | --- | --- |
@@ -115,7 +115,6 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | github.com/lestrrat-go/option/v3 | MIT | notice | LOW |
 | github.com/onsi/ginkgo/v2 | MIT | notice | LOW |
 | github.com/onsi/gomega | MIT | notice | LOW |
-| github.com/valyala/fastjson | MIT | notice | LOW |
 | go.yaml.in/yaml/v3 | MIT | notice | LOW |
 | github.com/apache/arrow/go/v15 | OpenSSL | notice | LOW |
 | github.com/apache/arrow/go/v15 | Zlib | notice | LOW |

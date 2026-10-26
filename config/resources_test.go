@@ -15,107 +15,88 @@
 package config_test
 
 import (
-	"context"
 	"encoding/json"
 	"io"
 	"net/http"
 	"net/url"
-	"testing"
 
 	"github.com/indykite/indykite-sdk-go/config"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
-// TestKnowledgeQueryCRUD exercises a standard generic resource end to end.
-func TestKnowledgeQueryCRUD(t *testing.T) {
+// A standard generic resource exercised end to end.
+var _ = It("runs the knowledge query lifecycle", func(ctx SpecContext) {
 	const base = "/configs/v1/knowledge-queries"
 	var rec recorder
-	admin := adminTo(t, crudHandler(&rec, base, crudResponses{
+	admin := adminTo(crudHandler(&rec, base, crudResponses{
 		created: `{"id":"gid:kq"}`,
 		list:    `{"data":[{"id":"gid:kq","name":"q","status":"ACTIVE"}]}`,
 		read:    `{"id":"gid:kq","query":"{}","status":"ACTIVE","policy_id":"gid:p"}`,
 		updated: `{"id":"gid:kq"}`,
 	}))
 	kq := admin.KnowledgeQueries()
-	ctx := context.Background()
 
-	if _, err := kq.List(ctx, "gid:proj"); err != nil {
-		t.Fatalf("List: %v", err)
-	}
-	if rec.query.Get("project_id") != "gid:proj" {
-		t.Errorf("list query = %v", rec.query)
-	}
+	_, err := kq.List(ctx, "gid:proj")
+	Expect(err).NotTo(HaveOccurred())
+	Expect(rec.query.Get("project_id")).To(Equal("gid:proj"))
 
 	created, err := kq.Create(ctx, &config.CreateKnowledgeQuery{
 		ProjectID: "gid:proj", Name: "q", Query: "{}", Status: config.StatusActive, PolicyID: "gid:p",
 	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	wantWrite(t, created, `"v1"`)
+	Expect(err).NotTo(HaveOccurred())
+	expectWrite(created, `"v1"`)
 
 	got, err := kq.Read(ctx, "gid:kq")
-	if err != nil || got.PolicyID != "gid:p" || got.ETag != `"v2"` {
-		t.Fatalf("Read: %+v err=%v", got, err)
-	}
+	Expect(err).NotTo(HaveOccurred())
+	Expect(got.PolicyID).To(Equal("gid:p"))
+	Expect(got.ETag).To(Equal(`"v2"`))
 
-	if _, err = kq.Update(ctx, "gid:kq", got.ETag, &config.UpdateKnowledgeQuery{
+	_, err = kq.Update(ctx, "gid:kq", got.ETag, &config.UpdateKnowledgeQuery{
 		Query: "{}", Status: config.StatusInactive, PolicyID: "gid:p",
-	}); err != nil {
-		t.Fatalf("Update: %v", err)
-	}
-	if rec.ifMatch != `"v2"` {
-		t.Errorf("update If-Match = %q, want \"v2\"", rec.ifMatch)
-	}
+	})
+	Expect(err).NotTo(HaveOccurred())
+	Expect(rec.ifMatch).To(Equal(`"v2"`))
 
-	if err = kq.Delete(ctx, "gid:kq", got.ETag); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	rec.wantReq(t, http.MethodDelete, base+"/gid:kq")
-}
+	Expect(kq.Delete(ctx, "gid:kq", got.ETag)).To(Succeed())
+	rec.expectReq(http.MethodDelete, base+"/gid:kq")
+})
 
-func TestOrganizationReadCurrent(t *testing.T) {
+var _ = It("reads the current organization", func(ctx SpecContext) {
 	var path string
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
 		path = r.URL.Path
 		w.Header().Set("ETag", `"o1"`)
 		_, _ = io.WriteString(w, `{"id":"gid:org","name":"acme"}`)
 	})
-	org, err := admin.Organizations().ReadCurrent(context.Background())
-	if err != nil {
-		t.Fatalf("ReadCurrent: %v", err)
-	}
-	if path != "/configs/v1/organizations/current" {
-		t.Errorf("path = %q", path)
-	}
-	if org.ID != "gid:org" || org.ETag != `"o1"` {
-		t.Errorf("org = %+v", org)
-	}
-}
 
-func TestServiceAccountCredentialCreateReturnsConfig(t *testing.T) {
-	var body map[string]any
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		raw, _ := io.ReadAll(r.Body)
-		_ = json.Unmarshal(raw, &body)
+	org, err := admin.Organizations().ReadCurrent(ctx)
+	Expect(err).NotTo(HaveOccurred())
+	Expect(path).To(Equal("/configs/v1/organizations/current"))
+	Expect(org.ID).To(Equal("gid:org"))
+	Expect(org.ETag).To(Equal(`"o1"`))
+})
+
+var _ = It("returns the signed config of a new service account credential", func(ctx SpecContext) {
+	var rec recorder
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
+		rec.capture(r)
 		_, _ = io.WriteString(w, `{"id":"gid:cred","kid":"k1","service_account_config":{"appAgentId":"x"}}`)
 	})
-	res, err := admin.ServiceAccountCredentials().Create(context.Background(),
-		&config.CreateServiceAccountCredential{ServiceAccountID: "gid:sa", DisplayName: "ci"})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	if body["service_account_id"] != "gid:sa" {
-		t.Errorf("body = %v", body)
-	}
-	if res.Kid != "k1" || len(res.ServiceAccountConfig) == 0 {
-		t.Errorf("result = %+v", res)
-	}
-}
 
-func TestEventSinkCRUD(t *testing.T) {
+	res, err := admin.ServiceAccountCredentials().Create(ctx,
+		&config.CreateServiceAccountCredential{ServiceAccountID: "gid:sa", DisplayName: "ci"})
+	Expect(err).NotTo(HaveOccurred())
+	Expect(rec.body).To(HaveKeyWithValue("service_account_id", "gid:sa"))
+	Expect(res.Kid).To(Equal("k1"))
+	Expect(res.ServiceAccountConfig).NotTo(BeEmpty())
+})
+
+var _ = It("runs the event sink lifecycle with typed providers and routes", func(ctx SpecContext) {
 	const base = "/configs/v1/event-sinks"
 	var rec recorder
-	admin := adminTo(t, crudHandler(&rec, base, crudResponses{
+	admin := adminTo(crudHandler(&rec, base, crudResponses{
 		created: `{"id":"gid:sink"}`,
 		list:    `{"data":[{"id":"gid:sink","name":"audit"}]}`,
 		read: `{"id":"gid:sink","name":"audit",
@@ -126,14 +107,10 @@ func TestEventSinkCRUD(t *testing.T) {
 		updated: `{"id":"gid:sink"}`,
 	}))
 	sinks := admin.EventSinks()
-	ctx := context.Background()
 
-	if _, err := sinks.List(ctx, "gid:proj"); err != nil {
-		t.Fatalf("List: %v", err)
-	}
-	if rec.query.Get("project_id") != "gid:proj" {
-		t.Errorf("list query = %v", rec.query)
-	}
+	_, err := sinks.List(ctx, "gid:proj")
+	Expect(err).NotTo(HaveOccurred())
+	Expect(rec.query.Get("project_id")).To(Equal("gid:proj"))
 
 	created, err := sinks.Create(ctx, &config.CreateEventSink{
 		ProjectID: "gid:proj",
@@ -146,130 +123,216 @@ func TestEventSinkCRUD(t *testing.T) {
 			Filter:     config.EventSinkFilter{EventType: "indykite.audit.config.create"},
 		}},
 	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	wantWrite(t, created, `"v1"`)
-	if _, ok := rec.body["providers"].(map[string]any)["kafka-1"]; !ok {
-		t.Errorf("create body providers = %v", rec.body["providers"])
-	}
+	Expect(err).NotTo(HaveOccurred())
+	expectWrite(created, `"v1"`)
+	Expect(rec.body).To(HaveKeyWithValue("providers", HaveKey("kafka-1")))
 
 	got, err := sinks.Read(ctx, "gid:sink")
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if got.ETag != `"v2"` || !got.IncludeCDCEvents || got.Providers["kafka-1"].Kafka.Topic != "events" {
-		t.Fatalf("Read: %+v", got)
-	}
+	Expect(err).NotTo(HaveOccurred())
+	Expect(got.ETag).To(Equal(`"v2"`))
+	Expect(got.IncludeCDCEvents).To(BeTrue())
+	Expect(got.Providers).To(HaveKey("kafka-1"))
+	Expect(got.Providers["kafka-1"].Kafka.Topic).To(Equal("events"))
 
-	if _, err = sinks.Read(ctx, "audit", config.WithProjectID("gid:proj")); err != nil {
-		t.Fatalf("Read by name: %v", err)
-	}
-	rec.wantReq(t, http.MethodGet, base+"/audit")
-	if rec.query.Get("project_id") != "gid:proj" {
-		t.Errorf("read-by-name query = %v, want project_id=gid:proj", rec.query)
-	}
+	_, err = sinks.Read(ctx, "audit", config.WithProjectID("gid:proj"))
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodGet, base+"/audit")
+	Expect(rec.query.Get("project_id")).To(Equal("gid:proj"))
 
-	if _, err = sinks.Update(ctx, "gid:sink", got.ETag, &config.UpdateEventSink{
+	_, err = sinks.Update(ctx, "gid:sink", got.ETag, &config.UpdateEventSink{
 		Providers: got.Providers, Routes: got.Routes,
-	}); err != nil {
-		t.Fatalf("Update: %v", err)
-	}
-	if rec.ifMatch != `"v2"` {
-		t.Errorf("update If-Match = %q, want \"v2\"", rec.ifMatch)
-	}
+	})
+	Expect(err).NotTo(HaveOccurred())
+	Expect(rec.ifMatch).To(Equal(`"v2"`))
 
-	if err = sinks.Delete(ctx, "gid:sink", got.ETag); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	rec.wantReq(t, http.MethodDelete, base+"/gid:sink")
-}
+	Expect(sinks.Delete(ctx, "gid:sink", got.ETag)).To(Succeed())
+	rec.expectReq(http.MethodDelete, base+"/gid:sink")
+})
 
-func TestAppAgentUpdate(t *testing.T) {
-	var ifMatch, method, path string
-	var body map[string]any
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		method, path = r.Method, r.URL.Path
-		ifMatch = r.Header.Get("If-Match")
-		raw, _ := io.ReadAll(r.Body)
-		_ = json.Unmarshal(raw, &body)
+var _ = It("updates an app agent with If-Match", func(ctx SpecContext) {
+	var rec recorder
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
+		rec.capture(r)
 		w.Header().Set("ETag", `"a2"`)
 		_, _ = io.WriteString(w, `{"id":"gid:agent","update_time":"t1"}`)
 	})
 
 	name := "renamed"
-	res, err := admin.AppAgents().Update(context.Background(), "gid:agent", `"a1"`, &config.UpdateAppAgent{
+	res, err := admin.AppAgents().Update(ctx, "gid:agent", `"a1"`, &config.UpdateAppAgent{
 		DisplayName:    &name,
 		APIPermissions: []string{config.PermissionAuthorization, config.PermissionCapture},
 	})
-	if err != nil {
-		t.Fatalf("Update: %v", err)
-	}
-	if method != http.MethodPut || path != "/configs/v1/application-agents/gid:agent" {
-		t.Errorf("method/path = %s %s", method, path)
-	}
-	if ifMatch != `"a1"` {
-		t.Errorf("If-Match = %q", ifMatch)
-	}
-	if body["display_name"] != "renamed" {
-		t.Errorf("body = %v", body)
-	}
-	if res.ETag != `"a2"` {
-		t.Errorf("result = %+v", res)
-	}
-}
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodPut, "/configs/v1/application-agents/gid:agent")
+	Expect(rec.ifMatch).To(Equal(`"a1"`))
+	Expect(rec.body).To(HaveKeyWithValue("display_name", "renamed"))
+	Expect(res.ETag).To(Equal(`"a2"`))
+})
 
-func TestCredentialLists(t *testing.T) {
-	var query url.Values
-	var path string
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		path = r.URL.Path
-		query = r.URL.Query()
-		_, _ = io.WriteString(w, `{"data":[{"id":"gid:cred","kid":"k1"}]}`)
+var _ = Describe("credential lists", func() {
+	var rec recorder
+	var admin *config.AdminClient
+
+	BeforeEach(func() {
+		admin = adminTo(func(w http.ResponseWriter, r *http.Request) {
+			rec.capture(r)
+			_, _ = io.WriteString(w, `{"data":[{"id":"gid:cred","kid":"k1"}]}`)
+		})
 	})
 
-	saCreds, err := admin.ServiceAccountCredentials().List(context.Background(), "gid:org")
-	if err != nil {
-		t.Fatalf("List service-account-credentials: %v", err)
-	}
-	if path != "/configs/v1/service-account-credentials" || query.Get("organization_id") != "gid:org" {
-		t.Errorf("path=%q query=%v", path, query)
-	}
-	if len(saCreds) != 1 || saCreds[0].Kid != "k1" {
-		t.Errorf("saCreds = %+v", saCreds)
-	}
+	It("lists service account credentials of an organization", func(ctx SpecContext) {
+		saCreds, err := admin.ServiceAccountCredentials().List(ctx, "gid:org")
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodGet, "/configs/v1/service-account-credentials")
+		Expect(rec.query.Get("organization_id")).To(Equal("gid:org"))
+		Expect(saCreds).To(HaveLen(1))
+		Expect(saCreds[0].Kid).To(Equal("k1"))
+	})
 
-	agentCreds, err := admin.AppAgentCredentials().List(context.Background(), "gid:proj", config.WithSearch("ci"))
-	if err != nil {
-		t.Fatalf("List application-agent-credentials: %v", err)
-	}
-	if path != "/configs/v1/application-agent-credentials" ||
-		query.Get("project_id") != "gid:proj" || query.Get("search") != "ci" {
-		t.Errorf("path=%q query=%v", path, query)
-	}
-	if len(agentCreds) != 1 || agentCreds[0].ID != "gid:cred" {
-		t.Errorf("agentCreds = %+v", agentCreds)
-	}
-}
+	It("lists application agent credentials of a project", func(ctx SpecContext) {
+		agentCreds, err := admin.AppAgentCredentials().List(ctx, "gid:proj", config.WithSearch("ci"))
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodGet, "/configs/v1/application-agent-credentials")
+		Expect(rec.query).To(Equal(url.Values{"project_id": {"gid:proj"}, "search": {"ci"}}))
+		Expect(agentCreds).To(HaveLen(1))
+		Expect(agentCreds[0].ID).To(Equal("gid:cred"))
+	})
+})
 
-func TestDataSchemaRebuild(t *testing.T) {
-	var body map[string]any
-	var method, path string
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		method, path = r.Method, r.URL.Path
-		raw, _ := io.ReadAll(r.Body)
-		_ = json.Unmarshal(raw, &body)
+var _ = It("starts a data schema rebuild", func(ctx SpecContext) {
+	var rec recorder
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
+		rec.capture(r)
 		w.WriteHeader(http.StatusAccepted)
 		_, _ = io.WriteString(w, `{"status":"Rebuilding..."}`)
 	})
-	res, err := admin.DataSchema().Rebuild(context.Background(), "gid:proj")
-	if err != nil {
-		t.Fatalf("Rebuild: %v", err)
-	}
-	if method != http.MethodPost || path != "/configs/v1/data-schema/rebuild" {
-		t.Errorf("method/path = %s %s", method, path)
-	}
-	if body["project_id"] != "gid:proj" || res.Status != "Rebuilding..." {
-		t.Errorf("body=%v res=%+v", body, res)
-	}
-}
+
+	res, err := admin.DataSchema().Rebuild(ctx, "gid:proj")
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodPost, "/configs/v1/data-schema/rebuild")
+	Expect(rec.body).To(HaveKeyWithValue("project_id", "gid:proj"))
+	Expect(res.Status).To(Equal("Rebuilding..."))
+})
+
+var _ = Describe("Token Introspect validation modes", func() {
+	const base = "/configs/v1/token-introspects"
+
+	It("sends offline validation with RFC 8414 discovery and reads it back", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, base, crudResponses{
+			created: `{"id":"gid:ti"}`,
+			read: `{"id":"gid:ti","ikg_node_type":"Person",
+				"jwt_matcher":{"issuer":"https://issuer.example.com/tenant","audience":"api"},
+				"offline_validation":{"public_jwks":[],"discovery":"rfc8414"}}`,
+		}))
+
+		_, err := admin.TokenIntrospects().Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: "gid:proj", Name: "rfc8414",
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType: "Person",
+				JwtMatcher:  json.RawMessage(`{"issuer":"https://issuer.example.com/tenant","audience":"api"}`),
+				OfflineValidation: json.RawMessage(
+					`{"discovery":"` + config.TokenIntrospectDiscoveryRFC8414 + `"}`),
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("offline_validation", HaveKeyWithValue("discovery", "rfc8414")))
+		Expect(rec.body).NotTo(HaveKey("online_validation"))
+		Expect(rec.body).NotTo(HaveKey("online_oauth2_validation"))
+
+		got, err := admin.TokenIntrospects().Read(ctx, "gid:ti")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.OfflineValidation).To(MatchJSON(`{"public_jwks":[],"discovery":"rfc8414"}`))
+		Expect(got.OnlineOAuth2Validation).To(BeEmpty())
+	})
+
+	It("sends OAuth 2.0 introspection validation and reads it back without the secret", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, base, crudResponses{
+			created: `{"id":"gid:ti"}`,
+			read: `{"id":"gid:ti","ikg_node_type":"Person","opaque_matcher":{"hint":"my.domain.com"},
+				"online_oauth2_validation":{"introspection_endpoint":"https://idp.example.com/introspect",
+					"secret_basic":{"client_id":"my-client"},"cache_ttl":300}}`,
+			updated: `{"id":"gid:ti"}`,
+		}))
+		oauth2 := json.RawMessage(`{"introspection_endpoint":"https://idp.example.com/introspect",
+			"secret_basic":{"client_id":"my-client","client_secret":"s3cret"},"cache_ttl":300}`)
+
+		_, err := admin.TokenIntrospects().Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: "gid:proj", Name: "oauth2",
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType:            "Person",
+				OpaqueMatcher:          json.RawMessage(`{"hint":"my.domain.com"}`),
+				OnlineOAuth2Validation: oauth2,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("online_oauth2_validation", And(
+			HaveKeyWithValue("introspection_endpoint", "https://idp.example.com/introspect"),
+			HaveKeyWithValue("secret_basic", HaveKeyWithValue("client_secret", "s3cret")),
+			HaveKeyWithValue("cache_ttl", BeNumerically("==", 300)),
+		)))
+		Expect(rec.body).NotTo(HaveKey("offline_validation"))
+		Expect(rec.body).NotTo(HaveKey("online_validation"))
+
+		got, err := admin.TokenIntrospects().Read(ctx, "gid:ti")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.OnlineOAuth2Validation).To(MatchJSON(`{"introspection_endpoint":"https://idp.example.com/introspect",
+			"secret_basic":{"client_id":"my-client"},"cache_ttl":300}`))
+
+		// An update may omit client_secret to keep the stored one.
+		_, err = admin.TokenIntrospects().Update(ctx, "gid:ti", got.ETag, &config.UpdateTokenIntrospect{
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType:            "Person",
+				OpaqueMatcher:          json.RawMessage(`{"hint":"my.domain.com"}`),
+				OnlineOAuth2Validation: got.OnlineOAuth2Validation,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodPut, base+"/gid:ti")
+		Expect(rec.body).To(HaveKeyWithValue("online_oauth2_validation",
+			HaveKeyWithValue("secret_basic", Equal(map[string]any{"client_id": "my-client"}))))
+	})
+})
+
+var _ = Describe("Project IKG schema version", func() {
+	It("sends the schema version on create and reads it back", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, "/configs/v1/projects", crudResponses{
+			created: `{"id":"gid:proj"}`,
+			read:    `{"id":"gid:proj","name":"proj","ikg_schema_version":"v1"}`,
+		}))
+
+		_, err := admin.Projects().Create(ctx, &config.CreateProject{
+			OrganizationID: "gid:org", Name: "proj", Region: "europe-west1",
+			IkgSchemaVersion: config.IkgSchemaVersionV1,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("ikg_schema_version", "v1"))
+
+		got, err := admin.Projects().Read(ctx, "gid:proj")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.IkgSchemaVersion).To(Equal(config.IkgSchemaVersionV1))
+	})
+
+	It("leaves the platform default when the version is unset", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, "/configs/v1/projects", genericCRUDResponses("gid:proj")))
+
+		_, err := admin.Projects().Create(ctx, &config.CreateProject{
+			OrganizationID: "gid:org", Name: "proj", Region: "europe-west1",
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).NotTo(HaveKey("ikg_schema_version"))
+	})
+
+	It("never sends the schema version on update, which cannot change it", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, "/configs/v1/projects", genericCRUDResponses("gid:proj")))
+
+		name := "renamed"
+		_, err := admin.Projects().Update(ctx, "gid:proj", "", &config.UpdateProject{DisplayName: &name})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(Equal(map[string]any{"display_name": "renamed"}))
+	})
+})

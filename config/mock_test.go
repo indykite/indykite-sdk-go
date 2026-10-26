@@ -15,18 +15,41 @@
 package config_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
-	"testing"
 
+	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/config"
+	"github.com/indykite/indykite-sdk-go/transport"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
+type stubProvider struct{}
+
+func (stubProvider) Token(context.Context) (string, error) { return "sa-token", nil }
+
+// adminTo wires an AdminClient to the given handler using a CONTROL-PLANE
+// authenticator (so requests must use Bearer auth). The server is torn down
+// when the spec ends.
+func adminTo(h http.HandlerFunc) *config.AdminClient {
+	GinkgoHelper()
+	srv := httptest.NewServer(h)
+	DeferCleanup(srv.Close)
+	a := auth.NewWithProvider(auth.PlaneControl, stubProvider{})
+	tc, err := transport.NewClient(a, transport.WithBaseURL(srv.URL))
+	Expect(err).NotTo(HaveOccurred())
+	return config.NewAdminClient(tc)
+}
+
 // recorder captures the most recent request a mock config server received, so
-// tests can assert the method, path, query, If-Match header and decoded body
+// specs can assert the method, path, query, If-Match header and decoded body
 // without repeating the extraction boilerplate.
 type recorder struct {
 	query   url.Values
@@ -49,29 +72,23 @@ func (rec *recorder) capture(r *http.Request) {
 	}
 }
 
-// wantReq asserts the last request's method and path.
-func (rec *recorder) wantReq(t *testing.T, method, path string) {
-	t.Helper()
-	if rec.method != method || rec.path != path {
-		t.Errorf("request = %s %s, want %s %s", rec.method, rec.path, method, path)
-	}
+// expectReq asserts the last request's method and path.
+func (rec *recorder) expectReq(method, path string) {
+	GinkgoHelper()
+	Expect(rec.method + " " + rec.path).To(Equal(method + " " + path))
 }
 
-// wantWrite asserts that a create/update returned a populated result carrying
+// expectWrite asserts that a create/update returned a populated result carrying
 // the expected ETag (captured from the response header).
-func wantWrite(t *testing.T, wr *config.WriteResult, wantETag string) {
-	t.Helper()
-	if wr.ID == "" {
-		t.Errorf("write result has no ID: %+v", wr)
-	}
-	if wr.ETag != wantETag {
-		t.Errorf("write ETag = %q, want %s", wr.ETag, wantETag)
-	}
+func expectWrite(wr *config.WriteResult, wantETag string) {
+	GinkgoHelper()
+	Expect(wr.ID).NotTo(BeEmpty(), "write result has no ID: %+v", wr)
+	Expect(wr.ETag).To(Equal(wantETag))
 }
 
 // crudResponses are the JSON bodies a crudHandler returns per verb. The handler
 // adds the ETag headers ("v1" on create, "v2" on read/list, "v3" on update) so
-// tests can assert ETag capture and If-Match propagation uniformly.
+// specs can assert ETag capture and If-Match propagation uniformly.
 type crudResponses struct {
 	created string
 	list    string
@@ -108,7 +125,7 @@ func crudHandler(rec *recorder, listPath string, resp crudResponses) http.Handle
 }
 
 // genericCRUDResponses are minimal responses for resources whose body fields the
-// test does not inspect (it only asserts routing and ETag capture).
+// spec does not inspect (it only asserts routing and ETag capture).
 func genericCRUDResponses(id string) crudResponses {
 	return crudResponses{
 		created: fmt.Sprintf(`{"id":%q,"create_time":"t0"}`, id),

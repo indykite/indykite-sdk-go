@@ -16,88 +16,89 @@ package main
 
 import (
 	"encoding/json"
-	"testing"
+	"sync"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
-// TestLoadFixtures pins the shipped fixture files: they must parse into the
-// tool's types and carry the pieces the integration tests depend on.
-func TestLoadFixtures(t *testing.T) {
-	m, err := load("../fixtures/config.json", "../fixtures/dataset.json")
-	if err != nil {
-		t.Fatalf("load: %v", err)
-	}
-	assertRequiredFields(t, m)
-	assertKBACPolicyValid(t, m)
-	assertDatasetSupportsAuthZEN(t, m)
-}
+// loadShipped parses the shipped fixture files once; the specs only read the
+// manifest, so they can share it.
+var loadShipped = sync.OnceValues(func() (*manifest, error) {
+	return load("../fixtures/config.json", "../fixtures/dataset.json")
+})
 
-// assertRequiredFields checks the config resource names and env keys the
-// integration tests depend on are all present.
-func assertRequiredFields(t *testing.T, m *manifest) {
-	t.Helper()
-	for name, s := range map[string]string{
-		"kbac_policy.name":              m.KBACPolicy.Name,
-		"kbac_policy.status":            m.KBACPolicy.Status,
-		"ciq_policy.name":               m.CIQPolicy.Name,
-		"knowledge_query.name":          m.Query.Name,
-		"entity_matching_pipeline.name": m.Pipeline.Name,
-		"audit_signing.name":            m.AuditSigning.Name,
-		"audit_signing.provider":        m.AuditSigning.Provider,
-	} {
-		if s == "" {
-			t.Errorf("%s is empty", name)
+// The shipped fixture files are pinned here: they must parse into the tool's
+// types and carry the pieces the integration tests depend on.
+var _ = Describe("shipped fixtures", func() {
+	var m *manifest
+
+	BeforeEach(func() {
+		var err error
+		m, err = loadShipped()
+		Expect(err).NotTo(HaveOccurred())
+	})
+
+	// The config resource names and env keys the integration tests depend on
+	// are all present.
+	DescribeTable("carry the config resource fields the integration tests depend on",
+		func(field func(*manifest) string) {
+			Expect(field(m)).NotTo(BeEmpty())
+		},
+		Entry("kbac_policy.name", func(m *manifest) string { return m.KBACPolicy.Name }),
+		Entry("kbac_policy.status", func(m *manifest) string { return m.KBACPolicy.Status }),
+		Entry("ciq_policy.name", func(m *manifest) string { return m.CIQPolicy.Name }),
+		Entry("knowledge_query.name", func(m *manifest) string { return m.Query.Name }),
+		Entry("entity_matching_pipeline.name", func(m *manifest) string { return m.Pipeline.Name }),
+		Entry("audit_signing.name", func(m *manifest) string { return m.AuditSigning.Name }),
+		Entry("audit_signing.provider", func(m *manifest) string { return m.AuditSigning.Provider }),
+	)
+
+	DescribeTable("carry the env keys the integration tests depend on",
+		func(key string) {
+			Expect(m.Env[key]).NotTo(BeEmpty(), "env %s missing from config.json", key)
+		},
+		Entry(nil, "AUTHZEN_SUBJECT_TYPE"),
+		Entry(nil, "AUTHZEN_SUBJECT_ID"),
+		Entry(nil, "AUTHZEN_ACTION"),
+		Entry(nil, "AUTHZEN_RESOURCE_TYPE"),
+		Entry(nil, "AUTHZEN_RESOURCE_ID"),
+		Entry(nil, "CIQ_INPUT_PARAMS"),
+	)
+
+	// The KBAC policy document is valid JSON of the expected version.
+	It("carry a valid 2.0-kbac policy document", func() {
+		var kbac struct {
+			Meta struct {
+				PolicyVersion string `json:"policy_version"`
+			} `json:"meta"`
 		}
-	}
-	for _, key := range []string{
-		"AUTHZEN_SUBJECT_TYPE", "AUTHZEN_SUBJECT_ID", "AUTHZEN_ACTION",
-		"AUTHZEN_RESOURCE_TYPE", "AUTHZEN_RESOURCE_ID", "CIQ_INPUT_PARAMS",
-	} {
-		if m.Env[key] == "" {
-			t.Errorf("env %s missing from config.json", key)
+		Expect(json.Unmarshal(m.KBACPolicy.Policy, &kbac)).To(Succeed(), "kbac policy JSON")
+		Expect(kbac.Meta.PolicyVersion).To(Equal("2.0-kbac"))
+	})
+
+	// The dataset carries the AUTHZEN fixture subject and resource and the
+	// OWNS edge that makes the decision true.
+	It("carry a dataset that supports the AUTHZEN fixture decision", func() {
+		Expect(m.loadedDataset.Nodes).NotTo(BeEmpty(), "dataset must carry nodes")
+		Expect(m.loadedDataset.Relationships).NotTo(BeEmpty(), "dataset must carry relationships")
+
+		subject, resource := m.Env["AUTHZEN_SUBJECT_ID"], m.Env["AUTHZEN_RESOURCE_ID"]
+		ids := make([]string, 0, len(m.loadedDataset.Nodes))
+		for _, n := range m.loadedDataset.Nodes {
+			ids = append(ids, n.ExternalID)
 		}
-	}
-}
+		Expect(ids).To(ContainElements(subject, resource), "AUTHZEN fixture ids not present in dataset")
 
-// assertKBACPolicyValid checks the KBAC policy document is valid JSON of the
-// expected version.
-func assertKBACPolicyValid(t *testing.T, m *manifest) {
-	t.Helper()
-	var kbac struct {
-		Meta struct {
-			PolicyVersion string `json:"policy_version"`
-		} `json:"meta"`
-	}
-	if err := json.Unmarshal(m.KBACPolicy.Policy, &kbac); err != nil {
-		t.Fatalf("kbac policy JSON: %v", err)
-	}
-	if kbac.Meta.PolicyVersion != "2.0-kbac" {
-		t.Errorf("kbac policy_version = %q, want 2.0-kbac", kbac.Meta.PolicyVersion)
-	}
-}
-
-// assertDatasetSupportsAuthZEN checks the dataset carries the AUTHZEN fixture
-// subject and resource and the OWNS edge that makes the decision true.
-func assertDatasetSupportsAuthZEN(t *testing.T, m *manifest) {
-	t.Helper()
-	if len(m.loadedDataset.Nodes) == 0 || len(m.loadedDataset.Relationships) == 0 {
-		t.Fatalf("dataset must carry nodes and relationships, got %d/%d",
-			len(m.loadedDataset.Nodes), len(m.loadedDataset.Relationships))
-	}
-
-	subject, resource := m.Env["AUTHZEN_SUBJECT_ID"], m.Env["AUTHZEN_RESOURCE_ID"]
-	byID := map[string]bool{}
-	for _, n := range m.loadedDataset.Nodes {
-		byID[n.ExternalID] = true
-	}
-	if !byID[subject] || !byID[resource] {
-		t.Errorf("AUTHZEN fixture ids %q/%q not present in dataset", subject, resource)
-	}
-
-	for _, r := range m.loadedDataset.Relationships {
-		if r.Type == "OWNS" && r.Source.ExternalID == subject && r.Target.ExternalID == resource {
-			return
+		owns := false
+		for _, r := range m.loadedDataset.Relationships {
+			if r.Type == "OWNS" && r.Source.ExternalID == subject && r.Target.ExternalID == resource {
+				owns = true
+				break
+			}
 		}
-	}
-	t.Errorf("dataset has no %s -[:OWNS]-> %s edge; the AUTHZEN fixture decision would be false",
-		subject, resource)
-}
+		Expect(owns).To(BeTrue(),
+			"dataset has no %s -[:OWNS]-> %s edge; the AUTHZEN fixture decision would be false",
+			subject, resource)
+	})
+})
