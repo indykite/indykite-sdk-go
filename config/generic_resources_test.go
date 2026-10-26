@@ -20,15 +20,16 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"testing"
 
 	"github.com/indykite/indykite-sdk-go/config"
 	"github.com/indykite/indykite-sdk-go/transport"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // crudCase describes one generic resource sub-API in terms of closures so a
-// single table-driven test can walk List/Create/Read/Update/Delete for all of
-// them.
+// single table can walk List/Create/Read/Update/Delete for all of them.
 type crudCase struct {
 	list     func(ctx context.Context, a *config.AdminClient) error
 	create   func(ctx context.Context, a *config.AdminClient) (*config.WriteResult, error)
@@ -396,178 +397,157 @@ func crudCases() []crudCase {
 	}
 }
 
-// TestResourceCRUD walks List/Create/Read/Update/Delete for every generic
-// resource sub-API and asserts method, path, query, If-Match and ETag capture.
-func TestResourceCRUD(t *testing.T) {
-	for _, tc := range crudCases() {
-		t.Run(tc.name, func(t *testing.T) {
-			var rec recorder
-			admin := adminTo(t, crudHandler(&rec, tc.basePath, genericCRUDResponses("gid:res")))
-			ctx := context.Background()
-			idPath := tc.basePath + "/gid:res"
+// Every generic resource sub-API walks List/Create/Read/Update/Delete; the
+// entries assert method, path, query, If-Match and ETag capture.
+var _ = DescribeTable("generic resource CRUD",
+	func(ctx SpecContext, tc crudCase) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, tc.basePath, genericCRUDResponses("gid:res")))
+		idPath := tc.basePath + "/gid:res"
 
-			if err := tc.list(ctx, admin); err != nil {
-				t.Fatalf("List: %v", err)
-			}
-			rec.wantReq(t, http.MethodGet, tc.basePath)
-			if rec.query.Get(tc.scopeKey) != "gid:scope" {
-				t.Errorf("list query[%s] = %q, want gid:scope", tc.scopeKey, rec.query.Get(tc.scopeKey))
-			}
+		Expect(tc.list(ctx, admin)).To(Succeed())
+		rec.expectReq(http.MethodGet, tc.basePath)
+		Expect(rec.query.Get(tc.scopeKey)).To(Equal("gid:scope"), "list query[%s]", tc.scopeKey)
 
-			created, err := tc.create(ctx, admin)
-			if err != nil {
-				t.Fatalf("Create: %v", err)
-			}
-			rec.wantReq(t, http.MethodPost, tc.basePath)
-			wantWrite(t, created, `"v1"`)
+		created, err := tc.create(ctx, admin)
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodPost, tc.basePath)
+		expectWrite(created, `"v1"`)
 
-			etag, err := tc.read(ctx, admin, "gid:res")
-			if err != nil {
-				t.Fatalf("Read: %v", err)
-			}
-			rec.wantReq(t, http.MethodGet, idPath)
-			if etag != `"v2"` {
-				t.Errorf("read ETag = %q, want \"v2\"", etag)
-			}
+		etag, err := tc.read(ctx, admin, "gid:res")
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodGet, idPath)
+		Expect(etag).To(Equal(`"v2"`))
 
-			// Project-scoped names need their parent project; organization-scoped
-			// names resolve within the caller's organization without a scope.
-			var byNameOpts []config.ReadOption
-			if tc.scopeKey == "project_id" {
-				byNameOpts = append(byNameOpts, config.WithProjectID("gid:scope"))
-			}
-			if _, err = tc.read(ctx, admin, "by-name", byNameOpts...); err != nil {
-				t.Fatalf("Read by name: %v", err)
-			}
-			rec.wantReq(t, http.MethodGet, tc.basePath+"/by-name")
-			if tc.scopeKey == "project_id" {
-				if rec.query.Get("project_id") != "gid:scope" {
-					t.Errorf("read-by-name query = %v, want project_id=gid:scope", rec.query)
-				}
-			} else if len(rec.query) != 0 {
-				t.Errorf("read-by-name query = %v, want none for an organization-scoped resource", rec.query)
-			}
+		// Project-scoped names need their parent project; organization-scoped
+		// names resolve within the caller's organization without a scope.
+		var byNameOpts []config.ReadOption
+		if tc.scopeKey == "project_id" {
+			byNameOpts = append(byNameOpts, config.WithProjectID("gid:scope"))
+		}
+		_, err = tc.read(ctx, admin, "by-name", byNameOpts...)
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodGet, tc.basePath+"/by-name")
+		if tc.scopeKey == "project_id" {
+			Expect(rec.query).To(Equal(url.Values{"project_id": {"gid:scope"}}))
+		} else {
+			Expect(rec.query).To(BeEmpty(), "no scope for an organization-scoped resource")
+		}
 
-			updated, err := tc.update(ctx, admin, "gid:res", etag)
-			if err != nil {
-				t.Fatalf("Update: %v", err)
-			}
-			rec.wantReq(t, http.MethodPut, idPath)
-			wantWrite(t, updated, `"v3"`)
-			if rec.ifMatch != `"v2"` {
-				t.Errorf("update If-Match = %q, want \"v2\"", rec.ifMatch)
-			}
+		updated, err := tc.update(ctx, admin, "gid:res", etag)
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodPut, idPath)
+		expectWrite(updated, `"v3"`)
+		Expect(rec.ifMatch).To(Equal(`"v2"`))
 
-			if err = tc.remove(ctx, admin, "gid:res", updated.ETag); err != nil {
-				t.Fatalf("Delete: %v", err)
-			}
-			rec.wantReq(t, http.MethodDelete, idPath)
-			if rec.ifMatch != `"v3"` {
-				t.Errorf("delete If-Match = %q, want \"v3\"", rec.ifMatch)
-			}
-		})
+		Expect(tc.remove(ctx, admin, "gid:res", updated.ETag)).To(Succeed())
+		rec.expectReq(http.MethodDelete, idPath)
+		Expect(rec.ifMatch).To(Equal(`"v3"`))
+	},
+	crudEntries(),
+)
+
+func crudEntries() []TableEntry {
+	cases := crudCases()
+	entries := make([]TableEntry, 0, len(cases))
+	for _, tc := range cases {
+		entries = append(entries, Entry(tc.name, tc))
 	}
+	return entries
 }
 
-// TestReadAndListOptions asserts the query parameters produced by the
-// Read/List option helpers.
-func TestReadAndListOptions(t *testing.T) {
+var _ = Describe("Read and List options", func() {
 	var query url.Values
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		query = r.URL.Query()
-		if r.URL.Path == "/configs/v1/projects" {
-			_, _ = io.WriteString(w, `{"data":[]}`)
-		} else {
-			_, _ = io.WriteString(w, `{"id":"gid:proj","name":"proj"}`)
-		}
-	})
-	ctx := context.Background()
+	var admin *config.AdminClient
 
-	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
-		config.WithProjectID("gid:proj"), config.WithVersion(3)); err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if query.Get("project_id") != "gid:proj" || query.Get("version") != "3" || query.Has("location") {
-		t.Errorf("read query = %v, want project_id=gid:proj version=3", query)
-	}
+	BeforeEach(func() {
+		admin = adminTo(func(w http.ResponseWriter, r *http.Request) {
+			query = r.URL.Query()
+			if r.URL.Path == "/configs/v1/projects" {
+				_, _ = io.WriteString(w, `{"data":[]}`)
+			} else {
+				_, _ = io.WriteString(w, `{"id":"gid:proj","name":"proj"}`)
+			}
+		})
+	})
+
+	It("sends project_id and version on read", func(ctx SpecContext) {
+		_, err := admin.KnowledgeQueries().Read(ctx, "kq", config.WithProjectID("gid:proj"), config.WithVersion(3))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(query).To(Equal(url.Values{"project_id": {"gid:proj"}, "version": {"3"}}))
+	})
 
 	// The backend rejects project_id together with location, so the last
 	// option wins and the other parameter is dropped.
-	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
-		config.WithProjectID("gid:proj"), config.WithLocation("gid:loc")); err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if query.Get("location") != "gid:loc" || query.Has("project_id") {
-		t.Errorf("read query = %v, want only location=gid:loc", query)
-	}
-	if _, err := admin.KnowledgeQueries().Read(ctx, "kq",
-		config.WithLocation("gid:loc"), config.WithProjectID("gid:proj")); err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if query.Get("project_id") != "gid:proj" || query.Has("location") {
-		t.Errorf("read query = %v, want only project_id=gid:proj", query)
-	}
+	DescribeTable("keeps only the last of project_id and location",
+		func(ctx SpecContext, opts []config.ReadOption, want url.Values) {
+			_, err := admin.KnowledgeQueries().Read(ctx, "kq", opts...)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(query).To(Equal(want))
+		},
+		Entry("location last",
+			[]config.ReadOption{config.WithProjectID("gid:proj"), config.WithLocation("gid:loc")},
+			url.Values{"location": {"gid:loc"}}),
+		Entry("project_id last",
+			[]config.ReadOption{config.WithLocation("gid:loc"), config.WithProjectID("gid:proj")},
+			url.Values{"project_id": {"gid:proj"}}),
+	)
 
-	if _, err := admin.Projects().List(ctx, "gid:org",
-		config.WithSearch("prod"), config.WithFullFetch()); err != nil {
-		t.Fatalf("List: %v", err)
-	}
-	if query.Get("organization_id") != "gid:org" || query.Get("search") != "prod" ||
-		query.Get("full_fetch") != "true" {
-		t.Errorf("list query = %v, want organization_id=gid:org search=prod full_fetch=true", query)
-	}
-}
-
-// TestAPIErrorPropagation asserts that non-2xx responses surface as
-// *transport.APIError on every CRUD verb.
-func TestAPIErrorPropagation(t *testing.T) {
-	admin := adminTo(t, func(w http.ResponseWriter, _ *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
-		_, _ = io.WriteString(w, `{"message":"resource not found","code":"NOT_FOUND"}`)
+	It("sends the scope, search and full_fetch on list", func(ctx SpecContext) {
+		_, err := admin.Projects().List(ctx, "gid:org", config.WithSearch("prod"), config.WithFullFetch())
+		Expect(err).NotTo(HaveOccurred())
+		Expect(query).To(Equal(url.Values{
+			"organization_id": {"gid:org"}, "search": {"prod"}, "full_fetch": {"true"},
+		}))
 	})
-	ctx := context.Background()
+})
 
-	checkErr := func(t *testing.T, op string, err error) {
-		t.Helper()
-		if err == nil {
-			t.Fatalf("%s: expected error, got nil", op)
-		}
+// Non-2xx responses surface as *transport.APIError on every CRUD verb.
+var _ = DescribeTable("API error propagation",
+	func(ctx SpecContext, call func(context.Context, *config.AdminClient) error) {
+		admin := adminTo(func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = io.WriteString(w, `{"message":"resource not found","code":"NOT_FOUND"}`)
+		})
+
+		err := call(ctx, admin)
+		Expect(err).To(HaveOccurred())
 		apiErr, ok := transport.AsAPIError(err)
-		if !ok {
-			t.Fatalf("%s: AsAPIError = false for %v", op, err)
-		}
-		if apiErr.StatusCode != http.StatusNotFound || !apiErr.IsNotFound() {
-			t.Errorf("%s: StatusCode = %d, want 404", op, apiErr.StatusCode)
-		}
-		if apiErr.Message != "resource not found" {
-			t.Errorf("%s: Message = %q", op, apiErr.Message)
-		}
-	}
+		Expect(ok).To(BeTrue(), "AsAPIError = false for %v", err)
+		Expect(apiErr.StatusCode).To(Equal(http.StatusNotFound))
+		Expect(apiErr.IsNotFound()).To(BeTrue())
+		Expect(apiErr.Message).To(Equal("resource not found"))
+	},
+	Entry("List", func(ctx context.Context, a *config.AdminClient) error {
+		_, err := a.MCPServers().List(ctx, "gid:proj")
+		return err
+	}),
+	Entry("Read", func(ctx context.Context, a *config.AdminClient) error {
+		_, err := a.MCPServers().Read(ctx, "gid:missing")
+		return err
+	}),
+	Entry("Create", func(ctx context.Context, a *config.AdminClient) error {
+		_, err := a.MCPServers().Create(ctx, &config.CreateMCPServer{ProjectID: "gid:proj", Name: "mcp"})
+		return err
+	}),
+	Entry("Delete", func(ctx context.Context, a *config.AdminClient) error {
+		return a.MCPServers().Delete(ctx, "gid:missing", `"v1"`)
+	}),
+	Entry("CredentialRead", func(ctx context.Context, a *config.AdminClient) error {
+		_, err := a.AppAgentCredentials().Read(ctx, "gid:missing")
+		return err
+	}),
+	Entry("Rebuild", func(ctx context.Context, a *config.AdminClient) error {
+		_, err := a.DataSchema().Rebuild(ctx, "gid:proj")
+		return err
+	}),
+)
 
-	_, err := admin.MCPServers().List(ctx, "gid:proj")
-	checkErr(t, "List", err)
-
-	_, err = admin.MCPServers().Read(ctx, "gid:missing")
-	checkErr(t, "Read", err)
-
-	_, err = admin.MCPServers().Create(ctx, &config.CreateMCPServer{ProjectID: "gid:proj", Name: "mcp"})
-	checkErr(t, "Create", err)
-
-	checkErr(t, "Delete", admin.MCPServers().Delete(ctx, "gid:missing", `"v1"`))
-
-	_, err = admin.AppAgentCredentials().Read(ctx, "gid:missing")
-	checkErr(t, "CredentialRead", err)
-
-	_, err = admin.DataSchema().Rebuild(ctx, "gid:proj")
-	checkErr(t, "Rebuild", err)
-}
-
-// TestAppAgentCredentialLifecycle covers Create/Read/Delete of application
-// agent credentials, which have no ETag and return the secret only on Create.
-func TestAppAgentCredentialLifecycle(t *testing.T) {
+// Application agent credentials have no ETag and return the secret only on Create.
+var _ = It("runs Create/Read/Delete of application agent credentials", func(ctx SpecContext) {
 	const base = "/configs/v1/application-agent-credentials"
 	var rec recorder
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
 		rec.capture(r)
 		if r.Method == http.MethodPost {
 			_, _ = io.WriteString(w, `{"id":"gid:cred","kid":"k1",
@@ -576,76 +556,48 @@ func TestAppAgentCredentialLifecycle(t *testing.T) {
 		}
 		_, _ = io.WriteString(w, `{"id":"gid:cred","kid":"k1","application_agent_id":"gid:agent"}`)
 	})
-	ctx := context.Background()
 	creds := admin.AppAgentCredentials()
 
 	res, err := creds.Create(ctx, &config.CreateAppAgentCredential{
 		ApplicationAgentID: "gid:agent", DisplayName: "ci",
 	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	rec.wantReq(t, http.MethodPost, base)
-	if rec.body["application_agent_id"] != "gid:agent" || rec.body["display_name"] != "ci" {
-		t.Errorf("create body = %v", rec.body)
-	}
-	if res.Kid != "k1" || len(res.ApplicationAgentConfig) == 0 {
-		t.Errorf("create result = %+v", res)
-	}
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodPost, base)
+	Expect(rec.body).To(HaveKeyWithValue("application_agent_id", "gid:agent"))
+	Expect(rec.body).To(HaveKeyWithValue("display_name", "ci"))
+	Expect(res.Kid).To(Equal("k1"))
+	Expect(res.ApplicationAgentConfig).NotTo(BeEmpty())
 
 	got, err := creds.Read(ctx, "gid:cred")
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	rec.wantReq(t, http.MethodGet, base+"/gid:cred")
-	if got.ID != "gid:cred" || got.ApplicationAgentID != "gid:agent" {
-		t.Errorf("read result = %+v", got)
-	}
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodGet, base+"/gid:cred")
+	Expect(got.ID).To(Equal("gid:cred"))
+	Expect(got.ApplicationAgentID).To(Equal("gid:agent"))
 
-	if err = creds.Delete(ctx, "gid:cred"); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	rec.wantReq(t, http.MethodDelete, base+"/gid:cred")
-}
+	Expect(creds.Delete(ctx, "gid:cred")).To(Succeed())
+	rec.expectReq(http.MethodDelete, base+"/gid:cred")
+})
 
-// TestServiceAccountCredentialReadDelete covers the metadata Read and revoking
-// Delete of service account credentials (Create/List are covered elsewhere).
-func TestServiceAccountCredentialReadDelete(t *testing.T) {
-	var method, path string
-	admin := adminTo(t, func(w http.ResponseWriter, r *http.Request) {
-		method, path = r.Method, r.URL.Path
+// Create/List of service account credentials are covered elsewhere.
+var _ = It("reads and revokes service account credentials", func(ctx SpecContext) {
+	const path = "/configs/v1/service-account-credentials/gid:cred"
+	var rec recorder
+	admin := adminTo(func(w http.ResponseWriter, r *http.Request) {
+		rec.capture(r)
 		if r.Method == http.MethodGet {
 			_, _ = io.WriteString(w, `{"id":"gid:cred","kid":"k1","service_account_id":"gid:sa"}`)
 			return
 		}
 		_, _ = io.WriteString(w, `{}`)
 	})
-	ctx := context.Background()
 	creds := admin.ServiceAccountCredentials()
 
 	got, err := creds.Read(ctx, "gid:cred")
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if method != http.MethodGet || path != "/configs/v1/service-account-credentials/gid:cred" {
-		t.Errorf("read method/path = %s %s", method, path)
-	}
-	if got.Kid != "k1" || got.ServiceAccountID != "gid:sa" {
-		t.Errorf("read result = %+v", got)
-	}
+	Expect(err).NotTo(HaveOccurred())
+	rec.expectReq(http.MethodGet, path)
+	Expect(got.Kid).To(Equal("k1"))
+	Expect(got.ServiceAccountID).To(Equal("gid:sa"))
 
-	if err = creds.Delete(ctx, "gid:cred"); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	if method != http.MethodDelete || path != "/configs/v1/service-account-credentials/gid:cred" {
-		t.Errorf("delete method/path = %s %s", method, path)
-	}
-}
-
-// TestAdminClientFromCredentialsInvalidJSON asserts the credential-parsing
-// error path of NewAdminClientFromCredentials.
-func TestAdminClientFromCredentialsInvalidJSON(t *testing.T) {
-	if _, err := config.NewAdminClientFromCredentials(context.Background(), []byte(`not-json`)); err == nil {
-		t.Fatal("expected error for invalid credentials JSON")
-	}
-}
+	Expect(creds.Delete(ctx, "gid:cred")).To(Succeed())
+	rec.expectReq(http.MethodDelete, path)
+})

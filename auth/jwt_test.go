@@ -27,194 +27,55 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	"testing"
 
 	"github.com/indykite/indykite-sdk-go/auth"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // pemPKCS8Key generates a fresh EC P-256 private key encoded as PKCS8 PEM.
-func pemPKCS8Key(t *testing.T) string {
-	t.Helper()
+func pemPKCS8Key() string {
+	GinkgoHelper()
 	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	if err != nil {
-		t.Fatalf("generate key: %v", err)
-	}
+	Expect(err).NotTo(HaveOccurred(), "generate key")
 	der, err := x509.MarshalPKCS8PrivateKey(key)
-	if err != nil {
-		t.Fatalf("marshal PKCS8: %v", err)
-	}
+	Expect(err).NotTo(HaveOccurred(), "marshal PKCS8")
 	var b strings.Builder
-	if err = pem.Encode(&b, &pem.Block{Type: "PRIVATE KEY", Bytes: der}); err != nil {
-		t.Fatalf("encode PEM: %v", err)
-	}
+	Expect(pem.Encode(&b, &pem.Block{Type: "PRIVATE KEY", Bytes: der})).To(Succeed(), "encode PEM")
 	return b.String()
 }
 
 // mintToken applies the authenticator to a request and returns the runtime-plane
 // token it produced.
-func mintToken(t *testing.T, a *auth.Authenticator) string {
-	t.Helper()
+func mintToken(a *auth.Authenticator) string {
+	GinkgoHelper()
 	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/x", http.NoBody)
-	if err := a.Apply(context.Background(), req); err != nil {
-		t.Fatalf("Apply: %v", err)
-	}
+	Expect(a.Apply(context.Background(), req)).To(Succeed())
 	tok := req.Header.Get(auth.HeaderClientKey)
-	if tok == "" {
-		t.Fatal("no token minted")
-	}
+	Expect(tok).NotTo(BeEmpty(), "no token minted")
 	return tok
-}
-
-func TestMintedJWTPayloadClaims(t *testing.T) {
-	a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticJSON([]byte(appAgentCredJSON)))
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
-	tok := mintToken(t, a)
-
-	parts := strings.Split(tok, ".")
-	if len(parts) != 3 {
-		t.Fatalf("token has %d segments, want 3", len(parts))
-	}
-	payload, err := base64.RawURLEncoding.DecodeString(parts[1])
-	if err != nil {
-		t.Fatalf("decode payload: %v", err)
-	}
-	var claims struct {
-		Iss string  `json:"iss"`
-		Sub string  `json:"sub"`
-		Jti string  `json:"jti"`
-		Iat float64 `json:"iat"`
-		Exp float64 `json:"exp"`
-	}
-	if err = json.Unmarshal(payload, &claims); err != nil {
-		t.Fatalf("unmarshal claims: %v", err)
-	}
-	const wantID = "fa50a80e-4840-4fc0-8958-982b84827f83"
-	if claims.Iss != wantID || claims.Sub != wantID {
-		t.Errorf("iss = %q sub = %q, want %q", claims.Iss, claims.Sub, wantID)
-	}
-	if claims.Jti == "" {
-		t.Error("jti claim missing")
-	}
-	// Default lifetime is one hour when none is configured.
-	if got := claims.Exp - claims.Iat; got != 3600 {
-		t.Errorf("exp-iat = %v, want 3600", got)
-	}
-
-	// A second Apply must reuse the cached token (oauth2.ReuseTokenSource).
-	if again := mintToken(t, a); again != tok {
-		t.Error("token was re-minted instead of reused before expiry")
-	}
-}
-
-func TestTokenLifetimeConfigurable(t *testing.T) {
-	creds := &auth.Credentials{
-		AppAgentID:    "agent-1",
-		TokenLifetime: "30m",
-		PrivateKeyJWK: json.RawMessage(testJWK),
-	}
-	a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
-	if err != nil {
-		t.Fatalf("New: %v", err)
-	}
-	parts := strings.Split(mintToken(t, a), ".")
-	payload, _ := base64.RawURLEncoding.DecodeString(parts[1])
-	var claims struct {
-		Iat float64 `json:"iat"`
-		Exp float64 `json:"exp"`
-	}
-	if err = json.Unmarshal(payload, &claims); err != nil {
-		t.Fatalf("unmarshal claims: %v", err)
-	}
-	if got := claims.Exp - claims.Iat; got != 1800 {
-		t.Errorf("exp-iat = %v, want 1800", got)
-	}
-}
-
-func TestTokenLifetimeInvalid(t *testing.T) {
-	creds := &auth.Credentials{
-		AppAgentID:    "agent-1",
-		TokenLifetime: "not-a-duration",
-		PrivateKeyJWK: json.RawMessage(testJWK),
-	}
-	_, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
-	if err == nil || !strings.Contains(err.Error(), "tokenLifetime") {
-		t.Errorf("error = %v, want tokenLifetime parse error", err)
-	}
 }
 
 // PEM PKCS8 keys carry no "alg" hint, so the authenticator builds fine but the
 // current signer refuses to mint until an algorithm is known. Cover the loading
 // branches and the sign-time error propagation through Apply.
-func applyPKCS8(t *testing.T, creds *auth.Credentials) error {
-	t.Helper()
+func applyPKCS8(creds *auth.Credentials) error {
+	GinkgoHelper()
 	a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
-	if err != nil {
-		t.Fatalf("New with PKCS8 key: %v", err)
-	}
+	Expect(err).NotTo(HaveOccurred(), "New with PKCS8 key")
 	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/x", http.NoBody)
 	return a.Apply(context.Background(), req)
 }
 
-func TestPrivateKeyPKCS8PEM(t *testing.T) {
-	creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8: pemPKCS8Key(t)}
-	if err := applyPKCS8(t, creds); err == nil {
-		t.Log("PKCS8 PEM key minted a token")
-	} else if !strings.Contains(err.Error(), "algorithm") {
-		t.Errorf("Apply error = %v, want a signing-algorithm error", err)
+// expectPKCS8Outcome accepts either a minted token or a signing-algorithm error.
+func expectPKCS8Outcome(err error, kind string) {
+	GinkgoHelper()
+	if err == nil {
+		GinkgoWriter.Printf("PKCS8 %s key minted a token\n", kind)
+		return
 	}
-}
-
-func TestPrivateKeyPKCS8Base64(t *testing.T) {
-	encoded := base64.StdEncoding.EncodeToString([]byte(pemPKCS8Key(t)))
-	creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8Base64: encoded}
-	if err := applyPKCS8(t, creds); err == nil {
-		t.Log("PKCS8 base64 key minted a token")
-	} else if !strings.Contains(err.Error(), "algorithm") {
-		t.Errorf("Apply error = %v, want a signing-algorithm error", err)
-	}
-}
-
-func TestPrivateKeyErrors(t *testing.T) {
-	tests := []struct {
-		name  string
-		creds *auth.Credentials
-	}{
-		{"no key at all", &auth.Credentials{AppAgentID: "agent-1"}},
-		{"invalid base64", &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8Base64: "%%%not-base64%%%"}},
-		{"invalid PEM", &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8: "not a pem block"}},
-		{"JWK not a key", &auth.Credentials{AppAgentID: "agent-1",
-			PrivateKeyJWK: json.RawMessage(`{"kty":"nope"}`)}},
-		{"JWK string not JSON", &auth.Credentials{AppAgentID: "agent-1",
-			PrivateKeyJWK: json.RawMessage(`"unterminated`)}},
-		{"JWK string not a key", &auth.Credentials{AppAgentID: "agent-1",
-			PrivateKeyJWK: json.RawMessage(`"not a key"`)}},
-	}
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			_, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(tc.creds))
-			if err == nil {
-				t.Error("expected error")
-			}
-		})
-	}
-}
-
-func TestPrivateKeyJWKAsJSONString(t *testing.T) {
-	// The JWK may be delivered as a JSON string containing the key document.
-	quoted, err := json.Marshal(testJWK)
-	if err != nil {
-		t.Fatalf("quote JWK: %v", err)
-	}
-	creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyJWK: quoted}
-	a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
-	if err != nil {
-		t.Fatalf("New with quoted JWK: %v", err)
-	}
-	if parts := strings.Split(mintToken(t, a), "."); len(parts) != 3 {
-		t.Errorf("token is not a JWT (%d segments)", len(parts))
-	}
+	Expect(err).To(MatchError(ContainSubstring("algorithm")), "want a signing-algorithm error")
 }
 
 type errProvider struct{}
@@ -223,23 +84,115 @@ func (errProvider) Token(context.Context) (string, error) {
 	return "", errors.New("token backend down")
 }
 
-func TestApplyPropagatesProviderError(t *testing.T) {
-	a := auth.NewWithProvider(auth.PlaneControl, errProvider{})
-	if a.Plane() != auth.PlaneControl {
-		t.Errorf("plane = %v, want control", a.Plane())
-	}
-	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/x", http.NoBody)
-	err := a.Apply(context.Background(), req)
-	if err == nil || !strings.Contains(err.Error(), "token backend down") {
-		t.Errorf("Apply error = %v, want provider error", err)
-	}
-}
+var _ = Describe("JWT minting", func() {
+	It("mints a JWT with the expected payload claims and reuses it", func() {
+		a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticJSON([]byte(appAgentCredJSON)))
+		Expect(err).NotTo(HaveOccurred())
+		tok := mintToken(a)
 
-func TestLoaderErrorStopsChain(t *testing.T) {
-	boom := errors.New("loader failed")
-	failing := func(context.Context) (*auth.Credentials, error) { return nil, boom }
-	_, err := auth.New(context.Background(), auth.PlaneRuntime, failing, auth.StaticJSON([]byte(appAgentCredJSON)))
-	if !errors.Is(err, boom) {
-		t.Errorf("error = %v, want the loader error", err)
-	}
-}
+		parts := strings.Split(tok, ".")
+		Expect(parts).To(HaveLen(3))
+		payload, err := base64.RawURLEncoding.DecodeString(parts[1])
+		Expect(err).NotTo(HaveOccurred(), "decode payload")
+		var claims struct {
+			Iss string  `json:"iss"`
+			Sub string  `json:"sub"`
+			Jti string  `json:"jti"`
+			Iat float64 `json:"iat"`
+			Exp float64 `json:"exp"`
+		}
+		Expect(json.Unmarshal(payload, &claims)).To(Succeed())
+		const wantID = "fa50a80e-4840-4fc0-8958-982b84827f83"
+		Expect(claims.Iss).To(Equal(wantID))
+		Expect(claims.Sub).To(Equal(wantID))
+		Expect(claims.Jti).NotTo(BeEmpty(), "jti claim missing")
+		// Default lifetime is one hour when none is configured.
+		Expect(claims.Exp - claims.Iat).To(BeEquivalentTo(3600))
+
+		// A second Apply must reuse the cached token (oauth2.ReuseTokenSource).
+		Expect(mintToken(a)).To(Equal(tok), "token was re-minted instead of reused before expiry")
+	})
+
+	It("honours a configured token lifetime", func() {
+		creds := &auth.Credentials{
+			AppAgentID:    "agent-1",
+			TokenLifetime: "30m",
+			PrivateKeyJWK: json.RawMessage(testJWK),
+		}
+		a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
+		Expect(err).NotTo(HaveOccurred())
+		parts := strings.Split(mintToken(a), ".")
+		payload, _ := base64.RawURLEncoding.DecodeString(parts[1])
+		var claims struct {
+			Iat float64 `json:"iat"`
+			Exp float64 `json:"exp"`
+		}
+		Expect(json.Unmarshal(payload, &claims)).To(Succeed())
+		Expect(claims.Exp - claims.Iat).To(BeEquivalentTo(1800))
+	})
+
+	It("rejects an invalid token lifetime", func() {
+		creds := &auth.Credentials{
+			AppAgentID:    "agent-1",
+			TokenLifetime: "not-a-duration",
+			PrivateKeyJWK: json.RawMessage(testJWK),
+		}
+		_, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
+		Expect(err).To(MatchError(ContainSubstring("tokenLifetime")))
+	})
+})
+
+var _ = Describe("Private keys", func() {
+	It("loads a PKCS8 PEM key", func() {
+		creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8: pemPKCS8Key()}
+		expectPKCS8Outcome(applyPKCS8(creds), "PEM")
+	})
+
+	It("loads a base64 PKCS8 key", func() {
+		encoded := base64.StdEncoding.EncodeToString([]byte(pemPKCS8Key()))
+		creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8Base64: encoded}
+		expectPKCS8Outcome(applyPKCS8(creds), "base64")
+	})
+
+	DescribeTable("rejects unusable keys",
+		func(creds *auth.Credentials) {
+			_, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
+			Expect(err).To(HaveOccurred())
+		},
+		Entry("no key at all", &auth.Credentials{AppAgentID: "agent-1"}),
+		Entry("invalid base64", &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8Base64: "%%%not-base64%%%"}),
+		Entry("invalid PEM", &auth.Credentials{AppAgentID: "agent-1", PrivateKeyPKCS8: "not a pem block"}),
+		Entry("JWK not a key", &auth.Credentials{AppAgentID: "agent-1",
+			PrivateKeyJWK: json.RawMessage(`{"kty":"nope"}`)}),
+		Entry("JWK string not JSON", &auth.Credentials{AppAgentID: "agent-1",
+			PrivateKeyJWK: json.RawMessage(`"unterminated`)}),
+		Entry("JWK string not a key", &auth.Credentials{AppAgentID: "agent-1",
+			PrivateKeyJWK: json.RawMessage(`"not a key"`)}),
+	)
+
+	It("accepts a JWK delivered as a JSON string", func() {
+		// The JWK may be delivered as a JSON string containing the key document.
+		quoted, err := json.Marshal(testJWK)
+		Expect(err).NotTo(HaveOccurred(), "quote JWK")
+		creds := &auth.Credentials{AppAgentID: "agent-1", PrivateKeyJWK: quoted}
+		a, err := auth.New(context.Background(), auth.PlaneRuntime, auth.StaticCredentials(creds))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(strings.Split(mintToken(a), ".")).To(HaveLen(3), "token is not a JWT")
+	})
+})
+
+var _ = Describe("Providers and loaders", func() {
+	It("propagates the provider error through Apply", func() {
+		a := auth.NewWithProvider(auth.PlaneControl, errProvider{})
+		Expect(a.Plane()).To(Equal(auth.PlaneControl))
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/x", http.NoBody)
+		Expect(a.Apply(context.Background(), req)).To(MatchError(ContainSubstring("token backend down")))
+	})
+
+	It("stops the loader chain on a loader error", func() {
+		boom := errors.New("loader failed")
+		failing := func(context.Context) (*auth.Credentials, error) { return nil, boom }
+		_, err := auth.New(context.Background(), auth.PlaneRuntime, failing, auth.StaticJSON([]byte(appAgentCredJSON)))
+		Expect(err).To(MatchError(boom))
+	})
+})

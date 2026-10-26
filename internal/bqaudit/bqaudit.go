@@ -16,8 +16,10 @@
 // landed in the BigQuery audit-log table.
 //
 // It is enabled by setting SDK_AUDIT_TABLE_NAME (the dataset/table name, e.g.
-// "audit_log"). BQ_PROJECT_ID overrides the Google Cloud project that hosts the
-// table. Queries authenticate with Application Default Credentials.
+// "audit_log"), which then requires BQ_PROJECT_ID (the Google Cloud project
+// that hosts the table): New fails without it rather than guess a project that
+// may not hold the table. Queries authenticate with Application Default
+// Credentials.
 package bqaudit
 
 import (
@@ -40,7 +42,7 @@ const (
 	rowLimit     = 50
 )
 
-// Enabled reports whether audit-log verification is configured; tests skip the
+// Enabled reports whether audit-log verification is requested; tests skip the
 // check when it is not.
 func Enabled() bool { return os.Getenv("SDK_AUDIT_TABLE_NAME") != "" }
 
@@ -49,13 +51,6 @@ type Checker struct {
 	client     *bigquery.Client
 	table      string
 	appSpaceID string
-}
-
-func gcpProject() string {
-	if p := os.Getenv("BQ_PROJECT_ID"); p != "" {
-		return p
-	}
-	return "indykite-rc"
 }
 
 // appSpaceFromCredentials reads the app-space gid out of the App Agent
@@ -96,11 +91,14 @@ func New(ctx context.Context) (*Checker, error) {
 	if table == "" {
 		return nil, errors.New("bqaudit: SDK_AUDIT_TABLE_NAME not set")
 	}
+	project := os.Getenv("BQ_PROJECT_ID")
+	if project == "" {
+		return nil, errors.New("bqaudit: BQ_PROJECT_ID not set")
+	}
 	appSpaceID, err := appSpaceFromCredentials()
 	if err != nil {
 		return nil, err
 	}
-	project := gcpProject()
 	client, err := bigquery.NewClient(ctx, project)
 	if err != nil {
 		return nil, err

@@ -34,6 +34,11 @@ export RELEASE_VERSION="${RELEASE_VERSION:=unknown}"
 export BUCKET_NAME="${BUCKET_NAME:=sdk_results_deploy}"
 export SECRET_NAME=${SECRET_NAME:=goSdkTests}
 export SDK_AUDIT_TABLE_NAME="${SDK_AUDIT_TABLE_NAME:=audit_log}"
+# The audit-log table lives in the Google Cloud project this pipeline runs in,
+# the same one the goSdkTests secret below is read from.
+BQ_PROJECT_ID="${BQ_PROJECT_ID:-$(gcloud config get-value project 2>/dev/null || true)}"
+: "${BQ_PROJECT_ID:?Google Cloud project of the audit-log table is required (BQ_PROJECT_ID)}"
+export BQ_PROJECT_ID
 
 # setup test environment variables from the goSdkTests secret: customerID is the
 # organization, the appSpaceId (nested under appAgentCredentials) is the project,

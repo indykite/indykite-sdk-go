@@ -128,8 +128,9 @@ and are provisioned idempotently with `go run ./test/setup apply` (see [test/REA
 The data-schema API is feature-flagged and intentionally has no integration tests.
 
 When `SDK_AUDIT_TABLE_NAME` is set, the AuthZEN and ContX IQ integration tests additionally
-verify that the platform's audit events reached the BigQuery audit-log table (authenticating
-with Application Default Credentials; `BQ_PROJECT_ID` selects the hosting GCP project).
+verify that the platform's audit events reached the BigQuery audit-log table, authenticating
+with Application Default Credentials. `BQ_PROJECT_ID` (the GCP project hosting that table) is
+then required; the tests fail without it.
 
 ## SDK Documentation
 

@@ -28,11 +28,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// deployed caches the one-time probe of the audit API. The API is served by
-// triton, which the platform umbrella chart still ships disabled outside the
-// tamper-proof pipeline rollout (ENG-8630), so on such an environment every
-// /audit path falls through to the ingress's empty 404. The public JWKS route
-// tells the two cases apart without needing the Audit permission, and the
+// deployed caches the one-time probe of the audit API. An environment that does
+// not serve the audit API answers every /audit path with 404. The public JWKS
+// route tells that case apart without needing the Audit permission, and the
 // hermetic specs in client_test.go pin the paths, so a wrong path cannot hide
 // behind this skip.
 var deployed *bool
@@ -52,8 +50,7 @@ var _ = Describe("Audit (live platform)", Label("integration"), func() {
 			deployed = &ok
 		}
 		if !*deployed {
-			Skip("audit API not deployed on this platform (GET /audit/.well-known/jwks.json is 404: " +
-				"triton is not enabled there yet)")
+			Skip("audit API not served on this platform (GET /audit/.well-known/jwks.json is 404)")
 		}
 	}
 

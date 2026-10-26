@@ -23,9 +23,10 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// TestIntegrationIndyKite is the Ginkgo entry point for the root package's
-// live-platform specs (ikg_integration_test.go). The TestIntegration prefix
-// matches the `-run` filter in `make integration`.
+// TestIntegrationIndyKite is the Ginkgo entry point when built with the
+// integration tag: it runs the hermetic specs plus the live-platform ones in
+// ikg_integration_test.go. The TestIntegration prefix matches the `-run` filter
+// in `make integration`. See suite_test.go for the tag-less counterpart.
 func TestIntegrationIndyKite(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "IndyKite Suite (integration)")

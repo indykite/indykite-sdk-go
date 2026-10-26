@@ -17,123 +17,106 @@
 package capture_test
 
 import (
-	"context"
 	"fmt"
 	"os"
-	"testing"
 	"time"
 
 	indykite "github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/capture"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // NOTE: there is deliberately no integration test for ReadDataSchema — the
 // data-schema API is still behind a feature flag.
 
-func captureClient(t *testing.T) *capture.Client {
-	t.Helper()
-	if os.Getenv("INDYKITE_APPLICATION_CREDENTIALS") == "" &&
-		os.Getenv("INDYKITE_APPLICATION_CREDENTIALS_FILE") == "" {
-		t.Skip("INDYKITE_APPLICATION_CREDENTIALS[_FILE] not set")
-	}
-	var opts []indykite.Option
-	if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
-		opts = append(opts, indykite.WithBaseURL(base))
-	}
-	cli, err := indykite.NewClientFromEnv(context.Background(), opts...)
-	if err != nil {
-		t.Fatalf("NewClientFromEnv: %v", err)
-	}
-	return cli.Capture()
-}
+var _ = Describe("Capture (live platform)", Label("integration"), func() {
+	var capc *capture.Client
 
-// TestIntegrationCaptureLifecycle ingests two nodes and a relationship, strips
-// a property, then removes everything it created.
-func TestIntegrationCaptureLifecycle(t *testing.T) {
-	capc := captureClient(t)
-	ctx := context.Background()
-
-	suffix := fmt.Sprintf("sdk-it-%d", time.Now().UnixNano())
-	person := capture.Node{ExternalID: "person-" + suffix, Type: "Person"}
-	asset := capture.Node{ExternalID: "asset-" + suffix, Type: "Asset"}
-	owns := capture.Relationship{Type: "OWNS", Source: &person, Target: &asset}
-
-	// Always try to clean up, even on failure part-way.
-	t.Cleanup(func() {
-		_, _ = capc.DeleteRelationships(ctx, owns)
-		_, _ = capc.DeleteNodes(ctx, person, asset)
-	})
-
-	res, err := capc.UpsertNodes(ctx,
-		capture.UpsertNode{
-			Node:       person,
-			IsIdentity: true,
-			Properties: []capture.Property{{
-				BaseProperty: capture.BaseProperty{Type: "email", Value: suffix + "@example.com"},
-				Metadata:     &capture.Metadata{Source: "sdk-integration-test", AssuranceLevel: 1},
-			}},
-		},
-		capture.UpsertNode{Node: asset},
-	)
-	if err != nil {
-		t.Fatalf("UpsertNodes: %v", err)
-	}
-	if len(res.Results) != 2 {
-		t.Fatalf("UpsertNodes results = %d, want 2", len(res.Results))
-	}
-
-	if _, err = capc.UpsertRelationships(ctx, owns); err != nil {
-		t.Fatalf("UpsertRelationships: %v", err)
-	}
-
-	if _, err = capc.DeleteNodePropertyMetadata(ctx, capture.DeleteNodePropertyMetadata{
-		Node: person, PropertyType: "email", MetadataFields: []string{"assurance_level"},
-	}); err != nil {
-		t.Fatalf("DeleteNodePropertyMetadata: %v", err)
-	}
-
-	if _, err = capc.DeleteNodeProperties(ctx, capture.DeleteNodeProperties{
-		Node: person, PropertyTypes: []string{"email"},
-	}); err != nil {
-		t.Fatalf("DeleteNodeProperties: %v", err)
-	}
-
-	if _, err = capc.DeleteRelationships(ctx, owns); err != nil {
-		t.Fatalf("DeleteRelationships: %v", err)
-	}
-
-	if _, err = capc.DeleteNodes(ctx, person, asset); err != nil {
-		t.Fatalf("DeleteNodes: %v", err)
-	}
-}
-
-// TestIntegrationCaptureChunked verifies the chunked helper splits batches
-// above MaxBatchSize transparently.
-func TestIntegrationCaptureChunked(t *testing.T) {
-	capc := captureClient(t)
-	ctx := context.Background()
-
-	suffix := fmt.Sprintf("sdk-it-chunk-%d", time.Now().UnixNano())
-	const n = capture.MaxBatchSize + 10
-	nodes := make([]capture.UpsertNode, n)
-	deletes := make([]capture.Node, n)
-	for i := range nodes {
-		node := capture.Node{ExternalID: fmt.Sprintf("%s-%d", suffix, i), Type: "Asset"}
-		nodes[i] = capture.UpsertNode{Node: node}
-		deletes[i] = node
-	}
-	t.Cleanup(func() {
-		for start := 0; start < n; start += capture.MaxBatchSize {
-			end := min(start+capture.MaxBatchSize, n)
-			_, _ = capc.DeleteNodes(ctx, deletes[start:end]...)
+	BeforeEach(func(ctx SpecContext) {
+		if os.Getenv("INDYKITE_APPLICATION_CREDENTIALS") == "" &&
+			os.Getenv("INDYKITE_APPLICATION_CREDENTIALS_FILE") == "" {
+			Skip("INDYKITE_APPLICATION_CREDENTIALS[_FILE] not set")
 		}
+		var opts []indykite.Option
+		if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
+			opts = append(opts, indykite.WithBaseURL(base))
+		}
+		cli, err := indykite.NewClientFromEnv(ctx, opts...)
+		Expect(err).NotTo(HaveOccurred())
+		capc = cli.Capture()
 	})
 
-	res, err := capc.UpsertNodesChunked(ctx, nodes, 0)
-	if err != nil {
-		t.Fatalf("UpsertNodesChunked: %v", err)
-	}
-	if len(res.Results) != n {
-		t.Errorf("results = %d, want %d", len(res.Results), n)
-	}
-}
+	// Ingests two nodes and a relationship, strips a property, then removes
+	// everything it created.
+	It("runs the node and relationship lifecycle", func(ctx SpecContext) {
+		suffix := fmt.Sprintf("sdk-it-%d", time.Now().UnixNano())
+		person := capture.Node{ExternalID: "person-" + suffix, Type: "Person"}
+		asset := capture.Node{ExternalID: "asset-" + suffix, Type: "Asset"}
+		owns := capture.Relationship{Type: "OWNS", Source: &person, Target: &asset}
+
+		// Always try to clean up, even on failure part-way.
+		DeferCleanup(func(ctx SpecContext) {
+			_, _ = capc.DeleteRelationships(ctx, owns)
+			_, _ = capc.DeleteNodes(ctx, person, asset)
+		})
+
+		res, err := capc.UpsertNodes(ctx,
+			capture.UpsertNode{
+				Node:       person,
+				IsIdentity: true,
+				Properties: []capture.Property{{
+					BaseProperty: capture.BaseProperty{Type: "email", Value: suffix + "@example.com"},
+					Metadata:     &capture.Metadata{Source: "sdk-integration-test", AssuranceLevel: 1},
+				}},
+			},
+			capture.UpsertNode{Node: asset},
+		)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.Results).To(HaveLen(2))
+
+		_, err = capc.UpsertRelationships(ctx, owns)
+		Expect(err).NotTo(HaveOccurred())
+
+		_, err = capc.DeleteNodePropertyMetadata(ctx, capture.DeleteNodePropertyMetadata{
+			Node: person, PropertyType: "email", MetadataFields: []string{"assurance_level"},
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		_, err = capc.DeleteNodeProperties(ctx, capture.DeleteNodeProperties{
+			Node: person, PropertyTypes: []string{"email"},
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		_, err = capc.DeleteRelationships(ctx, owns)
+		Expect(err).NotTo(HaveOccurred())
+
+		_, err = capc.DeleteNodes(ctx, person, asset)
+		Expect(err).NotTo(HaveOccurred())
+	})
+
+	// Verifies the chunked helper splits batches above MaxBatchSize
+	// transparently.
+	It("splits batches above MaxBatchSize transparently", func(ctx SpecContext) {
+		suffix := fmt.Sprintf("sdk-it-chunk-%d", time.Now().UnixNano())
+		const n = capture.MaxBatchSize + 10
+		nodes := make([]capture.UpsertNode, n)
+		deletes := make([]capture.Node, n)
+		for i := range nodes {
+			node := capture.Node{ExternalID: fmt.Sprintf("%s-%d", suffix, i), Type: "Asset"}
+			nodes[i] = capture.UpsertNode{Node: node}
+			deletes[i] = node
+		}
+		DeferCleanup(func(ctx SpecContext) {
+			for start := 0; start < n; start += capture.MaxBatchSize {
+				end := min(start+capture.MaxBatchSize, n)
+				_, _ = capc.DeleteNodes(ctx, deletes[start:end]...)
+			}
+		})
+
+		res, err := capc.UpsertNodesChunked(ctx, nodes, 0)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.Results).To(HaveLen(n))
+	})
+})

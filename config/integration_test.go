@@ -22,553 +22,497 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"testing"
 	"time"
 
 	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/config"
 	"github.com/indykite/indykite-sdk-go/transport"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // NOTE: there is deliberately no integration test for the data-schema API
 // (config.DataSchemaAPI) — it is still behind a feature flag.
 
-func adminClient(t *testing.T) *config.AdminClient {
-	t.Helper()
-	if os.Getenv("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS") == "" &&
-		os.Getenv("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS_FILE") == "" {
-		t.Skip("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE] not set")
-	}
-	a, err := auth.ServiceAccountFromEnv(context.Background())
-	if err != nil {
-		t.Fatalf("ServiceAccountFromEnv: %v", err)
-	}
-	var opts []transport.Option
-	if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
-		opts = append(opts, transport.WithBaseURL(base))
-	}
-	tc, err := transport.NewClient(a, opts...)
-	if err != nil {
-		t.Fatalf("transport.NewClient: %v", err)
-	}
-	return config.NewAdminClient(tc)
-}
-
-func projectID(t *testing.T) string {
-	t.Helper()
-	id := os.Getenv("PROJECT_ID")
-	if id == "" {
-		t.Skip("PROJECT_ID not set")
-	}
-	return id
-}
-
 func uniqueName(prefix string) string {
 	return fmt.Sprintf("%s-%d", prefix, time.Now().UnixNano())
 }
 
-func TestIntegrationConfigOrganizationAndProjects(t *testing.T) {
-	admin := adminClient(t)
-	ctx := context.Background()
-
-	org, err := admin.Organizations().ReadCurrent(ctx)
-	if err != nil {
-		t.Fatalf("Organizations.ReadCurrent: %v", err)
-	}
-	if org.ID == "" {
-		t.Fatalf("organization has no id: %+v", org)
-	}
-
-	projects, err := admin.Projects().List(ctx, org.ID)
-	if err != nil {
-		t.Fatalf("Projects.List: %v", err)
-	}
-	t.Logf("organization %s has %d projects", org.ID, len(projects))
+// expectAPIStatus asserts err is an *transport.APIError carrying status.
+func expectAPIStatus(err error, status int) {
+	GinkgoHelper()
+	Expect(err).To(HaveOccurred())
+	apiErr, ok := transport.AsAPIError(err)
+	Expect(ok).To(BeTrue(), "got %v, want an APIError", err)
+	Expect(apiErr.StatusCode).To(Equal(status), "got %v", err)
 }
 
-// The platform allows only one audit-signing config per project, and
-// `go run ./test/setup apply` provisions it (AUDIT_SIGNING_ID). The audit-signing
-// tests therefore never create their own config: they work on the fixture and
-// restore it when they are done.
+var _ = Describe("Config (live platform)", Label("integration"), func() {
+	var admin *config.AdminClient
 
-// auditSigningFixture returns the id of the fixture audit-signing config and
-// registers a cleanup that restores it to its provisioned PLATFORM_MANAGED
-// state, so a failed test does not leave it changed for the next run.
-func auditSigningFixture(t *testing.T, admin *config.AdminClient) string {
-	t.Helper()
-	id := os.Getenv("AUDIT_SIGNING_ID")
-	if id == "" {
-		t.Skip("AUDIT_SIGNING_ID not set")
-	}
-	ctx := context.Background()
-	api := admin.AuditSignings()
-	orig, err := api.Read(ctx, id)
-	if err != nil {
-		t.Fatalf("AuditSignings.Read fixture: %v", err)
-	}
-	t.Cleanup(func() {
-		cur, err := api.Read(ctx, id)
-		if err != nil {
-			t.Errorf("restore fixture: Read: %v", err)
-			return
+	BeforeEach(func(ctx SpecContext) {
+		if os.Getenv("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS") == "" &&
+			os.Getenv("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS_FILE") == "" {
+			Skip("INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE] not set")
 		}
-		if _, err = api.Update(ctx, id, cur.ETag, &config.UpdateAuditSigning{
-			DisplayName: &orig.DisplayName,
-			Description: &orig.Description,
-			AuditSigningConfig: config.AuditSigningConfig{
-				Provider: config.AuditSigningProviderPlatformManaged,
-			},
-		}); err != nil {
-			t.Errorf("restore fixture: Update: %v", err)
+		a, err := auth.ServiceAccountFromEnv(ctx)
+		Expect(err).NotTo(HaveOccurred())
+		var opts []transport.Option
+		if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
+			opts = append(opts, transport.WithBaseURL(base))
 		}
+		tc, err := transport.NewClient(a, opts...)
+		Expect(err).NotTo(HaveOccurred())
+		admin = config.NewAdminClient(tc)
 	})
-	return id
-}
 
-// TestIntegrationConfigAuditSigningFixture reads the audit-signing config
-// provisioned by `go run ./test/setup apply` (AUDIT_SIGNING_ID) and checks the
-// platform-managed shape: provider set, no key material, secrets never echoed.
-// It also checks that a second config in the same project is refused.
-func TestIntegrationConfigAuditSigningFixture(t *testing.T) {
-	admin := adminClient(t)
-	id := os.Getenv("AUDIT_SIGNING_ID")
-	if id == "" {
-		t.Skip("AUDIT_SIGNING_ID not set")
-	}
-	ctx := context.Background()
-	project := projectID(t)
-
-	signing, err := admin.AuditSignings().Read(ctx, id)
-	if err != nil {
-		t.Fatalf("AuditSignings.Read: %v", err)
-	}
-	if signing.ID != id {
-		t.Errorf("ID = %q, want %q", signing.ID, id)
-	}
-	if signing.Provider != config.AuditSigningProviderPlatformManaged {
-		t.Errorf("Provider = %q, want %q", signing.Provider, config.AuditSigningProviderPlatformManaged)
-	}
-	if signing.ETag == "" {
-		t.Error("ETag is empty")
-	}
-	for k, v := range signing.AuthParams {
-		if v != "" {
-			t.Errorf("auth_params[%q] echoed a value; the platform must mask secrets on read", k)
+	requireProject := func() string {
+		GinkgoHelper()
+		id := os.Getenv("PROJECT_ID")
+		if id == "" {
+			Skip("PROJECT_ID not set")
 		}
+		return id
 	}
 
-	items, err := admin.AuditSignings().List(ctx, project)
-	if err != nil {
-		t.Fatalf("AuditSignings.List: %v", err)
-	}
-	found := false
-	for i := range items {
-		if items[i].ID == id {
-			found = true
-			break
+	It("reads the organization and its projects", func(ctx SpecContext) {
+		org, err := admin.Organizations().ReadCurrent(ctx)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(org.ID).NotTo(BeEmpty(), "organization has no id: %+v", org)
+
+		projects, err := admin.Projects().List(ctx, org.ID)
+		Expect(err).NotTo(HaveOccurred())
+		GinkgoWriter.Printf("organization %s has %d projects\n", org.ID, len(projects))
+	})
+
+	// The platform reports v1 for projects that predate the field; an
+	// environment whose platform predates it omits the field altogether.
+	It("reports the IKG schema version of the project", func(ctx SpecContext) {
+		project := requireProject()
+
+		got, err := admin.Projects().Read(ctx, project)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.IkgSchemaVersion).To(Or(BeEmpty(), Equal(config.IkgSchemaVersionV1)))
+	})
+
+	// The platform allows only one audit-signing config per project, and
+	// `go run ./test/setup apply` provisions it (AUDIT_SIGNING_ID). The
+	// audit-signing specs therefore never create their own config: they work on
+	// the fixture and restore it when they are done.
+	Describe("audit signing", func() {
+		// auditSigningFixture returns the id of the fixture audit-signing config
+		// and registers a cleanup that restores it to its provisioned
+		// PLATFORM_MANAGED state, so a failed spec does not leave it changed for
+		// the next run.
+		auditSigningFixture := func(ctx context.Context) string {
+			GinkgoHelper()
+			id := os.Getenv("AUDIT_SIGNING_ID")
+			if id == "" {
+				Skip("AUDIT_SIGNING_ID not set")
+			}
+			api := admin.AuditSignings()
+			orig, err := api.Read(ctx, id)
+			Expect(err).NotTo(HaveOccurred(), "read fixture")
+			DeferCleanup(func(ctx SpecContext) {
+				cur, err := api.Read(ctx, id)
+				Expect(err).NotTo(HaveOccurred(), "restore fixture: Read")
+				_, err = api.Update(ctx, id, cur.ETag, &config.UpdateAuditSigning{
+					DisplayName: &orig.DisplayName,
+					Description: &orig.Description,
+					AuditSigningConfig: config.AuditSigningConfig{
+						Provider: config.AuditSigningProviderPlatformManaged,
+					},
+				})
+				Expect(err).NotTo(HaveOccurred(), "restore fixture: Update")
+			})
+			return id
 		}
-	}
-	if !found {
-		t.Errorf("fixture %s not present in AuditSignings.List of the project", id)
-	}
 
-	// The project already holds the fixture; a second config must be refused.
-	created, err := admin.AuditSignings().Create(ctx, &config.CreateAuditSigning{
-		ProjectID: project,
-		Name:      uniqueName("sdk-it-audit-signing"),
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider: config.AuditSigningProviderPlatformManaged,
-		},
+		// Reads the fixture and checks the platform-managed shape: provider
+		// set, no key material, secrets never echoed. A second config in the
+		// same project is refused.
+		It("serves the platform-managed fixture and refuses a second config", func(ctx SpecContext) {
+			id := os.Getenv("AUDIT_SIGNING_ID")
+			if id == "" {
+				Skip("AUDIT_SIGNING_ID not set")
+			}
+			project := requireProject()
+
+			signing, err := admin.AuditSignings().Read(ctx, id)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(signing.ID).To(Equal(id))
+			Expect(signing.Provider).To(Equal(config.AuditSigningProviderPlatformManaged))
+			Expect(signing.ETag).NotTo(BeEmpty())
+			for k, v := range signing.AuthParams {
+				Expect(v).To(BeEmpty(), "auth_params[%q] echoed a value; the platform must mask secrets on read", k)
+			}
+
+			items, err := admin.AuditSignings().List(ctx, project)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(items).To(ContainElement(HaveField("ID", id)),
+				"fixture not present in AuditSignings.List of the project")
+
+			// The project already holds the fixture; a second config must be refused.
+			created, err := admin.AuditSignings().Create(ctx, &config.CreateAuditSigning{
+				ProjectID: project,
+				Name:      uniqueName("sdk-it-audit-signing"),
+				AuditSigningConfig: config.AuditSigningConfig{
+					Provider: config.AuditSigningProviderPlatformManaged,
+				},
+			})
+			if err == nil {
+				DeferCleanup(func(ctx SpecContext) { _ = admin.AuditSignings().Delete(ctx, created.ID, "") })
+			}
+			expectAPIStatus(err, http.StatusConflict)
+		})
+
+		// Runs the ETag-guarded read and update paths on the fixture: read by
+		// id, by name (project_id and deprecated location; a bare name is
+		// refused) -> update -> stale-ETag update is refused -> customer-managed
+		// provider without key material is rejected -> list. Create and delete
+		// are not run here: the project already holds its only config, and the
+		// fixture must survive the spec.
+		//
+		// It deliberately stays PLATFORM_MANAGED throughout: a customer-managed
+		// config pointing at fake KMS material would be accepted by the config
+		// API but could then break audit signing for the shared test project
+		// until cleanup. The customer-managed path has its own spec below, gated
+		// on real key material.
+		It("reads and updates the fixture with ETag guards", func(ctx SpecContext) {
+			project := requireProject()
+			api := admin.AuditSignings()
+			id := auditSigningFixture(ctx)
+
+			signing, err := api.Read(ctx, id)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(signing.ID).To(Equal(id))
+			Expect(signing.Provider).To(Equal(config.AuditSigningProviderPlatformManaged))
+			Expect(signing.ETag).NotTo(BeEmpty(), "Read returned no ETag")
+			name := signing.Name
+
+			byName, err := api.Read(ctx, name, config.WithProjectID(project))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(byName.ID).To(Equal(id))
+
+			// The deprecated location parameter must keep resolving names.
+			byLocation, err := api.Read(ctx, name, config.WithLocation(project))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(byLocation.ID).To(Equal(id))
+
+			// A name is ambiguous without its parent project; the platform must refuse it.
+			_, err = api.Read(ctx, name)
+			expectAPIStatus(err, http.StatusUnprocessableEntity)
+
+			displayName := uniqueName("SDK IT audit signing (renamed)")
+			updated, err := api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
+				DisplayName: &displayName,
+				AuditSigningConfig: config.AuditSigningConfig{
+					Provider: config.AuditSigningProviderPlatformManaged,
+				},
+			})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(updated.ETag).NotTo(BeEmpty())
+			Expect(updated.ETag).NotTo(Equal(signing.ETag))
+
+			got, err := api.Read(ctx, signing.ID)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(got.DisplayName).To(Equal(displayName))
+			Expect(got.Provider).To(Equal(config.AuditSigningProviderPlatformManaged))
+
+			// The pre-update ETag is stale now; the platform must refuse to apply it.
+			_, err = api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
+				AuditSigningConfig: config.AuditSigningConfig{
+					Provider: config.AuditSigningProviderPlatformManaged,
+				},
+			})
+			expectAPIStatus(err, http.StatusPreconditionFailed)
+
+			// Customer-managed providers require key material. This write is
+			// rejected by validation before anything is persisted, so it never
+			// leaves the config pointing at a non-existent key.
+			_, err = api.Update(ctx, signing.ID, got.ETag, &config.UpdateAuditSigning{
+				AuditSigningConfig: config.AuditSigningConfig{
+					Provider: config.AuditSigningProviderCustomerAWSKMS,
+				},
+			})
+			Expect(err).To(HaveOccurred(), "CUSTOMER_AWS_KMS without key_resource/kid succeeded")
+			apiErr, ok := transport.AsAPIError(err)
+			Expect(ok).To(BeTrue(), "got %v, want an APIError", err)
+			Expect(apiErr.StatusCode).To(And(BeNumerically(">=", 400), BeNumerically("<", 500)))
+
+			items, err := api.List(ctx, project)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(items).To(ConsistOf(HaveField("ID", id)), "want exactly the fixture")
+		})
+
+		// Switches the fixture to customer-managed key material and verifies the
+		// key fields round-trip while auth-param secrets are masked on read. The
+		// fixture is restored to PLATFORM_MANAGED afterwards. It is opt-in:
+		//
+		//	AUDIT_SIGNING_KEY_RESOURCE  provider key reference (required to run)
+		//	AUDIT_SIGNING_KID           key id (required to run)
+		//	AUDIT_SIGNING_PROVIDER      CUSTOMER_GCP_KMS (default) | CUSTOMER_AWS_KMS | CUSTOMER_AZURE_KEY_VAULT
+		//	AUDIT_SIGNING_AUTH_PARAMS   optional JSON object of provider credentials
+		It("round-trips customer-managed key material", func(ctx SpecContext) {
+			keyResource, kid := os.Getenv("AUDIT_SIGNING_KEY_RESOURCE"), os.Getenv("AUDIT_SIGNING_KID")
+			if keyResource == "" || kid == "" {
+				Skip("AUDIT_SIGNING_KEY_RESOURCE / AUDIT_SIGNING_KID not set")
+			}
+			provider := os.Getenv("AUDIT_SIGNING_PROVIDER")
+			if provider == "" {
+				provider = config.AuditSigningProviderCustomerGCPKMS
+			}
+			var authParams map[string]string
+			if raw := os.Getenv("AUDIT_SIGNING_AUTH_PARAMS"); raw != "" {
+				Expect(json.Unmarshal([]byte(raw), &authParams)).To(Succeed(),
+					"AUDIT_SIGNING_AUTH_PARAMS is not a JSON object of strings")
+			}
+			api := admin.AuditSignings()
+			id := auditSigningFixture(ctx)
+
+			current, err := api.Read(ctx, id)
+			Expect(err).NotTo(HaveOccurred())
+			_, err = api.Update(ctx, id, current.ETag, &config.UpdateAuditSigning{
+				AuditSigningConfig: config.AuditSigningConfig{
+					Provider:    provider,
+					KeyResource: keyResource,
+					Kid:         kid,
+					AuthParams:  authParams,
+				},
+			})
+			Expect(err).NotTo(HaveOccurred(), "Update to %s", provider)
+
+			got, err := api.Read(ctx, id)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(got.Provider).To(Equal(provider))
+			Expect(got.KeyResource).To(Equal(keyResource))
+			Expect(got.Kid).To(Equal(kid))
+			for k := range authParams {
+				Expect(got.AuthParams).To(HaveKey(k), "keys must be preserved on read")
+				Expect(got.AuthParams[k]).To(BeEmpty(),
+					"AuthParams[%q] echoed a value; the platform must mask secrets on read", k)
+			}
+		})
 	})
-	if err == nil {
-		t.Cleanup(func() { _ = admin.AuditSignings().Delete(ctx, created.ID, "") })
-		t.Error("Create of a second audit signing in the project succeeded, want conflict error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusConflict {
-		t.Errorf("Create of a second audit signing: got %v, want 409 APIError", err)
-	}
-}
 
-// TestIntegrationConfigAuditSigningCRUD runs the ETag-guarded read and update
-// paths on the fixture audit-signing config: read by id, by name (project_id
-// and deprecated location; a bare name is refused) -> update -> stale-ETag
-// update is refused -> customer-managed provider without key material is
-// rejected -> list. Create and delete are not run here: the project already
-// holds its only config, and the fixture must survive the test.
-//
-// It deliberately stays PLATFORM_MANAGED throughout: a customer-managed config
-// pointing at fake KMS material would be accepted by the config API but could
-// then break audit signing for the shared test project until cleanup. The
-// customer-managed path is covered by
-// TestIntegrationConfigAuditSigningCustomerManaged, gated on real key material.
-func TestIntegrationConfigAuditSigningCRUD(t *testing.T) {
-	admin := adminClient(t)
-	ctx := context.Background()
-	project := projectID(t)
-	api := admin.AuditSignings()
-	id := auditSigningFixture(t, admin)
+	// The full ETag-guarded lifecycle: create draft -> read -> activate -> delete.
+	It("runs the authorization policy lifecycle", func(ctx SpecContext) {
+		project := requireProject()
+		api := admin.AuthorizationPolicies()
 
-	signing, err := api.Read(ctx, id)
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if signing.ID != id {
-		t.Errorf("ID = %q, want %q", signing.ID, id)
-	}
-	if signing.Provider != config.AuditSigningProviderPlatformManaged {
-		t.Errorf("Provider = %q, want %q", signing.Provider, config.AuditSigningProviderPlatformManaged)
-	}
-	if signing.ETag == "" {
-		t.Error("Read returned no ETag")
-	}
-	name := signing.Name
-
-	byName, err := api.Read(ctx, name, config.WithProjectID(project))
-	if err != nil {
-		t.Fatalf("Read by name: %v", err)
-	}
-	if byName.ID != id {
-		t.Errorf("Read by name ID = %q, want %q", byName.ID, id)
-	}
-
-	// The deprecated location parameter must keep resolving names.
-	byLocation, err := api.Read(ctx, name, config.WithLocation(project))
-	if err != nil {
-		t.Fatalf("Read by name with deprecated location: %v", err)
-	}
-	if byLocation.ID != id {
-		t.Errorf("Read by name (location) ID = %q, want %q", byLocation.ID, id)
-	}
-
-	// A name is ambiguous without its parent project; the platform must refuse it.
-	if _, err = api.Read(ctx, name); err == nil {
-		t.Error("Read by name without project succeeded, want validation error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusUnprocessableEntity {
-		t.Errorf("Read by name without project: got %v, want 422 APIError", err)
-	}
-
-	displayName := uniqueName("SDK IT audit signing (renamed)")
-	updated, err := api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
-		DisplayName: &displayName,
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider: config.AuditSigningProviderPlatformManaged,
-		},
-	})
-	if err != nil {
-		t.Fatalf("Update: %v", err)
-	}
-	if updated.ETag == "" || updated.ETag == signing.ETag {
-		t.Errorf("Update ETag = %q, want a new non-empty value (was %q)", updated.ETag, signing.ETag)
-	}
-
-	got, err := api.Read(ctx, signing.ID)
-	if err != nil {
-		t.Fatalf("Read after update: %v", err)
-	}
-	if got.DisplayName != displayName {
-		t.Errorf("DisplayName after update = %q, want %q", got.DisplayName, displayName)
-	}
-	if got.Provider != config.AuditSigningProviderPlatformManaged {
-		t.Errorf("Provider after update = %q, want %q", got.Provider, config.AuditSigningProviderPlatformManaged)
-	}
-
-	// The pre-update ETag is stale now; the platform must refuse to apply it.
-	_, err = api.Update(ctx, signing.ID, signing.ETag, &config.UpdateAuditSigning{
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider: config.AuditSigningProviderPlatformManaged,
-		},
-	})
-	if err == nil {
-		t.Error("Update with stale ETag succeeded, want precondition-failed error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode != http.StatusPreconditionFailed {
-		t.Errorf("Update with stale ETag: got %v, want 412 APIError", err)
-	}
-
-	// Customer-managed providers require key material. This write is rejected
-	// by validation before anything is persisted, so it never leaves the
-	// config pointing at a non-existent key.
-	_, err = api.Update(ctx, signing.ID, got.ETag, &config.UpdateAuditSigning{
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider: config.AuditSigningProviderCustomerAWSKMS,
-		},
-	})
-	if err == nil {
-		t.Error("Update to CUSTOMER_AWS_KMS without key_resource/kid succeeded, want validation error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || apiErr.StatusCode < 400 || apiErr.StatusCode >= 500 {
-		t.Errorf("Update without key material: got %v, want 4xx APIError", err)
-	}
-
-	items, err := api.List(ctx, project)
-	if err != nil {
-		t.Fatalf("List: %v", err)
-	}
-	if len(items) != 1 || items[0].ID != id {
-		t.Errorf("List = %d audit signings, want exactly the fixture %s", len(items), id)
-	}
-}
-
-// TestIntegrationConfigAuditSigningCustomerManaged switches the fixture
-// audit-signing config to customer-managed key material and verifies the key
-// fields round-trip while auth-param secrets are masked on read. The fixture
-// is restored to PLATFORM_MANAGED afterwards. It is opt-in:
-//
-//	AUDIT_SIGNING_KEY_RESOURCE  provider key reference (required to run)
-//	AUDIT_SIGNING_KID           key id (required to run)
-//	AUDIT_SIGNING_PROVIDER      CUSTOMER_GCP_KMS (default) | CUSTOMER_AWS_KMS | CUSTOMER_AZURE_KEY_VAULT
-//	AUDIT_SIGNING_AUTH_PARAMS   optional JSON object of provider credentials
-func TestIntegrationConfigAuditSigningCustomerManaged(t *testing.T) {
-	admin := adminClient(t)
-	keyResource, kid := os.Getenv("AUDIT_SIGNING_KEY_RESOURCE"), os.Getenv("AUDIT_SIGNING_KID")
-	if keyResource == "" || kid == "" {
-		t.Skip("AUDIT_SIGNING_KEY_RESOURCE / AUDIT_SIGNING_KID not set")
-	}
-	provider := os.Getenv("AUDIT_SIGNING_PROVIDER")
-	if provider == "" {
-		provider = config.AuditSigningProviderCustomerGCPKMS
-	}
-	var authParams map[string]string
-	if raw := os.Getenv("AUDIT_SIGNING_AUTH_PARAMS"); raw != "" {
-		if err := json.Unmarshal([]byte(raw), &authParams); err != nil {
-			t.Fatalf("AUDIT_SIGNING_AUTH_PARAMS is not a JSON object of strings: %v", err)
-		}
-	}
-	ctx := context.Background()
-	api := admin.AuditSignings()
-	id := auditSigningFixture(t, admin)
-
-	current, err := api.Read(ctx, id)
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if _, err = api.Update(ctx, id, current.ETag, &config.UpdateAuditSigning{
-		AuditSigningConfig: config.AuditSigningConfig{
-			Provider:    provider,
-			KeyResource: keyResource,
-			Kid:         kid,
-			AuthParams:  authParams,
-		},
-	}); err != nil {
-		t.Fatalf("Update to %s: %v", provider, err)
-	}
-
-	got, err := api.Read(ctx, id)
-	if err != nil {
-		t.Fatalf("Read after update: %v", err)
-	}
-	if got.Provider != provider {
-		t.Errorf("Provider = %q, want %q", got.Provider, provider)
-	}
-	if got.KeyResource != keyResource {
-		t.Errorf("KeyResource = %q, want %q", got.KeyResource, keyResource)
-	}
-	if got.Kid != kid {
-		t.Errorf("Kid = %q, want %q", got.Kid, kid)
-	}
-	for k := range authParams {
-		v, ok := got.AuthParams[k]
-		if !ok {
-			t.Errorf("AuthParams[%q] missing on read; keys must be preserved", k)
-		} else if v != "" {
-			t.Errorf("AuthParams[%q] echoed a value; the platform must mask secrets on read", k)
-		}
-	}
-}
-
-// TestIntegrationConfigAuthorizationPolicyCRUD runs the full ETag-guarded
-// lifecycle: create draft -> read -> activate -> delete.
-func TestIntegrationConfigAuthorizationPolicyCRUD(t *testing.T) {
-	admin := adminClient(t)
-	ctx := context.Background()
-	project := projectID(t)
-	api := admin.AuthorizationPolicies()
-
-	policyJSON := `{
+		policyJSON := `{
 	  "meta": {"policy_version": "2.0-kbac"},
 	  "subject": {"type": "Person"},
 	  "actions": ["SDK_IT_CAN_READ"],
 	  "resource": {"type": "Asset"},
 	  "condition": {"cypher": "MATCH (subject:Person)-[:OWNS]->(resource:Asset)"}
 	}`
-	name := uniqueName("sdk-it-policy")
-	created, err := api.Create(ctx, &config.CreateAuthorizationPolicy{
-		ProjectID: project,
-		Name:      name,
-		Policy:    policyJSON,
-		Status:    config.StatusDraft,
+		name := uniqueName("sdk-it-policy")
+		created, err := api.Create(ctx, &config.CreateAuthorizationPolicy{
+			ProjectID: project,
+			Name:      name,
+			Policy:    policyJSON,
+			Status:    config.StatusDraft,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = api.Delete(ctx, created.ID, "") })
+
+		pol, err := api.Read(ctx, created.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(pol.Status).To(Equal(config.StatusDraft))
+		Expect(pol.ETag).NotTo(BeEmpty(), "Read returned no ETag")
+
+		byName, err := api.Read(ctx, name, config.WithProjectID(project))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(byName.ID).To(Equal(created.ID))
+
+		_, err = api.Update(ctx, pol.ID, pol.ETag, &config.UpdateAuthorizationPolicy{
+			Policy: pol.Policy,
+			Status: config.StatusActive,
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		got, err := api.Read(ctx, pol.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.Status).To(Equal(config.StatusActive))
+
+		Expect(api.Delete(ctx, got.ID, got.ETag)).To(Succeed())
+		_, err = api.Read(ctx, got.ID)
+		expectAPIStatus(err, http.StatusNotFound)
 	})
-	if err != nil {
-		t.Fatalf("Create: %v", err)
-	}
-	t.Cleanup(func() { _ = api.Delete(ctx, created.ID, "") })
 
-	pol, err := api.Read(ctx, created.ID)
-	if err != nil {
-		t.Fatalf("Read: %v", err)
-	}
-	if pol.Status != config.StatusDraft {
-		t.Errorf("status = %q, want DRAFT", pol.Status)
-	}
-	if pol.ETag == "" {
-		t.Error("Read returned no ETag")
-	}
+	// Covers the validation modes beyond pinned keys: offline validation that
+	// discovers keys through RFC 8414 metadata, then a switch to RFC 7662 token
+	// introspection, whose client secret is write-only.
+	It("runs the token introspect lifecycle across validation modes", func(ctx SpecContext) {
+		project := requireProject()
+		api := admin.TokenIntrospects()
 
-	byName, err := api.Read(ctx, name, config.WithProjectID(project))
-	if err != nil {
-		t.Fatalf("Read by name: %v", err)
-	}
-	if byName.ID != created.ID {
-		t.Errorf("Read by name ID = %q, want %q", byName.ID, created.ID)
-	}
+		name := uniqueName("sdk-it-ti")
+		jwtMatcher := json.RawMessage(fmt.Sprintf(
+			`{"issuer":"https://sdk-it.example.com/%s","audience":%q}`, name, name))
+		created, err := api.Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: project,
+			Name:      name,
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType: "Person",
+				JwtMatcher:  jwtMatcher,
+				OfflineValidation: json.RawMessage(
+					`{"discovery":"` + config.TokenIntrospectDiscoveryRFC8414 + `"}`),
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = api.Delete(ctx, created.ID, "") })
 
-	if _, err = api.Update(ctx, pol.ID, pol.ETag, &config.UpdateAuthorizationPolicy{
-		Policy: pol.Policy,
-		Status: config.StatusActive,
-	}); err != nil {
-		t.Fatalf("Update: %v", err)
-	}
-
-	got, err := api.Read(ctx, pol.ID)
-	if err != nil {
-		t.Fatalf("Read after update: %v", err)
-	}
-	if got.Status != config.StatusActive {
-		t.Errorf("status after update = %q, want ACTIVE", got.Status)
-	}
-
-	if err = api.Delete(ctx, got.ID, got.ETag); err != nil {
-		t.Fatalf("Delete: %v", err)
-	}
-	if _, err = api.Read(ctx, got.ID); err == nil {
-		t.Error("Read after delete succeeded, want not-found error")
-	} else if apiErr, ok := transport.AsAPIError(err); !ok || !apiErr.IsNotFound() {
-		t.Errorf("Read after delete: got %v, want 404 APIError", err)
-	}
-}
-
-// TestIntegrationConfigAppAgentLifecycle chains application -> agent ->
-// credential (the runtime-plane bootstrap) and tears it down in reverse.
-func TestIntegrationConfigAppAgentLifecycle(t *testing.T) {
-	admin := adminClient(t)
-	ctx := context.Background()
-	project := projectID(t)
-
-	app, err := admin.Applications().Create(ctx, &config.CreateApplication{
-		ProjectID: project, Name: uniqueName("sdk-it-app"),
-	})
-	if err != nil {
-		t.Fatalf("Applications.Create: %v", err)
-	}
-	t.Cleanup(func() { _ = admin.Applications().Delete(ctx, app.ID, "") })
-
-	agent, err := admin.AppAgents().Create(ctx, &config.CreateAppAgent{
-		ApplicationID:  app.ID,
-		Name:           uniqueName("sdk-it-agent"),
-		APIPermissions: []string{config.PermissionAuthorization},
-	})
-	if err != nil {
-		t.Fatalf("AppAgents.Create: %v", err)
-	}
-	t.Cleanup(func() { _ = admin.AppAgents().Delete(ctx, agent.ID, "") })
-
-	displayName := "sdk-it renamed"
-	if _, err = admin.AppAgents().Update(ctx, agent.ID, "", &config.UpdateAppAgent{
-		DisplayName: &displayName,
-	}); err != nil {
-		t.Fatalf("AppAgents.Update: %v", err)
-	}
-
-	cred, err := admin.AppAgentCredentials().Create(ctx, &config.CreateAppAgentCredential{
-		ApplicationAgentID: agent.ID, DisplayName: "sdk-it-cred",
-	})
-	if err != nil {
-		t.Fatalf("AppAgentCredentials.Create: %v", err)
-	}
-	t.Cleanup(func() { _ = admin.AppAgentCredentials().Delete(ctx, cred.ID) })
-	if len(cred.ApplicationAgentConfig) == 0 {
-		t.Error("credential Create returned no signed config")
-	}
-
-	creds, err := admin.AppAgentCredentials().List(ctx, project)
-	if err != nil {
-		t.Fatalf("AppAgentCredentials.List: %v", err)
-	}
-	found := false
-	for _, c := range creds {
-		if c.ID == cred.ID {
-			found = true
-			break
+		got, err := api.Read(ctx, created.ID)
+		Expect(err).NotTo(HaveOccurred())
+		var offline struct {
+			Discovery string `json:"discovery"`
 		}
-	}
-	if !found {
-		t.Errorf("minted credential %s not in list of %d", cred.ID, len(creds))
-	}
-}
+		Expect(json.Unmarshal(got.OfflineValidation, &offline)).To(Succeed())
+		Expect(offline.Discovery).To(Equal(config.TokenIntrospectDiscoveryRFC8414))
 
-// TestIntegrationConfigLists exercises every remaining project-scoped List.
-func TestIntegrationConfigLists(t *testing.T) {
-	admin := adminClient(t)
-	ctx := context.Background()
-	project := projectID(t)
+		oauth2 := `{"introspection_endpoint":"https://sdk-it.example.com/introspect",
+			"secret_basic":{"client_id":"sdk-it-client","client_secret":"sdk-it-secret"},"cache_ttl":300}`
+		_, err = api.Update(ctx, got.ID, got.ETag, &config.UpdateTokenIntrospect{
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType:            "Person",
+				JwtMatcher:             jwtMatcher,
+				OnlineOAuth2Validation: json.RawMessage(oauth2),
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
 
-	for label, list := range map[string]func() (int, error){
-		"applications": func() (int, error) {
-			items, err := admin.Applications().List(ctx, project)
-			return len(items), err
+		got, err = api.Read(ctx, got.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.OfflineValidation).To(Or(BeEmpty(), MatchJSON(`null`)))
+		var oauth2Read map[string]any
+		Expect(json.Unmarshal(got.OnlineOAuth2Validation, &oauth2Read)).To(Succeed())
+		Expect(oauth2Read).To(HaveKeyWithValue("introspection_endpoint", "https://sdk-it.example.com/introspect"))
+		Expect(oauth2Read).To(HaveKeyWithValue("secret_basic", And(
+			HaveKeyWithValue("client_id", "sdk-it-client"),
+			Not(HaveKey("client_secret")),
+		)), "the client secret must never be returned")
+
+		// Keeping the endpoint and client id lets the update omit the secret.
+		_, err = api.Update(ctx, got.ID, got.ETag, &config.UpdateTokenIntrospect{
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType:            "Person",
+				JwtMatcher:             jwtMatcher,
+				OnlineOAuth2Validation: got.OnlineOAuth2Validation,
+				PerformUpsert:          true,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		got, err = api.Read(ctx, got.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.PerformUpsert).To(BeTrue())
+
+		Expect(api.Delete(ctx, got.ID, got.ETag)).To(Succeed())
+		_, err = api.Read(ctx, got.ID)
+		expectAPIStatus(err, http.StatusNotFound)
+	})
+
+	// Chains application -> agent -> credential (the runtime-plane bootstrap)
+	// and tears it down in reverse.
+	It("runs the app agent lifecycle", func(ctx SpecContext) {
+		project := requireProject()
+
+		app, err := admin.Applications().Create(ctx, &config.CreateApplication{
+			ProjectID: project, Name: uniqueName("sdk-it-app"),
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = admin.Applications().Delete(ctx, app.ID, "") })
+
+		agent, err := admin.AppAgents().Create(ctx, &config.CreateAppAgent{
+			ApplicationID:  app.ID,
+			Name:           uniqueName("sdk-it-agent"),
+			APIPermissions: []string{config.PermissionAuthorization},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = admin.AppAgents().Delete(ctx, agent.ID, "") })
+
+		displayName := "sdk-it renamed"
+		_, err = admin.AppAgents().Update(ctx, agent.ID, "", &config.UpdateAppAgent{
+			DisplayName: &displayName,
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		cred, err := admin.AppAgentCredentials().Create(ctx, &config.CreateAppAgentCredential{
+			ApplicationAgentID: agent.ID, DisplayName: "sdk-it-cred",
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = admin.AppAgentCredentials().Delete(ctx, cred.ID) })
+		Expect(cred.ApplicationAgentConfig).NotTo(BeEmpty(), "credential Create returned no signed config")
+
+		creds, err := admin.AppAgentCredentials().List(ctx, project)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(creds).To(ContainElement(HaveField("ID", cred.ID)), "minted credential not in list")
+	})
+
+	// Every remaining project-scoped List.
+	DescribeTable("lists project-scoped resources",
+		func(ctx SpecContext, list func(context.Context, *config.AdminClient, string) (int, error)) {
+			project := requireProject()
+			n, err := list(ctx, admin, project)
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("%d items\n", n)
 		},
-		"app-agents": func() (int, error) {
-			items, err := admin.AppAgents().List(ctx, project)
+		Entry("applications", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.Applications().List(ctx, p)
 			return len(items), err
-		},
-		"authorization-policies": func() (int, error) {
-			items, err := admin.AuthorizationPolicies().List(ctx, project, "")
+		}),
+		Entry("app-agents", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.AppAgents().List(ctx, p)
 			return len(items), err
-		},
-		"knowledge-queries": func() (int, error) {
-			items, err := admin.KnowledgeQueries().List(ctx, project)
+		}),
+		Entry("authorization-policies", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.AuthorizationPolicies().List(ctx, p, "")
 			return len(items), err
-		},
-		"event-sinks": func() (int, error) {
-			items, err := admin.EventSinks().List(ctx, project)
+		}),
+		Entry("knowledge-queries", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.KnowledgeQueries().List(ctx, p)
 			return len(items), err
-		},
-		"token-introspects": func() (int, error) {
-			items, err := admin.TokenIntrospects().List(ctx, project)
+		}),
+		Entry("event-sinks", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.EventSinks().List(ctx, p)
 			return len(items), err
-		},
-		"external-data-resolvers": func() (int, error) {
-			items, err := admin.ExternalDataResolvers().List(ctx, project)
+		}),
+		Entry("token-introspects", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.TokenIntrospects().List(ctx, p)
 			return len(items), err
-		},
-		"trust-score-profiles": func() (int, error) {
-			items, err := admin.TrustScoreProfiles().List(ctx, project)
+		}),
+		Entry("external-data-resolvers", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.ExternalDataResolvers().List(ctx, p)
 			return len(items), err
-		},
-		"entity-matching-pipelines": func() (int, error) {
-			items, err := admin.EntityMatchingPipelines().List(ctx, project)
+		}),
+		Entry("trust-score-profiles", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.TrustScoreProfiles().List(ctx, p)
 			return len(items), err
-		},
-		"mcp-servers": func() (int, error) {
-			items, err := admin.MCPServers().List(ctx, project)
+		}),
+		Entry("entity-matching-pipelines", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.EntityMatchingPipelines().List(ctx, p)
 			return len(items), err
-		},
-		"audit-signings": func() (int, error) {
-			items, err := admin.AuditSignings().List(ctx, project)
+		}),
+		Entry("mcp-servers", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.MCPServers().List(ctx, p)
 			return len(items), err
-		},
-	} {
-		n, err := list()
-		if err != nil {
-			t.Errorf("list %s: %v", label, err)
-			continue
+		}),
+		Entry("audit-signings", func(ctx context.Context, a *config.AdminClient, p string) (int, error) {
+			items, err := a.AuditSignings().List(ctx, p)
+			return len(items), err
+		}),
+	)
+
+	It("lists the organization's service account credentials", func(ctx SpecContext) {
+		org := os.Getenv("ORGANIZATION_ID")
+		if org == "" {
+			Skip("ORGANIZATION_ID not set")
 		}
-		t.Logf("%s: %d", label, n)
-	}
-
-	if org := os.Getenv("ORGANIZATION_ID"); org != "" {
-		n, err := admin.ServiceAccountCredentials().List(ctx, org)
-		if err != nil {
-			t.Errorf("list service-account-credentials: %v", err)
-		} else {
-			t.Logf("service-account-credentials: %d", len(n))
-		}
-	}
-}
+		creds, err := admin.ServiceAccountCredentials().List(ctx, org)
+		Expect(err).NotTo(HaveOccurred())
+		GinkgoWriter.Printf("service-account-credentials: %d\n", len(creds))
+	})
+})

@@ -15,17 +15,17 @@
 package indykite_test
 
 import (
-	"context"
 	"io"
 	"net/http"
-	"net/http/httptest"
-	"strings"
-	"testing"
 	"time"
 
 	"github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/authzen"
 	"github.com/indykite/indykite-sdk-go/ciq"
+	"github.com/indykite/indykite-sdk-go/test/testutil"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 //nolint:gosec // environment variable names, not credentials.
@@ -48,175 +48,144 @@ func serviceAccountCred() []byte {
 	return []byte(`{"serviceAccountId":"fa50a80e-4840-4fc0-8958-982b84827f83",` + ecKeyJWK + `}`)
 }
 
-func TestRuntimeFacadeRoutesAndAuth(t *testing.T) {
-	var paths []string
-	var clientKey string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		paths = append(paths, r.URL.Path)
-		if v := r.Header.Get("X-Ik-Clientkey"); v != "" { // canonical form of X-IK-ClientKey
-			clientKey = v
-		}
-		switch r.URL.Path {
-		case "/access/v1/evaluation":
+var _ = Describe("Runtime facade", func() {
+	It("routes AuthZEN and CIQ calls and authenticates with the App Agent client key", func(ctx SpecContext) {
+		var paths []string
+		var clientKey string
+		srv := testutil.NewServer(func(w http.ResponseWriter, r *http.Request) {
+			paths = append(paths, r.URL.Path)
+			if v := r.Header.Get("X-Ik-Clientkey"); v != "" { // canonical form of X-IK-ClientKey
+				clientKey = v
+			}
+			switch r.URL.Path {
+			case "/access/v1/evaluation":
+				_, _ = io.WriteString(w, `{"decision":true}`)
+			case "/contx-iq/v1/execute":
+				_, _ = io.WriteString(w, `{"data":[{"nodes":{"n":{"id":"x"}}}]}`)
+			default:
+				w.WriteHeader(http.StatusNotFound)
+			}
+		})
+
+		cli, err := indykite.NewClient(ctx, appAgentCred(), indykite.WithBaseURL(srv.URL))
+		Expect(err).NotTo(HaveOccurred())
+
+		ok, err := cli.AuthZEN().Allowed(ctx,
+			authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(ok).To(BeTrue())
+
+		rows, err := cli.CIQ().All(ctx, ciq.ExecuteRequest{ID: "q", PageSize: 100})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rows).To(HaveLen(1))
+
+		Expect(clientKey).NotTo(BeEmpty(), "runtime plane should send the App Agent client key")
+		Expect(paths).To(ContainElements("/access/v1/evaluation", "/contx-iq/v1/execute"))
+	})
+
+	It("exposes non-nil service accessors", func(ctx SpecContext) {
+		cli, err := indykite.NewClient(ctx, appAgentCred(), indykite.WithRegion("eu"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(cli.AuthZEN()).NotTo(BeNil())
+		Expect(cli.CIQ()).NotTo(BeNil())
+		Expect(cli.Capture()).NotTo(BeNil())
+		Expect(cli.EntityMatching()).NotTo(BeNil())
+		Expect(cli.Audit()).NotTo(BeNil())
+	})
+
+	It("passes options through end to end", func(ctx SpecContext) {
+		var gotUA string
+		srv := testutil.NewServer(func(w http.ResponseWriter, r *http.Request) {
+			gotUA = r.Header.Get("User-Agent")
 			_, _ = io.WriteString(w, `{"decision":true}`)
-		case "/contx-iq/v1/execute":
-			_, _ = io.WriteString(w, `{"data":[{"nodes":{"n":{"id":"x"}}}]}`)
-		default:
-			w.WriteHeader(http.StatusNotFound)
-		}
-	}))
-	defer srv.Close()
+		})
 
-	cli, err := indykite.NewClient(context.Background(), appAgentCred(), indykite.WithBaseURL(srv.URL))
-	if err != nil {
-		t.Fatalf("NewClient: %v", err)
-	}
+		cli, err := indykite.NewClient(ctx, appAgentCred(),
+			indykite.WithBaseURL(srv.URL),
+			indykite.WithUserAgent("facade-test/1.0"),
+			indykite.WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
+			indykite.WithRetry(indykite.RetryConfig{
+				MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond,
+			}),
+			indykite.WithTracing())
+		Expect(err).NotTo(HaveOccurred())
 
-	ok, err := cli.AuthZEN().Allowed(context.Background(),
-		authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
-	if err != nil || !ok {
-		t.Fatalf("Allowed: ok=%v err=%v", ok, err)
-	}
+		ok, err := cli.AuthZEN().Allowed(ctx,
+			authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(ok).To(BeTrue())
+		Expect(gotUA).To(Equal("facade-test/1.0"), "WithUserAgent should be passed through")
+	})
+})
 
-	rows, err := cli.CIQ().All(context.Background(), ciq.ExecuteRequest{ID: "q", PageSize: 100})
-	if err != nil {
-		t.Fatalf("CIQ.All: %v", err)
-	}
-	if len(rows) != 1 {
-		t.Errorf("rows = %d, want 1", len(rows))
-	}
+var _ = Describe("NewClient", func() {
+	It("fails for empty credentials", func(ctx SpecContext) {
+		_, err := indykite.NewClient(ctx, "", indykite.WithRegion("eu"))
+		Expect(err).To(HaveOccurred())
+	})
 
-	if clientKey == "" {
-		t.Error("runtime plane should send the App Agent client key")
-	}
-	joined := strings.Join(paths, ",")
-	if !strings.Contains(joined, "/access/v1/evaluation") || !strings.Contains(joined, "/contx-iq/v1/execute") {
-		t.Errorf("paths routed = %v", paths)
-	}
-}
+	It("rejects a JSON document in place of the credential token", func(ctx SpecContext) {
+		// A JSON document is not a valid App Agent credential token.
+		_, err := indykite.NewClient(ctx, `{"appAgentId":"x"}`, indykite.WithRegion("eu"))
+		Expect(err).To(HaveOccurred())
+	})
 
-func TestAdminFacadeUsesBearer(t *testing.T) {
-	var authz, path string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authz = r.Header.Get("Authorization")
-		path = r.URL.Path
-		_, _ = io.WriteString(w, `{"data":[]}`)
-	}))
-	defer srv.Close()
+	It("fails when no base URL can be resolved", func(ctx SpecContext) {
+		// The token carries no base URL hint; without an option the transport errors.
+		_, err := indykite.NewClient(ctx, appAgentCred())
+		Expect(err).To(HaveOccurred())
+	})
+})
 
-	admin, err := indykite.NewAdmin(context.Background(), serviceAccountCred(), indykite.WithBaseURL(srv.URL))
-	if err != nil {
-		t.Fatalf("NewAdmin: %v", err)
-	}
-	if _, err = admin.AuthorizationPolicies().List(context.Background(), "gid:proj", ""); err != nil {
-		t.Fatalf("List: %v", err)
-	}
-	if !strings.HasPrefix(authz, "Bearer ") {
-		t.Errorf("Authorization = %q, want Bearer prefix", authz)
-	}
-	if path != "/configs/v1/authorization-policies" {
-		t.Errorf("path = %q", path)
-	}
-}
+var _ = Describe("NewClientFromEnv", Serial, func() {
+	It("builds a client from the environment and rejects invalid credentials", func(ctx SpecContext) {
+		testutil.SetEnv(envAppCreds, appAgentCred())
+		cli, err := indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(cli.AuthZEN()).NotTo(BeNil())
 
-func TestMissingCredentialsFails(t *testing.T) {
-	if _, err := indykite.NewClient(context.Background(), "", indykite.WithRegion("eu")); err == nil {
-		t.Error("expected error for empty credentials")
-	}
-}
+		testutil.SetEnv(envAppCreds, `{broken`)
+		_, err = indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
+		Expect(err).To(HaveOccurred(), "expected error for invalid credentials in env")
+	})
+})
 
-func TestNewClientErrorPaths(t *testing.T) {
-	ctx := context.Background()
-	// A JSON document is not a valid App Agent credential token.
-	if _, err := indykite.NewClient(ctx, `{"appAgentId":"x"}`, indykite.WithRegion("eu")); err == nil {
-		t.Error("expected error for JSON in place of the credential token")
-	}
-	// The token carries no base URL hint; without an option the transport errors.
-	if _, err := indykite.NewClient(ctx, appAgentCred()); err == nil {
-		t.Error("expected error when no base URL can be resolved")
-	}
-}
+var _ = Describe("Admin facade", func() {
+	It("authenticates config calls with a Bearer token", func(ctx SpecContext) {
+		var authz, path string
+		srv := testutil.NewServer(func(w http.ResponseWriter, r *http.Request) {
+			authz = r.Header.Get("Authorization")
+			path = r.URL.Path
+			_, _ = io.WriteString(w, `{"data":[]}`)
+		})
 
-func TestAccessorsNonNil(t *testing.T) {
-	cli, err := indykite.NewClient(context.Background(), appAgentCred(), indykite.WithRegion("eu"))
-	if err != nil {
-		t.Fatalf("NewClient: %v", err)
-	}
-	if cli.AuthZEN() == nil || cli.CIQ() == nil || cli.Capture() == nil || cli.EntityMatching() == nil ||
-		cli.Audit() == nil {
-		t.Error("all service accessors must be non-nil")
-	}
-}
+		admin, err := indykite.NewAdmin(ctx, serviceAccountCred(), indykite.WithBaseURL(srv.URL))
+		Expect(err).NotTo(HaveOccurred())
+		_, err = admin.AuthorizationPolicies().List(ctx, "gid:proj", "")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(authz).To(HavePrefix("Bearer "))
+		Expect(path).To(Equal("/configs/v1/authorization-policies"))
+	})
 
-func TestNewClientFromEnv(t *testing.T) {
-	t.Setenv(envAppCreds, appAgentCred())
-	cli, err := indykite.NewClientFromEnv(context.Background(), indykite.WithRegion("eu"))
-	if err != nil {
-		t.Fatalf("NewClientFromEnv: %v", err)
-	}
-	if cli.AuthZEN() == nil {
-		t.Error("AuthZEN accessor is nil")
-	}
+	It("fails for invalid credentials JSON", func(ctx SpecContext) {
+		_, err := indykite.NewAdmin(ctx, []byte(`{broken`), indykite.WithRegion("eu"))
+		Expect(err).To(HaveOccurred())
+	})
+})
 
-	t.Setenv(envAppCreds, `{broken`)
-	if _, err = indykite.NewClientFromEnv(context.Background(), indykite.WithRegion("eu")); err == nil {
-		t.Error("expected error for invalid credentials in env")
-	}
-}
+var _ = Describe("NewAdminFromEnv", Serial, func() {
+	It("builds an admin client from the environment and reports resolution errors", func(ctx SpecContext) {
+		testutil.SetEnv(envSACreds, string(serviceAccountCred()))
+		admin, err := indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))
+		Expect(err).NotTo(HaveOccurred())
+		Expect(admin).NotTo(BeNil())
 
-func TestNewAdminErrorPaths(t *testing.T) {
-	if _, err := indykite.NewAdmin(context.Background(), []byte(`{broken`), indykite.WithRegion("eu")); err == nil {
-		t.Error("expected error for invalid credentials JSON")
-	}
-}
+		// Credential without baseUrl and no option -> transport error.
+		_, err = indykite.NewAdminFromEnv(ctx)
+		Expect(err).To(HaveOccurred(), "expected error when no base URL can be resolved")
 
-func TestNewAdminFromEnv(t *testing.T) {
-	t.Setenv(envSACreds, string(serviceAccountCred()))
-	admin, err := indykite.NewAdminFromEnv(context.Background(), indykite.WithRegion("eu"))
-	if err != nil {
-		t.Fatalf("NewAdminFromEnv: %v", err)
-	}
-	if admin == nil {
-		t.Fatal("admin client is nil")
-	}
-
-	// Credential without baseUrl and no option -> transport error.
-	if _, err = indykite.NewAdminFromEnv(context.Background()); err == nil {
-		t.Error("expected error when no base URL can be resolved")
-	}
-
-	t.Setenv(envSACreds, `{broken`)
-	if _, err = indykite.NewAdminFromEnv(context.Background(), indykite.WithRegion("eu")); err == nil {
-		t.Error("expected error for invalid credentials in env")
-	}
-}
-
-func TestOptionsPassedThroughEndToEnd(t *testing.T) {
-	var gotUA string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotUA = r.Header.Get("User-Agent")
-		_, _ = io.WriteString(w, `{"decision":true}`)
-	}))
-	defer srv.Close()
-
-	cli, err := indykite.NewClient(context.Background(), appAgentCred(),
-		indykite.WithBaseURL(srv.URL),
-		indykite.WithUserAgent("facade-test/1.0"),
-		indykite.WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
-		indykite.WithRetry(indykite.RetryConfig{
-			MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: time.Millisecond,
-		}),
-		indykite.WithTracing())
-	if err != nil {
-		t.Fatalf("NewClient: %v", err)
-	}
-
-	ok, err := cli.AuthZEN().Allowed(context.Background(),
-		authzen.NewNode("Person", "ada"), "PROVISION", authzen.NewNode("Server", "gpu-7"))
-	if err != nil || !ok {
-		t.Fatalf("Allowed: ok=%v err=%v", ok, err)
-	}
-	if gotUA != "facade-test/1.0" {
-		t.Errorf("User-Agent = %q, want facade-test/1.0 (WithUserAgent passed through)", gotUA)
-	}
-}
+		testutil.SetEnv(envSACreds, `{broken`)
+		_, err = indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))
+		Expect(err).To(HaveOccurred(), "expected error for invalid credentials in env")
+	})
+})

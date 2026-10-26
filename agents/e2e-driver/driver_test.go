@@ -22,12 +22,14 @@ import (
 	"slices"
 	"strings"
 	"sync"
-	"testing"
 
 	"github.com/indykite/indykite-sdk-go"
 	"github.com/indykite/indykite-sdk-go/authzen"
 	"github.com/indykite/indykite-sdk-go/capture"
 	"github.com/indykite/indykite-sdk-go/config"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 const ecKey = `"privateKeyJWK":{"kty":"EC","d":"2to-_wtohfn2PAgHr3RHQbhDf8g9zy6ndr05ZS-hS8s","use":"sig","crv":"P-256",
@@ -53,9 +55,11 @@ func (r *recorder) has(s string) bool {
 	return slices.Contains(r.hits, s)
 }
 
-func mockPlatform(t *testing.T, rec *recorder) *httptest.Server {
-	t.Helper()
-	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// mockPlatform starts a fake platform recording every request into rec; the
+// server is torn down when the spec ends.
+func mockPlatform(rec *recorder) *httptest.Server {
+	GinkgoHelper()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		rec.add(r.Method + " " + r.URL.Path)
 		switch {
 		case r.Method == http.MethodPost && r.URL.Path == "/configs/v1/authorization-policies":
@@ -76,19 +80,16 @@ func mockPlatform(t *testing.T, rec *recorder) *httptest.Server {
 			w.WriteHeader(http.StatusNotFound)
 		}
 	}))
+	DeferCleanup(srv.Close)
+	return srv
 }
 
-func buildDriver(t *testing.T, baseURL string) *Driver {
-	t.Helper()
-	admin, err := config.NewAdminClientFromCredentials(context.Background(), serviceAccount(),
-		indykite.WithBaseURL(baseURL))
-	if err != nil {
-		t.Fatalf("admin: %v", err)
-	}
-	ik, err := indykite.NewClient(context.Background(), appAgentCred(), indykite.WithBaseURL(baseURL))
-	if err != nil {
-		t.Fatalf("runtime: %v", err)
-	}
+func buildDriver(ctx context.Context, baseURL string) *Driver {
+	GinkgoHelper()
+	admin, err := config.NewAdminClientFromCredentials(ctx, serviceAccount(), indykite.WithBaseURL(baseURL))
+	Expect(err).NotTo(HaveOccurred(), "admin")
+	ik, err := indykite.NewClient(ctx, appAgentCred(), indykite.WithBaseURL(baseURL))
+	Expect(err).NotTo(HaveOccurred(), "runtime")
 	return NewDriver(admin, ik)
 }
 
@@ -112,57 +113,46 @@ func sampleScenario() Scenario {
 	}
 }
 
-func TestDriverFullScenario(t *testing.T) {
-	rec := &recorder{}
-	srv := mockPlatform(t, rec)
-	defer srv.Close()
+var _ = Describe("Driver.Run", func() {
+	It("exercises every plane and endpoint, including cleanup", func(ctx SpecContext) {
+		rec := &recorder{}
+		srv := mockPlatform(rec)
 
-	sc := sampleScenario()
-	steps, err := buildDriver(t, srv.URL).Run(context.Background(), &sc)
-	if err != nil {
-		t.Fatalf("Run: %v", err)
-	}
-	if !AllOK(steps) {
-		t.Fatalf("not all steps passed: %+v", steps)
-	}
+		sc := sampleScenario()
+		steps, err := buildDriver(ctx, srv.URL).Run(ctx, &sc)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(AllOK(steps)).To(BeTrue(), "not all steps passed: %+v", steps)
 
-	// Every plane/endpoint must have been exercised, including cleanup.
-	for _, want := range []string{
-		"POST /configs/v1/authorization-policies",
-		"POST /capture/v1/nodes",
-		"POST /capture/v1/relationships",
-		"POST /access/v1/evaluation",
-		"POST /contx-iq/v1/execute",
-		"DELETE /configs/v1/authorization-policies/gid:pol1",
-	} {
-		if !rec.has(want) {
-			t.Errorf("driver never issued %q; hits=%v", want, rec.hits)
+		// Every plane/endpoint must have been exercised, including cleanup.
+		for _, want := range []string{
+			"POST /configs/v1/authorization-policies",
+			"POST /capture/v1/nodes",
+			"POST /capture/v1/relationships",
+			"POST /access/v1/evaluation",
+			"POST /contx-iq/v1/execute",
+			"DELETE /configs/v1/authorization-policies/gid:pol1",
+		} {
+			Expect(rec.has(want)).To(BeTrue(), "driver never issued %q; hits=%v", want, rec.hits)
 		}
-	}
-	// Last step is always cleanup.
-	if steps[len(steps)-1].Name != "cleanup-policy" || !steps[len(steps)-1].OK {
-		t.Errorf("cleanup step missing or failed: %+v", steps)
-	}
-}
+		// Last step is always cleanup.
+		last := steps[len(steps)-1]
+		Expect(last.Name).To(Equal("cleanup-policy"), "cleanup step missing: %+v", steps)
+		Expect(last.OK).To(BeTrue(), "cleanup step failed: %+v", steps)
+	})
 
-func TestDriverDecisionMismatchReportsFail(t *testing.T) {
-	rec := &recorder{}
-	srv := mockPlatform(t, rec) // evaluation returns decision=true
-	defer srv.Close()
+	It("reports a failed step on a decision mismatch and still cleans up", func(ctx SpecContext) {
+		rec := &recorder{}
+		srv := mockPlatform(rec) // evaluation returns decision=true
 
-	sc := sampleScenario()
-	sc.WantAllow = false // expect deny, platform says allow -> step must fail
-	sc.QueryID = ""      // skip CIQ for this check
+		sc := sampleScenario()
+		sc.WantAllow = false // expect deny, platform says allow -> step must fail
+		sc.QueryID = ""      // skip CIQ for this check
 
-	steps, err := buildDriver(t, srv.URL).Run(context.Background(), &sc)
-	if err != nil {
-		t.Fatalf("Run: %v", err)
-	}
-	if AllOK(steps) {
-		t.Fatal("expected the decision step to fail on mismatch")
-	}
-	// Cleanup must still have run despite the failed assertion.
-	if !rec.has("DELETE /configs/v1/authorization-policies/gid:pol1") {
-		t.Error("cleanup did not run after a failed assertion")
-	}
-}
+		steps, err := buildDriver(ctx, srv.URL).Run(ctx, &sc)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(AllOK(steps)).To(BeFalse(), "expected the decision step to fail on mismatch")
+		// Cleanup must still have run despite the failed assertion.
+		Expect(rec.has("DELETE /configs/v1/authorization-policies/gid:pol1")).To(BeTrue(),
+			"cleanup did not run after a failed assertion")
+	})
+})

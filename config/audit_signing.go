@@ -90,7 +90,9 @@ func (a *AuditSigningAPI) List(ctx context.Context, projectID string, opts ...Li
 	return listResource[AuditSigning](ctx, a.t, pathAuditSignings, projectListQuery(projectID, opts))
 }
 
-// Create creates an audit signing config.
+// Create creates an audit signing config. A project holds at most one: a
+// second Create in the same project fails with 409 Conflict, so change the
+// existing config with Update instead.
 func (a *AuditSigningAPI) Create(ctx context.Context, req *CreateAuditSigning) (*WriteResult, error) {
 	return write(ctx, a.t, http.MethodPost, pathAuditSignings, req)
 }

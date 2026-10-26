@@ -18,13 +18,15 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"sync/atomic"
-	"testing"
 	"time"
 
 	"github.com/indykite/indykite-sdk-go/auth"
+	"github.com/indykite/indykite-sdk-go/test/testutil"
 	"github.com/indykite/indykite-sdk-go/transport"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
 )
 
 // stubProvider is a TokenProvider that returns a fixed token (no signing key
@@ -33,142 +35,107 @@ type stubProvider struct{ tok string }
 
 func (s stubProvider) Token(context.Context) (string, error) { return s.tok, nil }
 
-func newClient(t *testing.T, plane auth.Plane, baseURL string, opts ...transport.Option) *transport.Client {
-	t.Helper()
+func newClient(plane auth.Plane, baseURL string, opts ...transport.Option) *transport.Client {
+	GinkgoHelper()
 	a := auth.NewWithProvider(plane, stubProvider{tok: "test-token"})
 	all := append([]transport.Option{transport.WithBaseURL(baseURL)}, opts...)
 	c, err := transport.NewClient(a, all...)
-	if err != nil {
-		t.Fatalf("NewClient: %v", err)
-	}
+	Expect(err).NotTo(HaveOccurred(), "NewClient")
 	return c
 }
 
-func TestRuntimePlaneHeaderAndJSONRoundTrip(t *testing.T) {
-	var gotKey, gotAuth, gotReqID, gotBody string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotKey = r.Header.Get("X-Ik-Clientkey") // canonical form of the X-IK-ClientKey header
-		gotAuth = r.Header.Get("Authorization")
-		gotReqID = r.Header.Get("X-Request-ID")
-		buf := make([]byte, r.ContentLength)
-		_, _ = r.Body.Read(buf)
-		gotBody = string(buf)
-		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"decision":true}`))
-	}))
-	defer srv.Close()
+var _ = Describe("Smoke", func() {
+	It("sends the runtime-plane client key and round-trips JSON", func(ctx SpecContext) {
+		var gotKey, gotAuth, gotReqID, gotBody string
+		srv := testutil.NewServer(func(w http.ResponseWriter, r *http.Request) {
+			gotKey = r.Header.Get("X-Ik-Clientkey") // canonical form of the X-IK-ClientKey header
+			gotAuth = r.Header.Get("Authorization")
+			gotReqID = r.Header.Get("X-Request-ID")
+			buf := make([]byte, r.ContentLength)
+			_, _ = r.Body.Read(buf)
+			gotBody = string(buf)
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{"decision":true}`))
+		})
 
-	c := newClient(t, auth.PlaneRuntime, srv.URL)
-	var out struct {
-		Decision bool `json:"decision"`
-	}
-	in := map[string]any{"action": "READ"}
-	if err := c.Do(context.Background(), http.MethodPost, "/access/v1/evaluation", in, &out); err != nil {
-		t.Fatalf("Do: %v", err)
-	}
-
-	if gotKey != "test-token" {
-		t.Errorf("X-IK-ClientKey = %q, want test-token", gotKey)
-	}
-	if gotAuth != "" {
-		t.Errorf("Authorization should be empty on runtime plane, got %q", gotAuth)
-	}
-	if gotReqID == "" {
-		t.Error("X-Request-ID not set")
-	}
-	if gotBody != `{"action":"READ"}` {
-		t.Errorf("request body = %q", gotBody)
-	}
-	if !out.Decision {
-		t.Error("decoded decision = false, want true")
-	}
-}
-
-func TestControlPlaneUsesBearer(t *testing.T) {
-	var gotAuth, gotKey string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotAuth = r.Header.Get("Authorization")
-		gotKey = r.Header.Get("X-Ik-Clientkey") // canonical form of the X-IK-ClientKey header
-		_, _ = w.Write([]byte(`{}`))
-	}))
-	defer srv.Close()
-
-	c := newClient(t, auth.PlaneControl, srv.URL)
-	if err := c.Do(context.Background(), http.MethodGet, "/configs/v1/projects", nil, nil); err != nil {
-		t.Fatalf("Do: %v", err)
-	}
-	if gotAuth != "Bearer test-token" {
-		t.Errorf("Authorization = %q, want 'Bearer test-token'", gotAuth)
-	}
-	if gotKey != "" {
-		t.Errorf("X-IK-ClientKey should be empty on control plane, got %q", gotKey)
-	}
-}
-
-func TestRetryOn503ThenSucceeds(t *testing.T) {
-	var calls atomic.Int32
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		if calls.Add(1) == 1 {
-			w.WriteHeader(http.StatusServiceUnavailable)
-			return
+		c := newClient(auth.PlaneRuntime, srv.URL)
+		var out struct {
+			Decision bool `json:"decision"`
 		}
-		_, _ = w.Write([]byte(`{"ok":true}`))
-	}))
-	defer srv.Close()
+		in := map[string]any{"action": "READ"}
+		Expect(c.Do(ctx, http.MethodPost, "/access/v1/evaluation", in, &out)).To(Succeed())
 
-	c := newClient(t, auth.PlaneRuntime, srv.URL, transport.WithRetry(transport.RetryConfig{
-		MaxAttempts: 3, BaseDelay: time.Millisecond, MaxDelay: 5 * time.Millisecond,
-	}))
-	if err := c.Do(context.Background(), http.MethodGet, "/x", nil, nil); err != nil {
-		t.Fatalf("Do: %v", err)
-	}
-	if got := calls.Load(); got != 2 {
-		t.Errorf("server called %d times, want 2 (one retry)", got)
-	}
-}
+		Expect(gotKey).To(Equal("test-token"), "X-IK-ClientKey")
+		Expect(gotAuth).To(BeEmpty(), "Authorization should be empty on runtime plane")
+		Expect(gotReqID).NotTo(BeEmpty(), "X-Request-ID not set")
+		Expect(gotBody).To(Equal(`{"action":"READ"}`))
+		Expect(out.Decision).To(BeTrue())
+	})
 
-func TestAPIErrorOn404(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("X-Request-ID", "req-123")
-		w.WriteHeader(http.StatusNotFound)
-		_, _ = w.Write([]byte(`{"code":"NOT_FOUND","message":"no such thing"}`))
-	}))
-	defer srv.Close()
+	It("uses a bearer token on the control plane", func(ctx SpecContext) {
+		var gotAuth, gotKey string
+		srv := testutil.NewServer(func(w http.ResponseWriter, r *http.Request) {
+			gotAuth = r.Header.Get("Authorization")
+			gotKey = r.Header.Get("X-Ik-Clientkey") // canonical form of the X-IK-ClientKey header
+			_, _ = w.Write([]byte(`{}`))
+		})
 
-	c := newClient(t, auth.PlaneRuntime, srv.URL)
-	err := c.Do(context.Background(), http.MethodGet, "/missing", nil, nil)
-	apiErr, ok := transport.AsAPIError(err)
-	if !ok {
-		t.Fatalf("expected *APIError, got %T: %v", err, err)
-	}
-	if !apiErr.IsNotFound() {
-		t.Errorf("IsNotFound = false, status=%d", apiErr.StatusCode)
-	}
-	if apiErr.Code != "NOT_FOUND" || apiErr.Message != "no such thing" || apiErr.RequestID != "req-123" {
-		t.Errorf("APIError fields = %+v", apiErr)
-	}
-}
+		c := newClient(auth.PlaneControl, srv.URL)
+		Expect(c.Do(ctx, http.MethodGet, "/configs/v1/projects", nil, nil)).To(Succeed())
+		Expect(gotAuth).To(Equal("Bearer test-token"))
+		Expect(gotKey).To(BeEmpty(), "X-IK-ClientKey should be empty on control plane")
+	})
 
-func TestPaginator(t *testing.T) {
-	// Two pages of two items each, then empty token.
-	fetch := func(_ context.Context, token string) (transport.Page[int], error) {
-		switch token {
-		case "":
-			return transport.Page[int]{Items: []int{1, 2}, NextToken: "p2"}, nil
-		case "p2":
-			return transport.Page[int]{Items: []int{3, 4}, NextToken: ""}, nil
-		default:
-			return transport.Page[int]{}, fmt.Errorf("unexpected token %q", token)
+	It("retries a 503 and then succeeds", func(ctx SpecContext) {
+		var calls atomic.Int32
+		srv := testutil.NewServer(func(w http.ResponseWriter, _ *http.Request) {
+			if calls.Add(1) == 1 {
+				w.WriteHeader(http.StatusServiceUnavailable)
+				return
+			}
+			_, _ = w.Write([]byte(`{"ok":true}`))
+		})
+
+		c := newClient(auth.PlaneRuntime, srv.URL, transport.WithRetry(transport.RetryConfig{
+			MaxAttempts: 3, BaseDelay: time.Millisecond, MaxDelay: 5 * time.Millisecond,
+		}))
+		Expect(c.Do(ctx, http.MethodGet, "/x", nil, nil)).To(Succeed())
+		Expect(calls.Load()).To(Equal(int32(2)), "server calls (one retry)")
+	})
+
+	It("returns an APIError on 404", func(ctx SpecContext) {
+		srv := testutil.NewServer(func(w http.ResponseWriter, _ *http.Request) {
+			w.Header().Set("X-Request-ID", "req-123")
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(`{"code":"NOT_FOUND","message":"no such thing"}`))
+		})
+
+		c := newClient(auth.PlaneRuntime, srv.URL)
+		err := c.Do(ctx, http.MethodGet, "/missing", nil, nil)
+		apiErr, ok := transport.AsAPIError(err)
+		Expect(ok).To(BeTrue(), "expected *APIError, got %T: %v", err, err)
+		Expect(apiErr.IsNotFound()).To(BeTrue(), "IsNotFound, status=%d", apiErr.StatusCode)
+		Expect(apiErr.Code).To(Equal("NOT_FOUND"))
+		Expect(apiErr.Message).To(Equal("no such thing"))
+		Expect(apiErr.RequestID).To(Equal("req-123"))
+	})
+
+	It("collects every page through the paginator", func(ctx SpecContext) {
+		// Two pages of two items each, then empty token.
+		fetch := func(_ context.Context, token string) (transport.Page[int], error) {
+			switch token {
+			case "":
+				return transport.Page[int]{Items: []int{1, 2}, NextToken: "p2"}, nil
+			case "p2":
+				return transport.Page[int]{Items: []int{3, 4}, NextToken: ""}, nil
+			default:
+				return transport.Page[int]{}, fmt.Errorf("unexpected token %q", token)
+			}
 		}
-	}
 
-	it := transport.NewIterator(fetch)
-	got, err := it.Collect(context.Background())
-	if err != nil {
-		t.Fatalf("Collect: %v", err)
-	}
-	want := []int{1, 2, 3, 4}
-	if fmt.Sprint(got) != fmt.Sprint(want) {
-		t.Errorf("paginator collected %v, want %v", got, want)
-	}
-}
+		it := transport.NewIterator(fetch)
+		got, err := it.Collect(ctx)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got).To(Equal([]int{1, 2, 3, 4}))
+	})
+})
