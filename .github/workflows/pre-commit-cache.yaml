@@ -44,3 +44,11 @@ jobs:
     steps:
       - name: trivy
         uses: indykite/.github/.github/actions/trivy@master
+        with:
+          scanners: vuln,secret,misconfig,license
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
+          jira-cloud-id: ${{ secrets.JIRA_CLOUD_ID }}
+          jira-watchers: ${{ secrets.TRIVY_JIRA_WATCHERS }}
+          github-app-client-id: ${{ vars.IK_CODE_WRITER_CLIENT_ID }}
+          github-app-private-key: ${{ secrets.IK_CODE_WRITER_PEM }}
