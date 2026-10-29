@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.79.1](https://github.com/indykite/indykite-sdk-go/compare/v0.79.0...v0.79.1) (2026-10-29)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([541ff3d](https://github.com/indykite/indykite-sdk-go/commit/541ff3d7aac8fd703b124c36c60f4d64dd177158))
+* **deps:** update golang:1.27-alpine Docker digest to d200d2d ([#517](https://github.com/indykite/indykite-sdk-go/issues/517)) ([0295144](https://github.com/indykite/indykite-sdk-go/commit/0295144b422d6989d5c73c9ceac76efde4db41c6))
+* **deps:** update module golang.org/x/net to v0.62.0 [SECURITY] ([460984c](https://github.com/indykite/indykite-sdk-go/commit/460984c200e3cba42d6d4b5d857e28a34369ffdc))
+* **deps:** update pre-commit hook renovatebot/pre-commit-hooks to v44.192.2 ([#523](https://github.com/indykite/indykite-sdk-go/issues/523)) ([478c4ea](https://github.com/indykite/indykite-sdk-go/commit/478c4eaf4cc0565cf6a0174883bee1496aadf0d5))
+
 ## [0.79.0](https://github.com/indykite/indykite-sdk-go/compare/v0.78.0...v0.79.0) (2026-10-26)
 
 
