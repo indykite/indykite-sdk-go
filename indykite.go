@@ -27,6 +27,8 @@
 //
 // They are separate because they authenticate with different credentials and
 // identities; a single credential cannot serve both.
+// They are separate because they authenticate with different credentials and
+// identities; a single credential cannot serve both.
 //
 //	cli, _ := indykite.NewClientFromEnv(ctx, indykite.WithRegion("eu"))
 //	ok, _ := cli.AuthZEN().Allowed(ctx,

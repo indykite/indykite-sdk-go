@@ -6,7 +6,7 @@
 </a>
 </div>
 
-Add some random text 
+Add some random text
 
 As AI agents and users execute work, IndyKite continuously captures context, relationships, trust signals, and actions.
 This becomes the point of decision, pulling signals from multiple systems and applying them at runtime, with full traceability.
