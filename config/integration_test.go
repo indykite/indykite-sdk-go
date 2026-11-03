@@ -99,11 +99,13 @@ var _ = Describe("Config (live platform)", Label("integration"), func() {
 	// requireSchemaV2Project returns the first project of the caller's
 	// organization on IKG schema v2, or skips: the platform refuses v2 on
 	// create today, so the spec activates on its own once such a project exists.
+	// The default listing is metadata only, so the schema version needs a
+	// full fetch.
 	requireSchemaV2Project := func(ctx context.Context) string {
 		GinkgoHelper()
 		org, err := admin.Organizations().ReadCurrent(ctx)
 		Expect(err).NotTo(HaveOccurred())
-		projects, err := admin.Projects().List(ctx, org.ID)
+		projects, err := admin.Projects().List(ctx, org.ID, config.WithFullFetch())
 		Expect(err).NotTo(HaveOccurred())
 		for _, p := range projects {
 			if p.IkgSchemaVersion == config.IkgSchemaVersionV2 {

@@ -79,7 +79,9 @@ type ProjectAPI struct {
 	t *transport.Client
 }
 
-// List returns the projects in an organization.
+// List returns the projects in an organization. Without WithFullFetch only the
+// Metadata of each project is populated; Region, IkgSize, IkgSchemaVersion and
+// the other project fields need the full fetch.
 func (a *ProjectAPI) List(ctx context.Context, orgID string, opts ...ListOption) ([]Project, error) {
 	return listResource[Project](ctx, a.t, pathProjects, orgListQuery(orgID, opts))
 }

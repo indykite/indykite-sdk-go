@@ -26,6 +26,11 @@
 //	for it.Next(ctx) { use(it.Item()) }
 //	// the public keys the signatures verify against:
 //	keys, _ := a.JWKS(ctx, projectID)
+//	// the same keys without any credential, e.g. from a verifier:
+//	keys, _ = audit.FetchJWKS(ctx, baseURL, projectID)
+//	// or, for repeated lookups, a client that sends no credential:
+//	pub, _ := audit.NewPublicClient(baseURL)
+//	keys, _ = pub.JWKS(ctx, projectID)
 package audit
 
 import (
@@ -37,8 +42,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"strconv"
 
+	"github.com/indykite/indykite-sdk-go/auth"
 	"github.com/indykite/indykite-sdk-go/transport"
 )
 
@@ -55,6 +62,11 @@ const (
 // The platform would reject such a request with 400 anyway; failing locally
 // saves the round trip.
 var ErrProjectIDRequired = errors.New("audit: project ID is required")
+
+// ErrBaseURLRequired is returned by NewPublicClient and FetchJWKS when no
+// platform endpoint is given: with no credential there is nothing to default
+// it from.
+var ErrBaseURLRequired = errors.New("audit: base URL is required")
 
 // Client calls the audit log API.
 type Client struct {
@@ -137,6 +149,40 @@ func (c *Client) JWKS(ctx context.Context, projectID string) (*KeySet, error) {
 		return nil, err
 	}
 	return &out, nil
+}
+
+// NewPublicClient builds an audit client that sends no credential, for
+// verifiers that hold an exported trail but no App Agent. Only JWKS works on
+// it; every other call answers 401. baseURL is the platform endpoint, e.g.
+// https://eu.api.indykite.com, and always wins over a base URL or region in
+// opts, which otherwise tune the transport (retry policy, HTTP client).
+func NewPublicClient(baseURL string, opts ...transport.Option) (*Client, error) {
+	if baseURL == "" {
+		return nil, ErrBaseURLRequired
+	}
+	// Appended last so that it takes precedence over any WithBaseURL/WithRegion
+	// in opts; clipped first so the caller's slice is never written to.
+	opts = append(slices.Clip(opts), transport.WithBaseURL(baseURL))
+	t, err := transport.NewClient(auth.Anonymous(), opts...)
+	if err != nil {
+		return nil, err
+	}
+	return NewClient(t), nil
+}
+
+// FetchJWKS reads a project's key set in one call without any credential; see
+// NewPublicClient for the arguments. Callers that look keys up repeatedly
+// should keep a NewPublicClient instead.
+func FetchJWKS(ctx context.Context, baseURL, projectID string, opts ...transport.Option) (*KeySet, error) {
+	// Checked before the transport is built so a doomed call costs nothing.
+	if projectID == "" {
+		return nil, ErrProjectIDRequired
+	}
+	c, err := NewPublicClient(baseURL, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return c.JWKS(ctx, projectID)
 }
 
 // Find returns the key with the given kid (the KID of a batch, manifest or

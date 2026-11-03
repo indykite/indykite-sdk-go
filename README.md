@@ -79,6 +79,9 @@ me, err := cli.CIQ().WhoAmI(ctx, endUserToken)
 // Page through the project's tamper-proof audit logs (needs the Audit permission).
 logs, err := cli.Audit().AllLogs(ctx, audit.ListRequest{ProjectID: projectID})
 keys, err := cli.Audit().JWKS(ctx, projectID) // public signature verification keys
+// The same keys with no credential at all, e.g. from a verifier holding only an export
+// (audit.NewPublicClient gives a reusable credential-free client for repeated lookups).
+keys, err = audit.FetchJWKS(ctx, "https://eu.api.indykite.com", projectID)
 
 // Control plane — reads INDYKITE_SERVICE_ACCOUNT_CREDENTIALS[_FILE].
 admin, err := indykite.NewAdminFromEnv(ctx, indykite.WithRegion("eu"))

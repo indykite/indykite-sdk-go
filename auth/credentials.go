@@ -35,6 +35,10 @@ const (
 // ErrNoCredentials is returned when no loader yields a credential.
 var ErrNoCredentials = errors.New("indykite: no credentials found")
 
+// ErrNoTokenProvider is returned by Authenticator.Apply when a non-anonymous
+// Authenticator was built without a TokenProvider (NewWithProvider with nil).
+var ErrNoTokenProvider = errors.New("indykite: authenticator has no token provider")
+
 // Credentials is the Service Account credential artifact: the JSON document
 // carrying baseUrl/endpoint, serviceAccountId, a pre-issued "token", and the
 // private key material. When the pre-issued Token is still valid it is sent

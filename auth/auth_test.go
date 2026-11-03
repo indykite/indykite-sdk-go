@@ -85,6 +85,28 @@ var _ = Describe("ServiceAccountFromJSON", func() {
 	})
 })
 
+var _ = Describe("Anonymous", func() {
+	It("sends no credential header", func() {
+		a := auth.Anonymous()
+		Expect(a.BaseURL).To(BeEmpty(), "an anonymous authenticator carries no endpoint hint")
+
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/audit/.well-known/jwks.json",
+			http.NoBody)
+		Expect(a.Apply(context.Background(), req)).To(Succeed())
+
+		Expect(req.Header).NotTo(HaveKey(auth.HeaderClientKey))
+		Expect(req.Header).NotTo(HaveKey(auth.HeaderAuthorization))
+	})
+
+	It("is the only way to send no credential: a missing provider is an error", func() {
+		a := auth.NewWithProvider(auth.PlaneControl, nil)
+
+		req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/cfg", http.NoBody)
+		Expect(a.Apply(context.Background(), req)).To(MatchError(auth.ErrNoTokenProvider))
+		Expect(req.Header).NotTo(HaveKey(auth.HeaderAuthorization))
+	})
+})
+
 var _ = Describe("New", func() {
 	It("fails when no loader yields credentials", func() {
 		_, err := auth.New(context.Background(), auth.PlaneRuntime)
