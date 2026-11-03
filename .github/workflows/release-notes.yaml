@@ -3,7 +3,7 @@ name: Release notes
 on: # yamllint disable-line rule:truthy
   push:
     branches: ["dev", "develop", "main", "master"]
-  # to have an ability to run thee workflow manually
+  # to have an ability to run the workflow manually
   workflow_dispatch: # yamllint disable-line rule:empty-values
 
 # https://github.com/googleapis/release-please-action?tab=readme-ov-file#workflow-permissions

@@ -26,6 +26,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"time"
 
 	"github.com/indykite/indykite-sdk-go/audit"
 	"github.com/indykite/indykite-sdk-go/auth"
@@ -50,8 +51,9 @@ type request struct {
 }
 
 // newClient wires an audit.Client to an httptest server running h, recording
-// every request it sees; the server is torn down when the spec ends.
-func newClient(h http.HandlerFunc) (*audit.Client, *[]request) {
+// every request it sees; the server is torn down when the spec ends. opts
+// tune the transport beyond the server's base URL.
+func newClient(h http.HandlerFunc, opts ...transport.Option) (*audit.Client, *[]request) {
 	GinkgoHelper()
 	var seen []request
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +66,7 @@ func newClient(h http.HandlerFunc) (*audit.Client, *[]request) {
 	DeferCleanup(srv.Close)
 
 	a := auth.NewWithProvider(auth.PlaneRuntime, stubProvider{})
-	tc, err := transport.NewClient(a, transport.WithBaseURL(srv.URL))
+	tc, err := transport.NewClient(a, append([]transport.Option{transport.WithBaseURL(srv.URL)}, opts...)...)
 	Expect(err).NotTo(HaveOccurred())
 	return audit.NewClient(tc), &seen
 }
@@ -238,6 +240,62 @@ var _ = Describe("JWKS", func() {
 		sig, err := ecdsa.SignASN1(rand.Reader, priv, digest[:])
 		Expect(err).NotTo(HaveOccurred())
 		Expect(ecdsa.VerifyASN1(pub, digest[:], sig)).To(BeTrue())
+	})
+
+	It("resolves a retired key by kid alongside the current one", func(ctx SpecContext) {
+		retired, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		Expect(err).NotTo(HaveOccurred())
+		current, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		Expect(err).NotTo(HaveOccurred())
+		c, _ := newClient(reply(`{"keys":[` +
+			jwk(&retired.PublicKey, "platform-1") + `,` + jwk(&current.PublicKey, "platform-2") + `]}`))
+
+		set, err := c.JWKS(ctx, projectID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(set.Keys).To(HaveLen(2))
+		for kid, priv := range map[string]*ecdsa.PrivateKey{"platform-1": retired, "platform-2": current} {
+			key, ok := set.Find(kid)
+			Expect(ok).To(BeTrue(), kid)
+			pub, err := key.ECDSAPublicKey()
+			Expect(err).NotTo(HaveOccurred())
+			Expect(pub.Equal(&priv.PublicKey)).To(BeTrue(), "kid %s must map to its own key", kid)
+		}
+	})
+
+	It("returns an empty set for a project with no signed data yet", func(ctx SpecContext) {
+		c, _ := newClient(reply(`{"keys":[]}`))
+
+		set, err := c.JWKS(ctx, projectID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(set.Keys).To(BeEmpty())
+		_, ok := set.Find("platform-1")
+		Expect(ok).To(BeFalse())
+	})
+
+	It("retries a 503 after the Retry-After the platform asks for", func(ctx SpecContext) {
+		priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		Expect(err).NotTo(HaveOccurred())
+		var calls int
+		c, _ := newClient(func(w http.ResponseWriter, _ *http.Request) {
+			calls++
+			if calls == 1 {
+				w.Header().Set("Retry-After", "1")
+				w.WriteHeader(http.StatusServiceUnavailable)
+				_, _ = io.WriteString(w, `{"message":"too many keys loaded at once"}`)
+				return
+			}
+			_, _ = io.WriteString(w, `{"keys":[`+jwk(&priv.PublicKey, "platform-1")+`]}`)
+		}, transport.WithRetry(transport.RetryConfig{
+			// MaxDelay caps the 1s hint so the spec stays fast while still
+			// taking the hint-driven backoff path.
+			MaxAttempts: 2, BaseDelay: time.Millisecond, MaxDelay: 5 * time.Millisecond,
+		}))
+
+		set, err := c.JWKS(ctx, projectID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(calls).To(Equal(2), "one 503, then the key set")
+		_, ok := set.Find("platform-1")
+		Expect(ok).To(BeTrue())
 	})
 
 	DescribeTable("ECDSAPublicKey rejects keys it cannot use",

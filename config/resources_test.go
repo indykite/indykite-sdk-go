@@ -295,6 +295,77 @@ var _ = Describe("Token Introspect validation modes", func() {
 	})
 })
 
+var _ = Describe("Token Introspect node identity", func() {
+	const base = "/configs/v1/token-introspects"
+
+	It("sends only the node type on an IKG schema v1 config", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, base, crudResponses{
+			created: `{"id":"gid:ti"}`,
+			read:    `{"id":"gid:ti","ikg_node_type":"Person","jwt_matcher":{"issuer":"https://issuer.example.com"}}`,
+		}))
+
+		_, err := admin.TokenIntrospects().Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: "gid:proj", Name: "v1",
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				IkgNodeType: "Person",
+				JwtMatcher:  json.RawMessage(`{"issuer":"https://issuer.example.com"}`),
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("ikg_node_type", "Person"))
+		Expect(rec.body).NotTo(HaveKey("id_key"))
+		Expect(rec.body).NotTo(HaveKey("label"))
+
+		got, err := admin.TokenIntrospects().Read(ctx, "gid:ti")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.IkgNodeType).To(Equal("Person"))
+		Expect(got.IDKey).To(BeEmpty())
+		Expect(got.Label).To(BeEmpty())
+	})
+
+	It("sends label and id_key without a node type on an IKG schema v2 config", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, base, crudResponses{
+			created: `{"id":"gid:ti"}`,
+			read: `{"id":"gid:ti","label":"Person","id_key":"employee_id",
+				"jwt_matcher":{"issuer":"https://issuer.example.com"},"perform_upsert":true}`,
+			updated: `{"id":"gid:ti"}`,
+		}))
+
+		_, err := admin.TokenIntrospects().Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: "gid:proj", Name: "v2",
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				Label:         "Person",
+				IDKey:         "employee_id",
+				JwtMatcher:    json.RawMessage(`{"issuer":"https://issuer.example.com"}`),
+				PerformUpsert: true,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("label", "Person"))
+		Expect(rec.body).To(HaveKeyWithValue("id_key", "employee_id"))
+		Expect(rec.body).NotTo(HaveKey("ikg_node_type"), "the node type is optional on schema v2")
+
+		got, err := admin.TokenIntrospects().Read(ctx, "gid:ti")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.Label).To(Equal("Person"))
+		Expect(got.IDKey).To(Equal("employee_id"))
+		Expect(got.IkgNodeType).To(BeEmpty())
+		Expect(got.PerformUpsert).To(BeTrue())
+
+		_, err = admin.TokenIntrospects().Update(ctx, "gid:ti", got.ETag, &config.UpdateTokenIntrospect{
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				Label: got.Label, IDKey: "badge_id", JwtMatcher: got.JwtMatcher,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		rec.expectReq(http.MethodPut, base+"/gid:ti")
+		Expect(rec.body).To(HaveKeyWithValue("id_key", "badge_id"))
+		Expect(rec.body).NotTo(HaveKey("ikg_node_type"))
+	})
+})
+
 var _ = Describe("Project IKG schema version", func() {
 	It("sends the schema version on create and reads it back", func(ctx SpecContext) {
 		var rec recorder
@@ -313,6 +384,25 @@ var _ = Describe("Project IKG schema version", func() {
 		got, err := admin.Projects().Read(ctx, "gid:proj")
 		Expect(err).NotTo(HaveOccurred())
 		Expect(got.IkgSchemaVersion).To(Equal(config.IkgSchemaVersionV1))
+	})
+
+	It("sends schema v2 verbatim and leaves its acceptance to the platform", func(ctx SpecContext) {
+		var rec recorder
+		admin := adminTo(crudHandler(&rec, "/configs/v1/projects", crudResponses{
+			created: `{"id":"gid:proj"}`,
+			read:    `{"id":"gid:proj","name":"proj","ikg_schema_version":"v2"}`,
+		}))
+
+		_, err := admin.Projects().Create(ctx, &config.CreateProject{
+			OrganizationID: "gid:org", Name: "proj", Region: "europe-west1",
+			IkgSchemaVersion: config.IkgSchemaVersionV2,
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(rec.body).To(HaveKeyWithValue("ikg_schema_version", "v2"))
+
+		got, err := admin.Projects().Read(ctx, "gid:proj")
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.IkgSchemaVersion).To(Equal(config.IkgSchemaVersionV2))
 	})
 
 	It("leaves the platform default when the version is unset", func(ctx SpecContext) {
