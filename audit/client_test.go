@@ -242,6 +242,58 @@ var _ = Describe("JWKS", func() {
 		Expect(ecdsa.VerifyASN1(pub, digest[:], sig)).To(BeTrue())
 	})
 
+	It("is readable without any credential through FetchJWKS", func(ctx SpecContext) {
+		priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		Expect(err).NotTo(HaveOccurred())
+		var seen request
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			seen = request{method: r.Method, path: r.URL.Path, query: r.URL.Query(), header: r.Header.Clone()}
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = io.WriteString(w, `{"keys":[`+jwk(&priv.PublicKey, "platform-1")+`]}`)
+		}))
+		DeferCleanup(srv.Close)
+
+		set, err := audit.FetchJWKS(ctx, srv.URL, projectID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(seen.path).To(Equal("/audit/.well-known/jwks.json"))
+		Expect(seen.query).To(Equal(url.Values{"project_id": {projectID}}))
+		Expect(seen.header).NotTo(HaveKey(auth.HeaderClientKey))
+		Expect(seen.header).NotTo(HaveKey(auth.HeaderAuthorization))
+		_, ok := set.Find("platform-1")
+		Expect(ok).To(BeTrue())
+
+		_, err = audit.FetchJWKS(ctx, srv.URL, "")
+		Expect(err).To(MatchError(audit.ErrProjectIDRequired))
+		_, err = audit.FetchJWKS(ctx, "", projectID)
+		Expect(err).To(MatchError(audit.ErrBaseURLRequired))
+	})
+
+	It("lets a public client's positional base URL win over the options", func(ctx SpecContext) {
+		priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		Expect(err).NotTo(HaveOccurred())
+		var calls int
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+			calls++
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = io.WriteString(w, `{"keys":[`+jwk(&priv.PublicKey, "platform-1")+`]}`)
+		}))
+		DeferCleanup(srv.Close)
+
+		// A caller-owned slice with spare capacity must come back untouched.
+		callerOpts := make([]transport.Option, 0, 4)
+		callerOpts = append(callerOpts, transport.WithBaseURL("https://elsewhere.invalid"), transport.WithRegion("us"))
+		pub, err := audit.NewPublicClient(srv.URL, callerOpts...)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(callerOpts[:cap(callerOpts)][2]).To(BeNil(), "NewPublicClient must not write into the caller's slice")
+		set, err := pub.JWKS(ctx, projectID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(calls).To(Equal(1), "the request must reach the positional base URL")
+		Expect(set.Keys).To(HaveLen(1))
+
+		_, err = audit.NewPublicClient("")
+		Expect(err).To(MatchError(audit.ErrBaseURLRequired))
+	})
+
 	It("resolves a retired key by kid alongside the current one", func(ctx SpecContext) {
 		retired, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 		Expect(err).NotTo(HaveOccurred())

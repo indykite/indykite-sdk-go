@@ -85,6 +85,9 @@ type Authenticator struct {
 	BaseURL string
 
 	plane Plane
+	// anonymous is set only by Anonymous: such an Authenticator sends no
+	// credential. A nil provider elsewhere stays a programming error.
+	anonymous bool
 }
 
 // New builds an Authenticator for the given plane from the first loader that
@@ -111,6 +114,13 @@ func New(ctx context.Context, plane Plane, loaders ...Loader) (*Authenticator, e
 // flows other than the built-in self-signed JWT.
 func NewWithProvider(plane Plane, provider TokenProvider) *Authenticator {
 	return &Authenticator{provider: provider, plane: plane}
+}
+
+// Anonymous builds an Authenticator that sends no credential at all, for the
+// platform's public routes such as the audit JWKS. Every authenticated route
+// answers 401 to it. The base URL must come from the transport options.
+func Anonymous() *Authenticator {
+	return &Authenticator{plane: PlaneRuntime, anonymous: true}
 }
 
 // AppAgentFromEnv builds a runtime-plane Authenticator from the App Agent
@@ -155,8 +165,16 @@ func ServiceAccountFromJSON(ctx context.Context, credentialsJSON []byte) (*Authe
 	return New(ctx, PlaneControl, StaticJSON(credentialsJSON))
 }
 
-// Apply sets the plane-appropriate authentication header on the request.
+// Apply sets the plane-appropriate authentication header on the request. An
+// Anonymous authenticator leaves the request untouched; any other
+// Authenticator without a TokenProvider is a programming error.
 func (a *Authenticator) Apply(ctx context.Context, req *http.Request) error {
+	if a.anonymous {
+		return nil
+	}
+	if a.provider == nil {
+		return ErrNoTokenProvider
+	}
 	tok, err := a.provider.Token(ctx)
 	if err != nil {
 		return err

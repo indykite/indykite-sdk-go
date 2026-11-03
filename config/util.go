@@ -65,7 +65,9 @@ func WithSearch(term string) ListOption {
 	return func(q url.Values) { q.Set("search", term) }
 }
 
-// WithFullFetch returns full data instead of metadata only.
+// WithFullFetch returns full data instead of metadata only: without it a list
+// populates only the Metadata fields of each item (id, name, display name,
+// description, timestamps), and every resource-specific field stays empty.
 func WithFullFetch() ListOption {
 	return func(q url.Values) { q.Set("full_fetch", "true") }
 }

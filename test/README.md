@@ -52,12 +52,14 @@ The platform allows only one audit-signing config per project, so the
 audit-signing tests need `AUDIT_SIGNING_ID` and never create their own config.
 They update the fixture and restore it to `PLATFORM_MANAGED` when they finish.
 
-The live audit-log specs (`TestIntegrationAudit`, package `audit`) need the
-App Agent to hold the `Audit` API permission. They skip on a 401/403, which
-means the permission is not granted; it is a per-agent grant, not a fixture the
-setup tool can provision. The audit API is part of every platform deployment,
-so a 404 on the public `/audit/.well-known/jwks.json` route fails the specs
-with one explicit message instead of skipping them.
+The live audit-log specs (`TestIntegrationAudit`, package `audit`) take the
+same inputs as the other suites: the App Agent credential, `PROJECT_ID` and
+`INDYKITE_BASE_URL`. The log, manifest and checkpoint specs need the App Agent
+to hold the `Audit` API permission and skip on a 401/403; it is a per-agent
+grant, not a fixture the setup tool can provision. The audit API is part of
+every platform deployment, so a 404 is a failure, not a skip. The
+credential-less JWKS spec needs `INDYKITE_BASE_URL` explicitly, since a request
+without a credential has no endpoint to default from.
 
 The token-introspect spec for IKG schema `v2` picks the first `v2` project of
 the organization and skips while there is none; the platform refuses `v2` on
