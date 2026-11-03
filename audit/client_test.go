@@ -257,8 +257,10 @@ var _ = Describe("JWKS", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(seen.path).To(Equal("/audit/.well-known/jwks.json"))
 		Expect(seen.query).To(Equal(url.Values{"project_id": {projectID}}))
-		Expect(seen.header).NotTo(HaveKey(auth.HeaderClientKey))
-		Expect(seen.header).NotTo(HaveKey(auth.HeaderAuthorization))
+		// Values canonicalizes the lookup, so a credential header stored as
+		// X-Ik-Clientkey would be caught.
+		Expect(seen.header.Values(auth.HeaderClientKey)).To(BeEmpty())
+		Expect(seen.header.Values(auth.HeaderAuthorization)).To(BeEmpty())
 		_, ok := set.Find("platform-1")
 		Expect(ok).To(BeTrue())
 

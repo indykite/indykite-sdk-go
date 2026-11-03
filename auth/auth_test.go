@@ -94,8 +94,10 @@ var _ = Describe("Anonymous", func() {
 			http.NoBody)
 		Expect(a.Apply(context.Background(), req)).To(Succeed())
 
-		Expect(req.Header).NotTo(HaveKey(auth.HeaderClientKey))
-		Expect(req.Header).NotTo(HaveKey(auth.HeaderAuthorization))
+		// Values canonicalizes the lookup; HaveKey on the raw name would never match
+		// the X-Ik-Clientkey form that Header.Set stores.
+		Expect(req.Header.Values(auth.HeaderClientKey)).To(BeEmpty())
+		Expect(req.Header.Values(auth.HeaderAuthorization)).To(BeEmpty())
 	})
 
 	It("is the only way to send no credential: a missing provider is an error", func() {
@@ -103,7 +105,7 @@ var _ = Describe("Anonymous", func() {
 
 		req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/cfg", http.NoBody)
 		Expect(a.Apply(context.Background(), req)).To(MatchError(auth.ErrNoTokenProvider))
-		Expect(req.Header).NotTo(HaveKey(auth.HeaderAuthorization))
+		Expect(req.Header.Values(auth.HeaderAuthorization)).To(BeEmpty())
 	})
 })
 
