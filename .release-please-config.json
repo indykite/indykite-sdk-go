@@ -4,13 +4,7 @@
   "packages": {
     ".": {
       "package-name": "indykite-sdk-go",
-      "include-component-in-tag": false,
-      "extra-files": [
-        "config/doc.go",
-        "ingest/doc.go",
-        "authorization/doc.go",
-        "knowledge/doc.go"
-      ]
+      "include-component-in-tag": false
     }
   },
   "signoff": "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>",

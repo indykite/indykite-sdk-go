@@ -24,9 +24,18 @@ import (
 
 const pathProjects = "/configs/v1/projects"
 
-// IkgSchemaVersionV1 is the IKG schema version of a project, and the default
-// when CreateProject.IkgSchemaVersion is empty.
-const IkgSchemaVersionV1 = "v1"
+// IKG schema versions of a project (Project.IkgSchemaVersion). The version is
+// fixed at creation and decides which node identity fields a
+// TokenIntrospectConfig needs.
+const (
+	// IkgSchemaVersionV1 is the default when CreateProject.IkgSchemaVersion is
+	// empty: nodes are identified by type and external_id.
+	IkgSchemaVersionV1 = "v1"
+	// IkgSchemaVersionV2 identifies nodes by label and an id property. The
+	// platform defines it but refuses it on create (422) until it is
+	// supported; every project is v1 until then.
+	IkgSchemaVersionV2 = "v2"
+)
 
 // Project is an organization-scoped project (formerly application space).
 // DBConnection is passed through as raw JSON; see the platform API reference.
@@ -44,6 +53,7 @@ type Project struct {
 // CreateProject is the body to create a project.
 //
 // IkgSchemaVersion is fixed at creation; empty means IkgSchemaVersionV1.
+// IkgSchemaVersionV2 is refused until the platform supports it.
 type CreateProject struct {
 	OrganizationID   string          `json:"organization_id"`
 	Name             string          `json:"name"`

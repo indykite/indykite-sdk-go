@@ -28,12 +28,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// deployed caches the one-time probe of the audit API. An environment that does
-// not serve the audit API answers every /audit path with 404. The public JWKS
-// route tells that case apart without needing the Audit permission, and the
-// hermetic specs in client_test.go pin the paths, so a wrong path cannot hide
-// behind this skip.
-var deployed *bool
+// served caches the one-time probe of the audit API. The API is part of every
+// platform deployment, so an environment answering 404 on the public JWKS route
+// is a failure, reported once with a clear message rather than once per spec
+// as an unexplained 404. The hermetic specs in client_test.go pin the paths.
+var served *bool
 
 var _ = Describe("Audit (live platform)", Label("integration"), func() {
 	var (
@@ -41,16 +40,17 @@ var _ = Describe("Audit (live platform)", Label("integration"), func() {
 		project string
 	)
 
-	skipUnlessDeployed := func(ctx SpecContext) {
+	failUnlessServed := func(ctx SpecContext) {
 		GinkgoHelper()
-		if deployed == nil {
+		if served == nil {
 			_, err := c.JWKS(ctx, project)
 			apiErr, isAPI := transport.AsAPIError(err)
 			ok := !isAPI || !apiErr.IsNotFound()
-			deployed = &ok
+			served = &ok
 		}
-		if !*deployed {
-			Skip("audit API not served on this platform (GET /audit/.well-known/jwks.json is 404)")
+		if !*served {
+			Fail("audit API not served on this platform (GET /audit/.well-known/jwks.json is 404); " +
+				"it is part of every platform deployment, so check INDYKITE_BASE_URL and the environment")
 		}
 	}
 
@@ -70,7 +70,7 @@ var _ = Describe("Audit (live platform)", Label("integration"), func() {
 		cli, err := indykite.NewClientFromEnv(ctx, opts...)
 		Expect(err).NotTo(HaveOccurred())
 		c = cli.Audit()
-		skipUnlessDeployed(ctx)
+		failUnlessServed(ctx)
 	})
 
 	// skipWithoutPermission skips the spec when the App Agent lacks the Audit
@@ -106,11 +106,36 @@ var _ = Describe("Audit (live platform)", Label("integration"), func() {
 		}
 	})
 
-	It("publishes an EC P-256 verification key", func(ctx SpecContext) {
+	// The public route needs no permission. The key set is per project and
+	// holds every key that signed for it; PROJECT_ID is the long-lived fixture
+	// project, whose chain has been signed for far longer than the up to two
+	// minutes a new key takes to be listed.
+	It("publishes EC P-256 verification keys without a credential", func(ctx SpecContext) {
 		set, err := c.JWKS(ctx, project)
 		Expect(err).NotTo(HaveOccurred())
-		Expect(set.Keys).NotTo(BeEmpty())
-		_, err = set.Keys[0].ECDSAPublicKey()
+		Expect(set.Keys).NotTo(BeEmpty(), "PROJECT_ID must have signed audit data")
+		for _, key := range set.Keys {
+			_, err = key.ECDSAPublicKey()
+			Expect(err).NotTo(HaveOccurred(), "kid %s", key.Kid)
+		}
+	})
+
+	// The oldest manifest's key was listed long ago whether it is current or
+	// retired, so its kid must resolve in the project's key set.
+	It("lists the key the project's chain was signed with", func(ctx SpecContext) {
+		manifests, err := c.ListManifests(ctx, audit.ListRequest{ProjectID: project, PageSize: 1})
+		skipWithoutPermission(err)
+		Expect(err).NotTo(HaveOccurred())
+		if len(manifests.Items) == 0 {
+			Skip("PROJECT_ID has no signed audit data yet")
+		}
+
+		set, err := c.JWKS(ctx, project)
+		Expect(err).NotTo(HaveOccurred())
+		kid := manifests.Items[0].KID
+		key, found := set.Find(kid)
+		Expect(found).To(BeTrue(), "manifest kid %s must be in the project's key set", kid)
+		_, err = key.ECDSAPublicKey()
 		Expect(err).NotTo(HaveOccurred())
 	})
 })

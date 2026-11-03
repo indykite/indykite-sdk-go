@@ -116,9 +116,17 @@ func (c *Client) AllCheckpoints(ctx context.Context, req ListRequest) ([]Checkpo
 	return c.IterateCheckpoints(req).Collect(ctx)
 }
 
-// JWKS returns the keys the batch, manifest and checkpoint signatures verify
-// against (GET /audit/.well-known/jwks.json). The endpoint is public; the
-// project ID is required but does not yet select a key.
+// JWKS returns the keys the project's batch, manifest and checkpoint
+// signatures verify against (GET /audit/.well-known/jwks.json): every key that
+// ever signed for the project, current and retired, found by kid with
+// KeySet.Find. The endpoint is public and needs no credential.
+//
+// A project with no signed data yet has no keys, and a project's first key, or
+// one added by a key rotation, can take up to two minutes to be listed. Keep
+// the set next to an exported trail so each item can be verified later.
+//
+// The platform answers 503 with a Retry-After header while it loads a large
+// key set; the transport retries those on its own, within its retry policy.
 func (c *Client) JWKS(ctx context.Context, projectID string) (*KeySet, error) {
 	if projectID == "" {
 		return nil, ErrProjectIDRequired

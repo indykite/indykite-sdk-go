@@ -53,11 +53,15 @@ audit-signing tests need `AUDIT_SIGNING_ID` and never create their own config.
 They update the fixture and restore it to `PLATFORM_MANAGED` when they finish.
 
 The live audit-log specs (`TestIntegrationAudit`, package `audit`) need the
-App Agent to hold the `Audit` API permission and the platform to serve the
-audit API. They skip when either is missing: a 401/403 means the permission is
-not granted, and a 404 on the public `/audit/.well-known/jwks.json` route means
-the environment does not serve the audit API. Neither is a fixture the setup
-tool can provision.
+App Agent to hold the `Audit` API permission. They skip on a 401/403, which
+means the permission is not granted; it is a per-agent grant, not a fixture the
+setup tool can provision. The audit API is part of every platform deployment,
+so a 404 on the public `/audit/.well-known/jwks.json` route fails the specs
+with one explicit message instead of skipping them.
+
+The token-introspect spec for IKG schema `v2` picks the first `v2` project of
+the organization and skips while there is none; the platform refuses `v2` on
+project creation today, so the spec activates on its own once that changes.
 
 CI needs no manual copies: both the Integration job (go-tests.yaml) and the
 go-sdk-tests pipeline image (docker/infra/startscript.sh) run `setup apply`

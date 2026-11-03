@@ -29,11 +29,17 @@ const pathTokenIntrospects = "/configs/v1/token-introspects"
 // The matcher/validation sub-objects are passed through as raw JSON; see the
 // platform API reference for their structure.
 //
+// How the token's subject is matched to an IKG node depends on the project's
+// IKG schema version (Project.IkgSchemaVersion): IkgNodeType on schema v1,
+// Label and IDKey on schema v2. See TokenIntrospectConfig.
+//
 // On reads, OnlineOAuth2Validation never carries the client secret: its
 // secret_basic object holds only client_id.
 type TokenIntrospect struct {
 	Metadata
-	IkgNodeType string `json:"ikg_node_type"`
+	IkgNodeType string `json:"ikg_node_type,omitempty"`
+	IDKey       string `json:"id_key,omitempty"`
+	Label       string `json:"label,omitempty"`
 	Versioned
 	JwtMatcher             json.RawMessage `json:"jwt_matcher,omitempty"`
 	OpaqueMatcher          json.RawMessage `json:"opaque_matcher,omitempty"`
@@ -57,6 +63,15 @@ const (
 
 // TokenIntrospectConfig is the introspect-specific config shared by create/update.
 //
+// The platform validates the node identity fields against the IKG schema
+// version of the project the config belongs to:
+//   - schema v1 (IkgSchemaVersionV1, the default): IkgNodeType is required and
+//     names the node type whose external_id is matched to the subject claim;
+//     IDKey and Label are ignored.
+//   - schema v2 (IkgSchemaVersionV2): Label (the label of the node) and IDKey
+//     (the node property holding the subject claim) are required; IkgNodeType
+//     is optional.
+//
 // Exactly one of OfflineValidation, OnlineValidation and OnlineOAuth2Validation
 // is set. OfflineValidation works with JwtMatcher only; an OpaqueMatcher needs
 // one of the online modes. OnlineOAuth2Validation calls an RFC 7662
@@ -69,7 +84,15 @@ const (
 // client_secret is write-only and required on create. An update may omit it to
 // keep the stored secret, unless introspection_endpoint or client_id changes.
 type TokenIntrospectConfig struct {
-	IkgNodeType            string          `json:"ikg_node_type"`
+	// IkgNodeType is the IKG node type matched to the subject claim through
+	// its external_id (schema v1; a capitalized word such as "Person").
+	IkgNodeType string `json:"ikg_node_type,omitempty"`
+	// IDKey is the node property holding the subject claim, or the claim named
+	// in SubClaim (schema v2; at most 256 characters).
+	IDKey string `json:"id_key,omitempty"`
+	// Label is the label of the node that token introspect matches, and
+	// creates when PerformUpsert is set (schema v2; at most 256 characters).
+	Label                  string          `json:"label,omitempty"`
 	JwtMatcher             json.RawMessage `json:"jwt_matcher,omitempty"`
 	OpaqueMatcher          json.RawMessage `json:"opaque_matcher,omitempty"`
 	OfflineValidation      json.RawMessage `json:"offline_validation,omitempty"`

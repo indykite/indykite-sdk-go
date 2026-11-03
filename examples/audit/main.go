@@ -78,8 +78,9 @@ func main() {
 		printPage(a.ListCheckpoints(ctx, req))
 
 	case "jwks":
-		// Public: signatures are ECDSA P-256/SHA-256, ASN.1 DER encoded; verify
-		// them with ecdsa.VerifyASN1 and Key.ECDSAPublicKey.
+		// Public: every key that ever signed for the project, current and
+		// retired, by kid. Signatures are ECDSA P-256/SHA-256, ASN.1 DER
+		// encoded; verify them with ecdsa.VerifyASN1 and Key.ECDSAPublicKey.
 		keys, err := a.JWKS(ctx, *projectID)
 		if err != nil {
 			exutil.Fatal(err)

@@ -93,8 +93,26 @@ var _ = Describe("Config (live platform)", Label("integration"), func() {
 
 		got, err := admin.Projects().Read(ctx, project)
 		Expect(err).NotTo(HaveOccurred())
-		Expect(got.IkgSchemaVersion).To(Or(BeEmpty(), Equal(config.IkgSchemaVersionV1)))
+		Expect(got.IkgSchemaVersion).To(BeElementOf("", config.IkgSchemaVersionV1, config.IkgSchemaVersionV2))
 	})
+
+	// requireSchemaV2Project returns the first project of the caller's
+	// organization on IKG schema v2, or skips: the platform refuses v2 on
+	// create today, so the spec activates on its own once such a project exists.
+	requireSchemaV2Project := func(ctx context.Context) string {
+		GinkgoHelper()
+		org, err := admin.Organizations().ReadCurrent(ctx)
+		Expect(err).NotTo(HaveOccurred())
+		projects, err := admin.Projects().List(ctx, org.ID)
+		Expect(err).NotTo(HaveOccurred())
+		for _, p := range projects {
+			if p.IkgSchemaVersion == config.IkgSchemaVersionV2 {
+				return p.ID
+			}
+		}
+		Skip("no project on IKG schema v2 in the organization")
+		return ""
+	}
 
 	// The platform allows only one audit-signing config per project, and
 	// `go run ./test/setup apply` provisions it (AUDIT_SIGNING_ID). The
@@ -408,6 +426,56 @@ var _ = Describe("Config (live platform)", Label("integration"), func() {
 
 		got, err = api.Read(ctx, got.ID)
 		Expect(err).NotTo(HaveOccurred())
+		Expect(got.PerformUpsert).To(BeTrue())
+
+		Expect(api.Delete(ctx, got.ID, got.ETag)).To(Succeed())
+		_, err = api.Read(ctx, got.ID)
+		expectAPIStatus(err, http.StatusNotFound)
+	})
+
+	// On IKG schema v2 the node a token resolves to is named by label and
+	// id_key instead of ikg_node_type; the platform validates the config
+	// against the project's version, so this runs only on a v2 project.
+	It("runs the token introspect lifecycle on an IKG schema v2 project", func(ctx SpecContext) {
+		project := requireSchemaV2Project(ctx)
+		api := admin.TokenIntrospects()
+
+		name := uniqueName("sdk-it-ti-v2")
+		jwtMatcher := json.RawMessage(fmt.Sprintf(
+			`{"issuer":"https://sdk-it.example.com/%s","audience":%q}`, name, name))
+		created, err := api.Create(ctx, &config.CreateTokenIntrospect{
+			ProjectID: project,
+			Name:      name,
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				Label:             "Person",
+				IDKey:             "employee_id",
+				JwtMatcher:        jwtMatcher,
+				OfflineValidation: json.RawMessage(`{"discovery":"` + config.TokenIntrospectDiscoveryOIDC + `"}`),
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		DeferCleanup(func(ctx SpecContext) { _ = api.Delete(ctx, created.ID, "") })
+
+		got, err := api.Read(ctx, created.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.Label).To(Equal("Person"))
+		Expect(got.IDKey).To(Equal("employee_id"))
+		Expect(got.IkgNodeType).To(BeEmpty())
+
+		_, err = api.Update(ctx, got.ID, got.ETag, &config.UpdateTokenIntrospect{
+			TokenIntrospectConfig: config.TokenIntrospectConfig{
+				Label:             got.Label,
+				IDKey:             "badge_id",
+				JwtMatcher:        jwtMatcher,
+				OfflineValidation: got.OfflineValidation,
+				PerformUpsert:     true,
+			},
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		got, err = api.Read(ctx, got.ID)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(got.IDKey).To(Equal("badge_id"))
 		Expect(got.PerformUpsert).To(BeTrue())
 
 		Expect(api.Delete(ctx, got.ID, got.ETag)).To(Succeed())

@@ -82,7 +82,9 @@ type Checkpoint struct {
 	Sequence     uint64 `json:"sequence"`
 }
 
-// KeySet is the JWKS returned by GET /audit/.well-known/jwks.json.
+// KeySet is the JWKS returned by GET /audit/.well-known/jwks.json: every key
+// that ever signed for the project, so a retired kid still resolves. Empty for
+// a project with no signed data yet.
 type KeySet struct {
 	Keys []Key `json:"keys"`
 }
