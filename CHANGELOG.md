@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.80.1](https://github.com/indykite/indykite-sdk-go/compare/v0.80.0...v0.80.1) (2026-11-09)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([676fe9e](https://github.com/indykite/indykite-sdk-go/commit/676fe9e4858d5de7d049f7b057a4fb9c994920bc))
+* **deps:** update golang:1.27-alpine Docker digest to fa3d596 ([dc58585](https://github.com/indykite/indykite-sdk-go/commit/dc585858febe9fa7ff20e2a2929a72935060338d))
+
 ## [0.80.0](https://github.com/indykite/indykite-sdk-go/compare/v0.79.0...v0.80.0) (2026-11-04)
 
 
