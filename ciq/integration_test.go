@@ -218,6 +218,123 @@ var _ = Describe("Integration WhoAmI end-to-end", Label("integration"), func() {
 	})
 })
 
+// A 2.0-ciq write query whose upsert values are "@" references: the platform
+// reads them from the graph the policy matched and writes them on the matched
+// node, so the response carries values the request never sent. Needs both
+// credentials + PROJECT_ID.
+var _ = Describe("Integration 2.0-ciq reference values", Label("integration"), func() {
+	const (
+		pollTimeout  = 60 * time.Second
+		pollInterval = 5 * time.Second
+	)
+
+	var (
+		admin  *config.AdminClient
+		cli    *ciq.Client
+		runtim *indykite.Client
+	)
+
+	BeforeEach(func(ctx SpecContext) {
+		cli = ciqClient(ctx)
+		admin, runtim = adminAndRuntimeClients(ctx)
+	})
+
+	It("upserts values referenced from the matched graph", func(ctx SpecContext) {
+		projectID := os.Getenv("PROJECT_ID")
+		unique := strconv.FormatInt(time.Now().UnixNano(), 10)
+		ownerEmail := "sdk-it-ciq2-" + unique + "@example.com"
+
+		// --- seed: the _Application subject binds to the caller's own
+		// application node, so executing needs only the App Agent key.
+		policy, err := admin.AuthorizationPolicies().Create(ctx, &config.CreateAuthorizationPolicy{
+			ProjectID: projectID,
+			Name:      "sdk-it-ciq2-ref-" + unique,
+			Policy: `{
+			  "meta": {"policy_version": "2.0-ciq"},
+			  "subject": {"type": "_Application"},
+			  "condition": {
+			    "cypher": "MATCH (subject:_Application) MATCH (owner:Person)-[:OWNS]->(server:Server)",
+			    "filter": [{
+			      "operator": "AND",
+			      "operands": [
+			        {"operator": "=", "attribute": "@subject.external_id", "value": "$_appId"},
+			        {"operator": "=", "attribute": "@server.external_id", "value": "$server_external_id"}
+			      ]
+			    }]
+			  },
+			  "allowed_reads": {"nodes": ["server.*"]},
+			  "allowed_upserts": {"nodes": {"existing_nodes": ["server"]}}
+			}`,
+			Status: config.StatusActive,
+		})
+		Expect(err).NotTo(HaveOccurred(), "create 2.0-ciq policy")
+		DeferCleanup(func(ctx SpecContext) {
+			_ = admin.AuthorizationPolicies().Delete(ctx, policy.ID, "")
+		})
+
+		kq, err := admin.KnowledgeQueries().Create(ctx, &config.CreateKnowledgeQuery{
+			ProjectID: projectID,
+			Name:      "sdk-it-ciq2-ref-kq-" + unique,
+			Query: `{
+			  "nodes": ["server.property.owner_id", "server.property.owner_email"],
+			  "upsert_nodes": [{
+			    "name": "server",
+			    "properties": [
+			      {"type": "owner_id", "value": "@owner.external_id"},
+			      {"type": "owner_email", "value": "@owner.property.email"}
+			    ]
+			  }]
+			}`,
+			Status:   config.StatusActive,
+			PolicyID: policy.ID,
+		})
+		Expect(err).NotTo(HaveOccurred(), "create knowledge query")
+		// Registered after the policy cleanup, so it runs first (LIFO): the
+		// query references the policy.
+		DeferCleanup(func(ctx SpecContext) {
+			_ = admin.KnowledgeQueries().Delete(ctx, kq.ID, "")
+		})
+
+		// --- ingest: the owner whose attribute and property are referenced ---
+		owner := capture.Node{ExternalID: "sdk-it-ciq2-owner-" + unique, Type: "Person"}
+		// No region property: the fixture knowledge query (region=eu) must not
+		// see this transient server.
+		server := capture.Node{ExternalID: "sdk-it-ciq2-server-" + unique, Type: "Server"}
+		owns := capture.Relationship{Type: "OWNS", Source: &owner, Target: &server}
+		DeferCleanup(func(ctx SpecContext) {
+			_, _ = runtim.Capture().DeleteRelationships(ctx, owns)
+			_, _ = runtim.Capture().DeleteNodes(ctx, owner, server)
+		})
+
+		_, err = runtim.Capture().UpsertNodes(ctx,
+			capture.UpsertNode{
+				Node:       owner,
+				IsIdentity: true,
+				Properties: []capture.Property{{BaseProperty: capture.BaseProperty{Type: "email", Value: ownerEmail}}},
+			},
+			capture.UpsertNode{Node: server},
+		)
+		Expect(err).NotTo(HaveOccurred(), "ingest nodes")
+		_, err = runtim.Capture().UpsertRelationships(ctx, owns)
+		Expect(err).NotTo(HaveOccurred(), "ingest relationship")
+
+		// --- act + assert: the write is idempotent, so poll until policy,
+		// query and data propagate and the referenced values come back.
+		Eventually(func(g Gomega) map[string]any {
+			resp, err := cli.Execute(ctx, ciq.ExecuteRequest{
+				ID:          kq.ID,
+				InputParams: map[string]any{"server_external_id": server.ExternalID},
+			})
+			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(resp.Data).To(HaveLen(1))
+			return resp.Data[0].Nodes
+		}).WithContext(ctx).WithTimeout(pollTimeout).WithPolling(pollInterval).Should(And(
+			HaveKeyWithValue("server.property.owner_id", owner.ExternalID),
+			HaveKeyWithValue("server.property.owner_email", ownerEmail),
+		), "server %s never got the referenced owner values", server.ExternalID)
+	}, SpecTimeout(2*time.Minute))
+})
+
 // adminAndRuntimeClients builds the control-plane and runtime clients the
 // end-to-end spec needs, skipping when credentials or PROJECT_ID are missing.
 func adminAndRuntimeClients(ctx context.Context) (*config.AdminClient, *indykite.Client) {
