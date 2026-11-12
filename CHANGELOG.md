@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.81.0](https://github.com/indykite/indykite-sdk-go/compare/v0.80.1...v0.81.0) (2026-11-12)
+
+
+### Features
+
+* add integration test for ciq v2 ([9958862](https://github.com/indykite/indykite-sdk-go/commit/9958862f6a76b6817698e2bb4e222e809bcef094))
+
+
+### Bug Fixes
+
+* continue on codecov upload error ([25a90da](https://github.com/indykite/indykite-sdk-go/commit/25a90daae43736514b3f41cb90559acfcc9aeb28))
+
+
+### Miscellaneous Chores
+
+* **deps:** update module golang.org/x/crypto to v0.59.0 [SECURITY] ([d7bdfe9](https://github.com/indykite/indykite-sdk-go/commit/d7bdfe997fa82f09c78c9a27921902de34d41386))
+
 ## [0.80.1](https://github.com/indykite/indykite-sdk-go/compare/v0.80.0...v0.80.1) (2026-11-09)
 
 
