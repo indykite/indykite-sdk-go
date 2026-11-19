@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.82.0](https://github.com/indykite/indykite-sdk-go/compare/v0.81.0...v0.82.0) (2026-11-19)
+
+
+### Features
+
+* support composite IKG routing in capture ([f70e16e](https://github.com/indykite/indykite-sdk-go/commit/f70e16e4faefb85bd0ebfb2f28412d77fc60cdd0))
+* support composite IKG routing in capture ([2215351](https://github.com/indykite/indykite-sdk-go/commit/2215351ed29a19329fd9e11cd26c097c42e748a1))
+
 ## [0.81.0](https://github.com/indykite/indykite-sdk-go/compare/v0.80.1...v0.81.0) (2026-11-12)
 
 
