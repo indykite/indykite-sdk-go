@@ -55,23 +55,11 @@ var ErrEmptyBatch = errors.New("capture: batch must contain at least one entry")
 // Client calls the Capture and data-schema APIs.
 type Client struct {
 	t *transport.Client
-	// useGlobalDB routes relationship operations to the global constituent of
-	// a composite IKG (sent as use_global_db).
-	useGlobalDB bool
 }
 
 // NewClient builds a Capture client over the shared transport.
 func NewClient(t *transport.Client) *Client {
 	return &Client{t: t}
-}
-
-// GlobalDB returns a view of the client whose relationship operations set
-// use_global_db, targeting the global constituent of a composite IKG. Node
-// operations route per node via Node.Location instead.
-func (c *Client) GlobalDB() *Client {
-	c2 := *c
-	c2.useGlobalDB = true
-	return &c2
 }
 
 func (c *Client) post(ctx context.Context, path string, body any) (*BatchResults, error) {
@@ -83,6 +71,10 @@ func (c *Client) post(ctx context.Context, path string, body any) (*BatchResults
 }
 
 // UpsertNodes creates or updates up to MaxBatchSize nodes.
+//
+// On a composite IKG each node is written to the constituent of its
+// Node.Location, and a node with CreateProxy also gets a proxy in the global
+// constituent; the gids then come back in BatchResults.ByLocation.
 func (c *Client) UpsertNodes(ctx context.Context, nodes ...UpsertNode) (*BatchResults, error) {
 	if len(nodes) == 0 {
 		return nil, ErrEmptyBatch
@@ -129,19 +121,29 @@ func (c *Client) DeleteNodePropertyMetadata(
 }
 
 // UpsertRelationships creates or updates up to MaxBatchSize relationships.
+//
+// On a composite IKG the constituent is chosen from the Node.Location of the
+// source and target: their shared location, or the global constituent when
+// the locations differ. The gids then come back in BatchResults.ByLocation.
+// To write to the global constituent explicitly, set LocationGlobal on both
+// nodes; without any location the relationship goes to the default database.
+// A source or target missing from that constituent is created there with only
+// its external id and type; upsert the node with CreateProxy first to have a
+// proxy that carries its location.
 func (c *Client) UpsertRelationships(ctx context.Context, rels ...Relationship) (*BatchResults, error) {
 	if len(rels) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelationships, upsertRelationshipsRequest{Relationships: rels, UseGlobalDB: c.useGlobalDB})
+	return c.post(ctx, pathRelationships, upsertRelationshipsRequest{Relationships: rels})
 }
 
-// DeleteRelationships deletes up to MaxBatchSize relationships.
+// DeleteRelationships deletes up to MaxBatchSize relationships. On a composite
+// IKG the constituent is chosen as for UpsertRelationships.
 func (c *Client) DeleteRelationships(ctx context.Context, rels ...Relationship) (*BatchResults, error) {
 	if len(rels) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelDelete, deleteRelationshipsRequest{Relationships: rels, UseGlobalDB: c.useGlobalDB})
+	return c.post(ctx, pathRelDelete, deleteRelationshipsRequest{Relationships: rels})
 }
 
 // DeleteRelationshipProperties removes named property types from relationships.
@@ -152,9 +154,7 @@ func (c *Client) DeleteRelationshipProperties(
 	if len(items) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelPropsDelete, deleteRelationshipPropertiesRequest{
-		Relationships: items, UseGlobalDB: c.useGlobalDB,
-	})
+	return c.post(ctx, pathRelPropsDelete, deleteRelationshipPropertiesRequest{Relationships: items})
 }
 
 // ReadDataSchema returns the current data schema as a decoded JSON document.
@@ -179,7 +179,7 @@ func (c *Client) UpsertNodesChunked(ctx context.Context, nodes []UpsertNode, chu
 		if err != nil {
 			return agg, err
 		}
-		agg.Results = append(agg.Results, res.Results...)
+		agg.merge(res)
 	}
 	return agg, nil
 }
@@ -199,7 +199,7 @@ func (c *Client) UpsertRelationshipsChunked(
 		if err != nil {
 			return agg, err
 		}
-		agg.Results = append(agg.Results, res.Results...)
+		agg.merge(res)
 	}
 	return agg, nil
 }
