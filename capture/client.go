@@ -62,12 +62,27 @@ func NewClient(t *transport.Client) *Client {
 	return &Client{t: t}
 }
 
-func (c *Client) post(ctx context.Context, path string, body any) (*BatchResults, error) {
-	var out BatchResults
+// post sends a batch request and decodes its results. The platform answers
+// per location exactly when a node of the request has a location, so the
+// request's locations, not the response body, select the shape to decode.
+func (c *Client) post(ctx context.Context, path string, body any, locations locationSet) (*BatchResults, error) {
+	if len(locations) == 0 {
+		var out plainResults
+		if err := c.t.Do(ctx, http.MethodPost, path, body, &out); err != nil {
+			return nil, err
+		}
+		return &BatchResults{Results: out.Results}, nil
+	}
+
+	var out locationResults
 	if err := c.t.Do(ctx, http.MethodPost, path, body, &out); err != nil {
 		return nil, err
 	}
-	return &out, nil
+	byLocation, err := out.byLocation(locations)
+	if err != nil {
+		return nil, err
+	}
+	return &BatchResults{ByLocation: byLocation}, nil
 }
 
 // UpsertNodes creates or updates up to MaxBatchSize nodes.
@@ -79,18 +94,18 @@ func (c *Client) UpsertNodes(ctx context.Context, nodes ...UpsertNode) (*BatchRe
 	if len(nodes) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathNodes, upsertNodesRequest{Nodes: nodes})
+	return c.post(ctx, pathNodes, upsertNodesRequest{Nodes: nodes}, requestLocations(nodes))
 }
 
 // UpsertSingleNode creates or updates one node addressed by id, which is
 // either a gid ("gid:...") or "<Type>:<external_id>". Unlike UpsertNodes, the
 // node's identity comes from the id, not the body.
 func (c *Client) UpsertSingleNode(ctx context.Context, id string, node PutNode) (*BatchResults, error) {
-	var out BatchResults
+	var out plainResults
 	if err := c.t.Do(ctx, http.MethodPut, pathNodes+"/"+url.PathEscape(id), node, &out); err != nil {
 		return nil, err
 	}
-	return &out, nil
+	return &BatchResults{Results: out.Results}, nil
 }
 
 // DeleteNodes deletes up to MaxBatchSize nodes.
@@ -98,7 +113,7 @@ func (c *Client) DeleteNodes(ctx context.Context, nodes ...Node) (*BatchResults,
 	if len(nodes) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathNodesDelete, deleteNodesRequest{Nodes: nodes})
+	return c.post(ctx, pathNodesDelete, deleteNodesRequest{Nodes: nodes}, requestLocations(nodes))
 }
 
 // DeleteNodeProperties removes named property types from nodes.
@@ -106,7 +121,7 @@ func (c *Client) DeleteNodeProperties(ctx context.Context, items ...DeleteNodePr
 	if len(items) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathNodePropsDelete, deleteNodePropertiesRequest{Nodes: items})
+	return c.post(ctx, pathNodePropsDelete, deleteNodePropertiesRequest{Nodes: items}, requestLocations(items))
 }
 
 // DeleteNodePropertyMetadata removes named metadata fields from node properties.
@@ -117,7 +132,7 @@ func (c *Client) DeleteNodePropertyMetadata(
 	if len(items) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathNodePropMetaDelete, deleteNodePropertyMetadataRequest{Nodes: items})
+	return c.post(ctx, pathNodePropMetaDelete, deleteNodePropertyMetadataRequest{Nodes: items}, requestLocations(items))
 }
 
 // UpsertRelationships creates or updates up to MaxBatchSize relationships.
@@ -134,7 +149,7 @@ func (c *Client) UpsertRelationships(ctx context.Context, rels ...Relationship) 
 	if len(rels) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelationships, upsertRelationshipsRequest{Relationships: rels})
+	return c.post(ctx, pathRelationships, upsertRelationshipsRequest{Relationships: rels}, requestLocations(rels))
 }
 
 // DeleteRelationships deletes up to MaxBatchSize relationships. On a composite
@@ -143,7 +158,7 @@ func (c *Client) DeleteRelationships(ctx context.Context, rels ...Relationship) 
 	if len(rels) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelDelete, deleteRelationshipsRequest{Relationships: rels})
+	return c.post(ctx, pathRelDelete, deleteRelationshipsRequest{Relationships: rels}, requestLocations(rels))
 }
 
 // DeleteRelationshipProperties removes named property types from relationships.
@@ -154,7 +169,8 @@ func (c *Client) DeleteRelationshipProperties(
 	if len(items) == 0 {
 		return nil, ErrEmptyBatch
 	}
-	return c.post(ctx, pathRelPropsDelete, deleteRelationshipPropertiesRequest{Relationships: items})
+	return c.post(ctx, pathRelPropsDelete,
+		deleteRelationshipPropertiesRequest{Relationships: items}, requestLocations(items))
 }
 
 // ReadDataSchema returns the current data schema as a decoded JSON document.

@@ -14,7 +14,10 @@
 
 package capture
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 const (
 	// LocationDefault is the BatchResults.ByLocation key for entries without a
@@ -122,70 +125,80 @@ type Result struct {
 // Exactly one of the two fields is filled, depending on the request:
 //   - Results, when no node of the request has a location.
 //   - ByLocation, when at least one node has a location (composite IKG).
+//
+// The platform answers the two cases with different JSON objects; the client
+// tells them apart by the request, never by the response body.
 type BatchResults struct {
 	// ByLocation lists the affected node or relationship gids per location, in
 	// request order. Entries without a location are under LocationDefault.
 	// A location where nothing was found has an empty list. For a node upsert
 	// or delete, LocationGlobal holds the global nodes followed by the node
 	// proxies; the chunked upserts keep that order per chunk only.
-	//
-	// The key "results" cannot be told apart from Results when its list is
-	// empty, so avoid it as a location name.
-	ByLocation map[string][]string `json:"-"`
+	ByLocation map[string][]string `json:"by_location,omitempty"`
 	// Results lists the affected node or relationship gids.
+	Results []Result `json:"results,omitempty"`
+}
+
+// plainResults is the wire shape of a response to a request without locations.
+type plainResults struct {
 	Results []Result `json:"results"`
 }
 
-// UnmarshalJSON decodes both response shapes of the batch operations: the
-// {"results":[{"id":...}]} object and the per-location {"<location>":[gid,...]}
-// object returned for a composite IKG request.
-func (b *BatchResults) UnmarshalJSON(data []byte) error {
-	var fields map[string]json.RawMessage
-	if err := json.Unmarshal(data, &fields); err != nil {
-		return err
-	}
-	*b = BatchResults{}
-	if fields == nil {
-		return nil
-	}
+// locationResults is the wire shape of a response to a request with
+// locations: {"<location>":[gid,...]}. The values stay raw so that only the
+// keys known to be locations are decoded.
+type locationResults map[string]json.RawMessage
 
-	// A "results" list of {"id":...} objects is the plain shape; other keys are
-	// ignored so that an added response field does not fail a successful write.
-	// A "results" list of gids is a location that happens to have that name; an
-	// empty one is only read as the plain shape when it is the sole key.
-	if raw, ok := fields["results"]; ok {
-		var results []Result
-		if err := json.Unmarshal(raw, &results); err == nil && (len(results) > 0 || len(fields) == 1) {
-			b.Results = results
-			return nil
+// byLocation decodes the gid lists of the request's locations, plus
+// LocationDefault and LocationGlobal, which the platform can add on its own.
+// Any other key is not a location of this request and is ignored, so a field
+// added to the response cannot be mistaken for one.
+func (r locationResults) byLocation(requested locationSet) (map[string][]string, error) {
+	out := make(map[string][]string, len(r))
+	for location, raw := range r {
+		_, isRequested := requested[location]
+		if !isRequested && location != LocationDefault && location != LocationGlobal {
+			continue
 		}
-	}
-
-	b.ByLocation = make(map[string][]string, len(fields))
-	for location, raw := range fields {
 		var gids []string
 		if err := json.Unmarshal(raw, &gids); err != nil {
-			return err
+			return nil, fmt.Errorf("capture: decode results of location %q: %w", location, err)
 		}
-		b.ByLocation[location] = gids
+		if gids == nil {
+			// A null list still means the location was called and found nothing.
+			gids = []string{}
+		}
+		out[location] = gids
 	}
-	return nil
+	return out, nil
 }
 
-// MarshalJSON encodes the shape UnmarshalJSON decodes, so a BatchResults
-// survives a round trip.
-func (b BatchResults) MarshalJSON() ([]byte, error) {
-	if b.ByLocation != nil {
-		return json.Marshal(b.ByLocation)
-	}
-	results := b.Results
-	if results == nil {
-		results = []Result{}
-	}
-	return json.Marshal(struct {
-		Results []Result `json:"results"`
-	}{Results: results})
+// locationSet is the set of locations named by the nodes of a request.
+type locationSet map[string]struct{}
+
+// located is implemented by every batch entry: it reports the nodes whose
+// location routes the entry.
+type located interface {
+	endpoints() []*Node
 }
+
+// requestLocations collects the locations of all entries. An empty set means
+// the request is answered in the plain shape.
+func requestLocations[T located](items []T) locationSet {
+	set := locationSet{}
+	for _, item := range items {
+		for _, node := range item.endpoints() {
+			if node != nil && node.Location != "" {
+				set[node.Location] = struct{}{}
+			}
+		}
+	}
+	return set
+}
+
+func (n Node) endpoints() []*Node { return []*Node{&n} }
+
+func (r Relationship) endpoints() []*Node { return []*Node{r.Source, r.Target} }
 
 // merge appends the results of other, keeping the per-location grouping.
 //
