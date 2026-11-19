@@ -2,7 +2,7 @@
 
 <div align="left"> <a href="https://indykite.com"> <img src="https://raw.githubusercontent.com/indykite/.github/master/assets/squareformatlogo.png" alt="IndyKite Logo" width="100px" height="100px" align="right"> </a> </div>
 
-Generated at: 2026-10-26T13:03:06Z
+Generated at: 2026-11-19T09:40:34Z
 
 DO NOT EDIT!!
 
@@ -15,23 +15,19 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | License | Classification | Severity | Count |
 | --- | --- | --- | ---: |
 | Apache-2.0 | notice | LOW | 27 |
-| BSD-3-Clause | notice | LOW | 26 |
-| MIT | notice | LOW | 14 |
-| BSD-2-Clause | notice | LOW | 2 |
-| BSL-1.0 | notice | LOW | 1 |
+| BSD-3-Clause | notice | LOW | 24 |
+| MIT | notice | LOW | 13 |
+| BSD-2-Clause | notice | LOW | 1 |
 | Copyright | unknown | UNKNOWN | 1 |
-| LicenseRef-C-Ares | unknown | UNKNOWN | 1 |
-| OpenSSL | notice | LOW | 1 |
-| Zlib | notice | LOW | 1 |
 
-**Total packages scanned:** 74
+**Total packages scanned:** 66
 
 ## Report Summary (by target)
 
 | Target | Type | Licenses |
 | --- | --- | ---: |
 | Loose File License(s) | - | 1 |
-| go.mod | gomod | 73 |
+| go.mod | gomod | 65 |
 
 ## Details
 
@@ -41,7 +37,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | --- | --- | --- | --- |
 | LICENSE | Apache-2.0 | notice | LOW |
 
-### `go.mod` (gomod) -- 73 licenses
+### `go.mod` (gomod) -- 65 licenses
 
 | Package | License | Classification | Severity |
 | --- | --- | --- | --- |
@@ -51,7 +47,7 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | cloud.google.com/go/bigquery | Apache-2.0 | notice | LOW |
 | cloud.google.com/go/compute/metadata | Apache-2.0 | notice | LOW |
 | cloud.google.com/go/iam | Apache-2.0 | notice | LOW |
-| github.com/apache/arrow/go/v15 | Apache-2.0 | notice | LOW |
+| github.com/apache/arrow-go/v18 | Apache-2.0 | notice | LOW |
 | github.com/go-logr/logr | Apache-2.0 | notice | LOW |
 | github.com/go-logr/stdr | Apache-2.0 | notice | LOW |
 | github.com/google/flatbuffers | Apache-2.0 | notice | LOW |
@@ -71,9 +67,8 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | google.golang.org/genproto/googleapis/api | Apache-2.0 | notice | LOW |
 | google.golang.org/genproto/googleapis/rpc | Apache-2.0 | notice | LOW |
 | google.golang.org/grpc | Apache-2.0 | notice | LOW |
-| github.com/apache/arrow/go/v15 | BSD-2-Clause | notice | LOW |
 | github.com/zeebo/xxh3 | BSD-2-Clause | notice | LOW |
-| github.com/apache/arrow/go/v15 | BSD-3-Clause | notice | LOW |
+| github.com/apache/arrow-go/v18 | BSD-3-Clause | notice | LOW |
 | github.com/google/go-cmp | BSD-3-Clause | notice | LOW |
 | github.com/google/uuid | BSD-3-Clause | notice | LOW |
 | github.com/googleapis/gax-go/v2 | BSD-3-Clause | notice | LOW |
@@ -92,18 +87,13 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | golang.org/x/oauth2 | BSD-3-Clause | notice | LOW |
 | golang.org/x/sync | BSD-3-Clause | notice | LOW |
 | golang.org/x/sys | BSD-3-Clause | notice | LOW |
-| golang.org/x/telemetry | BSD-3-Clause | notice | LOW |
 | golang.org/x/text | BSD-3-Clause | notice | LOW |
 | golang.org/x/time | BSD-3-Clause | notice | LOW |
 | golang.org/x/tools | BSD-3-Clause | notice | LOW |
-| golang.org/x/xerrors | BSD-3-Clause | notice | LOW |
 | google.golang.org/api | BSD-3-Clause | notice | LOW |
 | google.golang.org/protobuf | BSD-3-Clause | notice | LOW |
-| github.com/apache/arrow/go/v15 | BSL-1.0 | notice | LOW |
-| github.com/apache/arrow/go/v15 | Copyright | unknown | UNKNOWN |
-| github.com/apache/arrow/go/v15 | LicenseRef-C-Ares | unknown | UNKNOWN |
+| github.com/apache/arrow-go/v18 | Copyright | unknown | UNKNOWN |
 | github.com/Masterminds/semver/v3 | MIT | notice | LOW |
-| github.com/apache/arrow/go/v15 | MIT | notice | LOW |
 | github.com/cespare/xxhash/v2 | MIT | notice | LOW |
 | github.com/felixge/httpsnoop | MIT | notice | LOW |
 | github.com/go-task/slim-sprig/v3 | MIT | notice | LOW |
@@ -116,5 +106,3 @@ Regenerate with `ops-common/.github/actions/trivy-license/script.sh (clone 'ops-
 | github.com/onsi/ginkgo/v2 | MIT | notice | LOW |
 | github.com/onsi/gomega | MIT | notice | LOW |
 | go.yaml.in/yaml/v3 | MIT | notice | LOW |
-| github.com/apache/arrow/go/v15 | OpenSSL | notice | LOW |
-| github.com/apache/arrow/go/v15 | Zlib | notice | LOW |

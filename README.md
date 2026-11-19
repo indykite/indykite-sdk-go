@@ -130,6 +130,11 @@ The fixture dataset and config resources behind those env values live in [test/f
 and are provisioned idempotently with `go run ./test/setup apply` (see [test/README.md](test/README.md)).
 The data-schema API is feature-flagged and intentionally has no integration tests.
 
+The Capture test for composite IKGs is opt-in: set `CAPTURE_COMPOSITE_LOCATIONS` to two
+location names of a composite IKG other than `global` (comma-separated, e.g. `east,west`).
+When that IKG belongs to another project than the rest of the tests, also set
+`CAPTURE_COMPOSITE_APPLICATION_CREDENTIALS` to the App Agent token of its project.
+
 When `SDK_AUDIT_TABLE_NAME` is set, the AuthZEN and ContX IQ integration tests additionally
 verify that the platform's audit events reached the BigQuery audit-log table, authenticating
 with Application Default Credentials. `BQ_PROJECT_ID` (the GCP project hosting that table) is

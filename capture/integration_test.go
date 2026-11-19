@@ -19,6 +19,7 @@ package capture_test
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	indykite "github.com/indykite/indykite-sdk-go"
@@ -31,6 +32,19 @@ import (
 // NOTE: there is deliberately no integration test for ReadDataSchema — the
 // data-schema API is still behind a feature flag.
 
+// liveOptions returns the client options shared by the live specs.
+func liveOptions() []indykite.Option {
+	if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
+		return []indykite.Option{indykite.WithBaseURL(base)}
+	}
+	return nil
+}
+
+// haveGIDs matches a per-location list of n gids.
+func haveGIDs(n int) OmegaMatcher {
+	return And(HaveLen(n), HaveEach(HavePrefix("gid:")))
+}
+
 var _ = Describe("Capture (live platform)", Label("integration"), func() {
 	var capc *capture.Client
 
@@ -39,11 +53,7 @@ var _ = Describe("Capture (live platform)", Label("integration"), func() {
 			os.Getenv("INDYKITE_APPLICATION_CREDENTIALS_FILE") == "" {
 			Skip("INDYKITE_APPLICATION_CREDENTIALS[_FILE] not set")
 		}
-		var opts []indykite.Option
-		if base := os.Getenv("INDYKITE_BASE_URL"); base != "" {
-			opts = append(opts, indykite.WithBaseURL(base))
-		}
-		cli, err := indykite.NewClientFromEnv(ctx, opts...)
+		cli, err := indykite.NewClientFromEnv(ctx, liveOptions()...)
 		Expect(err).NotTo(HaveOccurred())
 		capc = cli.Capture()
 	})
@@ -118,5 +128,114 @@ var _ = Describe("Capture (live platform)", Label("integration"), func() {
 		res, err := capc.UpsertNodesChunked(ctx, nodes, 0)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(res.Results).To(HaveLen(n))
+	})
+})
+
+// These specs need a project whose IKG is a composite database, so they are
+// opt-in:
+//
+//	CAPTURE_COMPOSITE_LOCATIONS                two location names of that IKG other
+//	                                           than "global", comma-separated (required to run)
+//	CAPTURE_COMPOSITE_APPLICATION_CREDENTIALS  App Agent token of that project; defaults to
+//	                                           INDYKITE_APPLICATION_CREDENTIALS[_FILE]
+var _ = Describe("Capture on a composite IKG (live platform)", Label("integration"), func() {
+	var (
+		capc       *capture.Client
+		east, west string
+	)
+
+	BeforeEach(func(ctx SpecContext) {
+		raw := os.Getenv("CAPTURE_COMPOSITE_LOCATIONS")
+		if raw == "" {
+			Skip("CAPTURE_COMPOSITE_LOCATIONS not set")
+		}
+		locations := strings.Split(raw, ",")
+		Expect(locations).To(HaveLen(2), "CAPTURE_COMPOSITE_LOCATIONS must name two locations")
+		east, west = strings.TrimSpace(locations[0]), strings.TrimSpace(locations[1])
+		Expect([]string{east, west}).NotTo(Or(
+			ContainElement(BeEmpty()),
+			ContainElement(capture.LocationGlobal),
+			ContainElement(capture.LocationDefault),
+		), "CAPTURE_COMPOSITE_LOCATIONS must name two regional locations")
+		Expect(east).NotTo(Equal(west), "CAPTURE_COMPOSITE_LOCATIONS must name two different locations")
+
+		var (
+			cli *indykite.Client
+			err error
+		)
+		switch token := os.Getenv("CAPTURE_COMPOSITE_APPLICATION_CREDENTIALS"); {
+		case token != "":
+			cli, err = indykite.NewClient(ctx, token, liveOptions()...)
+		case os.Getenv("INDYKITE_APPLICATION_CREDENTIALS") == "" &&
+			os.Getenv("INDYKITE_APPLICATION_CREDENTIALS_FILE") == "":
+			Skip("no App Agent credential set for the composite project")
+		default:
+			cli, err = indykite.NewClientFromEnv(ctx, liveOptions()...)
+		}
+		Expect(err).NotTo(HaveOccurred())
+		capc = cli.Capture()
+	})
+
+	// Ingests nodes into two regional locations, the global one and the default
+	// database, links them, and removes everything. Every response must list
+	// the gids under the location the platform routed them to.
+	It("routes nodes and relationships by location", func(ctx SpecContext) {
+		suffix := fmt.Sprintf("sdk-it-cdb-%d", time.Now().UnixNano())
+		node := func(name, nodeType, location string) capture.Node {
+			return capture.Node{ExternalID: name + "-" + suffix, Type: nodeType, Location: location}
+		}
+		eastPerson := node("east-person", "Person", east)
+		westPerson := node("west-person", "Person", west)
+		westCar := node("west-car", "Car", west)
+		defaultCar := node("default-car", "Car", "")
+		globalPerson := node("global-person", "Person", capture.LocationGlobal)
+		nodes := []capture.Node{eastPerson, westPerson, westCar, defaultCar, globalPerson}
+
+		// Both ends in the same location: stored in that location.
+		owns := capture.Relationship{Type: "OWNS", Source: &westPerson, Target: &westCar}
+		// Ends in different locations: stored in the global location.
+		knows := capture.Relationship{Type: "KNOWS", Source: &eastPerson, Target: &globalPerson}
+
+		// Always try to clean up, even on failure part-way.
+		DeferCleanup(func(ctx SpecContext) {
+			_, _ = capc.DeleteRelationships(ctx, owns, knows)
+			_, _ = capc.DeleteNodes(ctx, nodes...)
+		})
+
+		// Only the east person asks for a proxy, so the global location holds the
+		// global person plus that one proxy.
+		nodesByLocation := And(
+			HaveLen(4),
+			HaveKeyWithValue(east, haveGIDs(1)),
+			HaveKeyWithValue(west, haveGIDs(2)),
+			HaveKeyWithValue(capture.LocationDefault, haveGIDs(1)),
+			HaveKeyWithValue(capture.LocationGlobal, haveGIDs(2)),
+		)
+		relationshipsByLocation := And(
+			HaveLen(2),
+			HaveKeyWithValue(west, haveGIDs(1)),
+			HaveKeyWithValue(capture.LocationGlobal, haveGIDs(1)),
+		)
+
+		upserts := make([]capture.UpsertNode, len(nodes))
+		for i, n := range nodes {
+			upserts[i] = capture.UpsertNode{Node: n, CreateProxy: n == eastPerson}
+		}
+		res, err := capc.UpsertNodes(ctx, upserts...)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.Results).To(BeEmpty())
+		Expect(res.ByLocation).To(nodesByLocation)
+
+		res, err = capc.UpsertRelationships(ctx, owns, knows)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.ByLocation).To(relationshipsByLocation)
+
+		res, err = capc.DeleteRelationships(ctx, owns, knows)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.ByLocation).To(relationshipsByLocation)
+
+		res, err = capc.DeleteNodes(ctx, nodes...)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.ByLocation).To(nodesByLocation)
 	})
 })
