@@ -315,7 +315,7 @@ var _ = Describe("Composite IKG nodes", func() {
 	It("files plain chunk results under the default location when chunks mix shapes", func(ctx SpecContext) {
 		replies := []string{
 			`{"results":[{"id":"gid:a"}]}`,
-			`{"__default":["gid:b"],"eu-db":[]}`,
+			`{"eu-db":["gid:b"]}`,
 			`{"results":[{"id":"gid:c"}]}`,
 		}
 		calls := 0
@@ -328,48 +328,94 @@ var _ = Describe("Composite IKG nodes", func() {
 		for i := range nodes {
 			nodes[i] = capture.UpsertNode{Node: capture.Node{ExternalID: id(i), Type: "Person"}}
 		}
+		nodes[1].Location = "eu-db"
 		res, err := c.UpsertNodesChunked(ctx, nodes, 1)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(res.Results).To(BeEmpty())
 		Expect(res.ByLocation).To(Equal(map[string][]string{
-			capture.LocationDefault: {"gid:a", "gid:b", "gid:c"},
-			"eu-db":                 {},
+			capture.LocationDefault: {"gid:a", "gid:c"},
+			"eu-db":                 {"gid:b"},
 		}))
 	})
 })
 
-var _ = Describe("BatchResults JSON", func() {
-	DescribeTable("round-trips both response shapes",
-		func(body string, want capture.BatchResults) {
-			var got capture.BatchResults
-			Expect(json.Unmarshal([]byte(body), &got)).To(Succeed())
-			Expect(got).To(Equal(want))
+// The response shape follows the request: per location exactly when a node of
+// the request has a location. The body alone is ambiguous, so these specs pin
+// the cases where guessing from it would go wrong.
+var _ = Describe("Batch response shape", func() {
+	plain := capture.Node{ExternalID: "ada", Type: "Person"}
+	inLocation := func(location string) capture.Node {
+		return capture.Node{ExternalID: "ada", Type: "Person", Location: location}
+	}
 
-			raw, err := json.Marshal(got)
+	DescribeTable("decodes a request without locations as plain results",
+		func(ctx SpecContext, body string, want []capture.Result) {
+			c, _ := recordingClient(body)
+
+			res, err := c.DeleteNodes(ctx, plain)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(raw).To(MatchJSON(body))
+			Expect(res.ByLocation).To(BeNil())
+			Expect(res.Results).To(Equal(want))
 		},
-		Entry("plain results", `{"results":[{"id":"gid:a"}]}`,
-			capture.BatchResults{Results: []capture.Result{{ID: "gid:a"}}}),
-		Entry("empty plain results", `{"results":[]}`,
-			capture.BatchResults{Results: []capture.Result{}}),
-		Entry("per-location results", `{"__default":["gid:a"],"global":[]}`,
-			capture.BatchResults{ByLocation: map[string][]string{
-				capture.LocationDefault: {"gid:a"}, capture.LocationGlobal: {},
-			}}),
-		Entry("a location named results", `{"results":["gid:a"]}`,
-			capture.BatchResults{ByLocation: map[string][]string{"results": {"gid:a"}}}),
+		Entry("results", `{"results":[{"id":"gid:a"}]}`, []capture.Result{{ID: "gid:a"}}),
+		Entry("empty results", `{"results":[]}`, []capture.Result{}),
+		Entry("empty results next to an added list field", `{"results":[],"warnings":[]}`, []capture.Result{}),
+		Entry("results next to an added object field",
+			`{"results":[{"id":"gid:a"}],"warnings":{"code":1}}`, []capture.Result{{ID: "gid:a"}}),
 	)
 
-	It("ignores fields added next to plain results", func() {
-		var got capture.BatchResults
-		Expect(json.Unmarshal([]byte(`{"results":[{"id":"gid:a"}],"warnings":[]}`), &got)).To(Succeed())
-		Expect(got).To(Equal(capture.BatchResults{Results: []capture.Result{{ID: "gid:a"}}}))
+	DescribeTable("decodes a request with locations per location",
+		func(ctx SpecContext, location, body string, want map[string][]string) {
+			c, _ := recordingClient(body)
+
+			res, err := c.DeleteNodes(ctx, inLocation(location))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(res.Results).To(BeNil())
+			Expect(res.ByLocation).To(Equal(want))
+		},
+		Entry("an empty location named results", "results", `{"results":[]}`,
+			map[string][]string{"results": {}}),
+		Entry("a location named results", "results", `{"results":["gid:a"]}`,
+			map[string][]string{"results": {"gid:a"}}),
+		Entry("a null list", "eu-db", `{"eu-db":null}`,
+			map[string][]string{"eu-db": {}}),
+		Entry("the default and global locations it did not name", "eu-db",
+			`{"eu-db":["gid:a"],"__default":["gid:b"],"global":["gid:c"]}`,
+			map[string][]string{
+				"eu-db": {"gid:a"}, capture.LocationDefault: {"gid:b"}, capture.LocationGlobal: {"gid:c"},
+			}),
+		Entry("added fields that are not locations of the request", "eu-db",
+			`{"eu-db":[],"warnings":[],"meta":{"code":1}}`,
+			map[string][]string{"eu-db": {}}),
+	)
+
+	It("reads the locations of both relationship ends", func(ctx SpecContext) {
+		c, _ := recordingClient(`{"eu-db":["gid:r"]}`)
+
+		res, err := c.UpsertRelationships(ctx, capture.Relationship{
+			Type:   "OWNS",
+			Source: &capture.Node{ExternalID: "p1", Type: "Person"},
+			Target: &capture.Node{ExternalID: "c1", Type: "Car", Location: "eu-db"},
+		})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.ByLocation).To(Equal(map[string][]string{"eu-db": {"gid:r"}}))
 	})
 
-	It("rejects a body that is neither shape", func() {
-		var got capture.BatchResults
-		Expect(json.Unmarshal([]byte(`{"eu-db":"oops"}`), &got)).NotTo(Succeed())
+	It("rejects a requested location whose value is not a gid list", func(ctx SpecContext) {
+		c, _ := recordingClient(`{"eu-db":"oops"}`)
+
+		_, err := c.DeleteNodes(ctx, inLocation("eu-db"))
+		Expect(err).To(MatchError(ContainSubstring(`location "eu-db"`)))
+	})
+
+	It("marshals each shape under its own key", func() {
+		raw, err := json.Marshal(capture.BatchResults{Results: []capture.Result{{ID: "gid:a"}}})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(raw).To(MatchJSON(`{"results":[{"id":"gid:a"}]}`))
+
+		raw, err = json.Marshal(capture.BatchResults{ByLocation: map[string][]string{"eu-db": {"gid:a"}}})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(raw).To(MatchJSON(`{"by_location":{"eu-db":["gid:a"]}}`))
 	})
 })
 
