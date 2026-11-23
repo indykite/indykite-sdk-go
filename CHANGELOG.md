@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.82.1](https://github.com/indykite/indykite-sdk-go/compare/v0.82.0...v0.82.1) (2026-11-23)
+
+
+### Miscellaneous Chores
+
+* **deps:** update ci-configs ([2853956](https://github.com/indykite/indykite-sdk-go/commit/2853956d78ef4b998fbbad69044880cf4a967f92))
+* **deps:** update golang:1.27-alpine Docker digest to 70bd7dd ([713b5a5](https://github.com/indykite/indykite-sdk-go/commit/713b5a52d01deacbfe9196cda52c9bb34919a5ba))
+
 ## [0.82.0](https://github.com/indykite/indykite-sdk-go/compare/v0.81.0...v0.82.0) (2026-11-19)
 
 
